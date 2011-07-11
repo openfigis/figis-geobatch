@@ -1,0 +1,151 @@
+<html xmlns:wicket="http://wicket.apache.org/">
+<head>
+
+</head>
+<body>
+<wicket:extend>
+<div id="wfsUrl" class="x-hide-display"><wicket:message key="wfs"></wicket:message></div>
+<div id="geoserverUrl" class="x-hide-display"><wicket:message key="geoserver"></wicket:message></div>
+<div id="apiUrl" class="x-hide-display"><wicket:message key="servicemix"></wicket:message></div>
+<div id="statistical" class="x-hide-display"><wicket:message key="statistical"></wicket:message></div>
+<div id="spatialstat" class="x-hide-display"><wicket:message key="spatialstat"></wicket:message></div>
+
+ <div id='panel'></div>
+ <div id="win_csv" class="x-hidden">
+	<div class="x-window-header">CSV</div>	
+</div>
+ <div id="win_wfs" class="x-hidden">
+	<div class="x-window-header">WFS</div>	
+</div> 
+<script type="text/javascript">
+/*global Ext */ 
+
+function getText(txt) {
+    var elt = Ext.get(txt).dom;
+	var _innerText = elt.innerText;
+	if (_innerText == undefined) {
+  		_innerText = elt.innerHTML.replace(/<[^>]+>/g,"");
+	}
+	return _innerText;
+}
+  
+Ext.onReady( function(){
+
+  var desktop = Ext.get('desktop');
+
+  var wfsUrl = getText('wfsUrl');
+    
+  var geoserverUrl = getText('geoserverUrl');
+  
+  var defaultFeature = getText('statistical');
+
+  var spatialFeature = getText('spatialstat');
+  
+  var combinationRecordDef = Ext.data.Record.create([
+    {name: 'id'},
+    {name: 'source'},
+    {name: 'sourceCode'},
+    {name: 'mask'},
+    {name: 'target'},
+    {name: 'targetCode'},
+    {name: 'status'}
+  ]);
+
+  var combinationsReader = new Ext.data.JsonReader({
+    root: "combinations",                // The property which contains an Array of row objects
+    id: "id"                     // The property within each row object that provides an ID for the record (optional)
+  }, combinationRecordDef);
+
+  var apiUrl = getText('apiUrl');
+  
+  var serviceUrl = apiUrl + "/iedata/?service=getCombinations";
+  //console.log(serviceUrl);
+  var combinationsProxy = new Ext.data.ScriptTagProxy({
+          url: serviceUrl ,
+          callback: 'jsoncallback'
+  });
+          
+  var combinationsStore = new Ext.data.Store({
+      reader: combinationsReader,
+      proxy: combinationsProxy
+  });
+  
+  var dummyStore = new Ext.data.Store({
+     reader: combinationsReader,
+     data: {'combinations': [ {'id':108,'mask':'','source':'ariel:FAO_DIV','sourceCode':'F_DIVISION','target':'ariel:FAO_MAJOR','targetCode':'OCEAN'} ]}
+  });
+  // row expander
+    var expander = new Ext.ux.grid.RowExpander({
+        tpl : new Ext.Template(
+           "<p><b>Source: </b>{source}<br/>",
+           "<b>Target: </b>{target}<br/>",
+           "<b>Download: </b>",
+           "<a href=",
+            wfsUrl,
+            "&request=GetFeature&typename=",
+            defaultFeature,
+            "&outputFormat=CSV",
+           	"&CQL_FILTER=SRC_NAME%20LIKE%20'{source}'+AND+TRG_NAME%20LIKE%20'{target}'",
+            ">CSV</a>",
+           	" - ",
+           "<a href=",
+            wfsUrl,
+            "&request=GetFeature&typename=",
+            spatialFeature,
+            "&outputFormat=GML2&propertyName=SRC_NAME,SRC_CODE,TOT_AREA_SRC,TRG_NAME,TRG_CODE,TOT_AREA_TRG,AREA,OV_SRC,OV_TRG",
+           	"&CQL_FILTER=SRC_NAME%20LIKE%20'{source}'+AND+TRG_NAME%20LIKE%20'{target}'",
+            ">XML</a>",
+          	" - ",
+           "<a href=",
+            wfsUrl,
+            "&request=GetFeature&typename=",
+            spatialFeature,
+            "&outputFormat=GML2",
+           	"&CQL_FILTER=SRC_NAME%20LIKE%20'{source}'+AND+TRG_NAME%20LIKE%20'{target}'",
+            ">GML2</a></p>" )
+    });
+
+  var store = combinationsStore;
+    
+  store.load();
+  // create the Grid
+  var combinationsGrid = new Ext.grid.GridPanel({
+        store: store,
+        cm: new Ext.grid.ColumnModel({
+            defaults: {
+                width: 20,
+                sortable: true
+            },
+            columns: [
+                expander,
+            {header: "Id", sortable: true, width:40,dataIndex: 'id'},
+            {header: "Source", width: 120, sortable: true, dataIndex: 'source'},
+            {header: "Source Code", width: 80, sortable: true, dataIndex: 'sourceCode'},
+            {header: "Mask", width: 120, sortable: true, dataIndex: 'mask'},
+            {header: "Target", width: 120, sortable: true, dataIndex: 'target'},
+            {header: "Target Code", width: 80, sortable: true, dataIndex: 'targetCode'},
+            {header: "Status", width: 80, sortable: true, dataIndex: 'status'}
+            ]
+        }),
+        viewConfig: {
+            forceFit:true
+        },        
+        width: 600,
+        height: 300,
+        plugins: expander,
+        title: 'Download data',
+        iconCls: 'icon-grid',
+        renderTo:'panel'
+    });
+    
+
+});//End Ext.onReady
+
+
+</script>
+
+
+</wicket:extend>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+================================
+Intersections Engine Core Module
+================================
+
+Algorithm Description
+=====================
+
+1. The algorithm takes as input two tables with a spatial geometry of 
+   type Multi-Polygon
+2. The algorithm computes the pecentages of the intersections of the 
+   source layer with the second one. The quantitative percentages have
+   to be stored on a separate statistical table which does not have any
+   kind of spatial column, while on another table will be stored the 
+   resulting intersection polygons. The keys must match of course, 
+   and the computation must take in consideration the COASTLINE polygons
+   as mask taken from an other GIS layer outside.
+
+.. note::
+
+    * The resulting tables must be the same for each computation, 
+      a complex key reporting the source layer and the target layer IDs
+      will be used to differentiate the computation records.
+
+    * In case a computation is issued again, the old related records must
+      be removed from the table. Other than the final tables must be always
+      consistent, so in order to do that the outcomes must be stored on a
+      temporary table and copied when the computation finishes.
+
+    * The source layer and the target layer have to be both masked with the
+      land layer before the computation, in order to take care only of the
+      OCEAN areas.
+
+    * The resulting intersections have to be the cartesian product between 
+      the source layer polygons and the target layer polygons, basically we
+      have to consider ALL the possible intersections among the target and
+      source layer.
+      As an example if 1 polygon of the source layer intersects 3 polygons 
+      of the target layer, we will have 3 records on the resulting 
+      statistical table.
+
+STATISTICAL TABLE SCHEMA
+------------------------
+
+=============   ================================================================
+Column          Description
+=============   ================================================================
+ID              Automatically generated
+SRC_NAME        Acronym of the source layer
+SRC_CODE        Unique Code of the source layer (provided by external param)
+TOT_AREA_SRC    Total surface in sqm of the whole src layer polygon
+TRG_NAME        Acronym of the target layer
+TRG_CODE        Unique Code of the target layer (provided by external param)
+TOT_AREA_TRG    Total surface in sqm of the trg layer polygon
+AREA            Surface in sqm of the resulting intersection polygon
+OV_SRC          Single polygon vs area of source (AREA/TOT_AREA_SRC) * 100
+OV_TRG          Single polygon vs area of target (AREA/TOT_AREA_TRG) * 100
+=============   ================================================================
+
+SPATIAL TABLE SCHEMA
+--------------------
+
+============   ================================================================
+Column         Description
+============   ================================================================
+ID             Automatically generated
+STATISTIC      Foreign Key to statistics table
+THE_GEOM       Resulting Geometry
+============   ================================================================
+
+Example
+-------
+
+.. code-block:: text
+
+    src->FAO_MAJOR; trg->NJA
+    ID: 1
+    SRC_NAME: FAO_MAJOR
+    SRC_CODE: 47
+    TOT_AREA_SRC: 1871,4226412174348
+    TRG_NAME: NJA
+    TRG_CODE: -
+    TOT_AREA_TRG: 37,575021697177185
+    AREA: 37,575021697177185
+    OV_SRC: 2,007831949320285027836175296668
+    OV_TRG: 100,00
+
+ 
+    ID: 2
+    SRC_NAME: FAO_MAJOR
+    SRC_CODE: 47
+    TOT_AREA_SRC: 1871,4226412174348
+    TRG_NAME: NJA
+    TRG_CODE: -
+    TOT_AREA_TRG: 78,3211774694
+    AREA: 78,3211774694
+    OV_SRC: 4,1851143480047329932696162579744
+    OV_TRG: 100,00
+
+
+Graphical Overview
+------------------
+
+Source
+~~~~~~
+FAO_MAJOR
+
+.. figure:: images/fm.png
+
+Mask source
+~~~~~~~~~~~
+UN_CONTINENT
+
+.. figure:: images/continent.png
+
+Masked source 
+~~~~~~~~~~~~~
+FAO_MAJOR minus UN_CONTINENT
+
+.. figure:: images/fm_continent.png
+
+Target
+~~~~~~
+NJA
+
+.. figure:: images/nja.png
+
+Intersection
+~~~~~~~~~~~~
+Masked FAO_MAJOR intersected with NJA
+
+.. figure:: images/fm_nja.png
+
+Result
+~~~~~~
+Nicer image showing final result
+
+.. figure:: images/final.png
+
+Preserve Target
+===============
+
+It's an optional parameter that saves the masked target polygons instead of just
+the sections that intersect the source. Here is a graphical explanation:
+
+.. figure:: images/preserve_target.png
+
+
+.. figure:: images/preserve_target_off.png
+

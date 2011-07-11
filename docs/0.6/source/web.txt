@@ -1,0 +1,65 @@
+==============================
+Intersection Engine Web module
+==============================
+
+The web interfaces has 2 sections:
+
+ * Download Manager
+ * Admin Console
+
+The first one is accesible by any user, while the Admin Console is only enabled
+for admin users.
+
+Download Manager
+================
+
+Contains a grid with all the combinations, for each one there is a plus sign
+that enables a contextual menu. There, 3 options are presented:
+
+ * CSV: Downloads the data in excel format.
+ * XML: Downloads the raw xml data.
+ * GML2: Download the data in xml with the geometries.
+ * RDF: Downloads the data in RDF based on the CSV output. (New in version 0.5)
+
+.. figure:: images/download.png
+
+Admin Console
+=============
+
+.. figure:: images/console.png
+
+
+Save Combination
+----------------
+
+Select Layers
+~~~~~~~~~~~~~
+Use the tree on the left with right click to assign the layers
+
+.. figure:: images/tree.jpg
+
+Select Layer Codes
+~~~~~~~~~~~~~~~~~~
+Use the combo box under each layer to select the layer code
+
+.. figure:: images/code.jpg
+
+
+Save
+~~~~
+Press the save button
+
+.. figure:: images/save.jpg
+
+
+Edit Combination
+----------------
+Delete, Enable or Disable combinations
+
+.. figure:: images/edit_combination.png
+
+View Computation Log
+--------------------
+.. figure:: images/view_computation.png
+
+

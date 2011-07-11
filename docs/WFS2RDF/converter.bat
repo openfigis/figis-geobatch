@@ -1,0 +1,1 @@
+java -cp .\lib\icu4j_3_4.jar;.\lib\iri.jar;.\lib\xercesImpl.jar;.\lib\commons-logging-1.1.1.jar;.\lib\geowl.jar;.\lib\jena.jar;.\WFS2RDF.jar org.fao.figis.wfs.Converter .\statistical.csv

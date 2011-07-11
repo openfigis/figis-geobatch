@@ -1,0 +1,31 @@
+==============================
+Extra Information
+==============================
+
+Tests
+=====
+
+There are two kinds of tests shipped with the module, JUnit tests for the core
+engine and Selenium tests for the web interface and api endpoints.
+
+JUnit Coverage
+==============
+
+.. figure:: images/cobertura.png
+
+Selenium Tests
+==============
+
+.. figure:: images/selenium.png
+
+Memory Consumption
+==================
+The web server running the computation engine, will need at least 256MB of heap
+memory.
+
+Here is a sample output of the memory curve for FAO_MAJOR vs NJA masked by UN_CONTINENT
+it was obtained using the YourKit Java Profiling Platform.
+
+.. figure:: images/profiling.png
+
+

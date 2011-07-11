@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:eip="http://servicemix.apache.org/eip/1.0"
+       xmlns:ie="http://www.geo-solutions.it/GeomCompare/"
+       xmlns:xsi="http://http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://servicemix.apache.org/eip/1.0 http://servicemix.apache.org/schema/servicemix-eip-2009.01.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  	<eip:pipeline service="ie:GeomCompareEIPPipeline" endpoint="endpointC">
+    	<eip:transformer>
+      		<eip:exchange-target service="ie:identXSLT" />
+    	</eip:transformer>
+    	<eip:target>
+      		<eip:exchange-target service="ie:GeomCompareJMSProviderService" />
+    	</eip:target>
+  	</eip:pipeline>
+  
+  	<eip:static-routing-slip service="ie:GeomCompareEIPStaticRoute" endpoint="endpointC">
+  		<eip:targets>
+    		<eip:exchange-target service="ie:GeomCompareJMSProviderService" />
+  		</eip:targets>
+	</eip:static-routing-slip>
+</beans>

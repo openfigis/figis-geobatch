@@ -1,0 +1,144 @@
+================================
+Intersection Engine Installation
+================================
+
+Overview
+========
+In general, Intersection Engine (IE) installation requires:
+
+1. :ref:`java5` and :ref:`maven`
+2. :ref:`spatial_database`
+3. :ref:`geotools2.6` and :ref:`geoserver1.7.x`
+4. :ref:`servicemix3.3`
+
+Details for each of the requirements and installation instructions
+are provided in the sections below.
+
+Requirements
+============
+
+.. _java5:
+
+Java 5
+------
+Because of the use of annotations and some other features Java 5 is the minimum
+version supported by IE. Java  6 is of course recommended for performance reasons.
+
+.. _maven:
+
+Maven 2
+-------
+The project takes advantage of Maven for package management and building. 
+It has been developed with version 2.0.9 but some earlier and further versions
+should work just fine.
+
+.. _spatial_database:
+
+Spatial Database (Oracle 10g)
+-----------------------------
+Oracle 10g has been used for development, but any spatial database supported
+by :ref:`geoserver1.7.x` should work. If you use Oracle, please remember to use
+the `Oracle NG drivers`__.
+
+At the minimum, the following 2 tables and summary view will need to be created
+to store the results of the calculations:
+
+.. code-block:: sql
+
+    create table FIGIS.STATISTICAL_TABLE(
+      ID number primary key,
+      SRC_NAME varchar2(100),
+      SRC_CODE varchar2(255),
+      TOT_AREA_SRC number,
+      TRG_NAME varchar2(100),
+      TRG_CODE varchar2(255),
+      TOT_AREA_TRG number,
+      AREA number,
+      OV_SRC number,
+      OV_TRG number,
+      CONSTRAINT statistical_pk PRIMARY KEY (ID)
+    ) TABLESPACE USERS;
+
+    create table FIGIS.SPATIAL_TABLE(
+      ID number,
+      THE_GEOM MDSYS.SDO_GEOMETRY,
+      STATS number UNIQUE,
+      CONSTRAINT spatial_pk PRIMARY KEY(ID),
+    ) TABLESPACE USERS;
+
+    create view FIGIS.SPATIAL_STATISTICAL(
+      ID, SRC_NAME, SRC_CODE, TOT_AREA_SRC, 
+      TRG_NAME, TRG_CODE, TOT_AREA_TRG, AREA, 
+      OV_SRC, OV_TRG, THE_GEOM,
+      CONSTRAINT pk_spatial_statistical_view PRIMARY KEY (id)
+      RELY DISABLE NOVALIDATE
+    ) as 
+    select ST.ID, ST.SRC_NAME, ST.SRC_CODE, ST.TOT_AREA_SRC, ST.TRG_NAME, 
+      ST.TRG_CODE, ST.TOT_AREA_TRG, ST.AREA, ST.OV_SRC, ST.OV_TRG, SP.THE_GEOM 
+    from FIGIS.STATISTICAL_TABLE ST, FIGIS.SPATIAL_TABLE SP 
+    where ST.ID = SP.STATS with check option;
+
+
+__ http://docs.geoserver.org/1.7.x/en/user/data/oracleng.html
+
+.. _geotools2.6:
+
+Geotools 2.6
+------------
+Geotools 2.6 is being used because WFS support is more mature.
+
+..note::
+    As of Oct 15, 2009 there is a bug in the Geotools WFS module preventing
+    the correct use of the project, it has been documented and the patch and
+    status can be found in the JIRA `GEOT-2756`_, that requires downloading
+    geotool 2.6 sources, applying the patch and installing to the local Maven
+    repo so the IE project can find the updated dependency.
+
+.. _GEOT-2756: http://jira.codehaus.org/browse/GEOT-2756
+
+.. _geoserver1.7.x:
+
+Geoserver 1.7.x
+---------------
+Geoserver is used both to serve the layers that will be used in the calculations,
+as well as to store the results in the database. The following 2 layers are required:
+
+* ``figis:statistical`` Mapping to FIGIS.STATISTICAL_TABLE
+
+* ``figis:spatial`` Mapping to FIGIS.SPATIAL_TABLE
+
+.. _servicemix3.3:
+
+ServiceMix 3.3
+---------------
+ServiceMix is used as the glue framework for the project, the easiest way to get
+it running is by using the binary distribution and then navigating to the ``geomcompare-jbi``
+directory and running
+
+.. code-block:: bash
+
+    mvn clean install jbi:projectDeploy
+
+It will compile the project and load it in Service Mix, if some other container is used
+(for example Tomcat) you will have to manually deploy it using the administration console.
+
+Troubleshooting
+===============
+
+No Server running in localhost:8080
+-----------------------------------
+Please make sure there is a Geoserver instance up and running either in localhost
+or the configured location. The library performs the reads and writes using WFS.
+
+No statistics layers
+--------------------
+IE needs at least two layers available for writing via WFS: ``figis:SPATIAL_TABLE`` 
+and  ``figis:STATISTICAL_TABLE`` please refer to the :ref:`geoserver1.7.x` for their
+structure and other setup instructions.
+
+Geometry not supported when writing to database
+-----------------------------------------------
+When full logging is enabled, Geoserver may fail to write some geometries to the
+database, more details in `GEOT-2771`__.
+
+__ http://jira.codehaus.org/browse/GEOT-2771

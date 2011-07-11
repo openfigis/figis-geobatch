@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <!-- ========================================================================================= -->
+  <!-- The following is the Acegi configuration for form based authentication, with login/logout -->
+  <!-- handling, as well as remember-me cookie handling, and session integration so that user    -->
+  <!-- does not have to login for each page.                                                     -->
+  <!-- This also makes sure that when you request a secured resource you go first to the         -->
+  <!-- login page, but get redirected to the origally requested page once login is succefull     -->
+  <!-- ========================================================================================= -->
+
+  <!-- 
+    This filter delegates a different chain of sub-filters for administration
+    console pages and OWS services. Basically, we set up a chain involving basic/anonymous
+    authentication for OWS services, and a form based authentication for  the web console, 
+    so that accessing the console by means of simple calls is still easy.
+    
+    An attempt at form+basic has been done, that would have eased writing code accessing
+    directly the console, but it does not play well with logout: once the browser learns
+    about basic auth credentials it'll keep on using them, the only way to make it stop
+    is to declare a different user in the location bar, such as in: http://user@host:port/...
+    
+    For filters introduction, their meanining, the
+    different setup between form and basic authentication accesses,
+    and importance of the order please see the Acegi reference guide, chapter 3.2,
+    (page 17 of the PDF version)
+  -->
+  <bean id="filterChainProxy"
+    class="org.acegisecurity.util.FilterChainProxy">
+    <property name="filterInvocationDefinitionSource">
+      <value>
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        PATTERN_TYPE_APACHE_ANT
+        /**=httpSessionContextIntegrationFilterWithASCTrue,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,rememberMeProcessingFilter,anonymousProcessingFilter,consoleExceptionTranslationFilter,filterInvocationInterceptor
+      </value>
+    </property>
+  </bean>
+  
+  <bean id="consoleExceptionTranslationFilter"
+    class="org.acegisecurity.ui.ExceptionTranslationFilter">
+    <property name="authenticationEntryPoint">
+      <bean
+        class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+        <property name="loginFormUrl" value="/admin/login.do" />
+        <property name="forceHttps" value="false" />
+      </bean>
+    </property>
+    <property name="accessDeniedHandler">
+      <bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+        <property name="errorPage" value="/accessDenied.jsp" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean id="filterInvocationInterceptor"
+    class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+    <property name="authenticationManager" ref="authenticationManager" />
+    <property name="accessDecisionManager">
+      <bean class="org.acegisecurity.vote.AffirmativeBased">
+        <property name="allowIfAllAbstainDecisions" value="false" />
+        <property name="decisionVoters">
+          <list>
+            <bean class="org.acegisecurity.vote.RoleVoter" />
+            <bean class="org.acegisecurity.vote.AuthenticatedVoter" />
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="objectDefinitionSource">
+      <value>
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        PATTERN_TYPE_APACHE_ANT 
+        /config/**=ROLE_ADMINISTRATOR
+        /**=IS_AUTHENTICATED_ANONYMOUSLY
+      </value>
+    </property>
+  </bean>
+  
+  <bean id="httpSessionContextIntegrationFilterWithASCTrue"
+    class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+    <property name="allowSessionCreation" value="true" />
+  </bean>
+  
+  <bean id="httpSessionContextIntegrationFilterWithASCFalse"
+    class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+    <property name="allowSessionCreation" value="false" />
+  </bean>
+  
+  <!--
+    This filters processes logouts, removing both session informations, and the remember-me
+    cookie from the browser
+  -->
+  <bean id="logoutFilter"
+    class="org.acegisecurity.ui.logout.LogoutFilter">
+    <constructor-arg value="/web/" />
+    <!-- URL redirected to after logout -->
+    <constructor-arg>
+      <list>
+        <ref bean="rememberMeServices" />
+        <bean
+          class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler" />
+      </list>
+    </constructor-arg>
+  </bean>
+  
+  <bean id="authenticationProcessingFilter"
+    class="it.geosolutions.figis.client.security.IEAuthenticationProcessingFilter">
+    <property name="authenticationManager" ref="authenticationManager" />
+    <property name="authenticationFailureUrl"
+      value="/web/?wicket:bookmarkablePage=:it.geosolutions.figis.client.IELoginPage&amp;error=true" />
+    <property name="defaultTargetUrl" value="/" />
+    <property name="filterProcessesUrl" value="/j_acegi_security_check" />
+    <property name="rememberMeServices" ref="rememberMeServices" />
+  </bean>
+  
+  <!--  
+    Double check, this may not be necessary
+  -->
+  <bean id="securityContextHolderAwareRequestFilter"
+    class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter" />
+    
+  <bean id="rememberMeProcessingFilter"
+    class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
+    <property name="authenticationManager" ref="authenticationManager" />
+    <property name="rememberMeServices" ref="rememberMeServices" />
+  </bean>
+  
+  <bean id="anonymousProcessingFilter"
+    class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+    <property name="key" value="geoserver" />
+    <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
+  </bean>
+  
+  <bean id="basicProcessingFilter"
+    class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+    <property name="authenticationManager">
+      <ref local="authenticationManager" />
+    </property>
+    <property name="authenticationEntryPoint">
+      <ref local="basicProcessingFilterEntryPoint" />
+    </property>
+    <property name="rememberMeServices">
+      <ref local="rememberMeServices" />
+    </property>
+  </bean>
+  
+  <bean id="basicProcessingFilterEntryPoint"
+    class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
+    <property name="realmName">
+      <value>IE Realm</value>
+    </property>
+  </bean>
+  
+  
+  <bean id="rememberMeServices"
+    class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+    <property name="userDetailsService" ref="userDetailsService" />
+    <property name="key" value="ieadmin" />
+  </bean>
+  
+  <bean id="authenticationManager"
+    class="org.acegisecurity.providers.ProviderManager">
+    <property name="providers">
+      <list>
+        <ref local="daoAuthenticationProvider" />
+        <bean
+          class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+          <property name="key" value="ieadmin" />
+        </bean>
+        <bean
+          class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
+          <property name="key" value="ieadmin" />
+        </bean>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="daoAuthenticationProvider"
+    class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+    <property name="userDetailsService" ref="userDetailsService" />
+  </bean>
+  
+  <bean id="userDetailsService" class="it.geosolutions.figis.client.dao.IEUserDao">
+    <constructor-arg index="0" type="java.lang.String" value="admin"/>
+    <property name="securityDir"><value>/usr/local/tomcat/6.0.20/servicemix/webapps/ie-web/WEB-INF/classes</value></property>
+  </bean>
+  
+  
+  </beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="it.geosolutions.ie.model.Combination" table="IE_COMBINATION"
+        discriminator-value="0">
+  <id name="id" column="ID">
+   <generator class="native" />
+  </id>
+  <property name="source" column="SOURCE" />
+  <property name="target" column="TARGET" />
+  <property name="mask" column="MASK" />
+  <property name="sourceCode" column="SOURCE_CODE" />
+  <property name="targetCode" column="TARGET_CODE" />
+  <property name="status" column="STATUS" />
+
+ </class>
+</hibernate-mapping>
+

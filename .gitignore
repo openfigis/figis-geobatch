@@ -1,0 +1,13 @@
+trunk/IE-core/.classpath
+trunk/IE-core/.project
+trunk/IE-core/.settings
+trunk/IE-core/target
+trunk/IE-web/.classpath
+trunk/IE-web/.project
+trunk/IE-web/.settings
+trunk/IE-web/target
+trunk/IE-business/GeomCompare/bin
+trunk/IE-core/src/main/resources/it/geosolutions/figis/conf/hibernate.cfg.xml
+target
+EPSG_creation_lock.txt
+docs/build

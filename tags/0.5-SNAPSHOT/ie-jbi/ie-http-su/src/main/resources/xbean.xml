@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:http="http://servicemix.apache.org/http/1.0"
+    xmlns:ie="http://www.geo-solutions.it/GeomCompare/"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <http:consumer service="ie:GeomCompareService"
+                 endpoint="endpointA"
+                 targetService="ie:iestatsbean" 
+                 targetOperation="ie:http"
+                 locationURI="http://0.0.0.0:8192/iedata"
+                 defaultMep="http://www.w3.org/2004/08/wsdl/in-out" >
+                 <http:marshaler>
+                   <bean class="it.geosolutions.ie.http.CustomHTTPMarshaler" />
+                 </http:marshaler>
+  </http:consumer>
+
+  <http:consumer service="ie:GeomCompareServiceIn"
+                 endpoint="jbi"
+                 targetService="ie:iestatsbean" 
+                 targetOperation="ie:http"
+                 locationURI="http://0.0.0.0:8192/ieops"
+                 defaultMep="http://www.w3.org/2004/08/wsdl/in-only">
+                 <http:marshaler>
+                   <bean class="it.geosolutions.ie.http.CustomHTTPMarshaler" />
+                 </http:marshaler>
+  </http:consumer>
+  
+  <http:consumer service="ie:RDFServiceIn"
+                 endpoint="jbi"
+                 targetService="ie:ierdfbean" 
+                 targetOperation="ie:http"
+                 locationURI="http://0.0.0.0:8192/ierdf"
+                 defaultMep="http://www.w3.org/2004/08/wsdl/in-out" >
+                 <http:marshaler>
+                   <bean class="it.geosolutions.ie.http.CustomHTTPMarshaler" />
+                 </http:marshaler>
+  </http:consumer>
+
+</beans>

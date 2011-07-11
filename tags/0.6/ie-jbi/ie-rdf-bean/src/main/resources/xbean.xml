@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:bean="http://servicemix.apache.org/bean/1.0"
+       xmlns:ie="http://www.geo-solutions.it/GeomCompare/"
+       xsi:schemaLocation="http://servicemix.apache.org/bean/1.0 http://servicemix.apache.org/schema/servicemix-bean-2009.01.xsd">
+
+  
+  <!-- RDFService Handler -->
+  <bean:endpoint service="ie:ierdfbean"
+                 endpoint="ierdfbeanEndpoint"
+                 bean="#ieRDFServiceHandlerBean" >
+  </bean:endpoint>
+
+  <bean id="ieRDFServiceHandlerBean" class="it.geosolutions.ie.rdf.RDFServiceHandlerBean">
+  </bean>
+ 
+</beans>

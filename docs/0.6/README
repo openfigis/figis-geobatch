@@ -1,0 +1,13 @@
+The documentation is created with sphinx, which is a python library,
+you need to have python installed (as well as setuptools) and then run
+easy_install -U Sphinx
+
+* The -U switch gets the latest available version
+
+To build the documentation, please use
+
+make {build}
+
+where build is any of: html, pdf, latex, linkcheck
+
+
