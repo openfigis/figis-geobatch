@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ie-config updateVersion="0">
+	<global>
+		<!-- {mandatory} The parameters of the target GeoServer -->
+		<geoserver>
+			<geoserverUrl>http://figis02.fao.org:8484/figis/geoserver</geoserverUrl>
+			<geoserverUsername>admin</geoserverUsername>
+			<geoserverPassword>abramisbrama</geoserverPassword>
+		</geoserver>
+		<!-- {mandatory} DB connection parameters where to store intersections -->
+		<db>
+			<database>${GLOBAL.DB_DATABASE}</database>
+			<schema>${GLOBAL.CATALOG_SCHEMA}</schema>
+			<user>${GLOBAL.CATALOG_USER}</user>
+			<password>${GLOBAL.CATALOG_PASSWORD}</password>
+			<port>${GLOBAL.DB_PORT}</port>
+			<host>${GLOBAL.DB_SERVER}</host>
+		</db>
+		<!-- {mandatory} Configuration of the update quartz cron job -->
+		<quartz>
+			<timer>
+			  <!-- daily trigger - at 2310 -->
+			  <cronExpression>0 10 23 * * ?</cronExpression>
+			</timer>
+		</quartz>
+		
+		<!-- {optional} Remove all non-listed intersections and clean-up DB -->
+		<clean>true</clean>
+	</global>
+	
+	<intersections>
+		<intersection 
+				mask="true/false {default: true}" <!-- apply land mask to src and trg layers -->
+				force="true/false {default: false}" <!-- force the rebuilding of the intersection -->
+				preserveTrgGeom="true/false {default: false}" <!-- preserve the target layer geometry on the final FeatureCollection -->
+		>
+				
+			<!-- Those fields represents the KEY of the configuration -->
+			<!-- {mandatory} -->
+			<srcLayer>fifao:EEZ</srcLayer>
+			<!-- {mandatory} -->
+			<trgLayer>fifao:FAO_MAJOR</trgLayer>
+			<!-- {mandatory} -->
+			<srcCodeField>eez</srcCodeField>
+			<!-- {mandatory} -->
+			<trgCodeField>fao_area_code</trgCodeField>
+			
+			<!-- {optional} default: [fifao:UN_CONTINENTS] -->
+			<maskLayer>fifao:UN_CONTINENTS</maskLayer>
+			
+			<!-- {optional} CRS ID of the projection used to compute areas default: [Eckert IV]-->
+			<areaCRS>EPSG:54012</areaCRS>
+		</intersection>
+	</intersections>
+</ie-config>
