@@ -35,7 +35,7 @@
 				preserveTrgGeom="true/false {default: false}" <!-- preserve the target layer geometry on the final FeatureCollection -->
 		>
 				
-			<!-- Those fields represents the KEY of the configuration -->
+			<!-- Those fields represent the KEY of the configuration -->
 			<!-- {mandatory} -->
 			<srcLayer>fifao:EEZ</srcLayer>
 			<!-- {mandatory} -->
