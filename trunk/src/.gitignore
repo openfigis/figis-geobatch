@@ -1,0 +1,13 @@
+.svn
+.classpath
+.project
+.settings
+*trace.db
+*data.db
+*index.db
+*lock.db
+*log.db
+*/target/*
+target/
+*nb-configuration.xml
+*nbactions.xml
