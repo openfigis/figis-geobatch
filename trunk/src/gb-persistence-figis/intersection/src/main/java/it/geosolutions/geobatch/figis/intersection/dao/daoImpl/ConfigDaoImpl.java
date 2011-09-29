@@ -1,5 +1,10 @@
 package it.geosolutions.geobatch.figis.intersection.dao.daoImpl;
 
+import it.geosolutions.geobatch.figis.intersection.dao.ConfigDao;
+import it.geosolutions.geobatch.figis.intersection.model.Config;
+import it.geosolutions.geobatch.figis.intersection.model.DB;
+import it.geosolutions.geobatch.figis.intersection.model.Geoserver;
+
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -9,10 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.trg.search.ISearch;
 
-import it.geosolutions.geobatch.figis.intersection.dao.ConfigDao;
-import it.geosolutions.geobatch.figis.intersection.model.Config;
-import it.geosolutions.geobatch.figis.intersection.model.DB;
-import it.geosolutions.geobatch.figis.intersection.model.Geoserver;
+
 
 public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao{
 

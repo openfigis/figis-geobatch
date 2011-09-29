@@ -27,9 +27,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import it.geosolutions.geobatch.catalog.Configuration;
 import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
-
 import it.geosolutions.geobatch.figis.intersection.dao.ConfigDao;
 import it.geosolutions.geobatch.figis.intersection.dao.IntersectionDao;
+
+
 
 /**
  * 

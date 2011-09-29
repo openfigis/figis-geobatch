@@ -17,12 +17,7 @@
 	</bean>
 	
  	
- 	<!--=====================================================================-->
-    <!-- DAOs -->
-    <!--=====================================================================-->
-    
-    <bean id="configDaoImpl" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.ConfigDaoImpl"/>
-   	<bean id="intersectionDaoImpl" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.IntersectionDaoImpl"/>
+
   		
   	
   			

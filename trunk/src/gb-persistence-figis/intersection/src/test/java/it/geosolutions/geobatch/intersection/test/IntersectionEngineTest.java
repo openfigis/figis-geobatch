@@ -7,38 +7,64 @@ import it.geosolutions.geobatch.figis.intersection.model.Geoserver;
 import it.geosolutions.geobatch.figis.intersection.model.Global;
 import it.geosolutions.geobatch.figis.intersection.model.Intersection;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.*;
+
 
 public class IntersectionEngineTest {
-
+	SessionFactory sessionFactory = null;
+	
 	@Before
 	public void setUp() throws Exception {
+		  sessionFactory = HibernateUtil.getSessionFactory();
 	}
 
 	@Test
-	public void test() {
-		System.out.println("start test");
-		try {
-			Config config =	ConfigXStreamMapper.init("src/test/resources/it/geosolutions/geobatch/intersection/test/data.xml");
-			System.out.println(config.getGlobal().getGeoserver().getGeoserverUsername());
-			System.out.println(config.getGlobal().getDb().getDatabase());
-			System.out.println("version "+config.getUpdateVersion());
-			System.out.println("mask "+config.getIntersections().get(0).isMask());
-			System.out.println("force "+config.getIntersections().get(0).isForce());		
-			System.out.println("src Layer "+config.getIntersections().get(0).getSrcLayer());		
-		} catch(FileNotFoundException e) {
-			System.out.println("eccezione nella XStream"+e);
-		}
-		
+	public void testInsertConfig() {
+
+		  Session sess = sessionFactory.getCurrentSession();
+		  /** Starting the Transaction */
+		  Transaction tx = sess.beginTransaction();
+		  /** Creating Pojo */
+		  Global global = new Global();
+		  global.getGeoserver().setGeoserverUsername("admin");
+		  global.getGeoserver().setGeoserverPassword("password");
+		  global.getGeoserver().setGeoserverUrl("localhost");
+		  global.getDb().setDatabase("trial");
+		  global.getDb().setHost("localhost");
+		  global.getDb().setPassword("password");
+		  global.getDb().setPort("8080");
+		  global.getDb().setSchema("empty");
+		  global.getDb().setUser("dbuser");
+		  Config config = new Config();
+		  config.setUpdateVersion(1);
+		  config.setGlobal(global);
+
+		  /** Saving POJO */
+		  sess.save(config);
+		  /** Commiting the changes */
+		  tx.commit();
+
+	}
+	
+	@Test
+	public void testInsertIntersection() {
+		  Session sess = sessionFactory.getCurrentSession();
+		  /** Starting the Transaction */
+		  Transaction tx = sess.beginTransaction();	
+		  Intersection int1 = new Intersection();
+		  int1.setSrcLayer("SrcLayer");
+		  int1.setTrgLayer("TrgLayer");
+		  sess.save(int1);
+		  /** Commiting the changes */
+		  tx.commit();
 	}
 
 }

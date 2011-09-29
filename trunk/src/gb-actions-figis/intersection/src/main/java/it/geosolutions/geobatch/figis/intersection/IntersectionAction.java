@@ -26,6 +26,10 @@ import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 /*import it.geosolutions.geobatch.figis.intersection.model.Config;
 import it.geosolutions.geobatch.figis.intersection.model.ConfigXStreamMapper;
 import it.geosolutions.geobatch.figis.intersection.model.Intersection;
+import it.geosolutions.geobatch.figis.intersection.model.Intersection.Status;
+import it.geosolutions.geobatch.figis.intersection.model.Config;
+import it.geosolutions.geobatch.figis.intersection.model.ConfigXStreamMapper;
+import it.geosolutions.geobatch.figis.intersection.model.Intersection;
 import it.geosolutions.geobatch.figis.intersection.model.Intersection.Status;*/
 import it.geosolutions.geobatch.figis.intersection.model.Config;
 import it.geosolutions.geobatch.figis.intersection.model.ConfigXStreamMapper;
@@ -87,7 +91,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
                             LOGGER.trace("File added");
                         }
                         // get the config object from the XML
-                        XMLConfig = ConfigXStreamMapper.init(fileEvent.getSource().getName());
+/*                        XMLConfig = ConfigXStreamMapper.init(fileEvent.getSource().getName());
                         // get the config from the DB
                         Config config = conf.getConfigDao().getConfig();
                         if (config==null) { // check if the DB config is empty
@@ -119,7 +123,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
                            			conf.getIntersectionDao().remove(intersection);
                            		}
                            	}
-                         }
+                         }*/
                     }
                 	
                   	

@@ -20,6 +20,8 @@ public class Global {
 
 	public Global() {
 		super();
+		this.geoserver = new Geoserver();
+		this.db = new DB();
 	}
 
 	public Geoserver getGeoserver() {

@@ -91,7 +91,7 @@
                     <groupId>cglib</groupId>
                     <artifactId>cglib</artifactId>
                 </exclusion>
-            </exclusions>
+            </exclusions>  
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -100,7 +100,16 @@
 
 
 
- 
+    <dependency>
+       <groupId>org.hibernate</groupId>
+       <artifactId>hibernate-core</artifactId>
+       <version>3.3.2.GA</version>
+    </dependency>
+        <dependency>
+       <groupId>org.hibernate</groupId>
+       <artifactId>hibernate-entitymanager</artifactId>
+       <version>3.4.0.GA</version>
+    </dependency> 
  
  
     
@@ -109,7 +118,7 @@
         <groupId>org.springframework</groupId>
     	<artifactId>spring-tx</artifactId>
    </dependency> 	
-   
+    
    		<dependency>
             <groupId>com.trg</groupId>
             <artifactId>trg-dao</artifactId>
@@ -118,8 +127,8 @@
             <groupId>com.trg</groupId>
             <artifactId>trg-search-jpa-hibernate</artifactId>
         </dependency>
-		
-        <dependency>
+		 
+ <!--        <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
         </dependency>
@@ -127,6 +136,37 @@
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
         </dependency>
-		
+		 -->
+		 
+		 <!--  HSQLDB -->
+		 <dependency>
+    <groupId>hsqldb</groupId>
+    <artifactId>hsqldb</artifactId>
+    <scope>test</scope>
+</dependency>
+
+<!--  log4j -->
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+
+      </dependency>
+    
+    
+    <dependency>
+  <groupId>asm</groupId> 
+  <artifactId>asm</artifactId> 
+  </dependency>
+<dependency>
+  <groupId>cglib</groupId> 
+  <artifactId>cglib-nodep</artifactId> 
+  </dependency>
+    
+    
+    
   </dependencies>
 </project>

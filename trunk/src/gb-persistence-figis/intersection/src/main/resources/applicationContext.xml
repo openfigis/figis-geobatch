@@ -18,16 +18,16 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
        default-init-method="init" default-destroy-method="dispose" default-autowire="byName">
 
-	<context:annotation-config />
+<!-- 	<context:annotation-config />
   
   	<context:component-scan base-package="it.geosolutions.geobatch.figis.intersection.model" />
-	
+	-->
 	<bean id="IntersectionEngineDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 	    <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
 	    <property name="url" value="jdbc:hsqldb:data/intersectionengine"/>
 	    <property name="username" value="sa"/>
 	    <property name="password" value=""/>
-  	</bean>
+  	</bean>  
   	
    	<bean id="IntersectionEngineSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
   		<property name="packagesToScan" value="it.geosolutions.geobatch.figis.intersection.model"/>
@@ -39,13 +39,20 @@
 	      	hibernate.hbm2ddl.auto=create
 	      </value>
 	    </property>
+	</bean>     
 	    
-	    
-	    
-	    
+	 <!--=====================================================================-->
+    <!-- DAOs -->
+    <!--=====================================================================-->
+    <!-- 
+    <bean id="configDaoImpl" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.ConfigDaoImpl">
+    	 <constructor-arg ref="IntersectionEngineSessionFactory" />
   	</bean> 
+   	<bean id="intersectionDaoImpl" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.IntersectionDaoImpl"> 
+	    <constructor-arg ref="IntersectionEngineSessionFactory" />
+    </bean> 
   	
-  	
+  	 -->
  	
  	
  	

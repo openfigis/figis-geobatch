@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.annotations.*;
 @Entity
 @Table(name = "CONFIG")
 @XStreamAlias("ie-config")
-@PersistenceUnit(name="config")
+//@PersistenceUnit(name="Config")
 public class Config {
 	
 	@Id
@@ -30,6 +30,7 @@ public class Config {
     @XStreamAsAttribute
     private int updateVersion;
 	
+	@Transient
 	@XStreamAlias("clean")
 	private boolean clean;
   
@@ -83,7 +84,7 @@ public class Config {
 
 
 
-	public List<Intersection> getIntersections() {
+/*	public List<Intersection> getIntersections() {
 		return intersections;
 	}
 
@@ -93,7 +94,7 @@ public class Config {
 		this.intersections = intersections;
 	}
 	
-
+*/
 	
 	
 }

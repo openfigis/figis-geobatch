@@ -1,0 +1,360 @@
+[2011-09-29 10:13:19,730] INFO   257[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Config on table CONFIG
+[2011-09-29 10:13:19,794] INFO   321[main] - org.hibernate.cfg.AnnotationConfiguration.secondPassCompile(AnnotationConfiguration.java:365) - Hibernate Validator not found: ignoring
+[2011-09-29 10:13:19,862] INFO   389[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:41) - Using Hibernate built-in connection pool (not for production use!)
+[2011-09-29 10:13:19,863] INFO   390[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:42) - Hibernate connection pool size: 1
+[2011-09-29 10:13:19,864] INFO   391[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:45) - autocommit mode: false
+[2011-09-29 10:13:19,869] INFO   396[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:80) - using driver: org.hsqldb.jdbcDriver at URL: jdbc:hsqldb:data/intersectionengine
+[2011-09-29 10:13:19,870] INFO   397[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:86) - connection properties: {user=sa, password=****}
+[2011-09-29 10:13:20,038] INFO   565[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:89) - RDBMS: HSQL Database Engine, version: 1.8.0
+[2011-09-29 10:13:20,039] INFO   566[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:90) - JDBC driver: HSQL Database Engine Driver, version: 1.8.0
+[2011-09-29 10:13:20,053] INFO   580[main] - org.hibernate.dialect.Dialect.<init>(Dialect.java:152) - Using dialect: org.hibernate.dialect.HSQLDialect
+[2011-09-29 10:13:20,058] INFO   585[main] - org.hibernate.transaction.TransactionFactoryFactory.buildTransactionFactory(TransactionFactoryFactory.java:31) - Using default transaction strategy (direct JDBC transactions)
+[2011-09-29 10:13:20,060] INFO   587[main] - org.hibernate.transaction.TransactionManagerLookupFactory.getTransactionManagerLookup(TransactionManagerLookupFactory.java:33) - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2011-09-29 10:13:20,069] INFO   596[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:143) - Automatic flush during beforeCompletion(): disabled
+[2011-09-29 10:13:20,070] INFO   597[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:147) - Automatic session close at end of transaction: disabled
+[2011-09-29 10:13:20,071] INFO   598[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:154) - JDBC batch size: 15
+[2011-09-29 10:13:20,071] INFO   598[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:157) - JDBC batch updates for versioned data: disabled
+[2011-09-29 10:13:20,073] INFO   600[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:162) - Scrollable result sets: enabled
+[2011-09-29 10:13:20,073] INFO   600[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:170) - JDBC3 getGeneratedKeys(): disabled
+[2011-09-29 10:13:20,074] INFO   601[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:178) - Connection release mode: auto
+[2011-09-29 10:13:20,075] INFO   602[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:205) - Default batch fetch size: 1
+[2011-09-29 10:13:20,075] INFO   602[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:209) - Generate SQL with comments: disabled
+[2011-09-29 10:13:20,077] INFO   604[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:213) - Order SQL updates by primary key: disabled
+[2011-09-29 10:13:20,077] INFO   604[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:217) - Order SQL inserts for batching: disabled
+[2011-09-29 10:13:20,078] INFO   605[main] - org.hibernate.cfg.SettingsFactory.createQueryTranslatorFactory(SettingsFactory.java:386) - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2011-09-29 10:13:20,080] INFO   607[main] - org.hibernate.hql.ast.ASTQueryTranslatorFactory.<init>(ASTQueryTranslatorFactory.java:24) - Using ASTQueryTranslatorFactory
+[2011-09-29 10:13:20,081] INFO   608[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:225) - Query language substitutions: {}
+[2011-09-29 10:13:20,081] INFO   608[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:230) - JPA-QL strict compliance: disabled
+[2011-09-29 10:13:20,082] INFO   609[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:235) - Second-level cache: enabled
+[2011-09-29 10:13:20,082] INFO   609[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:239) - Query cache: disabled
+[2011-09-29 10:13:20,082] INFO   609[main] - org.hibernate.cfg.SettingsFactory.createCacheProvider(SettingsFactory.java:373) - Cache provider: org.hibernate.cache.NoCacheProvider
+[2011-09-29 10:13:20,083] INFO   610[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:254) - Optimize cache for minimal puts: disabled
+[2011-09-29 10:13:20,083] INFO   610[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:263) - Structured second-level cache entries: disabled
+[2011-09-29 10:13:20,088] INFO   615[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:283) - Echoing all SQL to stdout
+[2011-09-29 10:13:20,088] INFO   615[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:290) - Statistics: disabled
+[2011-09-29 10:13:20,089] INFO   616[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:294) - Deleted entity synthetic identifier rollback: disabled
+[2011-09-29 10:13:20,089] INFO   616[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:309) - Default entity-mode: pojo
+[2011-09-29 10:13:20,090] INFO   617[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:313) - Named query checking : enabled
+[2011-09-29 10:13:20,128] INFO   655[main] - org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:161) - building session factory
+[2011-09-29 10:13:20,287] INFO   814[main] - org.hibernate.impl.SessionFactoryObjectFactory.addInstance(SessionFactoryObjectFactory.java:82) - Not binding factory to JNDI, no JNDI name configured
+[2011-09-29 10:13:20,291] INFO   818[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:154) - Running hbm2ddl schema export
+[2011-09-29 10:13:20,292] INFO   819[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:179) - exporting generated schema to database
+[2011-09-29 10:13:20,295] INFO   822[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:196) - schema export complete
+[2011-09-29 10:15:23,635] INFO     0[main] - org.hibernate.cfg.annotations.Version.<clinit>(Version.java:15) - Hibernate Annotations 3.3.1.GA
+[2011-09-29 10:15:23,650] INFO    15[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:514) - Hibernate 3.2.6
+[2011-09-29 10:15:23,655] INFO    20[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:547) - hibernate.properties not found
+[2011-09-29 10:15:23,659] INFO    24[main] - org.hibernate.cfg.Environment.buildBytecodeProvider(Environment.java:681) - Bytecode provider name : cglib
+[2011-09-29 10:15:23,663] INFO    28[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:598) - using JDK 1.4 java.sql.Timestamp handling
+[2011-09-29 10:15:23,714] INFO    79[main] - org.hibernate.annotations.common.Version.<clinit>(Version.java:14) - Hibernate Commons Annotations 3.1.0.GA
+[2011-09-29 10:15:23,717] INFO    82[main] - org.hibernate.cfg.Configuration.configure(Configuration.java:1432) - configuring from resource: /hibernate.cfg.xml
+[2011-09-29 10:15:23,718] INFO    83[main] - org.hibernate.cfg.Configuration.getConfigurationInputStream(Configuration.java:1409) - Configuration resource: /hibernate.cfg.xml
+[2011-09-29 10:15:23,811] INFO   176[main] - org.hibernate.cfg.Configuration.doConfigure(Configuration.java:1547) - Configured SessionFactory: null
+[2011-09-29 10:15:23,853] INFO   218[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Config
+[2011-09-29 10:15:23,886] INFO   251[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Config on table CONFIG
+[2011-09-29 10:15:23,957] INFO   322[main] - org.hibernate.cfg.AnnotationConfiguration.secondPassCompile(AnnotationConfiguration.java:365) - Hibernate Validator not found: ignoring
+[2011-09-29 10:15:24,023] INFO   388[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:41) - Using Hibernate built-in connection pool (not for production use!)
+[2011-09-29 10:15:24,024] INFO   389[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:42) - Hibernate connection pool size: 1
+[2011-09-29 10:15:24,025] INFO   390[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:45) - autocommit mode: false
+[2011-09-29 10:15:24,029] INFO   394[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:80) - using driver: org.hsqldb.jdbcDriver at URL: jdbc:hsqldb:data/intersectionengine
+[2011-09-29 10:15:24,030] INFO   395[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:86) - connection properties: {user=sa, password=****}
+[2011-09-29 10:15:24,192] INFO   557[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:89) - RDBMS: HSQL Database Engine, version: 1.8.0
+[2011-09-29 10:15:24,192] INFO   557[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:90) - JDBC driver: HSQL Database Engine Driver, version: 1.8.0
+[2011-09-29 10:15:24,205] INFO   570[main] - org.hibernate.dialect.Dialect.<init>(Dialect.java:152) - Using dialect: org.hibernate.dialect.HSQLDialect
+[2011-09-29 10:15:24,210] INFO   575[main] - org.hibernate.transaction.TransactionFactoryFactory.buildTransactionFactory(TransactionFactoryFactory.java:31) - Using default transaction strategy (direct JDBC transactions)
+[2011-09-29 10:15:24,212] INFO   577[main] - org.hibernate.transaction.TransactionManagerLookupFactory.getTransactionManagerLookup(TransactionManagerLookupFactory.java:33) - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2011-09-29 10:15:24,212] INFO   577[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:143) - Automatic flush during beforeCompletion(): disabled
+[2011-09-29 10:15:24,213] INFO   578[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:147) - Automatic session close at end of transaction: disabled
+[2011-09-29 10:15:24,213] INFO   578[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:154) - JDBC batch size: 15
+[2011-09-29 10:15:24,214] INFO   579[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:157) - JDBC batch updates for versioned data: disabled
+[2011-09-29 10:15:24,215] INFO   580[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:162) - Scrollable result sets: enabled
+[2011-09-29 10:15:24,215] INFO   580[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:170) - JDBC3 getGeneratedKeys(): disabled
+[2011-09-29 10:15:24,216] INFO   581[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:178) - Connection release mode: auto
+[2011-09-29 10:15:24,218] INFO   583[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:205) - Default batch fetch size: 1
+[2011-09-29 10:15:24,218] INFO   583[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:209) - Generate SQL with comments: disabled
+[2011-09-29 10:15:24,221] INFO   586[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:213) - Order SQL updates by primary key: disabled
+[2011-09-29 10:15:24,222] INFO   587[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:217) - Order SQL inserts for batching: disabled
+[2011-09-29 10:15:24,222] INFO   587[main] - org.hibernate.cfg.SettingsFactory.createQueryTranslatorFactory(SettingsFactory.java:386) - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2011-09-29 10:15:24,227] INFO   592[main] - org.hibernate.hql.ast.ASTQueryTranslatorFactory.<init>(ASTQueryTranslatorFactory.java:24) - Using ASTQueryTranslatorFactory
+[2011-09-29 10:15:24,228] INFO   593[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:225) - Query language substitutions: {}
+[2011-09-29 10:15:24,229] INFO   594[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:230) - JPA-QL strict compliance: disabled
+[2011-09-29 10:15:24,229] INFO   594[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:235) - Second-level cache: enabled
+[2011-09-29 10:15:24,231] INFO   596[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:239) - Query cache: disabled
+[2011-09-29 10:15:24,232] INFO   597[main] - org.hibernate.cfg.SettingsFactory.createCacheProvider(SettingsFactory.java:373) - Cache provider: org.hibernate.cache.NoCacheProvider
+[2011-09-29 10:15:24,232] INFO   597[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:254) - Optimize cache for minimal puts: disabled
+[2011-09-29 10:15:24,233] INFO   598[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:263) - Structured second-level cache entries: disabled
+[2011-09-29 10:15:24,241] INFO   606[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:283) - Echoing all SQL to stdout
+[2011-09-29 10:15:24,242] INFO   607[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:290) - Statistics: disabled
+[2011-09-29 10:15:24,243] INFO   608[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:294) - Deleted entity synthetic identifier rollback: disabled
+[2011-09-29 10:15:24,244] INFO   609[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:309) - Default entity-mode: pojo
+[2011-09-29 10:15:24,244] INFO   609[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:313) - Named query checking : enabled
+[2011-09-29 10:15:24,275] INFO   640[main] - org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:161) - building session factory
+[2011-09-29 10:15:24,439] INFO   804[main] - org.hibernate.impl.SessionFactoryObjectFactory.addInstance(SessionFactoryObjectFactory.java:82) - Not binding factory to JNDI, no JNDI name configured
+[2011-09-29 10:15:24,443] INFO   808[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:154) - Running hbm2ddl schema export
+[2011-09-29 10:15:24,444] INFO   809[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:179) - exporting generated schema to database
+[2011-09-29 10:15:24,446] INFO   811[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:196) - schema export complete
+[2011-09-29 10:17:58,539] INFO     0[main] - org.hibernate.cfg.annotations.Version.<clinit>(Version.java:15) - Hibernate Annotations 3.3.1.GA
+[2011-09-29 10:17:58,552] INFO    13[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:514) - Hibernate 3.2.6
+[2011-09-29 10:17:58,556] INFO    17[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:547) - hibernate.properties not found
+[2011-09-29 10:17:58,559] INFO    20[main] - org.hibernate.cfg.Environment.buildBytecodeProvider(Environment.java:681) - Bytecode provider name : cglib
+[2011-09-29 10:17:58,563] INFO    24[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:598) - using JDK 1.4 java.sql.Timestamp handling
+[2011-09-29 10:17:58,617] INFO    78[main] - org.hibernate.annotations.common.Version.<clinit>(Version.java:14) - Hibernate Commons Annotations 3.1.0.GA
+[2011-09-29 10:17:58,620] INFO    81[main] - org.hibernate.cfg.Configuration.configure(Configuration.java:1432) - configuring from resource: /hibernate.cfg.xml
+[2011-09-29 10:17:58,621] INFO    82[main] - org.hibernate.cfg.Configuration.getConfigurationInputStream(Configuration.java:1409) - Configuration resource: /hibernate.cfg.xml
+[2011-09-29 10:17:58,712] INFO   173[main] - org.hibernate.cfg.Configuration.doConfigure(Configuration.java:1547) - Configured SessionFactory: null
+[2011-09-29 10:17:58,754] INFO   215[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Config
+[2011-09-29 10:17:58,786] INFO   247[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Config on table CONFIG
+[2011-09-29 10:17:58,863] INFO   324[main] - org.hibernate.cfg.AnnotationConfiguration.secondPassCompile(AnnotationConfiguration.java:365) - Hibernate Validator not found: ignoring
+[2011-09-29 10:17:58,930] INFO   391[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:41) - Using Hibernate built-in connection pool (not for production use!)
+[2011-09-29 10:17:58,931] INFO   392[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:42) - Hibernate connection pool size: 1
+[2011-09-29 10:17:58,932] INFO   393[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:45) - autocommit mode: false
+[2011-09-29 10:17:58,937] INFO   398[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:80) - using driver: org.hsqldb.jdbcDriver at URL: jdbc:hsqldb:data/intersectionengine
+[2011-09-29 10:17:58,938] INFO   399[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:86) - connection properties: {user=sa, password=****}
+[2011-09-29 10:17:59,106] INFO   567[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:89) - RDBMS: HSQL Database Engine, version: 1.8.0
+[2011-09-29 10:17:59,107] INFO   568[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:90) - JDBC driver: HSQL Database Engine Driver, version: 1.8.0
+[2011-09-29 10:17:59,119] INFO   580[main] - org.hibernate.dialect.Dialect.<init>(Dialect.java:152) - Using dialect: org.hibernate.dialect.HSQLDialect
+[2011-09-29 10:17:59,124] INFO   585[main] - org.hibernate.transaction.TransactionFactoryFactory.buildTransactionFactory(TransactionFactoryFactory.java:31) - Using default transaction strategy (direct JDBC transactions)
+[2011-09-29 10:17:59,126] INFO   587[main] - org.hibernate.transaction.TransactionManagerLookupFactory.getTransactionManagerLookup(TransactionManagerLookupFactory.java:33) - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2011-09-29 10:17:59,127] INFO   588[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:143) - Automatic flush during beforeCompletion(): disabled
+[2011-09-29 10:17:59,127] INFO   588[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:147) - Automatic session close at end of transaction: disabled
+[2011-09-29 10:17:59,127] INFO   588[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:154) - JDBC batch size: 15
+[2011-09-29 10:17:59,128] INFO   589[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:157) - JDBC batch updates for versioned data: disabled
+[2011-09-29 10:17:59,129] INFO   590[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:162) - Scrollable result sets: enabled
+[2011-09-29 10:17:59,130] INFO   591[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:170) - JDBC3 getGeneratedKeys(): disabled
+[2011-09-29 10:17:59,130] INFO   591[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:178) - Connection release mode: auto
+[2011-09-29 10:17:59,132] INFO   593[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:205) - Default batch fetch size: 1
+[2011-09-29 10:17:59,132] INFO   593[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:209) - Generate SQL with comments: disabled
+[2011-09-29 10:17:59,133] INFO   594[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:213) - Order SQL updates by primary key: disabled
+[2011-09-29 10:17:59,133] INFO   594[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:217) - Order SQL inserts for batching: disabled
+[2011-09-29 10:17:59,134] INFO   595[main] - org.hibernate.cfg.SettingsFactory.createQueryTranslatorFactory(SettingsFactory.java:386) - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2011-09-29 10:17:59,136] INFO   597[main] - org.hibernate.hql.ast.ASTQueryTranslatorFactory.<init>(ASTQueryTranslatorFactory.java:24) - Using ASTQueryTranslatorFactory
+[2011-09-29 10:17:59,137] INFO   598[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:225) - Query language substitutions: {}
+[2011-09-29 10:17:59,137] INFO   598[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:230) - JPA-QL strict compliance: disabled
+[2011-09-29 10:17:59,138] INFO   599[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:235) - Second-level cache: enabled
+[2011-09-29 10:17:59,139] INFO   600[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:239) - Query cache: disabled
+[2011-09-29 10:17:59,139] INFO   600[main] - org.hibernate.cfg.SettingsFactory.createCacheProvider(SettingsFactory.java:373) - Cache provider: org.hibernate.cache.NoCacheProvider
+[2011-09-29 10:17:59,140] INFO   601[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:254) - Optimize cache for minimal puts: disabled
+[2011-09-29 10:17:59,140] INFO   601[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:263) - Structured second-level cache entries: disabled
+[2011-09-29 10:17:59,145] INFO   606[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:283) - Echoing all SQL to stdout
+[2011-09-29 10:17:59,145] INFO   606[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:290) - Statistics: disabled
+[2011-09-29 10:17:59,146] INFO   607[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:294) - Deleted entity synthetic identifier rollback: disabled
+[2011-09-29 10:17:59,146] INFO   607[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:309) - Default entity-mode: pojo
+[2011-09-29 10:17:59,147] INFO   608[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:313) - Named query checking : enabled
+[2011-09-29 10:17:59,177] INFO   638[main] - org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:161) - building session factory
+[2011-09-29 10:17:59,337] INFO   798[main] - org.hibernate.impl.SessionFactoryObjectFactory.addInstance(SessionFactoryObjectFactory.java:82) - Not binding factory to JNDI, no JNDI name configured
+[2011-09-29 10:17:59,341] INFO   802[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:154) - Running hbm2ddl schema export
+[2011-09-29 10:17:59,342] INFO   803[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:179) - exporting generated schema to database
+[2011-09-29 10:17:59,345] INFO   806[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:196) - schema export complete
+[2011-09-29 10:18:36,966] INFO     0[main] - org.hibernate.cfg.annotations.Version.<clinit>(Version.java:15) - Hibernate Annotations 3.3.1.GA
+[2011-09-29 10:18:36,979] INFO    13[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:514) - Hibernate 3.2.6
+[2011-09-29 10:18:36,983] INFO    17[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:547) - hibernate.properties not found
+[2011-09-29 10:18:36,986] INFO    20[main] - org.hibernate.cfg.Environment.buildBytecodeProvider(Environment.java:681) - Bytecode provider name : cglib
+[2011-09-29 10:18:36,990] INFO    24[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:598) - using JDK 1.4 java.sql.Timestamp handling
+[2011-09-29 10:18:37,042] INFO    76[main] - org.hibernate.annotations.common.Version.<clinit>(Version.java:14) - Hibernate Commons Annotations 3.1.0.GA
+[2011-09-29 10:18:37,046] INFO    80[main] - org.hibernate.cfg.Configuration.configure(Configuration.java:1432) - configuring from resource: /hibernate.cfg.xml
+[2011-09-29 10:18:37,046] INFO    80[main] - org.hibernate.cfg.Configuration.getConfigurationInputStream(Configuration.java:1409) - Configuration resource: /hibernate.cfg.xml
+[2011-09-29 10:18:37,133] INFO   167[main] - org.hibernate.cfg.Configuration.doConfigure(Configuration.java:1547) - Configured SessionFactory: null
+[2011-09-29 10:18:37,177] INFO   211[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Config
+[2011-09-29 10:18:37,210] INFO   244[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Config on table CONFIG
+[2011-09-29 10:18:37,286] INFO   320[main] - org.hibernate.cfg.AnnotationConfiguration.secondPassCompile(AnnotationConfiguration.java:365) - Hibernate Validator not found: ignoring
+[2011-09-29 10:18:37,354] INFO   388[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:41) - Using Hibernate built-in connection pool (not for production use!)
+[2011-09-29 10:18:37,356] INFO   390[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:42) - Hibernate connection pool size: 1
+[2011-09-29 10:18:37,357] INFO   391[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:45) - autocommit mode: false
+[2011-09-29 10:18:37,361] INFO   395[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:80) - using driver: org.hsqldb.jdbcDriver at URL: jdbc:hsqldb:data/intersectionengine
+[2011-09-29 10:18:37,362] INFO   396[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:86) - connection properties: {user=sa, password=****}
+[2011-09-29 10:18:37,529] INFO   563[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:89) - RDBMS: HSQL Database Engine, version: 1.8.0
+[2011-09-29 10:18:37,529] INFO   563[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:90) - JDBC driver: HSQL Database Engine Driver, version: 1.8.0
+[2011-09-29 10:18:37,541] INFO   575[main] - org.hibernate.dialect.Dialect.<init>(Dialect.java:152) - Using dialect: org.hibernate.dialect.HSQLDialect
+[2011-09-29 10:18:37,546] INFO   580[main] - org.hibernate.transaction.TransactionFactoryFactory.buildTransactionFactory(TransactionFactoryFactory.java:31) - Using default transaction strategy (direct JDBC transactions)
+[2011-09-29 10:18:37,548] INFO   582[main] - org.hibernate.transaction.TransactionManagerLookupFactory.getTransactionManagerLookup(TransactionManagerLookupFactory.java:33) - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2011-09-29 10:18:37,549] INFO   583[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:143) - Automatic flush during beforeCompletion(): disabled
+[2011-09-29 10:18:37,549] INFO   583[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:147) - Automatic session close at end of transaction: disabled
+[2011-09-29 10:18:37,550] INFO   584[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:154) - JDBC batch size: 15
+[2011-09-29 10:18:37,550] INFO   584[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:157) - JDBC batch updates for versioned data: disabled
+[2011-09-29 10:18:37,552] INFO   586[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:162) - Scrollable result sets: enabled
+[2011-09-29 10:18:37,552] INFO   586[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:170) - JDBC3 getGeneratedKeys(): disabled
+[2011-09-29 10:18:37,553] INFO   587[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:178) - Connection release mode: auto
+[2011-09-29 10:18:37,554] INFO   588[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:205) - Default batch fetch size: 1
+[2011-09-29 10:18:37,556] INFO   590[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:209) - Generate SQL with comments: disabled
+[2011-09-29 10:18:37,557] INFO   591[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:213) - Order SQL updates by primary key: disabled
+[2011-09-29 10:18:37,558] INFO   592[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:217) - Order SQL inserts for batching: disabled
+[2011-09-29 10:18:37,559] INFO   593[main] - org.hibernate.cfg.SettingsFactory.createQueryTranslatorFactory(SettingsFactory.java:386) - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2011-09-29 10:18:37,562] INFO   596[main] - org.hibernate.hql.ast.ASTQueryTranslatorFactory.<init>(ASTQueryTranslatorFactory.java:24) - Using ASTQueryTranslatorFactory
+[2011-09-29 10:18:37,565] INFO   599[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:225) - Query language substitutions: {}
+[2011-09-29 10:18:37,566] INFO   600[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:230) - JPA-QL strict compliance: disabled
+[2011-09-29 10:18:37,566] INFO   600[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:235) - Second-level cache: enabled
+[2011-09-29 10:18:37,567] INFO   601[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:239) - Query cache: disabled
+[2011-09-29 10:18:37,569] INFO   603[main] - org.hibernate.cfg.SettingsFactory.createCacheProvider(SettingsFactory.java:373) - Cache provider: org.hibernate.cache.NoCacheProvider
+[2011-09-29 10:18:37,570] INFO   604[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:254) - Optimize cache for minimal puts: disabled
+[2011-09-29 10:18:37,570] INFO   604[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:263) - Structured second-level cache entries: disabled
+[2011-09-29 10:18:37,582] INFO   616[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:283) - Echoing all SQL to stdout
+[2011-09-29 10:18:37,582] INFO   616[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:290) - Statistics: disabled
+[2011-09-29 10:18:37,583] INFO   617[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:294) - Deleted entity synthetic identifier rollback: disabled
+[2011-09-29 10:18:37,583] INFO   617[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:309) - Default entity-mode: pojo
+[2011-09-29 10:18:37,584] INFO   618[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:313) - Named query checking : enabled
+[2011-09-29 10:18:37,612] INFO   646[main] - org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:161) - building session factory
+[2011-09-29 10:18:37,773] INFO   807[main] - org.hibernate.impl.SessionFactoryObjectFactory.addInstance(SessionFactoryObjectFactory.java:82) - Not binding factory to JNDI, no JNDI name configured
+[2011-09-29 10:18:37,778] INFO   812[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:154) - Running hbm2ddl schema export
+[2011-09-29 10:18:37,779] INFO   813[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:179) - exporting generated schema to database
+[2011-09-29 10:18:37,781] INFO   815[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:196) - schema export complete
+[2011-09-29 10:26:00,499] INFO     0[main] - org.hibernate.cfg.annotations.Version.<clinit>(Version.java:15) - Hibernate Annotations 3.3.1.GA
+[2011-09-29 10:26:00,513] INFO    14[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:514) - Hibernate 3.2.6
+[2011-09-29 10:26:00,517] INFO    18[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:547) - hibernate.properties not found
+[2011-09-29 10:26:00,520] INFO    21[main] - org.hibernate.cfg.Environment.buildBytecodeProvider(Environment.java:681) - Bytecode provider name : cglib
+[2011-09-29 10:26:00,524] INFO    25[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:598) - using JDK 1.4 java.sql.Timestamp handling
+[2011-09-29 10:26:00,580] INFO    81[main] - org.hibernate.annotations.common.Version.<clinit>(Version.java:14) - Hibernate Commons Annotations 3.1.0.GA
+[2011-09-29 10:26:00,583] INFO    84[main] - org.hibernate.cfg.Configuration.configure(Configuration.java:1432) - configuring from resource: /hibernate.cfg.xml
+[2011-09-29 10:26:00,584] INFO    85[main] - org.hibernate.cfg.Configuration.getConfigurationInputStream(Configuration.java:1409) - Configuration resource: /hibernate.cfg.xml
+[2011-09-29 10:26:00,671] INFO   172[main] - org.hibernate.cfg.Configuration.doConfigure(Configuration.java:1547) - Configured SessionFactory: null
+[2011-09-29 10:26:00,714] INFO   215[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Config
+[2011-09-29 10:26:00,746] INFO   247[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Config on table CONFIG
+[2011-09-29 10:26:00,806] INFO   307[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Intersection
+[2011-09-29 10:26:00,808] INFO   309[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Intersection on table INTERSECTION
+[2011-09-29 10:26:00,831] INFO   332[main] - org.hibernate.cfg.AnnotationConfiguration.secondPassCompile(AnnotationConfiguration.java:365) - Hibernate Validator not found: ignoring
+[2011-09-29 10:26:00,901] INFO   402[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:41) - Using Hibernate built-in connection pool (not for production use!)
+[2011-09-29 10:26:00,901] INFO   402[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:42) - Hibernate connection pool size: 1
+[2011-09-29 10:26:00,902] INFO   403[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:45) - autocommit mode: false
+[2011-09-29 10:26:00,907] INFO   408[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:80) - using driver: org.hsqldb.jdbcDriver at URL: jdbc:hsqldb:data/intersectionengine
+[2011-09-29 10:26:00,907] INFO   408[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:86) - connection properties: {user=sa, password=****}
+[2011-09-29 10:26:01,081] INFO   582[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:89) - RDBMS: HSQL Database Engine, version: 1.8.0
+[2011-09-29 10:26:01,081] INFO   582[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:90) - JDBC driver: HSQL Database Engine Driver, version: 1.8.0
+[2011-09-29 10:26:01,094] INFO   595[main] - org.hibernate.dialect.Dialect.<init>(Dialect.java:152) - Using dialect: org.hibernate.dialect.HSQLDialect
+[2011-09-29 10:26:01,098] INFO   599[main] - org.hibernate.transaction.TransactionFactoryFactory.buildTransactionFactory(TransactionFactoryFactory.java:31) - Using default transaction strategy (direct JDBC transactions)
+[2011-09-29 10:26:01,100] INFO   601[main] - org.hibernate.transaction.TransactionManagerLookupFactory.getTransactionManagerLookup(TransactionManagerLookupFactory.java:33) - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2011-09-29 10:26:01,101] INFO   602[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:143) - Automatic flush during beforeCompletion(): disabled
+[2011-09-29 10:26:01,101] INFO   602[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:147) - Automatic session close at end of transaction: disabled
+[2011-09-29 10:26:01,102] INFO   603[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:154) - JDBC batch size: 15
+[2011-09-29 10:26:01,103] INFO   604[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:157) - JDBC batch updates for versioned data: disabled
+[2011-09-29 10:26:01,104] INFO   605[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:162) - Scrollable result sets: enabled
+[2011-09-29 10:26:01,105] INFO   606[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:170) - JDBC3 getGeneratedKeys(): disabled
+[2011-09-29 10:26:01,106] INFO   607[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:178) - Connection release mode: auto
+[2011-09-29 10:26:01,109] INFO   610[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:205) - Default batch fetch size: 1
+[2011-09-29 10:26:01,110] INFO   611[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:209) - Generate SQL with comments: disabled
+[2011-09-29 10:26:01,110] INFO   611[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:213) - Order SQL updates by primary key: disabled
+[2011-09-29 10:26:01,110] INFO   611[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:217) - Order SQL inserts for batching: disabled
+[2011-09-29 10:26:01,112] INFO   613[main] - org.hibernate.cfg.SettingsFactory.createQueryTranslatorFactory(SettingsFactory.java:386) - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2011-09-29 10:26:01,115] INFO   616[main] - org.hibernate.hql.ast.ASTQueryTranslatorFactory.<init>(ASTQueryTranslatorFactory.java:24) - Using ASTQueryTranslatorFactory
+[2011-09-29 10:26:01,115] INFO   616[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:225) - Query language substitutions: {}
+[2011-09-29 10:26:01,118] INFO   619[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:230) - JPA-QL strict compliance: disabled
+[2011-09-29 10:26:01,118] INFO   619[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:235) - Second-level cache: enabled
+[2011-09-29 10:26:01,119] INFO   620[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:239) - Query cache: disabled
+[2011-09-29 10:26:01,120] INFO   621[main] - org.hibernate.cfg.SettingsFactory.createCacheProvider(SettingsFactory.java:373) - Cache provider: org.hibernate.cache.NoCacheProvider
+[2011-09-29 10:26:01,129] INFO   630[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:254) - Optimize cache for minimal puts: disabled
+[2011-09-29 10:26:01,130] INFO   631[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:263) - Structured second-level cache entries: disabled
+[2011-09-29 10:26:01,134] INFO   635[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:283) - Echoing all SQL to stdout
+[2011-09-29 10:26:01,135] INFO   636[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:290) - Statistics: disabled
+[2011-09-29 10:26:01,136] INFO   637[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:294) - Deleted entity synthetic identifier rollback: disabled
+[2011-09-29 10:26:01,136] INFO   637[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:309) - Default entity-mode: pojo
+[2011-09-29 10:26:01,137] INFO   638[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:313) - Named query checking : enabled
+[2011-09-29 10:26:01,171] INFO   672[main] - org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:161) - building session factory
+[2011-09-29 10:26:01,335] INFO   836[main] - org.hibernate.impl.SessionFactoryObjectFactory.addInstance(SessionFactoryObjectFactory.java:82) - Not binding factory to JNDI, no JNDI name configured
+[2011-09-29 10:26:01,340] INFO   841[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:154) - Running hbm2ddl schema export
+[2011-09-29 10:26:01,341] INFO   842[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:179) - exporting generated schema to database
+[2011-09-29 10:26:01,344] INFO   845[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:196) - schema export complete
+[2011-09-29 10:57:40,834] INFO     0[main] - org.hibernate.cfg.annotations.Version.<clinit>(Version.java:15) - Hibernate Annotations 3.3.1.GA
+[2011-09-29 10:57:40,848] INFO    14[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:514) - Hibernate 3.2.6
+[2011-09-29 10:57:40,852] INFO    18[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:547) - hibernate.properties not found
+[2011-09-29 10:57:40,855] INFO    21[main] - org.hibernate.cfg.Environment.buildBytecodeProvider(Environment.java:681) - Bytecode provider name : cglib
+[2011-09-29 10:57:40,858] INFO    24[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:598) - using JDK 1.4 java.sql.Timestamp handling
+[2011-09-29 10:57:40,911] INFO    77[main] - org.hibernate.annotations.common.Version.<clinit>(Version.java:14) - Hibernate Commons Annotations 3.1.0.GA
+[2011-09-29 10:57:40,915] INFO    81[main] - org.hibernate.cfg.Configuration.configure(Configuration.java:1432) - configuring from resource: /hibernate.cfg.xml
+[2011-09-29 10:57:40,916] INFO    82[main] - org.hibernate.cfg.Configuration.getConfigurationInputStream(Configuration.java:1409) - Configuration resource: /hibernate.cfg.xml
+[2011-09-29 10:57:41,005] INFO   171[main] - org.hibernate.cfg.Configuration.doConfigure(Configuration.java:1547) - Configured SessionFactory: null
+[2011-09-29 10:57:41,048] INFO   214[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Config
+[2011-09-29 10:57:41,082] INFO   248[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Config on table CONFIG
+[2011-09-29 10:57:41,143] INFO   309[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Intersection
+[2011-09-29 10:57:41,144] INFO   310[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Intersection on table INTERSECTION
+[2011-09-29 10:57:41,164] INFO   330[main] - org.hibernate.cfg.AnnotationConfiguration.secondPassCompile(AnnotationConfiguration.java:365) - Hibernate Validator not found: ignoring
+[2011-09-29 10:57:41,232] INFO   398[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:41) - Using Hibernate built-in connection pool (not for production use!)
+[2011-09-29 10:57:41,233] INFO   399[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:42) - Hibernate connection pool size: 1
+[2011-09-29 10:57:41,233] INFO   399[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:45) - autocommit mode: false
+[2011-09-29 10:57:41,238] INFO   404[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:80) - using driver: org.hsqldb.jdbcDriver at URL: jdbc:hsqldb:data/intersectionengine
+[2011-09-29 10:57:41,239] INFO   405[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:86) - connection properties: {user=sa, password=****}
+[2011-09-29 10:57:41,413] INFO   579[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:89) - RDBMS: HSQL Database Engine, version: 1.8.0
+[2011-09-29 10:57:41,414] INFO   580[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:90) - JDBC driver: HSQL Database Engine Driver, version: 1.8.0
+[2011-09-29 10:57:41,427] INFO   593[main] - org.hibernate.dialect.Dialect.<init>(Dialect.java:152) - Using dialect: org.hibernate.dialect.HSQLDialect
+[2011-09-29 10:57:41,431] INFO   597[main] - org.hibernate.transaction.TransactionFactoryFactory.buildTransactionFactory(TransactionFactoryFactory.java:31) - Using default transaction strategy (direct JDBC transactions)
+[2011-09-29 10:57:41,432] INFO   598[main] - org.hibernate.transaction.TransactionManagerLookupFactory.getTransactionManagerLookup(TransactionManagerLookupFactory.java:33) - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2011-09-29 10:57:41,433] INFO   599[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:143) - Automatic flush during beforeCompletion(): disabled
+[2011-09-29 10:57:41,433] INFO   599[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:147) - Automatic session close at end of transaction: disabled
+[2011-09-29 10:57:41,434] INFO   600[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:154) - JDBC batch size: 15
+[2011-09-29 10:57:41,434] INFO   600[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:157) - JDBC batch updates for versioned data: disabled
+[2011-09-29 10:57:41,436] INFO   602[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:162) - Scrollable result sets: enabled
+[2011-09-29 10:57:41,437] INFO   603[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:170) - JDBC3 getGeneratedKeys(): disabled
+[2011-09-29 10:57:41,437] INFO   603[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:178) - Connection release mode: auto
+[2011-09-29 10:57:41,439] INFO   605[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:205) - Default batch fetch size: 1
+[2011-09-29 10:57:41,440] INFO   606[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:209) - Generate SQL with comments: disabled
+[2011-09-29 10:57:41,440] INFO   606[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:213) - Order SQL updates by primary key: disabled
+[2011-09-29 10:57:41,441] INFO   607[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:217) - Order SQL inserts for batching: disabled
+[2011-09-29 10:57:41,442] INFO   608[main] - org.hibernate.cfg.SettingsFactory.createQueryTranslatorFactory(SettingsFactory.java:386) - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2011-09-29 10:57:41,446] INFO   612[main] - org.hibernate.hql.ast.ASTQueryTranslatorFactory.<init>(ASTQueryTranslatorFactory.java:24) - Using ASTQueryTranslatorFactory
+[2011-09-29 10:57:41,447] INFO   613[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:225) - Query language substitutions: {}
+[2011-09-29 10:57:41,448] INFO   614[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:230) - JPA-QL strict compliance: disabled
+[2011-09-29 10:57:41,448] INFO   614[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:235) - Second-level cache: enabled
+[2011-09-29 10:57:41,449] INFO   615[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:239) - Query cache: disabled
+[2011-09-29 10:57:41,449] INFO   615[main] - org.hibernate.cfg.SettingsFactory.createCacheProvider(SettingsFactory.java:373) - Cache provider: org.hibernate.cache.NoCacheProvider
+[2011-09-29 10:57:41,450] INFO   616[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:254) - Optimize cache for minimal puts: disabled
+[2011-09-29 10:57:41,451] INFO   617[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:263) - Structured second-level cache entries: disabled
+[2011-09-29 10:57:41,461] INFO   627[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:283) - Echoing all SQL to stdout
+[2011-09-29 10:57:41,462] INFO   628[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:290) - Statistics: disabled
+[2011-09-29 10:57:41,462] INFO   628[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:294) - Deleted entity synthetic identifier rollback: disabled
+[2011-09-29 10:57:41,463] INFO   629[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:309) - Default entity-mode: pojo
+[2011-09-29 10:57:41,464] INFO   630[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:313) - Named query checking : enabled
+[2011-09-29 10:57:41,497] INFO   663[main] - org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:161) - building session factory
+[2011-09-29 10:57:41,662] INFO   828[main] - org.hibernate.impl.SessionFactoryObjectFactory.addInstance(SessionFactoryObjectFactory.java:82) - Not binding factory to JNDI, no JNDI name configured
+[2011-09-29 10:57:41,667] INFO   833[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:154) - Running hbm2ddl schema export
+[2011-09-29 10:57:41,668] INFO   834[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:179) - exporting generated schema to database
+[2011-09-29 10:57:41,671] INFO   837[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:196) - schema export complete
+[2011-09-29 10:58:51,341] INFO     0[main] - org.hibernate.cfg.annotations.Version.<clinit>(Version.java:15) - Hibernate Annotations 3.3.1.GA
+[2011-09-29 10:58:51,354] INFO    13[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:514) - Hibernate 3.2.6
+[2011-09-29 10:58:51,358] INFO    17[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:547) - hibernate.properties not found
+[2011-09-29 10:58:51,362] INFO    21[main] - org.hibernate.cfg.Environment.buildBytecodeProvider(Environment.java:681) - Bytecode provider name : cglib
+[2011-09-29 10:58:51,366] INFO    25[main] - org.hibernate.cfg.Environment.<clinit>(Environment.java:598) - using JDK 1.4 java.sql.Timestamp handling
+[2011-09-29 10:58:51,420] INFO    79[main] - org.hibernate.annotations.common.Version.<clinit>(Version.java:14) - Hibernate Commons Annotations 3.1.0.GA
+[2011-09-29 10:58:51,423] INFO    82[main] - org.hibernate.cfg.Configuration.configure(Configuration.java:1432) - configuring from resource: /hibernate.cfg.xml
+[2011-09-29 10:58:51,424] INFO    83[main] - org.hibernate.cfg.Configuration.getConfigurationInputStream(Configuration.java:1409) - Configuration resource: /hibernate.cfg.xml
+[2011-09-29 10:58:51,519] INFO   178[main] - org.hibernate.cfg.Configuration.doConfigure(Configuration.java:1547) - Configured SessionFactory: null
+[2011-09-29 10:58:51,562] INFO   221[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Config
+[2011-09-29 10:58:51,595] INFO   254[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Config on table CONFIG
+[2011-09-29 10:58:51,660] INFO   319[main] - org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:418) - Binding entity from annotated class: it.geosolutions.geobatch.figis.intersection.model.Intersection
+[2011-09-29 10:58:51,661] INFO   320[main] - org.hibernate.cfg.annotations.EntityBinder.bindTable(EntityBinder.java:424) - Bind entity it.geosolutions.geobatch.figis.intersection.model.Intersection on table INTERSECTION
+[2011-09-29 10:58:51,679] INFO   338[main] - org.hibernate.cfg.AnnotationConfiguration.secondPassCompile(AnnotationConfiguration.java:365) - Hibernate Validator not found: ignoring
+[2011-09-29 10:58:51,748] INFO   407[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:41) - Using Hibernate built-in connection pool (not for production use!)
+[2011-09-29 10:58:51,749] INFO   408[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:42) - Hibernate connection pool size: 1
+[2011-09-29 10:58:51,750] INFO   409[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:45) - autocommit mode: false
+[2011-09-29 10:58:51,754] INFO   413[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:80) - using driver: org.hsqldb.jdbcDriver at URL: jdbc:hsqldb:data/intersectionengine
+[2011-09-29 10:58:51,755] INFO   414[main] - org.hibernate.connection.DriverManagerConnectionProvider.configure(DriverManagerConnectionProvider.java:86) - connection properties: {user=sa, password=****}
+[2011-09-29 10:58:51,916] INFO   575[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:89) - RDBMS: HSQL Database Engine, version: 1.8.0
+[2011-09-29 10:58:51,917] INFO   576[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:90) - JDBC driver: HSQL Database Engine Driver, version: 1.8.0
+[2011-09-29 10:58:51,932] INFO   591[main] - org.hibernate.dialect.Dialect.<init>(Dialect.java:152) - Using dialect: org.hibernate.dialect.HSQLDialect
+[2011-09-29 10:58:51,936] INFO   595[main] - org.hibernate.transaction.TransactionFactoryFactory.buildTransactionFactory(TransactionFactoryFactory.java:31) - Using default transaction strategy (direct JDBC transactions)
+[2011-09-29 10:58:51,938] INFO   597[main] - org.hibernate.transaction.TransactionManagerLookupFactory.getTransactionManagerLookup(TransactionManagerLookupFactory.java:33) - No TransactionManagerLookup configured (in JTA environment, use of read-write or transactional second-level cache is not recommended)
+[2011-09-29 10:58:51,939] INFO   598[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:143) - Automatic flush during beforeCompletion(): disabled
+[2011-09-29 10:58:51,939] INFO   598[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:147) - Automatic session close at end of transaction: disabled
+[2011-09-29 10:58:51,940] INFO   599[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:154) - JDBC batch size: 15
+[2011-09-29 10:58:51,940] INFO   599[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:157) - JDBC batch updates for versioned data: disabled
+[2011-09-29 10:58:51,942] INFO   601[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:162) - Scrollable result sets: enabled
+[2011-09-29 10:58:51,943] INFO   602[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:170) - JDBC3 getGeneratedKeys(): disabled
+[2011-09-29 10:58:51,943] INFO   602[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:178) - Connection release mode: auto
+[2011-09-29 10:58:51,945] INFO   604[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:205) - Default batch fetch size: 1
+[2011-09-29 10:58:51,946] INFO   605[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:209) - Generate SQL with comments: disabled
+[2011-09-29 10:58:51,947] INFO   606[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:213) - Order SQL updates by primary key: disabled
+[2011-09-29 10:58:51,948] INFO   607[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:217) - Order SQL inserts for batching: disabled
+[2011-09-29 10:58:51,948] INFO   607[main] - org.hibernate.cfg.SettingsFactory.createQueryTranslatorFactory(SettingsFactory.java:386) - Query translator: org.hibernate.hql.ast.ASTQueryTranslatorFactory
+[2011-09-29 10:58:51,952] INFO   611[main] - org.hibernate.hql.ast.ASTQueryTranslatorFactory.<init>(ASTQueryTranslatorFactory.java:24) - Using ASTQueryTranslatorFactory
+[2011-09-29 10:58:51,953] INFO   612[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:225) - Query language substitutions: {}
+[2011-09-29 10:58:51,954] INFO   613[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:230) - JPA-QL strict compliance: disabled
+[2011-09-29 10:58:51,955] INFO   614[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:235) - Second-level cache: enabled
+[2011-09-29 10:58:51,956] INFO   615[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:239) - Query cache: disabled
+[2011-09-29 10:58:51,957] INFO   616[main] - org.hibernate.cfg.SettingsFactory.createCacheProvider(SettingsFactory.java:373) - Cache provider: org.hibernate.cache.NoCacheProvider
+[2011-09-29 10:58:51,958] INFO   617[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:254) - Optimize cache for minimal puts: disabled
+[2011-09-29 10:58:51,958] INFO   617[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:263) - Structured second-level cache entries: disabled
+[2011-09-29 10:58:51,966] INFO   625[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:283) - Echoing all SQL to stdout
+[2011-09-29 10:58:51,966] INFO   625[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:290) - Statistics: disabled
+[2011-09-29 10:58:51,967] INFO   626[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:294) - Deleted entity synthetic identifier rollback: disabled
+[2011-09-29 10:58:51,968] INFO   627[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:309) - Default entity-mode: pojo
+[2011-09-29 10:58:51,968] INFO   627[main] - org.hibernate.cfg.SettingsFactory.buildSettings(SettingsFactory.java:313) - Named query checking : enabled
+[2011-09-29 10:58:52,003] INFO   662[main] - org.hibernate.impl.SessionFactoryImpl.<init>(SessionFactoryImpl.java:161) - building session factory
+[2011-09-29 10:58:52,170] INFO   829[main] - org.hibernate.impl.SessionFactoryObjectFactory.addInstance(SessionFactoryObjectFactory.java:82) - Not binding factory to JNDI, no JNDI name configured
+[2011-09-29 10:58:52,174] INFO   833[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:154) - Running hbm2ddl schema export
+[2011-09-29 10:58:52,175] INFO   834[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:179) - exporting generated schema to database
+[2011-09-29 10:58:52,179] INFO   838[main] - org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:196) - schema export complete

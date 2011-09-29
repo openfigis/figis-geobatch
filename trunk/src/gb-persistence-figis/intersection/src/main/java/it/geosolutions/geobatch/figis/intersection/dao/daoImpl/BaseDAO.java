@@ -23,8 +23,8 @@ public class BaseDAO<T, ID extends Serializable> extends GenericDAOImpl<T, ID> {
      */
     @Override
     @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        super.setEntityManager(entityManager);
+    public void setEntityManager(EntityManager entityManagerFigis) {
+        super.setEntityManager(entityManagerFigis);
     }
 
     /**
