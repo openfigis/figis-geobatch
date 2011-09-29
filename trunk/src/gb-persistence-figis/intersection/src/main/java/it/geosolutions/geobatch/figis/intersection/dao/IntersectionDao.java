@@ -3,7 +3,9 @@ import it.geosolutions.geobatch.figis.intersection.model.Intersection;
 
 import java.util.List;
 
-public interface IntersectionDao {
+import com.trg.dao.jpa.GenericDAO;
+
+public interface IntersectionDao extends GenericDAO<Intersection, Long>{
 	public boolean clean();
 	public boolean force(Intersection intersection);
 	public void insertIntersection(List<Intersection> intersections);

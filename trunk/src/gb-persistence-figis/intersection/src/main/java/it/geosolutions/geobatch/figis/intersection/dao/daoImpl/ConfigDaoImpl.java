@@ -18,41 +18,13 @@ import com.trg.search.ISearch;
 
 public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao{
 
-	SessionFactory sessionFactory;
-
+	
 	 
-
-	    @Override
-	    public void persist(Config... entities) {
-	        super.persist(entities);
-	    }
-
-	    @Override
-	    public List<Config> findAll() {
-	        return super.findAll();
-	    }
-
-	    @Override
-	    public List<Config> search(ISearch search) {
-	        return super.search(search);
-	    }
-
-
-	    @Override
-	    public boolean remove(Config entity) {
-	        return super.remove(entity);
-	    }
-
-	    @Override
-	    public boolean removeById(Long id) {
-	        return super.removeById(id);
-	    }	
-	
-	
-	public ConfigDaoImpl(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-		
+	public ConfigDaoImpl() {
+		super();
 	}
+	
+
 
 	@Transactional
 	public void setGeoserver(Geoserver geo) {
@@ -78,6 +50,30 @@ public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao{
 		return false;
 	}
 
+
+
+	public void updateConfig(Config config) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public void insertConfig(Config config) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public Config getConfig() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
+/*
 	@Transactional
 	public Config getConfig() {
 		Session session = sessionFactory.openSession();
@@ -108,7 +104,7 @@ public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao{
 		Session session = sessionFactory.openSession();
 		session.save(config);
 		
-	}
+	}*/
 	
 	
 

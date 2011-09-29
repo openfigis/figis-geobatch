@@ -126,9 +126,30 @@ public class Intersection {
                     value = "fromInt")
                 }
     )
+    
+    
+    
     private Status status = Status.TOCOMPUTE;
 
     
+	public Intersection(boolean mask, boolean force, boolean preserveTrgGeom,
+			String srcLayer, String trgLayer, String srcCodeField,
+			String trgCodeField, String maskLayer, String areaCRS, Status status) {
+		super();
+		this.mask = mask;
+		this.force = force;
+		this.preserveTrgGeom = preserveTrgGeom;
+		this.srcLayer = srcLayer;
+		this.trgLayer = trgLayer;
+		this.srcCodeField = srcCodeField;
+		this.trgCodeField = trgCodeField;
+		this.maskLayer = maskLayer;
+		this.areaCRS = areaCRS;
+		this.status = status;
+	}
+
+
+
 	public Intersection() {
 		super();
 	}
