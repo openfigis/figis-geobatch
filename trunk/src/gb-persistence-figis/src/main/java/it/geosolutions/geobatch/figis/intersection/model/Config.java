@@ -52,20 +52,13 @@ public class Config {
 		return clean;
 	}
 
-
-
-
 	public void setClean(boolean clean) {
 		this.clean = clean;
 	}
 
-
-
-
 	public Global getGlobal() {
 		return global;
 	}
-
 
 
 	public void setGlobal(Global global) {
