@@ -24,6 +24,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -31,8 +32,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class IntersectionEngineTest {
 	//SessionFactory sessionFactory = null;
-	ConfigDaoImpl configDao = null;
-	IntersectionDaoImpl intersectionDao = null;
+	ConfigDao configDao = null;
+	IntersectionDao intersectionDao = null;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -42,10 +43,10 @@ public class IntersectionEngineTest {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         System.out.println("************************************XML READ"+ctx.containsBean("configDAO"));
-        configDao = (ConfigDaoImpl) ctx.getBean("configDAO");
-        intersectionDao = (IntersectionDaoImpl) ctx.getBean("intersectionDAO");
+        configDao = (ConfigDao) ctx.getBean("configDAO");
+       intersectionDao = (IntersectionDao) ctx.getBean("intersectionDAO");
         System.out.println("************************************finish setup test");
-		} catch(Exception e) {
+		} catch(Throwable e) {
 			System.out.println("************** ho finito");
 			e.printStackTrace();
 		}
@@ -54,7 +55,7 @@ public class IntersectionEngineTest {
 	@Test 
 	public void testInsertConfigJPA() {
 		System.out.println("start test");
-/*		  Global global = new Global();
+		  Global global = new Global();
 		  global.getGeoserver().setGeoserverUsername("admin");
 		  global.getGeoserver().setGeoserverPassword("password");
 		  global.getGeoserver().setGeoserverUrl("localhost");
@@ -67,9 +68,27 @@ public class IntersectionEngineTest {
 		  Config config = new Config();
 		  config.setUpdateVersion(1);
 		  config.setGlobal(global);
-		  configDao.persist(config);*/
+		  
+		  configDao.persist(config);
+		  
+/*		  List<Config> list = configDao.findAll();
+		  System.out.println("size"+list.size());
+		  for (Config configStep: list) {
+			  System.out.println(""+configStep.getGlobal().getGeoserver().getGeoserverUsername());
+		  }  */
+
 		  System.out.println("end test");
 	}
+	
+	@Test
+	public void testListAll() {
+		  List<Config> list = configDao.findAll();
+		  System.out.println("size"+list.size());
+		  for (Config configStep: list) {
+			  System.out.println(""+configStep.getGlobal().getGeoserver().getGeoserverUsername());
+		  }
+	}
+	
 /*
 	@Test
 	public void testInsertConfig() {

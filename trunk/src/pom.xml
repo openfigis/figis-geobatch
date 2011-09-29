@@ -200,11 +200,60 @@
       <artifactId>gt-process</artifactId>
       <version>${gt.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
+
+
+  <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-core</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+	 <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-web</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+ <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-beans</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+	 <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-context</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+	 <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-aop</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+	 <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-context-support</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+	 <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-tx</artifactId>
+	   <version>${spring.version}</version>
+ </dependency>
+	 <dependency>
+   <groupId>org.springframework</groupId>
+	   <artifactId>spring-orm</artifactId>
+	   <version>${spring.version}</version>
+ </dependency>
+	 <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-jdbc</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+	 <dependency>
+	   <groupId>org.springframework</groupId>
+	   <artifactId>spring-test</artifactId>
+	   <version>${spring.version}</version>
+	 </dependency>
+
+
 <dependency>
             <groupId>com.trg</groupId>
             <artifactId>trg-dao</artifactId>
