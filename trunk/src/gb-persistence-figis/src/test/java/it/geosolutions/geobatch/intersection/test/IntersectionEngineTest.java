@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+
 import it.geosolutions.geobatch.figis.intersection.dao.ConfigDao;
 import it.geosolutions.geobatch.figis.intersection.dao.IntersectionDao;
 import it.geosolutions.geobatch.figis.intersection.dao.daoImpl.ConfigDaoImpl;
@@ -18,6 +19,7 @@ import it.geosolutions.geobatch.figis.intersection.model.Intersection.Status;
 
 
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -31,15 +33,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class IntersectionEngineTest {
-	//SessionFactory sessionFactory = null;
+	
+	final static Logger LOGGER = Logger.getLogger(IntersectionEngineTest.class.toString());
 	ConfigDao configDao = null;
 	IntersectionDao intersectionDao = null;
 	
 	@Before
 	public void setUp() throws Exception {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        configDao = (ConfigDao) ctx.getBean("configDAO");
-        intersectionDao = (IntersectionDao) ctx.getBean("intersectionDAO");
+        configDao = (ConfigDao) ctx.getBean("ie-configDAO");
+        intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
 	}
 	@Test 
 	public void testInsertConfig() {
@@ -79,8 +82,10 @@ public class IntersectionEngineTest {
 	
 	@Test
 	public void testListAll() {
-		  List<Config> list = configDao.findAll();
-		  assertTrue(list.size()==1);
+		  List<Config> listConfig = configDao.findAll();
+		  assertTrue(listConfig.size()==1);
+		  List<Intersection> listInt = intersectionDao.findAll();
+		  assertTrue(listInt.size()==2);
 	}
 	
 /*
@@ -98,13 +103,12 @@ public class IntersectionEngineTest {
 
 		  sess.save(int1);
 		  tx.commit();
-	}
-		
+	}*/
+		/*
 	@Test
 	public void testUpdateConfig() {
 
-		  Session sess = sessionFactory.getCurrentSession();
-		  Transaction tx = sess.beginTransaction();
+
 		  Global global = new Global();
 		  global.getGeoserver().setGeoserverUsername("user");
 		  global.getGeoserver().setGeoserverPassword("oldPassword");
@@ -120,10 +124,14 @@ public class IntersectionEngineTest {
 		  config.setGlobal(global);
 
 
-		  sess.save(config);
+		  configDao.save(config);
 
+		  Config configExample = new Config();
+		  configExample.getGlobal().getGeoserver().setGeoserverUsername("user");
 		  
-
+		  
+		  configDao.getFilterFromExample(configExample);
+		configDao.
 		  List<Config> results = (List<Config>)sess.createQuery("from Config e where e.global.geoserver.geoserverUsername='user'").list();
 		  Config configTemp = results.get(0);
 		  configTemp.getGlobal().getGeoserver().setGeoserverPassword("newPassword");
@@ -154,8 +162,8 @@ public class IntersectionEngineTest {
 
 		  
 		  tx.commit();
-	}
-
+	}*/
+/*
 	@Test
 	public void testUpdateIntersection() {
 

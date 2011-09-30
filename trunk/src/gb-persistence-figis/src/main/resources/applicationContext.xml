@@ -68,20 +68,20 @@
 
 
 
-		<bean id="searchProcessor" class="com.trg.search.jpa.JPASearchProcessor">
-		  <constructor-arg ref="metadataUtil" />
+		<bean id="ie-searchProcessor" class="com.trg.search.jpa.JPASearchProcessor">
+		  <constructor-arg ref="ie-metadataUtil" />
 		 </bean>
 		
-		 <bean id="metadataUtil" class="com.trg.search.jpa.hibernate.HibernateMetadataUtil"
+		 <bean id="ie-metadataUtil" class="com.trg.search.jpa.hibernate.HibernateMetadataUtil"
 		  factory-method="getInstanceForEntityManagerFactory">
-		  <constructor-arg ref="entityManagerFactory" />
+		  <constructor-arg ref="ie-entityManagerFactory" />
 		 </bean>
 
 
 
 
-        <bean id="configDAO" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.ConfigDaoImpl" />
-        <bean id="intersectionDAO" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.IntersectionDaoImpl" />
+        <bean id="ie-configDAO" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.ConfigDaoImpl" />
+        <bean id="ie-intersectionDAO" class="it.geosolutions.geobatch.figis.intersection.dao.daoImpl.IntersectionDaoImpl" />
         
 
 
