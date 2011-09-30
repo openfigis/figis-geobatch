@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.trg.search.ISearch;
 
 
-
+@Transactional
 public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao{
 
 	
@@ -24,6 +24,14 @@ public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao{
 		super();
 	}
 	
+
+
+	@Override
+	public Config save(Config entity) {
+		// TODO Auto-generated method stub
+		return super.save(entity);
+	}
+
 
 
 	@Transactional

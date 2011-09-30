@@ -37,24 +37,13 @@ public class IntersectionEngineTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		try {
-		System.out.println("start setup");
-		  //sessionFactory = HibernateUtil.getSessionFactory();
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-
-        System.out.println("************************************XML READ"+ctx.containsBean("configDAO"));
         configDao = (ConfigDao) ctx.getBean("configDAO");
-       intersectionDao = (IntersectionDao) ctx.getBean("intersectionDAO");
-        System.out.println("************************************finish setup test");
-		} catch(Throwable e) {
-			System.out.println("************** ho finito");
-			e.printStackTrace();
-		}
-
+        intersectionDao = (IntersectionDao) ctx.getBean("intersectionDAO");
 	}
 	@Test 
-	public void testInsertConfigJPA() {
-		System.out.println("start test");
+	public void testInsertConfig() {
+	
 		  Global global = new Global();
 		  global.getGeoserver().setGeoserverUsername("admin");
 		  global.getGeoserver().setGeoserverPassword("password");
@@ -68,53 +57,34 @@ public class IntersectionEngineTest {
 		  Config config = new Config();
 		  config.setUpdateVersion(1);
 		  config.setGlobal(global);
+	 
+		  configDao.save(config);
 		  
-		  configDao.persist(config);
-		  
-/*		  List<Config> list = configDao.findAll();
-		  System.out.println("size"+list.size());
-		  for (Config configStep: list) {
-			  System.out.println(""+configStep.getGlobal().getGeoserver().getGeoserverUsername());
-		  }  */
+		  List<Config> list = configDao.findAll();
+		  assertTrue(list.size()==1);
 
-		  System.out.println("end test");
+	}
+	
+	@Test
+	public void testInsertIntersection() {
+		  Intersection int1 = new Intersection(true, true, true,"srcLayer", "trgLayer", "srcCodeField",
+			"trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
+		  Intersection int2 = new Intersection(true, true, false,"srcLayer2", "trgLayer2", "srcCodeField2",
+			"trgCodeField", "maskLayer2", "areaCRS2", Status.COMPUTING);
+		  intersectionDao.save(int1);
+		  intersectionDao.save(int2);
+		  List<Intersection> list = intersectionDao.findAll();
+		  assertTrue(list.size()==2);		  
 	}
 	
 	@Test
 	public void testListAll() {
 		  List<Config> list = configDao.findAll();
-		  System.out.println("size"+list.size());
-		  for (Config configStep: list) {
-			  System.out.println(""+configStep.getGlobal().getGeoserver().getGeoserverUsername());
-		  }
+		  assertTrue(list.size()==1);
 	}
 	
 /*
-	@Test
-	public void testInsertConfig() {
-		  
-		  Session sess = sessionFactory.getCurrentSession();
-		  
-		  Transaction tx = sess.beginTransaction();
-		  Global global = new Global();
-		  global.getGeoserver().setGeoserverUsername("admin");
-		  global.getGeoserver().setGeoserverPassword("password");
-		  global.getGeoserver().setGeoserverUrl("localhost");
-		  global.getDb().setDatabase("trial");
-		  global.getDb().setHost("localhost");
-		  global.getDb().setPassword("password");
-		  global.getDb().setPort("8080");
-		  global.getDb().setSchema("empty");
-		  global.getDb().setUser("dbuser");
-		  Config config = new Config();
-		  config.setUpdateVersion(1);
-		  config.setGlobal(global);
 
-		  sess.save(config);
-
-		  tx.commit();
-
-	}
 	
 	@Test
 	public void testInsertIntersection() {

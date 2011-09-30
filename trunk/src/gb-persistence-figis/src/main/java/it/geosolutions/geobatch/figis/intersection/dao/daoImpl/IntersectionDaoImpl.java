@@ -2,11 +2,14 @@ package it.geosolutions.geobatch.figis.intersection.dao.daoImpl;
 
 import java.util.List;
 
+
 import org.hibernate.SessionFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.geosolutions.geobatch.figis.intersection.dao.IntersectionDao;
 import it.geosolutions.geobatch.figis.intersection.model.Intersection;
 
+ @Transactional
 public class IntersectionDaoImpl extends BaseDAO<Intersection, Long> implements IntersectionDao{
 
 
@@ -14,6 +17,18 @@ public class IntersectionDaoImpl extends BaseDAO<Intersection, Long> implements 
 	public IntersectionDaoImpl() {
 		
 	}
+	
+	
+	
+
+	@Override
+	public Intersection save(Intersection entity) {
+		// TODO Auto-generated method stub
+		return super.save(entity);
+	}
+
+
+
 
 	public boolean clean() {
 		// TODO Auto-generated method stub
