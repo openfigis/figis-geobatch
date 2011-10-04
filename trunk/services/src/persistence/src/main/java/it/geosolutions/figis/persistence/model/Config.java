@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "CONFIG")
 @XStreamAlias("ie-config")
-//@PersistenceUnit(name="Config")
 @XmlRootElement(name = "config")
 public class Config {
 	

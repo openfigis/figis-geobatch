@@ -8,6 +8,7 @@ import it.geosolutions.figis.ws.FigisService;
 import it.geosolutions.figis.persistence.model.Config;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundDetails;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
+import it.geosolutions.figis.ws.response.Intersections;
 import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -60,8 +61,11 @@ public class FigisServiceImpl implements FigisService{
     }
 
     @Override
-    public List<Intersection> getAllIntersections() {
-        return intersectionDao.findAll();
+    public Intersections getAllIntersections() {
+        List<Intersection> intersectionList = intersectionDao.findAll();
+        Intersections intersections = new Intersections();
+        intersections.setIntersections(intersectionList);
+        return intersections;
     }
 
 

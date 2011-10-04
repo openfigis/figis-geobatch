@@ -11,10 +11,12 @@ import org.hibernate.annotations.Type;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "INTERSECTION")
 @XStreamAlias("Intersection")
+@XmlRootElement(name = "intersection")
 public class Intersection {
 	
     public enum Status{

@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import it.geosolutions.figis.persistence.model.Config;
 import it.geosolutions.figis.persistence.model.Intersection;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
+import it.geosolutions.figis.ws.response.Intersections;
 
 import java.util.List;
 import javax.jws.WebParam;
@@ -41,7 +42,7 @@ public interface FigisService {
 
             @GET
 	    @Path("/intersection/")
-	    public List<Intersection> getAllIntersections();
+	    public Intersections getAllIntersections();
 
            @PUT
            @Path("/intersection/")
