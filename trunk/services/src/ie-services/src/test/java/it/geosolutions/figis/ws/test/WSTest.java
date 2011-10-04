@@ -20,6 +20,7 @@ import it.geosolutions.figis.persistence.model.Intersection.Status;
 import it.geosolutions.figis.ws.FigisService;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
 import it.geosolutions.figis.ws.impl.FigisServiceImpl;
+import it.geosolutions.figis.ws.response.Intersections;
 import java.io.IOException;
 
 
@@ -83,7 +84,7 @@ public class WSTest extends TestCase{
 
 	public void testListAll() {
 		  List<Config> listConfig = figisService.getAllConfigs();
-		  List<Intersection> listInt = figisService.getAllIntersections();
+		  Intersections listInt = figisService.getAllIntersections();
 
 	}
 
