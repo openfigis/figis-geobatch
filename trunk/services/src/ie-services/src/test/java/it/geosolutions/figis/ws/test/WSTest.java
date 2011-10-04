@@ -58,7 +58,8 @@ public class WSTest extends TestCase{
               Config config = new Config();
               config.setUpdateVersion(1);
               config.setGlobal(global);
-              figisService.insertConfig(config);
+              long id = figisService.insertConfig(config);
+              assertTrue(id!=0);
 	}
 
 
@@ -84,8 +85,10 @@ public class WSTest extends TestCase{
 
 	public void testListAll() {
 		  List<Config> listConfig = figisService.getAllConfigs();
-		  Intersections listInt = figisService.getAllIntersections();
-
+                  assertTrue(listConfig.size()==2);
+		  Intersections intersections = figisService.getAllIntersections();
+                  assertTrue(intersections.getIntersections().size()==2);
+ 
 	}
 
 
