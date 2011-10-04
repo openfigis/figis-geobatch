@@ -1,4 +1,4 @@
-package it.geosolutions.geobatch.figis.intersection.model;
+package it.geosolutions.figis.persistence.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -117,7 +117,7 @@ public class Intersection {
         parameters = {
                 @Parameter(
                     name  = "enumClass",                      
-                    value = "it.geosolutions.geobatch.figis.intersection.model.Intersection$Status"),
+                    value = "it.geosolutions.figis.persistence.model.Intersection$Status"),
                 @Parameter(
                     name  = "identifierMethod",
                     value = "toInt"),
@@ -153,6 +153,14 @@ public class Intersection {
 	public Intersection() {
 		super();
 	}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 	
 	
 	

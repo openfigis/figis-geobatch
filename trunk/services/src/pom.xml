@@ -10,7 +10,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <name>GeoSolutions GeoBatch - figis</name>
+    <name>GeoSolutions - figis</name>
     <url>http://www.geo-solutions.it/maven_reports/gb/</url>
 
     <scm>
@@ -21,7 +21,7 @@
     </scm>
 
     <description>
-        The GeoBatch project for figis
+        The persistence  for figis
     </description>
 
     <organization>
@@ -44,34 +44,12 @@
     <!-- =========================================================== -->
     <developers>
         <developer>
-            <name>Alessio Fabiani</name>
-            <id>alessio</id>
-            <email>alessio.fabiani@geo-solutions.it</email>
+            <name>luca paolino</name>
+            <id>luca</id>
+            <email>luca.paolino@geo-solutions.it</email>
             <organization>GeoSolutions</organization>
             <roles>
-		<role>Project Leader</role>
-                <role>Software Engineer</role>
-                <role>Project Management Committee (PMC) Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Carlo Cancellieri</name>
-            <id>carlo</id>
-            <email>carlo.cancellieri@geo-solutions.it</email>
-            <organization>GeoSolutions</organization>
-            <roles>
-                <role>Software Engineer</role>
-                <role>Project Member Committee (PMC) Member</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Simone Giannecchini</name>
-            <id>simboss</id>
-            <email>simone.giannecchini@geo-solutions.it</email>
-            <organization>GeoSolutions</organization>
-            <roles>
-                <role>Software Engineer</role>
-                <role>Project Management Committee (PMC) Member</role>
+		<role>Project Developer</role>
             </roles>
         </developer>
     </developers>
@@ -146,14 +124,9 @@
     <!-- =========================================================== -->
     <!--     Project Description                                     -->
     <!-- =========================================================== -->
-    <parent>
-	<groupId>it.geosolutions.geobatch</groupId>
-	<artifactId>gb</artifactId>
-	<version>1.0</version>
-    </parent>
 
-    <groupId>it.geosolutions.geobatch.figis</groupId>
-    <artifactId>gb-figis</artifactId>
+    <groupId>it.geosolutions</groupId>
+    <artifactId>figis</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     
@@ -167,150 +140,6 @@
     <dependencyManagement>
         <dependencies>
 	    <!-- inherit DependencyManagement -->
-	    <dependency>
-		<groupId>it.geosolutions.geobatch</groupId>
-		<artifactId>gb</artifactId>
-		<version>${gb.version}</version>
-		<type>pom</type>
-		<scope>import</scope>
-	    </dependency>
-	    
-	    <dependency>
-		<groupId>it.geosolutions.geobatch.figis</groupId>
-		<artifactId>gb-action-figis-intersection</artifactId>
-		<version>0.1-SNAPSHOT</version>
-	    </dependency>
-	    <dependency>
-		<groupId>it.geosolutions.geobatch.figis</groupId>
-		<artifactId>gb-persistence-figis-intersection</artifactId>
-		<version>0.1-SNAPSHOT</version>
-	    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-process-feature</artifactId>
-      <version>${gt.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-process-raster</artifactId>
-      <version>${gt.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-process</artifactId>
-      <version>${gt.version}</version>
-    </dependency>
-
-
-<!--  <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-core</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency>
-	 <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-web</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency>
- <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-beans</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency>
-	 <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-context</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency>
-	 <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-aop</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency>
-	 <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-context-support</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency>
-	 <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-tx</artifactId>
-	   <version>${spring.version}</version>
- </dependency> -->
-	 <dependency>
-   <groupId>org.springframework</groupId>
-	   <artifactId>spring-orm</artifactId>
-	   <version>${spring.version}</version>
- </dependency>
-	<!-- <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-jdbc</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency> -->
-	 <dependency>
-	   <groupId>org.springframework</groupId>
-	   <artifactId>spring-test</artifactId>
-	   <version>${spring.version}</version>
-	 </dependency>
-
-
-<dependency>
-            <groupId>com.trg</groupId>
-            <artifactId>trg-dao</artifactId>
-      <version>0.5.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.trg</groupId>
-            <artifactId>trg-search-jpa-hibernate</artifactId>
-      <version>0.5.1</version>
-        </dependency>
-
-    <dependency>
-        <groupId>com.thoughtworks.xstream</groupId>
-        <artifactId>xstream</artifactId>
-        <version>1.3.1</version>
-    </dependency>
-
-<!-- HSQLB -->
-		 <dependency>
-    <groupId>hsqldb</groupId>
-    <artifactId>hsqldb</artifactId>
-    <scope>test</scope>
-    <version>1.8.0.7</version>
-</dependency>
-
-<!-- log4j -->
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.12</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-logging</groupId>
-        <artifactId>commons-logging</artifactId>
-        <version>1.1.1</version>
-      </dependency>
-
-
-
- <dependency>
-  <groupId>cglib</groupId> 
-  <artifactId>cglib-nodep</artifactId> 
-  <version>2.1_3</version> 
-  </dependency> 
-
-
-  <dependency>
- <groupId>asm</groupId> 
-  <artifactId>asm-attrs</artifactId> 
-  <version>2.2.3</version> 
-  </dependency> 
-  <dependency>
-  <groupId>asm</groupId> 
-  <artifactId>asm</artifactId> 
-  <version>2.2.3</version> 
-  </dependency>
-
 
 
         </dependencies>
@@ -598,9 +427,9 @@
     <!--     Modules for the build in approximate dependency order   -->
     <!-- =========================================================== -->
     <modules>
-        <module>gb-actions-figis</module>
-        <module>gb-application-figis</module>
-       <module>gb-persistence-figis</module>
+        <module>persistence</module>
+        <module>ie-services</module>
+        
     </modules>
     
     <distributionManagement>

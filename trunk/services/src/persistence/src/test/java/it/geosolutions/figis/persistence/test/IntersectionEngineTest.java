@@ -1,32 +1,23 @@
-package it.geosolutions.geobatch.intersection.test;
+package it.geosolutions.figis.persistence.test;
 
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 
-import it.geosolutions.geobatch.figis.intersection.dao.ConfigDao;
-import it.geosolutions.geobatch.figis.intersection.dao.IntersectionDao;
-import it.geosolutions.geobatch.figis.intersection.dao.daoImpl.ConfigDaoImpl;
-import it.geosolutions.geobatch.figis.intersection.dao.daoImpl.IntersectionDaoImpl;
-import it.geosolutions.geobatch.figis.intersection.model.Config;
-import it.geosolutions.geobatch.figis.intersection.model.ConfigXStreamMapper;
-import it.geosolutions.geobatch.figis.intersection.model.DB;
-import it.geosolutions.geobatch.figis.intersection.model.Geoserver;
-import it.geosolutions.geobatch.figis.intersection.model.Global;
-import it.geosolutions.geobatch.figis.intersection.model.Intersection;
-import it.geosolutions.geobatch.figis.intersection.model.Intersection.Status;
+import it.geosolutions.figis.persistence.dao.ConfigDao;
+import it.geosolutions.figis.persistence.dao.IntersectionDao;
+import it.geosolutions.figis.persistence.model.Config;
+import it.geosolutions.figis.persistence.model.Global;
+import it.geosolutions.figis.persistence.model.Intersection;
+import it.geosolutions.figis.persistence.model.Intersection.Status;
 
 
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
-import org.hibernate.Transaction;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

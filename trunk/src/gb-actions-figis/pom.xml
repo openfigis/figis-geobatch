@@ -1,129 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-      =======================================================================
-        Maven Project Configuration File
-
-        GeoSolutions GeoBatch Project
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        GeoSolutions GeoBatch Project                                                    
             http://geobatch.codehaus.org
-      =======================================================================
--->
+                                                                                            
+        Version: $Id: pom.xml 329 2011-06-14 13:00:49Z ccancellieri $              
+     ======================================================================= -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>it.geosolutions.geobatch.figis</groupId>
-	<artifactId>gb-figis</artifactId>
-        <version>0.1-SNAPSHOT</version>
-    </parent>
-
-    <!-- =========================================================== -->
-    <!--     Module Description                                      -->
-    <!-- =========================================================== -->
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
     <groupId>it.geosolutions.geobatch.figis</groupId>
-    <artifactId>gb-actions-figis</artifactId>
+    <artifactId>gb-figis</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+  </parent>
 
-    <name>GeoBatch actions</name>
-    <description>GeoSolutions GeoBatch actions.</description>
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>it.geosolutions.geobatch.figis</groupId>
+  <artifactId>gb-action-figis</artifactId>
+  <packaging>jar</packaging>
+  <name>GeoBatch action: intersection</name>
+  <url>http://www.geo-solutions.it/maven_reports/gb/</url><!--<url>flowmanagers/</url>-->
+  
+  <scm>
+    <connection>
+      scm:svn:http://svn.geotools.org/geotools/trunk/gt/modules/<!--flowmanagers-->
+    </connection>
+    <url>http://svn.geotools.org/geotools/trunk/gt/modules/<!--flowmanagers--></url>
+  </scm>
+  
+  <description>
+    GeoSolutions GeoBatch Action: intersection.
+  </description>
 
-    <url>http://www.geo-solutions.it/maven_reports/gb/flow-managers/</url>
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-    <scm>
-        <connection>
-            scm:svn:http://svn.geotools.org/geotools/trunk/gt/modules/flow-managers/
-        </connection>
-        <url>http://svn.geotools.org/geotools/trunk/gt/modules/flow-managers/</url>
-    </scm>
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+   
+	<!-- YOUR DEPENDENCIES HERE -->
+	
+	<!-- NOTE: please avoid specify version of the arctifact unless it is necessary -->
 
+ <!--    <dependency>
+  		<groupId>asm</groupId> 
+  		<artifactId>asm</artifactId> 
 
-    <licenses>
-        <license>
-            <name>Lesser General Public License (LGPL)</name>
-            <url>http://www.gnu.org/copyleft/lesser.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+  	</dependency>
+ 	<dependency>
+  		<groupId>cglib</groupId> 
+  		<artifactId>cglib-nodep</artifactId>
 
-    <dependencies>
+  	</dependency> -->
+		
+	<!-- GeoBatch CORE -->
+ 	<dependency>
+	  	<groupId>it.geosolutions.geobatch.figis</groupId>
+  		<artifactId>gb-persistence-figis-intersection</artifactId>
+  	</dependency>   
 	<dependency>
-		<groupId>it.geosolutions.geobatch</groupId>
-		<artifactId>gb-action-tools</artifactId>
+	  <groupId>it.geosolutions.geobatch</groupId>
+	  <artifactId>gb-core-impl</artifactId>
 	</dependency>
-    </dependencies>		
+        <dependency>
+	  <groupId>it.geosolutions.geobatch</groupId>
+	  <artifactId>gb-fs-catalog</artifactId>
+        </dependency>
+	
+	<!-- tools -->       
+	<dependency>
+	  <groupId>it.geosolutions.geobatch</groupId>
+	  <artifactId>gb-action-tools</artifactId>
+	</dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+	<!--  geotools process -->
+ <!--    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-process-feature</artifactId>
+    </dependency>
+        <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-process-raster</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-process</artifactId>
+    </dependency>   
+   
+ -->
 
-                <inherited>true</inherited>
-
-                <executions>
-                    <!-- Remove the flowdata files from the base jar ========-->
-                    <execution>
-                        <!--
-                          setting the phase as prep-pack is the only way I::etj found
-                          to have the excludes work.
-                          Once the basic jar is created with the exclusions,
-                          the jar will not be rebuilt in the jar:jar phase.
-
-                          This exclusion will work with maven 2.1.0 but not with 2.0.9 or 2.0.10.
-                        -->
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>data/</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-
-                    <!-- Creates a jar containing only the flowdata files ===-->
-                    <execution>
-                        <id>packFlowData</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>flowdata</classifier>
-                            <includes>
-                                <include>data/**</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-        </plugins>
-    </build>
-
-    <!-- =========================================================== -->
-    <!--     Modules for the build in approximate dependency order   -->
-    <!-- =========================================================== -->
-    <profiles>
-    
-
-        <profile>
-            <id>intersection</id>
-            <activation>
-                <property>
-                    <name>all</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <modules>
-                <module>intersection</module>
-            </modules>
-        </profile>
-
-    </profiles>
-    
+		
+  </dependencies>
 </project>

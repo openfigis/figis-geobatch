@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+   <parent>
+    <groupId>it.geosolutions</groupId>
+    <artifactId>figis</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+ 
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>it.geosolutions.figis</groupId>
+  <artifactId>ie-services</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>ie-services Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+   <dependency>
+     <groupId>it.geosolutions.figis</groupId>
+     <artifactId>persistence</artifactId>
+     <version>0.1-SNAPSHOT</version>
+   </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- CXF -->
+    <dependency>
+	<groupId>org.apache.cxf</groupId>
+	<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+	<version>2.2.12</version>
+</dependency>
+<dependency>
+      <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.5.6</version>
+</dependency>
+    
+  </dependencies>
+  <build>
+    <finalName>ie-services</finalName>
+      <plugins>
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <source>1.6</source>
+        <target>1.6</target>
+    </configuration>
+</plugin>
+<!-- <plugin>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>tomcat-maven-plugin</artifactId>
+	<version>1.0</version>
+	<executions>
+		<execution>
+			<phase>pre-integration-test</phase>
+			<goals>
+				<goal>run-war</goal>
+			</goals>
+			<configuration>
+				<port>8080</port>
+				<path>/cxf-rest</path>
+				<warFile>
+					${project.basedir}/target/${project.build.finalName}.war
+    			</warFile>
+				<fork>true</fork>
+			</configuration>
+		</execution>
+	</executions>
+</plugin>-->
+    <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+    </plugin>
+
+  
+  </plugins>
+  </build>
+  
+
+  
+</project>

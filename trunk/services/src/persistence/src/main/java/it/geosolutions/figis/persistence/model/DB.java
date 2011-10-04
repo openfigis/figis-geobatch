@@ -1,4 +1,4 @@
-package it.geosolutions.geobatch.figis.intersection.model;
+package it.geosolutions.figis.persistence.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 

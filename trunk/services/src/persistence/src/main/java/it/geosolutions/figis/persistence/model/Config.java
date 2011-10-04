@@ -1,4 +1,4 @@
-package it.geosolutions.geobatch.figis.intersection.model;
+package it.geosolutions.figis.persistence.model;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -6,18 +6,19 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
 import com.thoughtworks.xstream.annotations.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
 @Table(name = "CONFIG")
 @XStreamAlias("ie-config")
 //@PersistenceUnit(name="Config")
+@XmlRootElement(name = "config")
 public class Config {
 	
 	@Id

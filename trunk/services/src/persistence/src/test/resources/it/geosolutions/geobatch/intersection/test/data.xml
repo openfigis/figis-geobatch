@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ie-config updateVersion="1">
+	<global>
+		<!-- {mandatory} The parameters of the target GeoServer -->
+		<geoserver>
+			<geoserverUrl>http://figis02.fao.org:8484/figis/geoserver</geoserverUrl>
+			<geoserverUsername>admin</geoserverUsername>
+			<geoserverPassword>abramisbrama</geoserverPassword>
+		</geoserver>
+		<db>
+			<database>${GLOBAL.DB_DATABASE}</database>
+			<schema>${GLOBAL.CATALOG_SCHEMA}</schema>
+			<user>${GLOBAL.CATALOG_USER}</user>
+			<password>${GLOBAL.CATALOG_PASSWORD}</password>
+			<port>${GLOBAL.DB_PORT}</port>
+			<host>${GLOBAL.DB_SERVER}</host>
+		</db>		
+	</global>
+<intersections>
+		<intersection mask="true" force="true" preserveTrgGeom="false">
+			<srcLayer>fifao:EEZ</srcLayer>
+			<trgLayer>fifao:FAO_MAJOR</trgLayer>
+			<srcCodeField>eez</srcCodeField>
+			<trgCodeField>fao_area_code</trgCodeField>
+			<maskLayer>fifao:UN_CONTINENTS</maskLayer>
+			<areaCRS>EPSG:54012</areaCRS>
+		</intersection>
+</intersections>
+</ie-config>
