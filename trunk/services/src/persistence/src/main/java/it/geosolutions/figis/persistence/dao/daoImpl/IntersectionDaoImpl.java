@@ -1,108 +1,39 @@
 package it.geosolutions.figis.persistence.dao.daoImpl;
+/*****************
+ * The implementation of the IntersectionDao interface
+ */
 
-import java.util.List;
-
-
-import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
-
 import it.geosolutions.figis.persistence.dao.IntersectionDao;
-import it.geosolutions.figis.persistence.model.Intersection;
+import it.geosolutions.figis.model.Intersection;
 
- @Transactional
+@Transactional
 public class IntersectionDaoImpl extends BaseDAO<Intersection, Long> implements IntersectionDao{
 
-
-	
-	public IntersectionDaoImpl() {
+     public IntersectionDaoImpl() {
 		
-	}
+     }
 	
-	
-	
+    /***********
+     * Save a new Intersection instance into the DB
+     * @param entity the new Intersection instance
+     * @return the saved Intersection instance with the assigned identifier
+     */
+    @Override
+    public Intersection save(Intersection entity) {
+            // TODO Auto-generated method stub
+            return super.save(entity);
+    }
 
-	@Override
-	public Intersection save(Intersection entity) {
-		// TODO Auto-generated method stub
-		return super.save(entity);
-	}
-
+    /************************
+     * Delete an Intersection instance from the DB
+     * @param entity the instance to delete
+     * @return true if deletion has success, false otheriwse
+     */
     @Override
     public boolean remove(Intersection entity) {
         return super.remove(entity);
     }
 
 
-	public boolean clean() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean force(Intersection intersection) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void insertIntersection(List<Intersection> intersections) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Intersection lookUp(Intersection intersection) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void insert(Intersection intersection) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public List<Intersection> getAllIntersections() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-		
-/*
-	public boolean clean() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean force(Intersection intersection) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void insertIntersection(List<Intersection> intersections) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Intersection lookUp(Intersection intersection) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public void insert(Intersection intersection) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	public List<Intersection> getAllIntersections() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public boolean remove(Intersection intersection) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-*/
 }

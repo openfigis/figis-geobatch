@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="it.geosolutions.figis.model.Config" table="CONFIG">
+     <id name="configId" column="ID" unsaved-value="-1">
+         <generator class="native"/>
+     </id>
+     <property column="UPDATE_VERSION" name="updateVersion" type="int"/>
+<!--<property column="CLEAN" name="clean" type="java.lang.Boolean"/>
+<component name="global" class="it.geosolutions.figis.model.Global">
+    <component name="geoserver" class="it.geosolutions.figis.model.Geoserver">
+        <property column="GEOSERVER_URL" name="geoserverUrl" type="java.lang.String"/>
+        <property column="GEOSERVER_USERNAME" name="geoserverUsername" type="java.lang.String"/>
+        <property column="GEOSERVER_PASSWORD" name="geoserverPassword" type="java.lang.String"/>
+    </component>
+    <component name="db" class="it.geosolutions.figis.model.DB">
+            <property column="DATABASE" name="database" type="java.lang.String"/>
+            <property column="SCHEMA" name="schema" type="java.lang.String"/>
+            <property column="USER" name="user" type="java.lang.String"/>
+            <property column="PASSWORD" name="password" type="java.lang.String"/>
+            <property column="PORT" name="port" type="java.lang.String"/>
+            <property column="HOST" name="host" type="java.lang.String"/>
+    </component>
+</component> -->
+
+
+  </class>
+</hibernate-mapping>

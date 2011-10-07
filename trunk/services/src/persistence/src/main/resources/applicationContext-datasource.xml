@@ -17,14 +17,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
         <bean id="ie-entityManagerFactory"
                 class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-                <property name="persistenceUnitName" value="ie-units" />
-                <property name="persistenceXmlLocation" value="classpath:/persistence.xml" />
+
                 <property name="dataSource" ref="ie-dataSource" />
                 <property name="loadTimeWeaver">
                         <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
                 </property>
                 <property name="jpaVendorAdapter" ref="ie-vendorAdapter" />
+                <property name="persistenceUnitName" value="ie-units" />
+                <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" />
+
         </bean>
+
 
         <bean id="ie-vendorAdapter"
                 class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
@@ -33,7 +36,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <property name="generateDdl" value="true" />
         </bean>
 
-        <bean id="ie-transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+       <bean id="ie-transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
                 <property name="entityManagerFactory" ref="ie-entityManagerFactory" />
         </bean>
 

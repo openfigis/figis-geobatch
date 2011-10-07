@@ -7,10 +7,10 @@ import java.util.List;
 
 import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.IntersectionDao;
-import it.geosolutions.figis.persistence.model.Config;
-import it.geosolutions.figis.persistence.model.Global;
-import it.geosolutions.figis.persistence.model.Intersection;
-import it.geosolutions.figis.persistence.model.Intersection.Status;
+import it.geosolutions.figis.model.Config;
+import it.geosolutions.figis.model.Global;
+import it.geosolutions.figis.model.Intersection;
+import it.geosolutions.figis.model.Intersection.Status;
 
 
 
@@ -25,17 +25,22 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class IntersectionEngineTest {
 	
-	final static Logger LOGGER = Logger.getLogger(IntersectionEngineTest.class.toString());
+//	final static Logger LOGGER = Logger.getLogger(IntersectionEngineTest.class.toString());
 	ConfigDao configDao = null;
 	IntersectionDao intersectionDao = null;
 	
 	@Before
 	public void setUp() throws Exception {
+            try {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         configDao = (ConfigDao) ctx.getBean("ie-configDAO");
         intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
+       // configDao.findAll();
+            }catch(Throwable e) {
+                e.printStackTrace();
+            }
 	}
-	@Test 
+	@Test
 	public void testInsertConfig() {
 	
 		  Global global = new Global();
@@ -87,7 +92,7 @@ public class IntersectionEngineTest {
 	@Test
 	public void testUpdateConfig() {
 
-		  LOGGER.info("TEST UPDATE O CONFIG");
+	
 		  Global global = new Global();
 		  global.getGeoserver().setGeoserverUsername("user");
 		  global.getGeoserver().setGeoserverPassword("oldPassword");

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
+                http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+		version="1.0">
+	<entity class="it.geosolutions.figis.model.Intersection">
+            <table name="INTERSECTION"/>
+
+           <attributes>
+                <id name="id">
+                    <generated-value strategy="AUTO"/>
+                </id>
+                <basic name="mask"/>
+                <basic name="force"/>
+                <basic name="preserveTrgGeom" />
+                <basic name="srcLayer"/>
+                <basic name="trgLayer"/>
+                <basic name="srcCodeField"/>
+                <basic name="trgCodeField"/>
+                <basic name="maskLayer"/>
+                <basic name="areaCRS"/>
+                <basic name="trgLayer"/>
+           </attributes>
+	</entity>
+
+
+	<entity class="it.geosolutions.figis.model.Config">
+            <table name="CONFIG"/>
+       
+           <attributes>
+                <id name="configId">
+                    <column name="ID"/>
+                    <generated-value strategy="AUTO"/>
+                </id>
+                <basic name="updateVersion">
+                    <column name="UPDATE_VERSION"/>
+                </basic>
+                <basic name="global" />
+                <transient name="clean"/>
+
+           </attributes>
+	</entity>
+
+        <embeddable class="it.geosolutions.figis.model.Global">
+            <attributes>
+                <basic name="geoserver" />
+                <basic name="db" />
+            </attributes>
+        </embeddable>
+
+        <embeddable class="it.geosolutions.figis.model.Geoserver">
+            <attributes>
+                <basic name="geoserverUrl">
+                    <column name="GEOSERVER_URL"/>
+                </basic>
+                <basic name="geoserverUsername">
+                    <column name="GEOSERVER_USERNAME"/>
+                </basic>
+                <basic name="geoserverPassword">
+                    <column name="GEOSERVER_PASSWORD"/>
+                </basic>
+            </attributes>
+        </embeddable>
+
+        <embeddable class="it.geosolutions.figis.model.DB">
+            <attributes>
+                <basic name="database">
+                    <column name="DATABASE"/>
+                </basic>
+                <basic name="schema">
+                    <column name="SCHEMA"/>
+                </basic>
+                <basic name="user">
+                    <column name="USER"/>
+                </basic>
+                <basic name="password">
+                    <column name="PASSWORD"/>
+                    </basic>
+                <basic name="host">
+                    <column name="HOST"/>
+                </basic>
+                <basic name="port">
+                    <column name="PORT"/>
+                </basic>
+            </attributes>
+         </embeddable>
+
+
+</entity-mappings>

@@ -2,7 +2,7 @@
 
 package it.geosolutions.figis.ws.response;
 
-import it.geosolutions.figis.persistence.model.Intersection;
+import it.geosolutions.figis.model.Intersection;
 import java.util.Collection;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
