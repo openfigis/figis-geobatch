@@ -120,8 +120,20 @@
                 </property>
             </activation>
             <modules>
-		<module>config</module>
                 <module>intersection</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>cron</id>
+            <activation>
+                <property>
+                    <name>all</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <modules>
+		<module>cron</module>
             </modules>
         </profile>
         

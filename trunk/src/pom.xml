@@ -181,7 +181,13 @@
 		<artifactId>gb-action-figis-intersection</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	    </dependency>
-	    
+	   
+	    <dependency>
+		<groupId>it.geosolutions.geobatch.figis</groupId>
+		<artifactId>gb-action-figis-cron</artifactId>
+		<version>0.1-SNAPSHOT</version>
+	    </dependency>
+ 
         </dependencies>
     </dependencyManagement>
 

@@ -19,21 +19,36 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package it.geosolutions.geobatch.figis.cron;
 
-package it.geosolutions.geobatch.figis.config;
-
-import it.geosolutions.geobatch.registry.AliasRegistrar;
-import it.geosolutions.geobatch.registry.AliasRegistry;
+import it.geosolutions.geobatch.catalog.Configuration;
+import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
 
 /**
- * Register XStream aliases for the relevant services we ship in this class.
  * 
- * @author Carlo Cancellieri <carlo.cancellieri@geo-solutions.it>
+ * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
+ * 
  */
-public class ConfigAliasRegistrar extends AliasRegistrar {
 
-    public ConfigAliasRegistrar(AliasRegistry registry) {
-        LOGGER.info(getClass().getSimpleName() + ": registering alias.");
-        registry.putAlias("ConfigConfiguration", ConfigConfiguration.class);
+public class CronConfiguration extends ActionConfiguration implements Configuration {
+
+    public CronConfiguration(String id, String name, String description) {
+        super(id, name, description);
+	// TODO INITIALIZE MEMBERS
     }
+    
+    // TODO ADD YOUR MEMBERS
+    
+    @Override
+    public CronConfiguration clone(){
+        final CronConfiguration ret=(CronConfiguration)super.clone();
+        
+		// TODO CLONE YOUR MEMBERS
+	
+		ret.setWorkingDirectory(this.getWorkingDirectory());
+        ret.setServiceID(this.getServiceID());
+        ret.setListenerConfigurations(ret.getListenerConfigurations());
+        return ret;
+    }
+
 }

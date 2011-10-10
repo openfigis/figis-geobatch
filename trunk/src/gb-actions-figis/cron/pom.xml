@@ -23,9 +23,9 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>it.geosolutions.geobatch.figis</groupId>
-  <artifactId>gb-action-figis-config</artifactId>
+  <artifactId>gb-action-figis-cron</artifactId>
   <packaging>jar</packaging>
-  <name>GeoBatch action: config</name>
+  <name>GeoBatch action: cron</name>
   <url>http://www.geo-solutions.it/maven_reports/gb/</url><!--<url>flowmanagers/</url>-->
   
   <scm>
@@ -36,7 +36,7 @@
   </scm>
   
   <description>
-    GeoSolutions GeoBatch Action: config.
+    GeoSolutions GeoBatch Action: cron.
   </description>
 
   <licenses>

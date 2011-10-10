@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package it.geosolutions.geobatch.figis.config;
+package it.geosolutions.geobatch.figis.cron;
 
 import it.geosolutions.geobatch.actions.tools.configuration.Path;
 import it.geosolutions.geobatch.catalog.impl.BaseService;
@@ -35,18 +35,18 @@ import org.slf4j.LoggerFactory;
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  * 
  */
-public class ConfigGeneratorService extends BaseService implements
-        ActionService<EventObject, ConfigConfiguration> {
+public class CronGeneratorService extends BaseService implements
+        ActionService<EventObject, CronConfiguration> {
 
-    public ConfigGeneratorService(String id, String name, String description) {
+    public CronGeneratorService(String id, String name, String description) {
         super(id, name, description);
     }
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ConfigGeneratorService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(CronGeneratorService.class);
 
-    public ConfigAction createAction(ConfigConfiguration configuration) {
+    public CronAction createAction(CronConfiguration configuration) {
         try {
-            return new ConfigAction(configuration);
+            return new CronAction(configuration);
         } catch (Exception e) {
             if (LOGGER.isInfoEnabled())
                 LOGGER.info(e.getLocalizedMessage(), e);
@@ -54,7 +54,7 @@ public class ConfigGeneratorService extends BaseService implements
         }
     }
 
-    public boolean canCreateAction(ConfigConfiguration configuration) {
+    public boolean canCreateAction(CronConfiguration configuration) {
         try {
             // absolutize working dir
             String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
@@ -63,7 +63,7 @@ public class ConfigGeneratorService extends BaseService implements
                 return true;
             } else {
                 if (LOGGER.isWarnEnabled())
-                    LOGGER.warn("ConfigGeneratorService::canCreateAction(): "
+                    LOGGER.warn("CronGeneratorService::canCreateAction(): "
                             + "unable to create action, it's not possible to get an absolute working dir.");
             }
         } catch (Throwable e) {

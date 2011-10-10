@@ -133,6 +133,22 @@
 
 	<profiles>
 		<profile>
+			<id>cron</id>
+			<activation>
+				<property>
+					<name>all</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>it.geosolutions.geobatch.figis</groupId>
+					<artifactId>gb-action-figis-cron</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	
+		<profile>
 			<id>intersection</id>
 			<activation>
 				<property>
@@ -144,6 +160,10 @@
 				<dependency>
 					<groupId>it.geosolutions.geobatch.figis</groupId>
 					<artifactId>gb-action-figis-intersection</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>it.geosolutions.geobatch.figis</groupId>
+					<artifactId>gb-action-figis-cron</artifactId>
 				</dependency>
 			</dependencies>
 			<build>
