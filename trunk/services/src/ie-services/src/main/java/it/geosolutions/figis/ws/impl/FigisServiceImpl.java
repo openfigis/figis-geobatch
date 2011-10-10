@@ -12,9 +12,9 @@ import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundDetails;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
 import it.geosolutions.figis.ws.response.Intersections;
-import java.util.Collection;
 import java.util.List;
 import javax.jws.WebService;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -73,10 +73,12 @@ public class FigisServiceImpl implements FigisService{
      *  lookup for the first returned instance of Config in the DB
      * @return a Config instance if it is present in the DB
      */
-    @Override
-    public Config existConfig() {
-        return configDao.searchUnique(null);
-    }
+/*    @Override
+    public Config existConfig()  {
+        List<Config> configs = configDao.findAll();
+        if (configs!=null && configs.size()>0) return configs.get(0);
+        return null;
+    } */
     /*************************************
      *  Returns the instance of the Intersection object having id as identifier
      * @param id the id of the Intersection object to find
@@ -85,7 +87,7 @@ public class FigisServiceImpl implements FigisService{
      */
     @Override
     public Intersection getIntersection(Long id) throws ResourceNotFoundFault{
-        intersectionDao = new IntersectionDaoImpl();
+      //  intersectionDao = new IntersectionDaoImpl();
         Intersection intersection = intersectionDao.find(id);
         if (intersection==null) {
             ResourceNotFoundDetails resourceNotFoundDetails =
@@ -121,11 +123,9 @@ public class FigisServiceImpl implements FigisService{
      * @return all the Intersection instances
      */
     @Override
-    public Intersections getAllIntersections() {
+    public List<Intersection> getAllIntersections() {
         List<Intersection> intersectionList = intersectionDao.findAll();
-        Intersections intersections = new Intersections();
-        intersections.setIntersections(intersectionList);
-        return intersections;
+        return intersectionList;
     }
     /***********************************
      * update the content of the Config instance identified by id
@@ -139,44 +139,50 @@ public class FigisServiceImpl implements FigisService{
 
         // if no config exists yet
         if (conf==null) {
+            System.out.println("**************************IL VALORE è nullo");
             insertConfig(config);
             return config.getConfigId();
         }
-
+        System.out.println("************** HO trovato l'elemento");
         // update all the fields
 
         String userName = config.getGlobal().getGeoserver().getGeoserverUsername();
-        if (userName!=null )conf.getGlobal().getGeoserver().setGeoserverUsername(userName);
+        if (userName!=null)conf.getGlobal().getGeoserver().setGeoserverUsername(userName);
 
         String url = config.getGlobal().getGeoserver().getGeoserverUrl();
-        if (url!=null) conf.getGlobal().getGeoserver().setGeoserverUrl(url);
+        if (url!=null ) conf.getGlobal().getGeoserver().setGeoserverUrl(url);
 
         String geoPassword = config.getGlobal().getGeoserver().getGeoserverPassword();
-        if (geoPassword!=null)conf.getGlobal().getGeoserver().setGeoserverPassword(geoPassword);
+        if (geoPassword!=null )conf.getGlobal().getGeoserver().setGeoserverPassword(geoPassword);
 
         String database = config.getGlobal().getDb().getDatabase();
-        if (database!=null) conf.getGlobal().getDb().setDatabase(database);
+        if (database!=null ) conf.getGlobal().getDb().setDatabase(database);
 
         String host = config.getGlobal().getDb().getHost();
-        if (host!=null) conf.getGlobal().getDb().setHost(host);
+        if (host!=null ) conf.getGlobal().getDb().setHost(host);
 
         String dbPassword = config.getGlobal().getDb().getPassword();
-        if (dbPassword!=null) conf.getGlobal().getDb().setPassword(dbPassword);
+        if (dbPassword!=null ) conf.getGlobal().getDb().setPassword(dbPassword);
 
         String port = config.getGlobal().getDb().getPort();
-        if (port!=null) conf.getGlobal().getDb().setPort(port);
+        if (port!=null ) conf.getGlobal().getDb().setPort(port);
 
         String schema = config.getGlobal().getDb().getSchema();
         if (schema!=null) conf.getGlobal().getDb().setSchema(schema);
 
         String dbUser = config.getGlobal().getDb().getUser();
-        if (dbUser!=null) conf.getGlobal().getDb().setUser(dbUser);
+        if (dbUser!=null && !dbUser.equals("")) conf.getGlobal().getDb().setUser(dbUser);
 
         conf.setUpdateVersion(config.getUpdateVersion());
         // save the updated version of the config
         configDao.save(conf);
         return conf.getConfigId();
 
+    }
+
+    @Override
+    public List<Config> getConfigs() {
+        return configDao.findAll();
     }
 
 
@@ -209,17 +215,36 @@ public class FigisServiceImpl implements FigisService{
      * @throws ResourceNotFoundFault in case no Intersection where found
      */
     @Override
-    public long updateIntersectionStatusByID(long id, Status status) throws ResourceNotFoundFault {
-        Intersection intersection = getIntersection(id);
+    public long updateIntersectionByID(long id, Intersection intersection) throws ResourceNotFoundFault {
+        Intersection inter = getIntersection(id);
 
-        if (intersection==null) {
+        if (inter==null) {
             ResourceNotFoundDetails resourceNotFoundDetails = 
                     new ResourceNotFoundDetails();
             resourceNotFoundDetails.setId(id);
             resourceNotFoundDetails.setMessage("the id's intersection does not exist");
             throw new ResourceNotFoundFault(resourceNotFoundDetails);
         }
-        intersection.setStatus(status);
+        String areaCRS = intersection.getAreaCRS();
+        if (areaCRS!=null) inter.setAreaCRS(areaCRS);
+        
+        String maskLayer = intersection.getMaskLayer();
+        if (maskLayer!=null) inter.setMaskLayer(maskLayer);
+        
+        String srcCodeField = intersection.getSrcCodeField();
+        if (srcCodeField!=null) inter.setSrcCodeField(srcCodeField);
+        
+        String srcLayer = intersection.getSrcLayer();
+        if (srcLayer!=null) inter.setSrcLayer(srcLayer);
+        
+        String trgCodeField = intersection.getTrgCodeField();
+        if (trgCodeField!=null) inter.setTrgCodeField(trgCodeField);
+        
+        String trgLayer = intersection.getTrgLayer();
+        if (trgLayer!=null) inter.setTrgLayer(trgLayer);
+        
+        Status status = intersection.getStatus();
+        if (status!=Status.NOVALUE) intersection.setStatus(status);
         intersectionDao.save(intersection);
         return intersection.getId();
     }
@@ -271,7 +296,7 @@ public class FigisServiceImpl implements FigisService{
      */
       @Override
     public boolean deleteIntersections()  {
-        Collection<Intersection> intersections = getAllIntersections().getIntersections();
+        List<Intersection> intersections = getAllIntersections();
          for (Intersection intersection: intersections) {
              try {
              boolean isDeleted = deleteIntersection(intersection.getId());

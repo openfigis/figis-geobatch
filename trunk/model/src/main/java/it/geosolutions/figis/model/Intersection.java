@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Intersection {
 	
         public enum Status{
-
+            NOVALUE(0),
             TOCOMPUTE(1),
             COMPUTED(2),
             COMPUTING(3),
@@ -34,6 +34,7 @@ public class Intersection {
              // the valueOfMethod
              public  static Status fromInt(int value) {
                  switch(value) {
+                     case 0: return NOVALUE;
                      case 1: return TOCOMPUTE;
                      case 2: return COMPUTED;
                      case 3: return COMPUTING;
@@ -45,6 +46,8 @@ public class Intersection {
 
             public String toString() {
               switch(this) {
+                case NOVALUE:
+                      return "noValue";
                 case TOCOMPUTE:
                     return "toCompute";
                 case COMPUTED:
@@ -98,7 +101,7 @@ public class Intersection {
 	@XStreamAlias("areaCRS")
 	String areaCRS;
     
-        private Status status = Status.TOCOMPUTE;
+        private Status status = Status.NOVALUE;
 
     
 	public Intersection(boolean mask, boolean force, boolean preserveTrgGeom,

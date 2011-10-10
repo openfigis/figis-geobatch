@@ -12,6 +12,7 @@ import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
 import it.geosolutions.figis.ws.response.Intersections;
 
+import java.util.List;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.ws.rs.PUT;
@@ -30,10 +31,10 @@ public interface FigisService {
 	    @Path("/config/{id}")
 	    public Config getConfig(@PathParam("id") Long id) throws ResourceNotFoundFault;
 
+
             @GET
 	    @Path("/config/")
-	    public Config existConfig();
-
+	    public List<Config> getConfigs();
 
            @POST
            @Path("/config/")
@@ -41,8 +42,8 @@ public interface FigisService {
 
 
            @PUT
-           @Path("/config/")
-           long updateConfig(@WebParam(name = "id") long id, @WebParam(name = "Config") Config config);
+           @Path("/config/{id}")
+           long updateConfig(@PathParam("id") long id, @WebParam(name = "Config") Config config);
 
            @DELETE
            @Path("/config/{id}")
@@ -58,15 +59,15 @@ public interface FigisService {
 
             @GET
 	    @Path("/intersection/")
-	    public Intersections getAllIntersections();
+	    public List<Intersection> getAllIntersections();
 
            @POST
            @Path("/intersection/")
            public long insertIntersection(@WebParam(name = "Intersection") Intersection intersection);
 
            @PUT
-           @Path("/intersection/{id}/{status}")
-           public long updateIntersectionStatusByID(@WebParam(name = "id") long id, @WebParam(name = "status") Status status) throws ResourceNotFoundFault;
+           @Path("/intersection/{id}")
+           public long updateIntersectionByID(@PathParam("id") long id, @WebParam(name = "Intersection") Intersection intersection) throws ResourceNotFoundFault;
 
            @DELETE
            @Path("/intersection/{id}")

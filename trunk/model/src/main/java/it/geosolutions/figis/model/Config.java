@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Config {
     private long configId;
     
-    @XStreamAsAttribute
+    @XStreamAlias("updateVersion")
     private int updateVersion;
 	
     @XStreamAlias("clean")
