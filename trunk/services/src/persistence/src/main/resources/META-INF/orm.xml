@@ -37,6 +37,7 @@
                     <column name="UPDATE_VERSION"/>
                 </basic>
                 <basic name="global" />
+                <transient name="intersections"/>                
                 <transient name="clean"/>
 
            </attributes>

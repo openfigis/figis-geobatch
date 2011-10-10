@@ -120,6 +120,7 @@
                 </property>
             </activation>
             <modules>
+		<module>config</module>
                 <module>intersection</module>
             </modules>
         </profile>

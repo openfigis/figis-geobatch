@@ -24,7 +24,7 @@ public class Config {
     private Global global;
 
     @XStreamImplicit(itemFieldName="intersection")
-    private List<Intersection> intersections;	
+    public List<Intersection> intersections;	
 	
 	
     public Config() {
@@ -67,4 +67,8 @@ public class Config {
     public void setUpdateVersion(int updateVersion) {
             this.updateVersion = updateVersion;
     }
+
+
+
+    
 }
