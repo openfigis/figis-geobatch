@@ -66,6 +66,14 @@
 			<groupId>it.geosolutions.geobatch</groupId>
 			<artifactId>gb-gui</artifactId>
 		</dependency>
+ <dependency>
+  <groupId>it.geosolutions.geobatch.figis</groupId> 
+  <artifactId>gb-action-figis-intersection</artifactId> 
+  </dependency>
+ <dependency>
+  <groupId>it.geosolutions.geobatch.figis</groupId> 
+  <artifactId>gb-action-figis-cron</artifactId> 
+  </dependency>
 
 		<!-- ============================== -->
 		<!-- Test: JETTY -->
@@ -160,10 +168,6 @@
 				<dependency>
 					<groupId>it.geosolutions.geobatch.figis</groupId>
 					<artifactId>gb-action-figis-intersection</artifactId>
-				</dependency>
-				<dependency>
-					<groupId>it.geosolutions.geobatch.figis</groupId>
-					<artifactId>gb-action-figis-cron</artifactId>
 				</dependency>
 			</dependencies>
 			<build>

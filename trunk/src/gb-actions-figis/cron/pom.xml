@@ -97,6 +97,12 @@
 	  <groupId>org.geotools</groupId>
 	  <artifactId>gt-process-raster</artifactId>
 	  <version>8-SNAPSHOT</version>
-    </dependency>			
+    </dependency>		
+    <!--  geoserver manager  -->
+      <dependency>
+    <groupId>it.geosolutions</groupId>
+    <artifactId>geoserver-manager</artifactId>
+    <version>1.2-SNAPSHOT</version>
+  </dependency>	
   </dependencies>
 </project>
