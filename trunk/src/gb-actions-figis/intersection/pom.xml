@@ -71,6 +71,19 @@
 	  <groupId>it.geosolutions.geobatch</groupId>
 	  <artifactId>gb-action-tools</artifactId>
 	</dependency>
+	
+	    <!-- model -->
+    <dependency>
+	  <groupId>it.geosolutions.figis</groupId>
+	  <artifactId>model</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <!-- HTTP request for the model -->
+    <dependency>
+	  <groupId>it.geosolutions.figis</groupId>
+	  <artifactId>requester</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+    </dependency>	
 		
   </dependencies>
 </project>

@@ -37,6 +37,30 @@ public class Global {
 	public void setDb(DB db) {
 		this.db = db;
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Global other = (Global) obj;
+        if (this.geoserver != other.geoserver && (this.geoserver == null || !this.geoserver.equals(other.geoserver))) {
+            return false;
+        }
+        if (this.db != other.db && (this.db == null || !this.db.equals(other.db))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
 	
 
 }

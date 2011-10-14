@@ -43,4 +43,31 @@ public class Geoserver {
 		this.geoserverPassword = geoserverPassword;
 	}
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Geoserver other = (Geoserver) obj;
+        if ((this.geoserverUrl == null) ? (other.geoserverUrl != null) : !this.geoserverUrl.equals(other.geoserverUrl)) {
+            return false;
+        }
+        if ((this.geoserverUsername == null) ? (other.geoserverUsername != null) : !this.geoserverUsername.equals(other.geoserverUsername)) {
+            return false;
+        }
+        if ((this.geoserverPassword == null) ? (other.geoserverPassword != null) : !this.geoserverPassword.equals(other.geoserverPassword)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
 }

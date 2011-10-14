@@ -204,6 +204,7 @@ public class FigisServiceImpl implements FigisService{
      */
     @Override
     public long insertIntersection(Intersection intersection) {
+        System.out.println("INSERT INTERSECTION "+intersection);
         intersectionDao.save(intersection);
         return intersection.getId();
     }
@@ -243,10 +244,16 @@ public class FigisServiceImpl implements FigisService{
         String trgLayer = intersection.getTrgLayer();
         if (trgLayer!=null) inter.setTrgLayer(trgLayer);
         
+        inter.setForce(intersection.isForce());
+        
+        inter.setMask(intersection.isMask());
+        
+        inter.setPreserveTrgGeom(intersection.isPreserveTrgGeom());
+      
         Status status = intersection.getStatus();
-        if (status!=Status.NOVALUE) intersection.setStatus(status);
-        intersectionDao.save(intersection);
-        return intersection.getId();
+        if (status!=Status.NOVALUE) inter.setStatus(status);
+        intersectionDao.save(inter);
+        return inter.getId();
     }
 
 

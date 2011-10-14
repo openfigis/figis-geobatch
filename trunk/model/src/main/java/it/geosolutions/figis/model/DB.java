@@ -73,6 +73,42 @@ public class DB {
 		this.host = host;
 	}
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DB other = (DB) obj;
+        if ((this.database == null) ? (other.database != null) : !this.database.equals(other.database)) {
+            return false;
+        }
+        if ((this.schema == null) ? (other.schema != null) : !this.schema.equals(other.schema)) {
+            return false;
+        }
+        if ((this.user == null) ? (other.user != null) : !this.user.equals(other.user)) {
+            return false;
+        }
+        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+            return false;
+        }
+        if ((this.port == null) ? (other.port != null) : !this.port.equals(other.port)) {
+            return false;
+        }
+        if ((this.host == null) ? (other.host != null) : !this.host.equals(other.host)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
 	
 	
 }

@@ -14,9 +14,9 @@ public class IntersectionXStreamMapper {
 		BufferedReader br = null;
 		br = new BufferedReader(new FileReader(fileName));
 		xstream.aliasType("intersection", Intersection.class);
-		xstream.useAttributeFor(Intersection.class, "mask");
-		xstream.useAttributeFor(Intersection.class, "force");
-		xstream.useAttributeFor(Intersection.class, "preserveTrgGeom");
+/*		xstream.useAttributeFor(boolean.class, "mask");
+		xstream.useAttributeFor(boolean.class, "force");
+		xstream.useAttributeFor(boolean.class, "preserveTrgGeom");*/
 
 		xstream.useAttributeFor(Intersection.class, "srcLayer");
                 xstream.useAttributeFor(Intersection.class, "trgLayer");

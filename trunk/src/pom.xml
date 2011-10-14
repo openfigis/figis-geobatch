@@ -187,6 +187,7 @@
 		<artifactId>gb-action-figis-cron</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	    </dependency>
+		
  
         </dependencies>
     </dependencyManagement>
@@ -200,6 +201,8 @@
       NOTE: do not specify version here unless it is necessary/required
       NOTE: in this case I suggest to use the dependencyManagement block above
       -->
+    <!--  geoserver manager  -->
+
     </dependencies>
 
     <build>

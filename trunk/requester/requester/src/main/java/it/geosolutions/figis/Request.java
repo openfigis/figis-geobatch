@@ -40,9 +40,9 @@ public class Request {
         xStreamIntersection = new XStream(new DomDriver());
         xStreamIntersection.aliasType("intersections", List.class);
         xStreamIntersection.aliasType("intersection", Intersection.class);
-        xStreamIntersection.useAttributeFor(Intersection.class, "mask");
-        xStreamIntersection.useAttributeFor(Intersection.class, "force");
-        xStreamIntersection.useAttributeFor(Intersection.class, "preserveTrgGeom");
+/*        xStreamIntersection.useAttributeFor(boolean.class, "mask");
+        xStreamIntersection.useAttributeFor(boolean.class, "force");
+        xStreamIntersection.useAttributeFor(boolean.class, "preserveTrgGeom");*/
     }
 
     /***************

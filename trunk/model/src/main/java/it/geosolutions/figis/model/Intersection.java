@@ -120,6 +120,37 @@ public class Intersection {
 		this.status = status;
 	}
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Intersection other = (Intersection) obj;
+        if ((this.srcLayer == null) ? (other.srcLayer != null) : !this.srcLayer.equals(other.srcLayer)) {
+            return false;
+        }
+        if ((this.trgLayer == null) ? (other.trgLayer != null) : !this.trgLayer.equals(other.trgLayer)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+
+ 
+
+
 
 
 	public Intersection() {
@@ -199,6 +230,11 @@ public class Intersection {
 	public void setAreaCRS(String areaCRS) {
 		this.areaCRS = areaCRS;
 	}
+
+    @Override
+    public String toString() {
+        return "Intersection{" + "id=" + id + ", mask=" + mask + ", force=" + force + ", preserveTrgGeom=" + preserveTrgGeom + ", srcLayer=" + srcLayer + ", trgLayer=" + trgLayer + ", srcCodeField=" + srcCodeField + ", trgCodeField=" + trgCodeField + ", maskLayer=" + maskLayer + ", areaCRS=" + areaCRS + ", status=" + status + '}';
+    }
 
 	
 	

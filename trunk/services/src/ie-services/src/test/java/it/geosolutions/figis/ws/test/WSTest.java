@@ -49,7 +49,6 @@ public class WSTest extends TestCase{
               config.setUpdateVersion(1);
               config.setGlobal(global);
               long id = figisService.insertConfig(config);
-                System.out.println("CONFIG ID INSERT "+id);
               assertTrue(id>=0);
   	}
 

@@ -68,6 +68,36 @@ public class Config {
             this.updateVersion = updateVersion;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Config other = (Config) obj;
+        if (this.configId != other.configId) {
+            return false;
+        }
+        if (this.updateVersion != other.updateVersion) {
+            return false;
+        }
+        if (this.clean != other.clean) {
+            return false;
+        }
+        if (this.global != other.global && (this.global == null || !this.global.equals(other.global))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
 
 
     
