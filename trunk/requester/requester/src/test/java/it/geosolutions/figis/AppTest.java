@@ -14,7 +14,7 @@ public class AppTest
     extends TestCase
 {
     Config config = new Config();
-    String host = "http://localhost:8080";
+    String host = "http://localhost:9999";
     
     @Override
     protected void setUp()  {
@@ -37,7 +37,7 @@ public class AppTest
            e.printStackTrace();
        }
     }
-/*
+
 public void testDeleteConfig() throws java.net.MalformedURLException{
     System.out.println("Start testDeleteConfig");
     Request.initConfig();
@@ -63,15 +63,15 @@ public void testUpdateConfig() throws java.net.MalformedURLException {
     System.out.println("testUpdateConfig");
     Config upConfig=new Config();
     // init updating fields
-    String newGSpassword = "newadmin";
-    String newGSusername = "newadmin";
-    String newGSURL = "newlocalhost";
-    String newdatabase = "newwtrial";
-    String newHost = "newlocalhost";
-    String newSBpassword  = "newdbpassword";
-    String newPort = "9090";
-    String newSchema = "newEmpty";
-    String newDBuser = "newdbuser";
+    String newGSpassword = "geoserver";
+    String newGSusername = "admin";
+    String newGSURL = "localhost:8080";
+    String newdatabase = "FIDEVQC";
+    String newHost = "localhost";
+    String newSBpassword  = "FIGIS";
+    String newPort = "1521";
+    String newSchema = "FIGIS_GIS";
+    String newDBuser = "FIGIS_GIS";
     
     // new update object
       Global global = new Global();
@@ -83,6 +83,7 @@ public void testUpdateConfig() throws java.net.MalformedURLException {
       global.getDb().setPassword(newSBpassword);
       global.getDb().setPort(newPort);
       global.getDb().setSchema(newSchema);
+      global.getDb().setUser(newDBuser);
       upConfig.setUpdateVersion(2);
       upConfig.setGlobal(global);
       
@@ -94,14 +95,14 @@ public void testUpdateConfig() throws java.net.MalformedURLException {
       assertTrue(confAfterUpdate.getGlobal().getGeoserver().getGeoserverPassword().equals(newGSpassword));
       assertTrue(confAfterUpdate.getGlobal().getGeoserver().getGeoserverUrl().equals(newGSURL));
       assertTrue(confAfterUpdate.getGlobal().getDb().getDatabase().equals(newdatabase));
-      assertTrue(confAfterUpdate.getGlobal().getDb().getUser().equals("dbuser"));
+      assertTrue(confAfterUpdate.getGlobal().getDb().getUser().equals("FIGIS_GIS"));
 }
-*/
+
 
   public void testListAndDeleteIntersections() throws MalformedURLException{
       try {
           Request.initIntersection();
-      Intersection int1 = new Intersection(true, true, true,"srcLayer", "trgLayer", "srcCodeField",
+      Intersection int1 = new Intersection(false, true, true,"srcLayer", "trgLayer", "srcCodeField",
             "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
       Request.insertIntersection(host, int1);
           System.out.println("AFTER INTERSECTION");
@@ -132,11 +133,11 @@ public void testUpdateConfig() throws java.net.MalformedURLException {
   public void testDeleteAllandUpdate() throws MalformedURLException{
       try {
       assertTrue(Request.deleteAllIntersections(host));
-      Intersection int1 = new Intersection(true, true, true,"srcLayer", "trgLayer", "srcCodeField",
-            "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
+      Intersection int1 = new Intersection(false, true, true,"sf:restricted", "sf:restricted", "cat",
+            "cat", "maskLayer", "areaCRS", Status.TOCOMPUTE);
       long id = Request.insertIntersection(host, int1);
-      Intersection int2 = new Intersection(false, true, true,"srcLayer1", "trgLayer2", "srcCodeField",
-            "trgCodeField", "maskLayer", "areaCRS", Status.COMPUTED);     
+      Intersection int2 = new Intersection(false, true, true,"sf:restricted", "sf:restricted", "cat",
+            "cat", "maskLayer", "areaCRS", Status.TOCOMPUTE);
       Request.updateIntersectionById(host, id, int2);
       } catch(Throwable e){
           e.printStackTrace();

@@ -4,12 +4,10 @@ package it.geosolutions.figis;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import it.geosolutions.figis.model.Config;
-import it.geosolutions.figis.model.Configs;
 import it.geosolutions.figis.model.DB;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Global;
 import it.geosolutions.figis.model.Intersection;
-import it.geosolutions.figis.model.Intersection.Status;
 import java.util.List;
 /**************************
  * @description this class allows to query the REST interface of the it.geosloutions.figis.model classes
@@ -53,11 +51,10 @@ public class Request {
      */
     public static  List<Config> getConfigs(String host) throws java.net.MalformedURLException{
         String result = HTTPUtils.get(host+"/ie-services/config/", null, null);
-        System.out.println("RESULT GETCONFIG"+result);
+     //   System.out.println("RESULT GETCONFIG"+result);
         if (result==null) return null;
-        System.out.println("Sono qui");
         List<Config> configs = (List<Config>)xStreamConfig.fromXML(result); 
-        System.out.println("LA SIZE E'"+configs.size());
+        //System.out.println("LA SIZE E'"+configs.size());
         return configs;
     }
    /************************

@@ -36,10 +36,19 @@ public class CronConfiguration extends ActionConfiguration implements Configurat
         super(id, name, description);
 	// TODO INITIALIZE MEMBERS
     }
+    String persistencyHost = null;
     
     // TODO ADD YOUR MEMBERS
     
-    @Override
+    public String getPersistencyHost() {
+		return persistencyHost;
+	}
+
+	public void setPersistencyHost(String persistencyHost) {
+		this.persistencyHost = persistencyHost;
+	}
+
+	@Override
     public CronConfiguration clone(){
         final CronConfiguration ret=(CronConfiguration)super.clone();
         

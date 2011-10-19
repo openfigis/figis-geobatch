@@ -65,7 +65,15 @@
 	  <groupId>it.geosolutions.geobatch</groupId>
 	  <artifactId>gb-fs-catalog</artifactId>
         </dependency>
-	
+	<!--  for tests only -->
+	 <dependency>
+	   <groupId>it.geosolutions.geobatch.figis</groupId>
+	   <artifactId>gb-action-figis-intersection</artifactId>
+	   <version>0.1-SNAPSHOT</version>
+	   <scope>test</scope>
+    </dependency>
+    
+    
 	<!-- tools -->       
 	<dependency>
 	  <groupId>it.geosolutions.geobatch</groupId>
@@ -97,12 +105,30 @@
 	  <groupId>org.geotools</groupId>
 	  <artifactId>gt-process-raster</artifactId>
 	  <version>8-SNAPSHOT</version>
-    </dependency>	
-    <dependency>
-  <groupId>org.geotools</groupId>
-  <artifactId>gt-wfs</artifactId>
-  <version>${gt.version}</version>
+    </dependency>
+	<dependency>
+	  <groupId>org.geotools.jdbc</groupId> 
+	  <artifactId>gt-jdbc-oracle</artifactId> 
+	  <version>${gt.version}</version> 
+  	</dependency>
+<dependency>
+    <groupId>com.oracle</groupId>
+    <artifactId>oracle</artifactId>
+    <version>10.2.0.2.0</version>
 </dependency>
+  
+  	    <dependency>
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-epsg-hsql</artifactId>
+  <version>8-SNAPSHOT</version>
+</dependency>
+	
+       <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-wfs</artifactId>
+            
+            <version>8-SNAPSHOT</version>
+        </dependency>
     
     <dependency>
   <groupId>org.geotools.xsd</groupId> 
@@ -125,7 +151,7 @@
   <artifactId>net.opengis.ows</artifactId> 
   <version>${gt.version}</version> 
   </dependency>
-  
+
     
     	
     <!--  geoserver manager  -->
@@ -137,4 +163,5 @@
 
   
   </dependencies>
+
 </project>

@@ -18,21 +18,38 @@ import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
+
 import it.geosolutions.geobatch.figis.cron.CronAction;
 import it.geosolutions.geobatch.figis.cron.CronConfiguration;
+import it.geosolutions.geobatch.figis.cron.OracleDataStoreManager;
 
+import org.geotools.data.FeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.referencing.crs.DefaultGeocentricCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 public class TestCron extends TestCase{
 
 	private CronAction cronAction = null;
 	private Geoserver geoserver = null;
-	private final String host = "http://localhost:8080";
+	private final String host = "http://localhost:9999";
 	
+/*	@Test
+	public void testOracle() {
+		OracleDataStoreManager dataStore = new OracleDataStoreManager();
+	}*/
+	
+
 	@Override
 	protected void setUp() throws Exception {
 		File inputFile =null;
@@ -47,6 +64,8 @@ public class TestCron extends TestCase{
 		CronConfiguration cronConfiguration = new CronConfiguration("id", "name", " description");
 		cronAction = new CronAction(cronConfiguration);
 		
+		//IntersectionAction intersectionAction = new IntersectionAction("id", "name", " description");
+		
 		geoserver = new Geoserver();
 		geoserver.setGeoserverUrl("localhost:8080");
 		geoserver.setGeoserverUsername("admin");
@@ -56,7 +75,7 @@ public class TestCron extends TestCase{
 		Request.initIntersection();
 	}
 	
-	
+	/*
 	
 	public void testUpdate() throws MalformedURLException {
 		//delete the old status of the DB
@@ -90,35 +109,75 @@ public class TestCron extends TestCase{
 	    
 		
 	}
-/*
+*/
 	@Test
-	public void test() {
-
+	public void test() throws Exception {
+		System.out.println("test");
 		
-	    Intersection intersection = new Intersection(false, true, false,"restricted", "roads", "cat",
-	              "label", "sf:restricted", "areaCRS", Status.TOCOMPUTE);
+	    Intersection intersection = new Intersection(false, false, false,"sf:restricted", "sf:restricted", "cat",
+	              "cat", "sf:restricted", "areaCRS", Status.TOCOMPUTE);
 
 
 		SimpleFeatureCollection result = cronAction.intersection(intersection);
-
 		List<AttributeDescriptor> descriptors = result.getSchema().getAttributeDescriptors();
-		SimpleFeatureCollection fstCollection = null;
-		SimpleFeatureCollection sndCollection = null;
-		boolean split = cronAction.split(result, fstCollection, sndCollection);
-		
-		SimpleFeatureIterator sfi = fstCollection.features();
+		SimpleFeatureIterator sfi = result.features();
 		while(sfi.hasNext()) {
 			SimpleFeature sf = sfi.next();
 			for (int i= 0; i<sf.getAttributeCount();i++) {
 
-				System.out.println(fstCollection.getSchema().getAttributeDescriptors().get(i).getLocalName()+" "+sf.getAttribute(i));
+				System.out.println(descriptors.get(i).getLocalName()+" "+sf.getAttribute(i));
+			}
+
+			//System.out.println("\n");
+		}
+
+		 
+
+		System.out.println("ORACLE STA PARTENDO");
+		SimpleFeatureType forced = FeatureTypes.transform(result.getSchema(), DefaultGeographicCRS.WGS84);
+		OracleDataStoreManager dataStore = new OracleDataStoreManager(result, "sf:restricted", "sf:restricted", "cat",
+	              "cat","localhost",1521,"FIDEVQC","FIGIS_GIS","FIGIS_GIS","FIGIS");
+		
+//		insertIntoList();
+//		saveToTemp(fstColleciton);
+//		saveToTemp(sndColleciton);
+		
+	//	System.out.println("RETURN VALUE"+dataStore.saveToTemp(dataStore.orclDataStore, sndCollection, "STATISTICAL_TMP_TABLE"));
+		
+
+/*		OracleDataStoreManager dataStore = new OracleDataStoreManager(fstCollection, sndCollection,"localhost",8080,"FIDEVQC","FIGIS_GIS","admin","geoserver");
+		 sfi = sndCollection.features();
+		while(sfi.hasNext()) {
+			SimpleFeature sf = sfi.next();
+			for (int i= 0; i<sf.getAttributeCount();i++) {
+
+				System.out.println(sndCollection.getSchema().getAttributeDescriptors().get(i).getLocalName()+" "+sf.getAttribute(i));
 			}
 
 			System.out.println("\n");
 		}
-		System.out.println("END");
+		System.out.println("END");*/
 
 		
+	}
+	
+/*	@Test
+	public void testOracleConnection() {
+		SimpleFeatureCollection fstCollection = null;
+		SimpleFeatureCollection sndCollection = null;
+
+		try {
+			OracleDataStoreManager dataStore = new OracleDataStoreManager(fstCollection, sndCollection,"restricted", "roads", "cat",
+		              "label","localhost",1521,"FIDEVQC","FIGIS_GIS","FIGIS_GIS","FIGIS");
+			assertTrue(dataStore!=null);
+
+		//	FeatureCollection<SimpleFeatureType, SimpleFeature> fc = dataStore.getFeatures(stringUrl, LayerIntersector.spatialName);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 	}*/
 
 }

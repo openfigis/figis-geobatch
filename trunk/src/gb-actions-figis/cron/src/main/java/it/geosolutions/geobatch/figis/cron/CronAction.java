@@ -45,8 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-//import org.geotools.data.wfs.WFSDataStoreFactory;
-//import org.geotools.data.wfs.v1_0_0.WFS_1_0_0_DataStore;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureSource;
@@ -62,6 +61,7 @@ import org.geotools.process.feature.gs.QueryProcess;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,10 +89,12 @@ public class CronAction extends BaseAction<EventObject> {
      */
     private final CronConfiguration conf;
     private final String workspace="sf";
+    private String host = null;
     
     public CronAction(CronConfiguration configuration) {
         super(configuration);
         conf = configuration;
+        host = conf.getPersistencyHost();
         //TODO initialize your members here
     }
  
@@ -114,7 +116,8 @@ public class CronAction extends BaseAction<EventObject> {
     private WFS_1_0_0_DataStore geoServerConnection(Geoserver geoserver) throws IOException {
     	try {
     	  // initialize connection parameters
-    	   URL url = new URL("http://"+geoserver.getGeoserverUrl()+"/geoserver/wfs?REQUEST=GetCapabilities&version=1.0.0");
+    	   URL url = new URL("http://"+geoserver.getGeoserverUrl()+"/geoserver/ows?service=wfs&version=1.0.0&request=GetCapabilities");
+    	   
 	   	   Map<Object, Serializable> m = new HashMap<Object, Serializable>();
 	   	   m.put(WFSDataStoreFactory.URL.key, url);
 	   	   m.put(WFSDataStoreFactory.PASSWORD, geoserver.getGeoserverPassword());
@@ -136,23 +139,32 @@ public class CronAction extends BaseAction<EventObject> {
      * @return the SimpleFeatureCollection of srcLayer on the data server
      * @throws IOException 
      */
-    private SimpleFeatureCollection load(String layerFullName) throws IOException{
-    	// this part is not used yet because layer names are unique in all the workspaces
-    	int index = layerFullName.indexOf(":");
-    	String workspace = "empty";
-    	String layer = layerFullName;
-    	if (index>0) {
-    		workspace = layerFullName.substring(0, index);
-    		layer = layerFullName.substring(index+1, layerFullName.length());
-    	}
-    	System.out.println("Layer Name "+layer);
-    	RESTLayer restLayer = gsRestReader.getLayer(layer);
-    	if (restLayer!=null) {
-    		System.out.println("found");
-    		SimpleFeatureCollection sfc = dataStore.getFeatureSource(layer).getFeatures();
-    		return sfc;
-    	}
-    	return null;
+    @SuppressWarnings("finally")
+	private SimpleFeatureCollection load(String layerFullName) {
+		SimpleFeatureCollection sfc = null;
+    	try {
+	    	// this part is not used yet because layer names are unique in all the workspaces
+	    	int index = layerFullName.indexOf(":");
+	    	String workspace = "empty";
+	    	String layer = layerFullName;
+	    	if (index>0) {
+	    		workspace = layerFullName.substring(0, index);
+	    		layer = layerFullName.substring(index+1, layerFullName.length());
+	    	}
+	    	System.out.println("Layer Name "+layer);
+	    	RESTLayer restLayer = gsRestReader.getLayer(layer);
+	    	if (restLayer!=null) {
+				sfc = dataStore.getFeatureSource(layer).getFeatures();
+	    		System.out.println("found"+layer+" CRS"+dataStore.getSchema(layer).getCoordinateReferenceSystem());
+	    		
+	    	}
+	    	} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				dataStore.dispose();
+				return sfc;
+			}
     }
 
     /***********
@@ -178,36 +190,52 @@ public class CronAction extends BaseAction<EventObject> {
     	SimpleFeatureCollection trgCollection = null;
     	SimpleFeatureCollection maskCollection = null;
 		try {
+			System.out.println("SRCLAYER "+srcLayer+" TRGLAYER"+trgLayer+" "+isMasked);
 			// try to load src collection
 			srcCollection = load(srcLayer);
+			List<AttributeDescriptor> descriptors = srcCollection.getSchema().getAttributeDescriptors();
+			SimpleFeatureIterator sfi =  srcCollection.features();
+			while(sfi.hasNext()) {
+				SimpleFeature sf = sfi.next();
+				for (int i= 0; i<sf.getAttributeCount();i++) {
 
+					System.out.println(descriptors.get(i).getLocalName()+" "+sf.getAttribute(i));
+				}
+
+				//System.out.println("\n");
+			}
 			// check if the src attribute exists and srcCollection is not empty
 			if (srcCollection == null || srcCollection.getSchema().getDescriptor(srcCodeField)==null) return null;
-
 			// try to load trg collection 
-			trgCollection = load(trgLayer);
 			
+			trgCollection = load(trgLayer);
+
+			List<AttributeDescriptor> descriptors2 = trgCollection.getSchema().getAttributeDescriptors();
+			SimpleFeatureIterator sfi2 =  trgCollection.features();
+			while(sfi2.hasNext()) {
+				SimpleFeature sf = sfi2.next();
+				for (int i= 0; i<sf.getAttributeCount();i++) {
+
+					System.out.println(descriptors2.get(i).getLocalName()+" "+sf.getAttribute(i));
+				}
+
+				//System.out.println("\n");
+			}
 			// check if the src attribute exists and trgCollection is not empty
-			if (trgCollection.getSchema().getDescriptor(trgCodeField)==null) return null;
+			if (trgCollection==null || trgCollection.getSchema().getDescriptor(trgCodeField)==null) return null;
 
 			// try to load mask collection
-   	    	maskCollection = load(maskLayer);			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+   	    	//maskCollection = load(maskLayer);			
+		
 		} catch(Throwable e) {
+			System.out.println("Anything else");
 			e.printStackTrace();
 		}
 
     	
     	// check if intersection requires masking
     	if (isMasked) {
-    		
+    		System.out.println("MASKED TRUE");
     		// generate the union of the mask geometries
     		ClipProcess clipProcess = new ClipProcess();
     		SimpleFeatureIterator sfi = maskCollection.features();
@@ -224,67 +252,46 @@ public class CronAction extends BaseAction<EventObject> {
     		// clip the trg Collection using the mask collection    		
     		trgCollection = clipProcess.execute(trgCollection, maskGeometry);
     	}
-    	
+
     	// setup for the IntersectionFeatureCollectionProcess
     	List<String> srcAttributes = new ArrayList<String>();
     	srcAttributes.add(srcCodeField);
-
+    	System.out.println("srcCodeField "+srcCodeField);
     	List<String> trgAttributes = new ArrayList<String>();
+
     	trgAttributes.add(trgCodeField);  
-
-
-    	
-    	
+    	System.out.println("trgCodeField "+trgCodeField);
     	// perform the IntersectionFeatureCollection process
     	IntersectionFeatureCollection intersectionProcess = new IntersectionFeatureCollection();
-    	
-    	SimpleFeatureCollection result = intersectionProcess.execute(srcCollection, trgCollection, srcAttributes, trgAttributes, mode, false, false);
+    	SimpleFeatureCollection result = intersectionProcess.execute(srcCollection, trgCollection, srcAttributes, trgAttributes, mode, true, true);
+		List<AttributeDescriptor> descriptors = result.getSchema().getAttributeDescriptors();
+		try {
+		SimpleFeatureIterator sfi = (SimpleFeatureIterator) result.features();
+		while(sfi.hasNext()) {
+			SimpleFeature sf = sfi.next();
+			for (int i= 0; i<sf.getAttributeCount();i++) {
+
+				System.out.println(descriptors.get(i).getLocalName()+" "+sf.getAttribute(i));
+			}
+
+			//System.out.println("\n");
+		}
+		} catch(Throwable e) {
+			System.out.println("sono qui");
+			e.printStackTrace();
+		}
     	return result;
     }
     
     
-    /*******************
-     * This method split the incoming SimpleFeatureCollection in two sub collection
-     * the first contains the geometry and the id attributes
-     * the second contains the id and the other attributes
-     * @param result the SimpleFeatureCollection to split
-     * @return true in case of success, false otherwise
-     */
-    public boolean split(SimpleFeatureCollection result, SimpleFeatureCollection fstCollection, SimpleFeatureCollection sndCollection) {
 
-    	//instance the QueryProcess Process
-    	QueryProcess splitter = new QueryProcess();
-    	
-    	// build the list of the attributes to collect in the first SimpleFeatureCollection 
-    	List<String> fstAttributes = new ArrayList<String>();
-    	fstAttributes.add(result.getSchema().getGeometryDescriptor().getLocalName());
-    	fstAttributes.add("INTERSECTION_ID");
-    	
-    	// call the QueryProcess process to obtain the sublist with only the fstAttributes attributes    	
-    	fstCollection = splitter.execute(result, fstAttributes, null);
-    	if (fstCollection== null) return false;
-    	
-    	// build the list of the attributes to collect in the second SimpleFeatureCollection    	
-    	List<String> sndAttributes = new ArrayList<String>();
-    	sndAttributes.add("INTERSECTION_ID");
-    	List<AttributeDescriptor> schema = result.getSchema().getAttributeDescriptors();
-    	for (AttributeDescriptor attributeDescriptor: schema){
-    		if (!fstAttributes.contains(attributeDescriptor.getLocalName())) sndAttributes.add(attributeDescriptor.getLocalName());
-    	}
-    	
-    	// call the QueryProcess process to obtain the sublist with only the sndAttributes attributes
-    	sndCollection = splitter.execute(result, sndAttributes, null);
-    	if (sndCollection== null) return false;
-    	
-    	return true;
-    }
     
     public boolean initConnections(Geoserver geoserver) {
     	try {
 	        //check if this control works as expected
-	        gsRestReader = new GeoServerRESTReader("http://"+geoserver.getGeoserverUrl()+"/geoserver", geoserver.getGeoserverUsername(), geoserver.getGeoserverPassword());
-	        if (!gsRestReader.existGeoserver()) return false;
+    		gsRestReader = new GeoServerRESTReader("http://"+geoserver.getGeoserverUrl()+"/geoserver", geoserver.getGeoserverUsername(), geoserver.getGeoserverPassword());
 	        
+	        if (!gsRestReader.existGeoserver()) return false;
 	       //check if this control works as expected
 	        dataStore = geoServerConnection(geoserver);
 	        if (dataStore==null) return false;
@@ -303,11 +310,12 @@ public class CronAction extends BaseAction<EventObject> {
      * @param intersections the intersections to parse
      * @return true everything goes well
      */
-    public boolean executeIntersectionStatements(String host, boolean simulate){
+    public boolean executeIntersectionStatements(String host, Config config, boolean simulate){
 
         List<Intersection> intersections = null;
         
 		try {
+			Request.initIntersection();
 			intersections = Request.getAllIntersections(host);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -315,38 +323,62 @@ public class CronAction extends BaseAction<EventObject> {
 		}
         //check if this control works as expected
         if (intersections==null) return false;
-    	
+    	LOGGER.trace("Updating intersections");
         for (Intersection intersection:intersections){
+
         	Status status = intersection.getStatus();
+        	LOGGER.trace("INTERSECTION "+intersection+"-->"+status);        	
         	long id = intersection.getId();
         	if (status==Status.TODELETE) {
         		Request.deleteIntersectionById(host, id);
         		// to delete the result of the intersection
         	}
         	if (status==Status.TOCOMPUTE) {
-        		SimpleFeatureCollection result = null;
-        		if (!simulate) result = intersection(intersection);
+        		SimpleFeatureCollection resultInt = null;
+        		resultInt = intersection(intersection);
+        /*		SimpleFeatureIterator sfi = result.features();
+        		System.out.println("prima");
+        		while (sfi.hasNext()) {
+        			System.out.println("object "+sfi.next());
+        		}*/
         		// in case no problems happen during the intersection process call
-        		if (result!=null || simulate) {
-        			intersection.setStatus(Status.COMPUTED);
-        			Request.updateIntersectionById(host, id, intersection);
-        			
-        			// split the SimpleFeatureCollection in two
-        			if (!simulate) {
-	        			SimpleFeatureCollection fstCollection = null;
-	        			SimpleFeatureCollection sndCollection = null;
-	        			boolean split = split(result, fstCollection, sndCollection);
-        			}
-        		}
-        		// otherwise delete the intersection instance 
-        		else {
-        			Request.deleteIntersectionById(host, id);
-        			// to delete the result of the intersection
+
+        		if (resultInt!=null) {
+	        		try {
+		        	    intersection.setStatus(Status.COMPUTED);
+		        		Request.updateIntersectionById(host, id, intersection);
+	        			String dbHost = config.getGlobal().getDb().getHost();
+	        			String schema = config.getGlobal().getDb().getSchema();
+	        			String db = config.getGlobal().getDb().getDatabase();
+	        			String user = config.getGlobal().getDb().getUser();
+	        			String pwd = config.getGlobal().getDb().getPassword();
+	        			int port = Integer.parseInt(config.getGlobal().getDb().getPort());
+	        			
+	        			String srcLayer = intersection.getSrcLayer();
+	        			String trgLayer = intersection.getTrgLayer();
+	        			String srcCode = intersection.getSrcCodeField();
+	        			String trgCode = intersection.getTrgCodeField();
+	        			LOGGER.trace("CREDENTIAL FOR "+schema+":"+db+" on "+ dbHost+":"+port+"("+user+","+pwd+")");
+						OracleDataStoreManager dataStore = new OracleDataStoreManager(resultInt,srcLayer, trgLayer, srcCode, trgCode,
+									dbHost,port,db,schema,user,pwd);
+						
+								//	"localhost",1521,"FIDEVQC","FIGIS_GIS","FIGIS_GIS","FIGIS");
+					} catch (Exception e) {
+							LOGGER.trace("Problems performing the intersection"+intersection);
+					}
+
         		}
         	}
+        	// otherwise delete the intersection instance 
+        	else {
+        		Request.deleteIntersectionById(host, id);
+        			// to delete the result of the intersection
+        	}
+        	
         	// this check it is necessary only to show all the cases
         	// if (status==Status.COMPUTING || status==Status.COMPUTED || status==Status.NOVALUE) continue;
         }
+        LOGGER.trace("Intersections updated");
         return true;
     	
     }
@@ -361,10 +393,10 @@ public class CronAction extends BaseAction<EventObject> {
      * Removes TemplateModelEvents from the queue and put
      */
     public Queue<EventObject> execute(Queue<EventObject> events) throws ActionException {
-    	final String host = "http://localhot:8080";
+    	
         // return
         final Queue<EventObject> ret=new LinkedList<EventObject>();
-        
+        LOGGER.trace("Trying to connect to "+host);
         while (events.size() > 0) {
             final EventObject ev;
             try {
@@ -375,16 +407,23 @@ public class CronAction extends BaseAction<EventObject> {
                    //  FileSystemEvent fileEvent=(FileSystemEvent)ev;
                     
                     // basic checks
-                    
+                    LOGGER.trace("Reading config information");
+                    Request.initConfig();
                     Config config = Request.existConfig(host);
                     //check if this control works as expected
-                    if (config==null) continue;
-                    
+                    if (config==null) {
+                    	LOGGER.trace("Problems to find config information. Skip execution ...");
+                    	continue;
+                    }
+                    LOGGER.trace("Config information correctly read. Trying to connect to Geoserver on "+config.getGlobal().getGeoserver().getGeoserverUrl());
                     // check the datastore and REST manager geoserver connections 
-                    if (!initConnections(config.getGlobal().getGeoserver())) continue;
-                    
+                    if (!initConnections(config.getGlobal().getGeoserver())) {
+                    	LOGGER.trace("Problems to find Geoserver. Skip execution ...");
+                    	continue;
+                    }
+                    LOGGER.trace("Geoserver and Datastore found");
                     // update the status of the intersections on the basis of the new input
-                    boolean areIntersectionsUpdated = executeIntersectionStatements(host, false);
+                    boolean areIntersectionsUpdated = executeIntersectionStatements(host, config, false);
                     
                     // add the event to the return
 					ret.add(ev);
