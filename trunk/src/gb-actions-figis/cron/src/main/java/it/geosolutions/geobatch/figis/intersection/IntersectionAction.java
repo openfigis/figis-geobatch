@@ -316,7 +316,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	        	if (status==Status.TODELETE) {
 	        		Request.deleteIntersectionById(host, id);
         			try {
-						//dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer));
+						dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer));
 					} catch (Exception e) {
 						LOGGER.trace("Problem deleting intersection from the database identified by "+srcLayer+","+trgLayer+"\n"+e);
 					}
@@ -339,7 +339,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	        			Request.updateIntersectionById(host, id, intersection);
 		        		LOGGER.trace("CREDENTIAL FOR "+schema+":"+db+" on "+ dbHost+":"+port+"("+user+","+pwd+")");
 						try {
-						//	dataStoreOracle.perform(resultInt,getName(srcLayer), getName(trgLayer), srcCode, trgCode);
+							dataStoreOracle.perform(resultInt,getName(srcLayer), getName(trgLayer), srcCode, trgCode);
 			        	    intersection.setStatus(Status.COMPUTED);
 						} catch (Exception e) {
 							// some problems occurred when saving the intersections in the db.

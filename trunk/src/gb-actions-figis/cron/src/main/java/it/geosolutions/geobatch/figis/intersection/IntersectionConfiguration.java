@@ -53,7 +53,7 @@ public class IntersectionConfiguration extends ActionConfiguration implements Co
         final IntersectionConfiguration ret=(IntersectionConfiguration)super.clone();
         
 		// TODO CLONE YOUR MEMBERS
-	
+	ret.setPersistencyHost(persistencyHost);
 		ret.setWorkingDirectory(this.getWorkingDirectory());
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());

@@ -72,7 +72,7 @@
   </dependency>
  <dependency>
   <groupId>it.geosolutions.geobatch.figis</groupId> 
-  <artifactId>gb-action-figis-cron</artifactId> 
+  <artifactId>gb-action-figis-setting</artifactId> 
   </dependency>
 
 		<!-- ============================== -->
@@ -151,7 +151,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>it.geosolutions.geobatch.figis</groupId>
-					<artifactId>gb-action-figis-cron</artifactId>
+					<artifactId>gb-action-figis-intersection</artifactId>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -167,7 +167,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>it.geosolutions.geobatch.figis</groupId>
-					<artifactId>gb-action-figis-intersection</artifactId>
+					<artifactId>gb-action-figis-setting</artifactId>
 				</dependency>
 			</dependencies>
 			<build>
@@ -177,7 +177,7 @@
 						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>unpack_intersection</id>
+								<id>unpack_setting</id>
 								<phase>package</phase>
 								<goals>
 									<goal>unpack</goal>
@@ -186,7 +186,7 @@
 									<artifactItems>
 										<artifactItem>
 											<groupId>it.geosolutions.geobatch.figis</groupId>
-											<artifactId>gb-action-figis-intersection</artifactId>
+											<artifactId>gb-action-figis-setting</artifactId>
 											<classifier>flowdata</classifier>
 											<type>jar</type>
 											<overWrite>false</overWrite>

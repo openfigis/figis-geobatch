@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowConfiguration>
+	
+	<id>setting</id>
+	<description>Setting configuration flow</description>
+	<name>Setting flow</name>
+	
+	<workingDirectory>setting/</workingDirectory>
+	<autorun>true</autorun>
+	
+	<EventGeneratorConfiguration>
+		<wildCard>*.*</wildCard>
+		<watchDirectory>setting/in</watchDirectory>
+		<osType>OS_UNDEFINED</osType>
+		<eventType>FILE_ADDED</eventType>
+		<interval>* * * * * ?</interval><!-- CRON: every minute at sec 0 -->
+		<!--<interval>20</interval> each 20 sec -->
+		<id>SettingFlow</id>
+		<serviceID>fsEventGeneratorService</serviceID>
+		<description>Setting event generator description</description>
+		<name>Setting</name>
+	</EventGeneratorConfiguration>
+	
+	<EventConsumerConfiguration>
+		<id>setting</id>
+		<description>setting</description>
+		<name>setting</name>
+		
+		<workingDirectory>setting/</workingDirectory>
+		<performBackup>false</performBackup>
+		
+		<FileEventRule>
+			<optional>false</optional>
+			<originalOccurrencies>1</originalOccurrencies>
+			<regex>.*\.*</regex>
+			<id>r1</id>
+			<description>description</description>
+			<name>Setting</name>
+		</FileEventRule>
+		
+		<SettingConfiguration>
+			<serviceID>SettingGeneratorService</serviceID>
+			<id>SettingGeneratorService</id>
+			<description>Setting action</description>
+			<name>SettingConfiguration</name>
+			
+			<listenerConfigurations/>
+			<failIgnored>false</failIgnored>
+		  	<persistencyHost>http://localhost:9999</persistencyHost>
+			<defaultMaskLayer>fifao:UN_CONTINENT</defaultMaskLayer>
+			<workingDirectory>setting/</workingDirectory>
+
+			<!-- 
+			<alias>
+				<entry>
+					<string>SettingConfiguration</string>
+					<string>it.geosolutions.geobatch.actions.setting.SettingConfiguration</string>
+				</entry>
+			</alias>
+			 -->
+		</SettingConfiguration>
+		
+	</EventConsumerConfiguration>
+
+</FlowConfiguration>

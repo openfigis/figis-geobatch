@@ -53,6 +53,7 @@ public class SettingConfiguration extends ActionConfiguration implements Configu
 	
 	public SettingConfiguration(String id, String name, String description) {
         super(id, name, description);
+       
 	// TODO INITIALIZE MEMBERS
     }
     
@@ -63,7 +64,8 @@ public class SettingConfiguration extends ActionConfiguration implements Configu
         final SettingConfiguration ret=new SettingConfiguration(this.getId(), this.getName(), this.getDescription());
         
 		// TODO CLONE YOUR MEMBERS
-	
+        ret.setDefaultMaskLayer(defaultMaskLayer);
+        ret.setPersistencyHost(persistencyHost);
 		ret.setWorkingDirectory(this.getWorkingDirectory());
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());

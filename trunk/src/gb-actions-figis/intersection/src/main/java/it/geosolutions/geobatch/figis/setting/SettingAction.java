@@ -204,8 +204,8 @@ public class SettingAction extends BaseAction<EventObject> {
      */
     public Queue<EventObject> execute(Queue<EventObject> events) throws ActionException {
     	Config XMLConfig = null;
-    	String host =  conf.getPersistencyHost();
-    	 defaultMaskLayer = conf.getDefaultMaskLayer();
+    	host =  conf.getPersistencyHost();
+    	defaultMaskLayer = conf.getDefaultMaskLayer();
         final Queue<EventObject> ret=new LinkedList<EventObject>();
                 
         while (events.size() > 0) {
@@ -222,7 +222,7 @@ public class SettingAction extends BaseAction<EventObject> {
            	      	try {
                         // READ THE XML AND CREATE A CONFIG OBJECT
            	      		XMLConfig = ConfigXStreamMapper.init(fileEvent.getSource().getAbsolutePath());
-           	            
+           	      		LOGGER.info("host----------------->"+host);
            	      		// READ THE COMING CONFIG (XMLConfig) AND EVENTUALLY UPDATE THE CURRENT STATUS OF BOTH THE CONFIG AND THE INTERSECTIONS
                         updateDataStore(host, XMLConfig, defaultMaskLayer );
            	      	} catch(ConversionException e) {
@@ -231,14 +231,14 @@ public class SettingAction extends BaseAction<EventObject> {
                     
                     // THIS IS FOR DEBUGGING AIMS. SHOW THE CURRENT STATUS OF THE INTERSECTION AS THE EVENT IS RAISED.
                     // REMOVE IF NOT NECESSARY
-            	//	try {
-            	//		List<Intersection> list = Request.getAllIntersections(host);
-            	//        LOGGER.trace("Current status");
-            	//        for (int i=0; i< list.size();i++) System.out.println(list.get(i));
-            	//	} catch (MalformedURLException e) {
-            			// TODO Auto-generated catch block
-            	//		e.printStackTrace();
-            	//	}                    
+            		try {
+            			List<Intersection> list = Request.getAllIntersections(host);
+            	        LOGGER.info("Current status");
+            	        for (int i=0; i< list.size();i++) LOGGER.info(list.get(i).toString());
+            		} catch (MalformedURLException e) {
+            		// TODO Auto-generated catch block
+            			e.printStackTrace();
+            		}                    
                     
                     
                     
