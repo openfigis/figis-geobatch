@@ -9,7 +9,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-@XStreamAlias("Intersection")
+@XStreamAlias("intersection")
 @XmlRootElement(name = "intersection")
 public class Intersection {
 	
@@ -55,7 +55,7 @@ public class Intersection {
                 case COMPUTING:
                     return "Computing";
                 case TODELETE:
-                    return "toDelte";
+                    return "toDelete";
                 default:
                     return "toCompute";
               }
@@ -233,7 +233,7 @@ public class Intersection {
 
     @Override
     public String toString() {
-        return "Intersection{" + "id=" + id + ", mask=" + mask + ", force=" + force + ", preserveTrgGeom=" + preserveTrgGeom + ", srcLayer=" + srcLayer + ", trgLayer=" + trgLayer + ", srcCodeField=" + srcCodeField + ", trgCodeField=" + trgCodeField + ", maskLayer=" + maskLayer + ", areaCRS=" + areaCRS + ", status=" + status + '}';
+        return "Intersection{" + "id=" + id + ", status=" + status+ ", mask=" + mask + ", force=" + force + ", preserveTrgGeom=" + preserveTrgGeom + ", srcLayer=" + srcLayer + ", trgLayer=" + trgLayer + ", srcCodeField=" + srcCodeField + ", trgCodeField=" + trgCodeField + ", maskLayer=" + maskLayer + ", areaCRS=" + areaCRS  + '}';
     }
 
 	

@@ -24,6 +24,14 @@ public class Geoserver {
 	public Geoserver() {
 		super();
 	}
+
+    public Geoserver(String geoserverUrl, String geoserverUsername, String geoserverPassword) {
+        this.geoserverUrl = geoserverUrl;
+        this.geoserverUsername = geoserverUsername;
+        this.geoserverPassword = geoserverPassword;
+    }
+        
+
 	public String getGeoserverUrl() {
 		return geoserverUrl;
 	}

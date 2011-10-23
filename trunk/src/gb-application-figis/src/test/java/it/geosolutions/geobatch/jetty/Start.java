@@ -61,7 +61,7 @@ public class Start {
             int port = parsePort(portVariable);
 
             if (port <= 0) {
-                port = 8081;
+                port = 8082;
             }
 
             conn.setPort(port);

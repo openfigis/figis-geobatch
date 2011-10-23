@@ -35,7 +35,18 @@ public class DB {
 	public DB() {
 		super();
 	}
-	
+
+    public DB(String schema,String database,  String user, String password, String host, String port) {
+        this.database = database;
+        this.schema = schema;
+        this.user = user;
+        this.password = password;
+        this.port = port;
+        this.host = host;
+    }
+
+
+
 	public String getDatabase() {
 		return database;
 	}

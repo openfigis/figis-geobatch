@@ -10,8 +10,8 @@ import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 
-import it.geosolutions.geobatch.figis.intersection.IntersectionAction;
-import it.geosolutions.geobatch.figis.intersection.IntersectionConfiguration;
+import it.geosolutions.geobatch.figis.setting.SettingAction;
+import it.geosolutions.geobatch.figis.setting.SettingConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import org.junit.Test;
 
 public class TestIntersection {
 
-	private IntersectionAction intersectionAction = null;
+	private SettingAction intersectionAction = null;
 	private Geoserver geoserver = null;
 	private final String host = "http://localhost:8080";
 	
@@ -43,8 +43,8 @@ public class TestIntersection {
 		}
         Queue<EventObject> queue = new LinkedBlockingQueue<EventObject>();
         queue.add(new FileSystemEvent(inputFile, FileSystemEventType.FILE_ADDED));
-		IntersectionConfiguration cronConfiguration = new IntersectionConfiguration("id", "name", " description");
-		intersectionAction = new IntersectionAction(cronConfiguration);
+		SettingConfiguration cronConfiguration = new SettingConfiguration("id", "name", " description");
+		intersectionAction = new SettingAction(cronConfiguration);
 		
 		geoserver = new Geoserver();
 		geoserver.setGeoserverUrl("localhost:8080");
@@ -72,6 +72,7 @@ public class TestIntersection {
 	    config.setGlobal(global);
 	    return config;
 	}
+	
 	
 
 
@@ -171,7 +172,7 @@ public class TestIntersection {
 	    xmlList.add(intersectionXML3);
 	    xmlList.add(intersectionXML5);
 	    
-	    intersectionAction.updateIntersectionsOnDB(host, xmlList, dbList, false);
+	    intersectionAction.updateIntersectionsOnDB(host, xmlList, dbList, false,"sf:restricted");
 	    // update intersections to the expected result
 	    intersectionXML1.setStatus(Status.COMPUTED);
 	    intersectionXML2.setStatus(Status.TOCOMPUTE);

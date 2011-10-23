@@ -23,9 +23,9 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>it.geosolutions.geobatch.figis</groupId>
-  <artifactId>gb-action-figis-intersection</artifactId>
+  <artifactId>gb-action-figis-setting</artifactId>
   <packaging>jar</packaging>
-  <name>GeoBatch action: intersection</name>
+  <name>GeoBatch action: setting</name>
   <url>http://www.geo-solutions.it/maven_reports/gb/</url><!--<url>flowmanagers/</url>-->
   
   <scm>
@@ -36,7 +36,7 @@
   </scm>
   
   <description>
-    GeoSolutions GeoBatch Action: intersection.
+    GeoSolutions GeoBatch Action: setting.
   </description>
 
   <licenses>

@@ -26,10 +26,13 @@ public class Request {
         xStreamConfig = new XStream(new DomDriver());
         xStreamConfig.aliasType("configs", List.class);        
         xStreamConfig.aliasType("config", Config.class);
-
         xStreamConfig.aliasType("global", Global.class);
         xStreamConfig.aliasType("geoserver", Geoserver.class);
         xStreamConfig.aliasType("db", DB.class);
+        xStreamConfig.aliasType("intersections", List.class);
+        xStreamConfig.alias("intersection", it.geosolutions.figis.model.Intersection.class);
+
+
     }
 /***********************
  * initialize the XSTREAM parser for the XML representation of it.geosolutions.figis.model.Intersection object
@@ -37,7 +40,7 @@ public class Request {
     public static void initIntersection() {
         xStreamIntersection = new XStream(new DomDriver());
         xStreamIntersection.aliasType("intersections", List.class);
-        xStreamIntersection.aliasType("intersection", Intersection.class);
+        xStreamIntersection.alias("intersection", it.geosolutions.figis.model.Intersection.class);
 /*        xStreamIntersection.useAttributeFor(boolean.class, "mask");
         xStreamIntersection.useAttributeFor(boolean.class, "force");
         xStreamIntersection.useAttributeFor(boolean.class, "preserveTrgGeom");*/
@@ -78,9 +81,9 @@ public class Request {
      */
     public static long updateConfig(String host, long id, Config config) {
         String xml = xStreamConfig.toXML(config);
-        System.out.println("XML : "+xml);
+    //    System.out.println("XML : "+xml);
         String result = HTTPUtils.put(host+"/ie-services/config/"+id, xml, "text/xml", null, null);
-        System.out.println("RESULT PUT"+result);
+     //   System.out.println("RESULT PUT"+result);
         Long value = Long.parseLong(result);
         return value;
     }
@@ -94,7 +97,7 @@ public class Request {
     public static Config getConfigByID(String host, Long id) throws java.net.MalformedURLException{
 
         String result = HTTPUtils.get(host+"/ie-services/config/"+id, null, null);
-        System.out.println("RESULT PUT"+result);
+      //  System.out.println("RESULT PUT"+result);
         Config config = (Config)xStreamConfig.fromXML(result);
         return config;
     }
@@ -107,9 +110,9 @@ public class Request {
      */
     public static long insertConfig(String host, Config config) throws java.net.MalformedURLException {
         String xml = xStreamConfig.toXML(config);
-        System.out.println("XML INSERT CONFIG: "+xml);
+     //   System.out.println("XML INSERT CONFIG: "+xml);
         String result = HTTPUtils.post(host+"/ie-services/config", xml, "text/xml", null, null);
-        System.out.println("RESULT POST"+result);
+     //   System.out.println("RESULT POST"+result);
         if (result==null) return -1;
         Long value = Long.parseLong(result);
         return value;
@@ -123,7 +126,7 @@ public class Request {
      */
     public static boolean deleteConfig(String host, long id) throws java.net.MalformedURLException {
         boolean result = HTTPUtils.delete(host+"/ie-services/config/"+id, null, null);
-        System.out.println("RESULT DELETE"+result);
+     //   System.out.println("RESULT DELETE"+result);
         return result;
     }
     /**********************
@@ -135,9 +138,9 @@ public class Request {
      */
    public static long insertIntersection(String host, Intersection intersection) throws java.net.MalformedURLException {
         String xml = xStreamIntersection.toXML(intersection);
-        System.out.println("XML : "+xml);
+    //    System.out.println("XML : "+xml);
         String result = HTTPUtils.post(host+"/ie-services/intersection", xml, "text/xml", null, null);
-        System.out.println("RESULT POST INSERT INTERSECTION"+result);
+     //   System.out.println("RESULT POST INSERT INTERSECTION"+result);
         if (result!=null) {
             Long value = Long.parseLong(result);
             return value;
@@ -152,7 +155,7 @@ public class Request {
      */
     public static List<Intersection> getAllIntersections(String host) throws java.net.MalformedURLException{
         String result = HTTPUtils.get(host+"/ie-services/intersection", null, null);
-        System.out.println("RESULT GET ALL INTERSECTIONS: "+result);
+   //     System.out.println("RESULT GET ALL INTERSECTIONS: "+result);
         if (result!=null) return (List<Intersection>)xStreamIntersection.fromXML(result);
         return null;
     }
@@ -165,7 +168,7 @@ public class Request {
      */
     public static boolean deleteAllIntersections(String host) throws java.net.MalformedURLException{
         boolean result = HTTPUtils.delete(host+"/ie-services/intersection/", null, null);
-        System.out.println("RESULT DELETE ALL INTERSECTIONS"+result);
+        //System.out.println("RESULT DELETE ALL INTERSECTIONS"+result);
         return result;
     }
     /***************
@@ -176,7 +179,7 @@ public class Request {
      */
     public static boolean deleteIntersectionById(String host, long id) {
         boolean result = HTTPUtils.delete(host+"/ie-services/intersection/"+id, null, null);
-        System.out.println("RESULT PUT"+result);
+    //    System.out.println("RESULT PUT"+result);
         return result;
     }
     /*******************
@@ -187,9 +190,9 @@ public class Request {
      */
     public static long updateIntersectionById(String host, long id, Intersection intersection){
         String xml = xStreamIntersection.toXML(intersection);
-        System.out.println("XML : "+xml);
+      //  System.out.println("XML : "+xml);
         String result = HTTPUtils.put(host+"/ie-services/intersection/"+id, xml, "text/xml", null, null);
-        System.out.println("RESULT PUT"+result);
+      //  System.out.println("RESULT PUT"+result);
         if (result!=null) {
             Long value = Long.parseLong(result);
             return value;

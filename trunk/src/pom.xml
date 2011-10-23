@@ -184,7 +184,7 @@
 	   
 	    <dependency>
 		<groupId>it.geosolutions.geobatch.figis</groupId>
-		<artifactId>gb-action-figis-cron</artifactId>
+		<artifactId>gb-action-figis-setting</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	    </dependency>
 		

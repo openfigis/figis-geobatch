@@ -23,9 +23,9 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>it.geosolutions.geobatch.figis</groupId>
-  <artifactId>gb-action-figis-cron</artifactId>
+  <artifactId>gb-action-figis-intersection</artifactId>
   <packaging>jar</packaging>
-  <name>GeoBatch action: cron</name>
+  <name>GeoBatch action: intersection</name>
   <url>http://www.geo-solutions.it/maven_reports/gb/</url><!--<url>flowmanagers/</url>-->
   
   <scm>
@@ -36,7 +36,7 @@
   </scm>
   
   <description>
-    GeoSolutions GeoBatch Action: cron.
+    GeoSolutions GeoBatch Action: intersection.
   </description>
 
   <licenses>
@@ -68,7 +68,7 @@
 	<!--  for tests only -->
 	 <dependency>
 	   <groupId>it.geosolutions.geobatch.figis</groupId>
-	   <artifactId>gb-action-figis-intersection</artifactId>
+	   <artifactId>gb-action-figis-setting</artifactId>
 	   <version>0.1-SNAPSHOT</version>
 	   <scope>test</scope>
     </dependency>
@@ -122,7 +122,11 @@
   <artifactId>gt-epsg-hsql</artifactId>
   <version>8-SNAPSHOT</version>
 </dependency>
-	
+	  	    <dependency>
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-shapefile</artifactId>
+  <version>8-SNAPSHOT</version>
+</dependency>
        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-wfs</artifactId>

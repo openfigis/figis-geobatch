@@ -17,14 +17,14 @@ public class Config {
     @XStreamAlias("updateVersion")
     private int updateVersion;
 	
-    @XStreamAlias("clean")
-    private boolean clean;
+
 
     @XStreamAlias("global")	
     private Global global;
 
-    @XStreamImplicit(itemFieldName="intersection")
-    public List<Intersection> intersections;	
+    
+
+    public List<Intersection> intersections;
 	
 	
     public Config() {
@@ -42,13 +42,7 @@ public class Config {
     }
 
 
-    public boolean isClean() {
-            return clean;
-    }
 
-    public void setClean(boolean clean) {
-            this.clean = clean;
-    }
 
     public Global getGlobal() {
             return global;
@@ -81,9 +75,6 @@ public class Config {
             return false;
         }
         if (this.updateVersion != other.updateVersion) {
-            return false;
-        }
-        if (this.clean != other.clean) {
             return false;
         }
         if (this.global != other.global && (this.global == null || !this.global.equals(other.global))) {

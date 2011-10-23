@@ -15,12 +15,22 @@ public class Global {
 	@XStreamAlias("db")
 	DB db;
 
+        @XStreamAlias("clean")
+        private boolean clean;
 
 	public Global() {
 		super();
 		this.geoserver = new Geoserver();
 		this.db = new DB();
 	}
+
+        public boolean isClean() {
+            return clean;
+        }
+
+        public void setClean(boolean clean) {
+                this.clean = clean;
+        }
 
 	public Geoserver getGeoserver() {
 		return geoserver;

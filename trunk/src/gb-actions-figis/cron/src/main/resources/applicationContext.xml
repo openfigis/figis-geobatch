@@ -4,12 +4,12 @@
 <beans default-init-method="init" default-destroy-method="dispose">
 
 	<!-- Environment Initialization -->
-	<bean id="CronGeneratorService" class="it.geosolutions.geobatch.figis.cron.CronGeneratorService">
-		<constructor-arg type="String"><value>CronGeneratorService</value></constructor-arg>
-		<constructor-arg type="String"><value>CronGeneratorService</value></constructor-arg>
-		<constructor-arg type="String"><value>CronGeneratorService</value></constructor-arg>
+	<bean id="IntersectionGeneratorService" class="it.geosolutions.geobatch.figis.intersection.IntersectionGeneratorService">
+		<constructor-arg type="String"><value>IntersectionGeneratorService</value></constructor-arg>
+		<constructor-arg type="String"><value>IntersectionGeneratorService</value></constructor-arg>
+		<constructor-arg type="String"><value>IntersectionGeneratorService</value></constructor-arg>
 	</bean>
-	<bean id="CronAliasRegistrar" class="it.geosolutions.geobatch.figis.cron.CronAliasRegistrar" lazy-init="false">
+	<bean id="IntersectionAliasRegistrar" class="it.geosolutions.geobatch.figis.intersection.IntersectionAliasRegistrar" lazy-init="false">
 		<constructor-arg ref="aliasRegistry" />
 	</bean>
 </beans>

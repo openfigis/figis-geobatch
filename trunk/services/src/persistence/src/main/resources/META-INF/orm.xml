@@ -38,7 +38,7 @@
                 </basic>
                 <basic name="global" />
                 <transient name="intersections"/>                
-                <transient name="clean"/>
+                
 
            </attributes>
 	</entity>
@@ -47,6 +47,7 @@
             <attributes>
                 <basic name="geoserver" />
                 <basic name="db" />
+                <transient name="clean"/>
             </attributes>
         </embeddable>
 

@@ -4,12 +4,12 @@
 <beans default-init-method="init" default-destroy-method="dispose">
 
 	<!-- Environment Initialization -->
-	<bean id="IntersectionGeneratorService" class="it.geosolutions.geobatch.figis.intersection.IntersectionGeneratorService">
-		<constructor-arg type="String"><value>IntersectionGeneratorService</value></constructor-arg>
-		<constructor-arg type="String"><value>IntersectionGeneratorService</value></constructor-arg>
-		<constructor-arg type="String"><value>IntersectionGeneratorService</value></constructor-arg>
+	<bean id="SettingGeneratorService" class="it.geosolutions.geobatch.figis.setting.SettingGeneratorService">
+		<constructor-arg type="String"><value>SettingGeneratorService</value></constructor-arg>
+		<constructor-arg type="String"><value>SettingGeneratorService</value></constructor-arg>
+		<constructor-arg type="String"><value>SettingGeneratorService</value></constructor-arg>
 	</bean>
-	<bean id="IntersectionAliasRegistrar" class="it.geosolutions.geobatch.figis.intersection.IntersectionAliasRegistrar" lazy-init="false">
+	<bean id="SettingAliasRegistrar" class="it.geosolutions.geobatch.figis.setting.SettingAliasRegistrar" lazy-init="false">
 		<constructor-arg ref="aliasRegistry" />
 	</bean>
 </beans>
