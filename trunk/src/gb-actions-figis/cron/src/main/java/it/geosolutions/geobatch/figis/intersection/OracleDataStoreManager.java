@@ -92,7 +92,7 @@ public class OracleDataStoreManager {
     private static int BATCH_SIZE =10;
     private static int OPERATOR_DIFFERENCE = 0;
     private static int OPERATOR_INTERSECTION = 1;
- //   private static final Logger LOGGER = Logger.getLogger(LayerIntersector.class);
+ 
     public static String statsName = "fifao:statistical";
     public static String spatialName = "fifao:spatial";
     
@@ -129,9 +129,19 @@ public class OracleDataStoreManager {
     	return this.size;
     }
     
+    
+    /***********
+     * initialize connection parameters to the Oracle dataStore
+     * @param hostname
+     * @param port
+     * @param database
+     * @param schema
+     * @param user
+     * @param password
+     */
+    
     private void initOrclMap (String hostname, Integer port, String database, String schema, String user, String password) {
     	Map<String, Object> params = new HashMap<String, Object>();
- //   	System.out.println("Connection Parameters :"+dbtype+","+hostname+","+port+","+database+","+schema+","+user+","+password);
     	orclMap.put(DBTYPE.key, dbtype);
         orclMap.put(HOST.key, hostname);
         orclMap.put(PORT.key, port);
@@ -147,7 +157,9 @@ public class OracleDataStoreManager {
     }
 
 
-    
+    /************
+     * initialize the tables: create them if they do not exist
+     */
     private synchronized void initTables() {
 		// init of the Temp table for stats
 		SimpleFeatureTypeBuilder sftbTmpStats = new SimpleFeatureTypeBuilder();
@@ -201,7 +213,7 @@ public class OracleDataStoreManager {
 		 sfGeom = sftbGeoms.buildFeatureType();	
 		
 
-		
+		// check if tables exist, if not create them
 		try {
 			String[] listTables = orclDataStore.getTypeNames();
 
@@ -221,59 +233,78 @@ public class OracleDataStoreManager {
 					spatialTmpTableExists = true;
 			}
 			if (!statsTmpTableExists) {
-				System.out.println("Tabella sfTmpStats non esiste");
+			
 				orclDataStore.createSchema(sfTmpStats);
 			}
 			if (!statsTableExists) {
-				System.out.println("Tabella sfStats non esiste");
+
 				orclDataStore.createSchema(sfStats);
 			}			
 			if (!spatialTableExists) {
-				System.out.println("Tabella sfGeom non esiste");
+
 				orclDataStore.createSchema(sfGeom);
 			}			
 			if (!spatialTmpTableExists) {
-				System.out.println("Tabella sfTmpGeom non esiste");
+	
 				orclDataStore.createSchema(sfTmpGeom);
 			}
 			
 
 		} catch(Exception e) {
-			System.out.println("Tabella già esistente");
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 
     	
     }
-    
+    /***********
+     * delete all from temporary tables and then save intersections in them
+     * @param ds
+     * @param tx
+     * @param collection
+     * @param srcLayer
+     * @param trgLayer
+     * @param srcCode
+     * @param trgCode
+     * @return
+     * @throws IOException
+     */
     public boolean actionTemp(DataStore ds, Transaction tx, SimpleFeatureCollection collection, String srcLayer, String trgLayer, String srcCode, String trgCode) throws IOException {
-       	System.out.println("Delete all in temp");
         cleanTemp(tx);
-    	
-    	System.out.println("Start save to temp. PARAM: "+srcLayer+" "+trgLayer);
     	saveToTemp(ds, tx, collection,srcLayer, trgLayer, srcLayer+"_"+srcCode, trgLayer+"_"+trgCode);
     	return true;
     }
-    
+    /*********
+     * delete all the instances of srcLayer and trgLayer from the permanent tables
+     * copy the intersections and the stats temporary information into the permanent tables
+     * @param ds
+     * @param tx
+     * @param srcLayer
+     * @param trgLayer
+     * @throws IOException
+     */
     public void action(DataStore ds, Transaction tx,  String srcLayer, String trgLayer) throws IOException {
-    	// start transaction	
-        	System.out.println("Start delete spatial table");      		
+    		
    		deleteOldInstancesFromPermanent(tx, srcLayer, trgLayer);
    		
-      	System.out.println("Start save statsTmpTable");      		
+ 	
       	saveToPermanent(tx, statsTmpTable,statsTable);
        	
-    	System.out.println("Start save spatialTmpTable");       	
+      	
     	saveToPermanent(tx, spatialTmpTable,spatialTable);
-     	//end transaction
-   		System.out.println("END");
+
     	
     }
     
     
     
     
-    
+    /******
+     * copy the intersections and the stats temporary information into the permanent tables
+     * @param tx
+     * @param tableFrom
+     * @param tableTo
+     * @throws IOException
+     */
     private void saveToPermanent(Transaction tx, String tableFrom, String tableTo) throws IOException {
     	SimpleFeatureSource sfs = orclDataStore.getFeatureSource(tableFrom);
     	
@@ -281,7 +312,12 @@ public class OracleDataStoreManager {
     	featureStore.setTransaction(tx);
     	featureStore.addFeatures(sfs.getFeatures());
     }
-    
+    /*********
+     * manage the delete all the information about the srcLayer and trgLayer pair from the permanent tables from a transaction
+     * @param srcLayer
+     * @param trgLayer
+     * @throws IOException
+     */
     public void deleteAll(String srcLayer, String trgLayer) throws IOException {
 		try {
 			
@@ -295,6 +331,14 @@ public class OracleDataStoreManager {
 	
     }
     
+    
+    /*********
+     * delete all the information about the srcLayer and trgLayer pair from the permanent tables
+     * @param tx
+     * @param srcLayer
+     * @param trgLayer
+     * @throws IOException
+     */
     public void deleteOldInstancesFromPermanent(Transaction tx,String srcLayer, String trgLayer) throws IOException {
     	
     	FeatureStore featureStoreData = (FeatureStore)orclDataStore.getFeatureSource(statsTable);
@@ -317,7 +361,17 @@ public class OracleDataStoreManager {
     	
     }
     
-    
+    /**********
+     * recall the steps from updating the database
+     * firstly delete all the information from temp tables
+     * then, perform the intersection, update temporary and finally update permanent
+     * @param collection
+     * @param srcLayer
+     * @param trgLayer
+     * @param srcCode
+     * @param trgCode
+     * @throws IOException
+     */
     public void perform(SimpleFeatureCollection collection, String srcLayer,  String trgLayer,  String srcCode,  
     								String trgCode) throws IOException {
 		if (orclDataStore != null) {
@@ -346,7 +400,9 @@ public class OracleDataStoreManager {
     	
     }
     
-    
+    /***
+     * close the transactions and the datastore
+     */
     public void close(){
 		try {
 			orclTransactionTemp.close();
@@ -362,8 +418,7 @@ public class OracleDataStoreManager {
     }
        
     /*
-     * Accepts params for connecting to a WFS server and also source, target and
-     * mask features.
+     * Accepts params for connecting to the Oracle datastore
      */
     public OracleDataStoreManager(String hostname, Integer port, String database,
         String schema, String user, String password) throws Exception {
@@ -389,13 +444,24 @@ public class OracleDataStoreManager {
     	featureStoreGeom.removeFeatures(Filter.INCLUDE);
     	
     }
-    
+    /*****
+     * perform the intersections, split the results into the two temporary tables
+     * @param ds
+     * @param tx
+     * @param source
+     * @param srcLayer
+     * @param trgLayer
+     * @param srcCode
+     * @param trgCode
+     * @return
+     * @throws IOException
+     */
     public boolean saveToTemp(DataStore ds, Transaction tx, SimpleFeatureCollection source, String srcLayer, String trgLayer, String srcCode, String trgCode) throws IOException {
 
     	SimpleFeatureIterator iterator = null;
     	try {
 	    	if (source==null) return false;
-
+	    	//initialize CRS transformation. It is performed in case source CRS is different from WGS84
 	    	CoordinateReferenceSystem sourceCRS = source.getSchema().getCoordinateReferenceSystem();
 	    	String geomName = source.getSchema().getGeometryDescriptor().getLocalName();
 	    	CoordinateReferenceSystem targetCRS = DefaultGeographicCRS.WGS84;
@@ -409,23 +475,20 @@ public class OracleDataStoreManager {
 	    	SimpleFeatureBuilder  featureBuilderData = new SimpleFeatureBuilder(sfTmpStats); 
 	    	SimpleFeatureBuilder  featureBuilderGeom = new SimpleFeatureBuilder(sfTmpGeom); 
 	    	int i=0;
-	    	System.out.println("SIZE "+source.size()+"srcLayer "+srcLayer+" trgLayer "+trgLayer+" srcCode "+srcCode+" trgCode "+trgCode);
-	    	List<AttributeDescriptor> descriptors2 = source.getSchema().getAttributeDescriptors();
-	    	for (AttributeDescriptor attributeDescriptor: descriptors2) System.out.println(attributeDescriptor.getLocalName());
 
+	    	// follow the iterator of the resulting set and divide information into two collection: geometrical and statistical
 	        while (iterator.hasNext()) {
 	    		try {
 	    		String intersectionID = srcLayer+"_"+trgLayer+"_"+(i++);
 	    		
 	    		SimpleFeature sf = iterator.next();
-	    		System.out.println("INTERSECTION_ID"+sf.getAttribute("INTERSECTION_ID"));
+	    		
 	    		featureBuilderData.set("SRCODE", sf.getAttribute(srcCode));
-	    		System.out.println("SRCODE"+sf.getAttribute(srcCode));
+
 	    		featureBuilderData.set("SRCLAYER", srcLayer);
-	    		System.out.println("SRCLAYER"+srcLayer);
+
 	    		featureBuilderData.set("TRGLAYER", trgLayer);  
-	    		System.out.println("TRGLAYER"+trgLayer);	
-	    		System.out.println("TRGCODE"+" --- "+trgCode);
+
 	    		featureBuilderData.set("TRGCODE", sf.getAttribute(trgCode));
 
 	    		if(sf.getAttribute("areaA")!=null)featureBuilderData.set("SRCAREA", sf.getAttribute("areaA"));
@@ -441,7 +504,7 @@ public class OracleDataStoreManager {
 
 		    	MultiPolygon targetGeometry = (MultiPolygon) JTS.transform( geometry, transform);
 		    	targetGeometry.setSRID(4326);
-	    	//	geometry.setUserData(null);
+
 	    		featureBuilderGeom.set("GEOMETRY",targetGeometry );
 	    		featureBuilderGeom.set("INTERSECTION_ID", intersectionID);
 	    		SimpleFeature sfwGeom = featureBuilderGeom.buildFeature(intersectionID);
@@ -451,19 +514,19 @@ public class OracleDataStoreManager {
 	    		}
 	    	}
 	    	
-	    	System.out.println("EXIT");
+
 	    	
 	
 	    	FeatureStore featureStoreData = (FeatureStore)ds.getFeatureSource(statsTmpTable);
 	    	featureStoreData.setTransaction(tx);
-	
+	    	// save statistics to the statistics temporary table
 	    	featureStoreData.addFeatures(sfcData);
 	    	
 	    	FeatureStore featureStoreGeom = (FeatureStore)ds.getFeatureSource(spatialTmpTable);
 	    	featureStoreGeom.setTransaction(tx);
-	
+	    	// save geometries to the statistics temporary table	
 	    	featureStoreGeom.addFeatures(sfcGeom);
-	    	System.out.println("FINISH");
+
 	    	
 	    	
     	} catch(Throwable e) {
@@ -481,7 +544,7 @@ public class OracleDataStoreManager {
 
 
 	/**
-	 * 
+	 * create the ORACLE datastore
 	 * @return
 	 */
 	private DataStore prepareORCLDataStore() {
@@ -489,13 +552,9 @@ public class OracleDataStoreManager {
 		DataStore orclDataStore;
 		try {
 			 orclDataStore = new OracleNGDataStoreFactory().createDataStore(orclMap);
-//			 List<org.opengis.feature.type.Name> names = orclDataStore.getNames();
-//			 for (org.opengis.feature.type.Name name: names) System.out.println("Name "+name.getLocalPart());
-//			 System.out.println("ORACLE Manager correctly loaded");
 		} catch (IOException e) {
-			System.out.println("EXception creating the Oracle Manager");
+
 			e.printStackTrace();
-			error("prepareORCLDataStore FATAL ERROR: ", e);
 			return null;
 		}
 		
@@ -507,23 +566,7 @@ public class OracleDataStoreManager {
 	
 
 	    
-    /**
-     * 
-     * @param msg
-     */
-	private static void log(String msg) 
-    {
-     //  LOGGER.info(msg);
-    }	
-
-    /**
-     * 
-     * @param msg
-     */
-	private static void error(String msg, Throwable t) 
-    {
-    //   LOGGER.error(msg, t);
-    }	
+	
 
 }
 
