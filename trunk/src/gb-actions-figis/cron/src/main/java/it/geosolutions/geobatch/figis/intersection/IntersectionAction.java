@@ -124,7 +124,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
     	String urlCollection  = geoserver.getGeoserverUrl()+"/wfs?outputFormat=SHAPE-ZIP&request=GetFeature&version=1.1.1&typeName="+name+"&srs=EPSG:4326";
     	try {
 	    	String tmp = System.getProperty("java.io.tmpdir")+System.getProperty("file.separator")+tmpDirName;
-	       	return  ZipStreamReader.getShapeFileFromURLbyZIP(urlCollection, tmp, name, true);
+	       	return  ZipStreamReader.getShapeFileFromURLbyZIP(urlCollection, tmp, name);
     	} catch(Exception e) {
     		System.out.println("Failed to download the "+urlCollection+" layer");
     		LOGGER.trace("Failed to download the "+urlCollection+" layer");

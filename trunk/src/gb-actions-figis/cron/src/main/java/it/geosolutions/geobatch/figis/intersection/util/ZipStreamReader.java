@@ -1,5 +1,7 @@
 package it.geosolutions.geobatch.figis.intersection.util;
 
+import it.geosolutions.geobatch.tools.file.Extract;
+
 import java.net.*;
 import java.util.Enumeration;
 import java.util.List;
@@ -29,36 +31,48 @@ public class ZipStreamReader {
 
 
 /*****
- * 
+ * this method takes a wfs url, download the layername features, save it in the figisTmpDir directory and return its SimpleFEatureCollection
  * @param textUrl
  * @param filename
  * @param destDir
  * @throws IOException 
  * @throws MalformedURLException 
  */
-public static SimpleFeatureCollection getShapeFileFromURLbyZIP(String textUrl, String figisTmpDir, String layername, boolean renew) throws MalformedURLException, IOException{
+public static SimpleFeatureCollection getShapeFileFromURLbyZIP(String textUrl, String figisTmpDir, String layername) throws MalformedURLException, IOException{
 	
 
-
+	// init the folder name where to save and uncompress the zip file
 	String destDir = figisTmpDir+System.getProperty("file.separator")+layername;
 	File finalDestDir = new File(destDir);
-	String shpfilename  = figisTmpDir+System.getProperty("file.separator")+layername+System.getProperty("file.separator")+layername+".shp";
-	if (!finalDestDir.exists() || renew) {
+
+	if (!finalDestDir.exists()) { // check if the temp dir exist, if not: create it, download the zip and uncompress the files
 		finalDestDir.mkdir();
 		saveZipToLocal(textUrl, destDir, layername);
-		extractZipFile(destDir, layername);
+		try {
+			Extract.extract(destDir+System.getProperty("file.separator")+layername+".zip");
+		} catch (Exception e) {
+			// some exception during the file extraction, return a null value
+			return null;
+		}
+		//extractZipFile(destDir, layername);
 	}
+	// return the simple feature collection from the uncompressed shp file name
+	String shpfilename  = figisTmpDir+System.getProperty("file.separator")+layername+System.getProperty("file.separator")+layername+".shp";
 	return SimpleFeatureCollectionByShp(shpfilename);
 
 }
 
-
+/******
+ * this method takes a zip file name and return its SimpleFeatureCollection
+ * @param filename the full name of the shape file
+ * @return the simple feature collection 
+ */
 private static SimpleFeatureCollection SimpleFeatureCollectionByShp(String filename) {
 	File shpfile = new File (filename);
 	if (!shpfile.exists()) return null;
 	FileDataStore store = null;
-	
 	SimpleFeatureCollection sfc = null;
+
 	try {
 		URL url = new URL("file://"+shpfile);
 		store = new ShapefileDataStore(url);
@@ -66,7 +80,6 @@ private static SimpleFeatureCollection SimpleFeatureCollectionByShp(String filen
 		sfc = (SimpleFeatureCollection) fs.getFeatures();
 		return sfc;
 	} catch (Exception e1) {
-		System.out.println("eccezione");
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 		return null;
@@ -74,7 +87,14 @@ private static SimpleFeatureCollection SimpleFeatureCollectionByShp(String filen
 	
 	
 }
-
+/*********
+ * this method takes a wfs url and download the features as a zip file to the dest folder
+ * @param textUrl the URL where finding features
+ * @param dest the folder where to save the zip file
+ * @param filename the data to download
+ * @throws MalformedURLException
+ * @throws IOException
+ */
 private static void saveZipToLocal(String textUrl, String dest, String filename) throws MalformedURLException, IOException {
     URL url;
     java.io.BufferedInputStream in;
@@ -91,11 +111,7 @@ private static void saveZipToLocal(String textUrl, String dest, String filename)
 	    bout.close();
 	    bout.close();
 	    in.close();
-
-	
-
-    		
-    }
+  }
 
 private static void extractZipFile(String destDir, String zipFileName) throws IOException {
 	String fullname = destDir+System.getProperty("file.separator")+zipFileName;
