@@ -125,7 +125,7 @@
         </profile>
 
         <profile>
-            <id>cron</id>
+            <id>setting</id>
             <activation>
                 <property>
                     <name>all</name>
@@ -133,7 +133,7 @@
                 </property>
             </activation>
             <modules>
-		<module>cron</module>
+		<module>setting</module>
             </modules>
         </profile>
         

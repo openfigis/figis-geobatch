@@ -141,7 +141,7 @@
 
 	<profiles>
 		<profile>
-			<id>cron</id>
+			<id>intersection</id>
 			<activation>
 				<property>
 					<name>all</name>
@@ -157,7 +157,7 @@
 		</profile>
 	
 		<profile>
-			<id>intersection</id>
+			<id>setting</id>
 			<activation>
 				<property>
 					<name>all</name>

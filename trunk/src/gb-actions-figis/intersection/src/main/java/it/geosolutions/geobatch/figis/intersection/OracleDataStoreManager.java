@@ -526,10 +526,7 @@ public class OracleDataStoreManager {
 	    	featureStoreGeom.setTransaction(tx);
 	    	// save geometries to the statistics temporary table	
 	    	featureStoreGeom.addFeatures(sfcGeom);
-
-	    	
-	    	
-    	} catch(Throwable e) {
+   	} catch(Throwable e) {
     		e.printStackTrace();
     	}
     	finally {

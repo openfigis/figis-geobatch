@@ -29,7 +29,6 @@ import org.junit.Test;
 
 public class TestXML {
 	
-	String destDirName = "C:/work/GEOBATCH_DATA_DIR/setting/in";
 	String sourceDirName = "src/test/resources";
 	
 	private final String host = "http://localhost:9999";
@@ -50,7 +49,7 @@ public class TestXML {
         intersectionConfiguration.setPersistencyHost("http://localhost:9999");
         intersectionConfiguration.setDefaultMaskLayer("fifao:UN_CONTINENT");
         intersectionAction = new SettingAction(intersectionConfiguration);
-        
+
         IntersectionConfiguration cronConfiguration = new IntersectionConfiguration("id", "name", " description");
         cronConfiguration.setPersistencyHost("http://localhost:9999");
         
@@ -83,11 +82,11 @@ public class TestXML {
 			queue.add(new FileSystemEvent(inputFile1, FileSystemEventType.FILE_ADDED));
 			intersectionAction.execute(queue);
 			printIntersections();
-			/*
+			
 			System.out.println("update database");
 			queue.add(new FileSystemEvent(inputFile1, FileSystemEventType.FILE_ADDED));
 			cronAction.execute(queue);
-			printIntersections();*/
+			printIntersections();
 			
 			System.out.println("update configuration config2.xml");
 			queue.add(new FileSystemEvent(inputFile2, FileSystemEventType.FILE_ADDED));

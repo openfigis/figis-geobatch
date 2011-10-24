@@ -23,9 +23,9 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>it.geosolutions.geobatch.figis</groupId>
-  <artifactId>gb-action-figis-intersection</artifactId>
+  <artifactId>gb-action-figis-setting</artifactId>
   <packaging>jar</packaging>
-  <name>GeoBatch action: intersection</name>
+  <name>GeoBatch action: setting</name>
   <url>http://www.geo-solutions.it/maven_reports/gb/</url><!--<url>flowmanagers/</url>-->
   
   <scm>
@@ -36,7 +36,7 @@
   </scm>
   
   <description>
-    GeoSolutions GeoBatch Action: intersection.
+    GeoSolutions GeoBatch Action: setting.
   </description>
 
   <licenses>
@@ -65,22 +65,14 @@
 	  <groupId>it.geosolutions.geobatch</groupId>
 	  <artifactId>gb-fs-catalog</artifactId>
         </dependency>
-	<!--  for tests only -->
-	 <dependency>
-	   <groupId>it.geosolutions.geobatch.figis</groupId>
-	   <artifactId>gb-action-figis-setting</artifactId>
-	   <version>0.1-SNAPSHOT</version>
-	   <scope>test</scope>
-    </dependency>
-    
-    
+	
 	<!-- tools -->       
 	<dependency>
 	  <groupId>it.geosolutions.geobatch</groupId>
 	  <artifactId>gb-action-tools</artifactId>
 	</dependency>
-
-    <!-- model -->
+	
+	    <!-- model -->
     <dependency>
 	  <groupId>it.geosolutions.figis</groupId>
 	  <artifactId>model</artifactId>
@@ -93,79 +85,7 @@
 	  <version>1.0-SNAPSHOT</version>
     </dependency>	
 
-<!-- geotools -->
-    <dependency>
-	  <groupId>org.geotools</groupId>
-	  <artifactId>gt-process-feature</artifactId>
-	  <version>8-SNAPSHOT</version>
-    </dependency>	
 
-
-    <dependency>
-	  <groupId>org.geotools</groupId>
-	  <artifactId>gt-process-raster</artifactId>
-	  <version>8-SNAPSHOT</version>
-    </dependency>
-	<dependency>
-	  <groupId>org.geotools.jdbc</groupId> 
-	  <artifactId>gt-jdbc-oracle</artifactId> 
-	  <version>${gt.version}</version> 
-  	</dependency>
-<dependency>
-    <groupId>com.oracle</groupId>
-    <artifactId>oracle</artifactId>
-    <version>10.2.0.2.0</version>
-</dependency>
-  
-  	    <dependency>
-  <groupId>org.geotools</groupId>
-  <artifactId>gt-epsg-hsql</artifactId>
-  <version>8-SNAPSHOT</version>
-</dependency>
-	  	    <dependency>
-  <groupId>org.geotools</groupId>
-  <artifactId>gt-shapefile</artifactId>
-  <version>8-SNAPSHOT</version>
-</dependency>
-       <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-wfs</artifactId>
-            
-            <version>8-SNAPSHOT</version>
-        </dependency>
-    
-    <dependency>
-  <groupId>org.geotools.xsd</groupId> 
-  <artifactId>gt-xsd-wfs</artifactId> 
-  <version>8-SNAPSHOT</version> 
-  </dependency>
-     <dependency>
-  <groupId>org.geotools.ogc</groupId> 
-  <artifactId>net.opengis.wfs</artifactId> 
-  <version>8-SNAPSHOT</version> 
-  </dependency>
- <dependency>
-  <groupId>org.geotools.ogc</groupId> 
-  <artifactId>net.opengis.wfsv</artifactId> 
-  <version>8-SNAPSHOT</version> 
-  </dependency>
-  
-  <dependency>
-  <groupId>org.geotools.ogc</groupId> 
-  <artifactId>net.opengis.ows</artifactId> 
-  <version>${gt.version}</version> 
-  </dependency>
-
-    
-    	
-    <!--  geoserver manager  -->
-   <dependency>
-    <groupId>it.geosolutions</groupId>
-    <artifactId>geoserver-manager</artifactId>
-    <version>1.2-SNAPSHOT</version>
-  </dependency>	
-
-  
+		
   </dependencies>
-
 </project>
