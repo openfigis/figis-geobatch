@@ -140,24 +140,23 @@
         <test.maxHeapSize>512M</test.maxHeapSize>
         <src.output>${basedir}/target</src.output>
 		        
-        <project.version>0.1-SNAPSHOT</project.version>
+        <project.version>2.0-SNAPSHOT</project.version>
     </properties>
 
     <!-- =========================================================== -->
     <!--     Project Description                                     -->
     <!-- =========================================================== -->
     <parent>
-	<groupId>it.geosolutions.geobatch</groupId>
-	<artifactId>gb</artifactId>
-	<version>1.0</version>
+		<groupId>it.geosolutions.geobatch</groupId>
+		<artifactId>gb</artifactId>
+		<version>1.0</version>
     </parent>
 
     <groupId>it.geosolutions.geobatch.figis</groupId>
     <artifactId>gb-figis</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    
-    
+  
     <!-- =========================================================== -->
     <!--     Dependency Management                                   -->
     <!--     If a POM declares one of those dependencies, then it    -->
@@ -166,28 +165,27 @@
     <!-- =========================================================== -->
     <dependencyManagement>
         <dependencies>
-	    <!-- inherit DependencyManagement -->
-	    <dependency>
-		<groupId>it.geosolutions.geobatch</groupId>
-		<artifactId>gb</artifactId>
-		<version>${gb.version}</version>
-		<type>pom</type>
-		<scope>import</scope>
-	    </dependency>
-	    
-	    
-	    <dependency>
-		<groupId>it.geosolutions.geobatch.figis</groupId>
-		<artifactId>gb-action-figis-intersection</artifactId>
-		<version>0.1-SNAPSHOT</version>
-	    </dependency>
-	   
-	    <dependency>
-		<groupId>it.geosolutions.geobatch.figis</groupId>
-		<artifactId>gb-action-figis-setting</artifactId>
-		<version>0.1-SNAPSHOT</version>
-	    </dependency>
-		
+			<!-- inherit DependencyManagement -->
+			<dependency>
+				<groupId>it.geosolutions.geobatch</groupId>
+				<artifactId>gb</artifactId>
+				<version>${gb.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
+			
+			<dependency>
+				<groupId>it.geosolutions.geobatch.figis</groupId>
+				<artifactId>gb-action-figis-intersection</artifactId>
+				<version>2.0-SNAPSHOT</version>
+			</dependency>
+		   
+			<dependency>
+				<groupId>it.geosolutions.geobatch.figis</groupId>
+				<artifactId>gb-action-figis-setting</artifactId>
+				<version>2.0-SNAPSHOT</version>
+			</dependency>
  
         </dependencies>
     </dependencyManagement>

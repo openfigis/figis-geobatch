@@ -129,7 +129,7 @@ public class LayerIntersector {
         String schema, String user, String password, Long combination, 
         boolean preserve_target) throws Exception {
 	
-	initOrclMap(hostname, port, database, schema, user, password);
+		initOrclMap(hostname, port, database, schema, user, password);
 	
 		/*
 		 * Polygon create here is a "safety" feature. Some intersections may
