@@ -79,9 +79,14 @@
         <version>3.3.1.GA</version>
      </dependency>
      <dependency>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-commons-annotations  	</artifactId>
-      <version>3.1.0.GA</version>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-commons-annotations  	</artifactId>
+		<version>3.1.0.GA</version>
+     </dependency>
+     <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>3.3.1.ga</version>
      </dependency>
 
      <dependency>
@@ -150,12 +155,23 @@
    		<dependency>
             <groupId>com.trg</groupId>
             <artifactId>trg-dao</artifactId>
-<version> 0.5.1</version>
+			<version> 0.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.trg</groupId>
+            <artifactId>trg-search</artifactId>
+			<version> 0.5.1</version>
         </dependency>
         <dependency>
             <groupId>com.trg</groupId>
             <artifactId>trg-search-jpa-hibernate</artifactId>
-<version> 0.5.1</version>
+			<version> 0.5.1</version>
+			  <exclusions>
+				<exclusion>  <!-- declare the exclusion here -->
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-entitymanager</artifactId>
+				</exclusion>
+			  </exclusions> 
         </dependency>
 
 		 

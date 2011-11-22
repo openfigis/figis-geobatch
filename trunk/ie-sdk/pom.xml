@@ -70,6 +70,14 @@
 		<module>../src</module>
 		<module>../distribution</module>
 	</modules>
-	<distributionManagement>
-	</distributionManagement>
+     <distributionManagement>
+		  <!--..................................-->
+		  <!--      GeoSolutions Repository     -->
+		  <!--..................................-->
+      <repository>
+       <uniqueVersion>false</uniqueVersion>
+       <id>geosolutions</id>
+       <url>ftp://maven.geo-solutions.it</url>
+      </repository>
+    </distributionManagement>
 </project>

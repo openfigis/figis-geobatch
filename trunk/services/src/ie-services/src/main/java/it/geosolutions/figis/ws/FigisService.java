@@ -5,12 +5,15 @@ package it.geosolutions.figis.ws;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
+import it.geosolutions.figis.ws.exceptions.BadRequestExceptionFault;
 import it.geosolutions.figis.ws.response.Intersections;
+import it.geosolutions.figis.ws.response.IntersectionsPageCount;
 
 import java.util.List;
 import javax.jws.WebParam;
@@ -32,22 +35,22 @@ public interface FigisService {
 	    public Config getConfig(@PathParam("id") Long id) throws ResourceNotFoundFault;
 
 
-            @GET
+        @GET
 	    @Path("/config/")
 	    public List<Config> getConfigs();
 
-           @POST
-           @Path("/config/")
-           long insertConfig(@WebParam(name = "Config") Config config);
+        @POST
+        @Path("/config/")
+        long insertConfig(@WebParam(name = "Config") Config config);
 
 
-           @PUT
-           @Path("/config/{id}")
-           long updateConfig(@PathParam("id") long id, @WebParam(name = "Config") Config config);
+        @PUT
+        @Path("/config/{id}")
+        long updateConfig(@PathParam("id") long id, @WebParam(name = "Config") Config config);
 
-           @DELETE
-           @Path("/config/{id}")
-           boolean deleteConfig(@PathParam("id") long id) throws ResourceNotFoundFault;
+        @DELETE
+        @Path("/config/{id}")
+        boolean deleteConfig(@PathParam("id") long id) throws ResourceNotFoundFault;
 
 	    @GET
 	    @Path("/intersection/{id}")
@@ -57,10 +60,23 @@ public interface FigisService {
 	    @Path("/intersection/{srcLayer}/{trgLayer}")
 	    public Intersections getIntersectionsByLayerNames(@PathParam("srcLayer") String srcLayer, @PathParam("trgLayer") String trgLayer);
 
-            @GET
-	    @Path("/intersection/")
-	    public List<Intersection> getAllIntersections();
 
+        //@GET
+	    //@Path("/intersection/")
+	   // public List<Intersection> getAllIntersections();
+	    
+        @GET
+	    @Path("/intersections/count/")
+	    public IntersectionsPageCount getAllIntersectionsCount(@QueryParam("start") Integer start,@QueryParam("limit") Integer limit) throws BadRequestExceptionFault;
+	    
+	    @GET
+	    @Path("/intersection/countallintersection/")
+	    public long getCountIntersections(@QueryParam("mask") String mask) ;
+	    
+	    @GET
+	    @Path("/intersection/")
+	    public List<Intersection> getAllIntersections(@QueryParam("start") Integer start,@QueryParam("limit") Integer limit) throws BadRequestExceptionFault;
+	    
            @POST
            @Path("/intersection/")
            public long insertIntersection(@WebParam(name = "Intersection") Intersection intersection);
@@ -75,6 +91,6 @@ public interface FigisService {
 
            @DELETE
            @Path("/intersection/")
-           boolean deleteIntersections();
+           boolean deleteIntersections() throws BadRequestExceptionFault;
 
 	}

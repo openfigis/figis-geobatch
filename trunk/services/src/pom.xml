@@ -357,7 +357,13 @@
     <!-- ================================================================== -->
     <repositories>
 
-                <repository>
+	<repository>
+        <id>JBoss 2</id>
+        <name>jboss-maven2-release-repository</name>
+        <url>https://oss.sonatype.org/content/repositories/JBoss</url>
+      </repository>
+	  
+		<repository>
             <id>official maven 1</id>
             <name>Public online maven repository</name>
             <url>http://repo1.maven.org/maven2</url>

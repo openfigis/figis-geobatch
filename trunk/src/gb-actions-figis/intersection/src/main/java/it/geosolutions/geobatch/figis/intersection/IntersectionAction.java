@@ -41,7 +41,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -120,10 +122,23 @@ public class IntersectionAction extends BaseAction<EventObject> {
      * @return the simplefeaturecollection of the downloaded layer
      */
     private SimpleFeatureCollection downloadFromGeoserver(String layername){
-    	String name = layername.substring(layername.indexOf(":")+1);
-    	String urlCollection  = geoserver.getGeoserverUrl()+"/wfs?outputFormat=SHAPE-ZIP&request=GetFeature&version=1.1.1&typeName="+name+"&srs=EPSG:4326";
+    	String urlCollection  = "";
     	try {
+    		LOGGER.trace("Int.act. 123: downloadFromGeoserver(String "+layername+"): ");
+	    	String name = layername.substring(layername.indexOf(":")+1);
+	    	LOGGER.trace("Int.act. 123.2: name: '"+name+"' ");
+	    	LOGGER.trace("Int.act. 123.3: name: '"+geoserver+"' ");
+	    		if(geoserver!=null){
+	    			urlCollection  = geoserver.getGeoserverUrl()+"/wfs?outputFormat=SHAPE-ZIP&request=GetFeature&version=1.1.1&typeName="+name+"&srs=EPSG:4326";
+	    		}else{
+	    			urlCollection  = "http://192.168.1.110:8484/figis/geoserver/wfs?outputFormat=SHAPE-ZIP&request=GetFeature&version=1.1.1&typeName="+name+"&srs=EPSG:4326";
+	    		}
+	    	
+	    	LOGGER.trace("Int.act. 124: urlCollection: "+urlCollection);
+	    	
+    		LOGGER.trace("Int.act. prima di 128: tmp:");
 	    	String tmp = System.getProperty("java.io.tmpdir")+System.getProperty("file.separator")+tmpDirName;
+	    	LOGGER.trace("Int.act. 128: tmp: "+tmp);
 	       	return  ZipStreamReader.getShapeFileFromURLbyZIP(urlCollection, tmp, name);
     	} catch(Exception e) {
     		System.out.println("Failed to download the "+urlCollection+" layer");
@@ -192,7 +207,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 			
 			
 		} catch(Throwable e) {
-			LOGGER.trace("Failed to load some layers");
+			LOGGER.trace("Failed to load some layers",e);
 			return null;
 			
 		}
@@ -200,8 +215,10 @@ public class IntersectionAction extends BaseAction<EventObject> {
     	
     	// check if intersection requires masking
     	if (isMasked) {
+    		LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>>is masked");
     		// generate the union of the mask geometries
     		ClipProcess clipProcess = new ClipProcess();
+    		LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> clipProcess created");
     		SimpleFeatureIterator sfi = maskCollection.features();
     		Geometry maskGeometry = null;
     		if (sfi.hasNext()) {
@@ -210,12 +227,13 @@ public class IntersectionAction extends BaseAction<EventObject> {
     		while (sfi.hasNext()) {
     			maskGeometry = maskGeometry.union((Geometry)sfi.next().getDefaultGeometry());
     		}
-
+    		LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> union computed");
     		// clip the src Collection using the mask collection
     		srcCollection = clipProcess.execute(srcCollection, maskGeometry);
-    		
+    		LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> srcCollection: clipped");
     		// clip the trg Collection using the mask collection    		
     		trgCollection = clipProcess.execute(trgCollection, maskGeometry);
+    		LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> trgCollection: clipped");
     	}
 
     	// setup for the IntersectionFeatureCollectionProcess
@@ -226,7 +244,11 @@ public class IntersectionAction extends BaseAction<EventObject> {
     	trgAttributes.add(trgCodeField);  
     	// perform the IntersectionFeatureCollection process
     	IntersectionFeatureCollection intersectionProcess = new IntersectionFeatureCollection();
+    	long dif_beg = Long.parseLong(new Timestamp(new java.util.Date().getTime()).toString());
+    	LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> trgCollection: intersectionProcess: >>>>>>"+this+"<<<>>>"+dif_beg+" <<<<<<<<<<");
     	SimpleFeatureCollection result2 = intersectionProcess.execute(srcCollection, trgCollection, srcAttributes, trgAttributes, mode, true, true);
+    	long dif_end = Long.parseLong(new Timestamp(new java.util.Date().getTime()).toString());
+    	LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> trgCollection: intersectionProcess: >>>>>>"+this+"<<<>>>"+(dif_end-dif_beg)+" <<<<<<<<<<");
     	return result2;
     }
     
@@ -236,7 +258,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
     public boolean initConnections(Geoserver geoserver) {
     	try {
 	        //check if this control works as expected
-    		String url = geoserver.getGeoserverUrl()+"/geoserver";
+    		String url = geoserver.getGeoserverUrl();//+"/geoserver";
     		LOGGER.trace(url+" USER "+geoserver.getGeoserverUsername()+", PWD "+geoserver.getGeoserverPassword());
     		gsRestReader = new GeoServerRESTReader(url, geoserver.getGeoserverUsername(), geoserver.getGeoserverPassword());
 
@@ -283,7 +305,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 			}
 	        //check if this control works as expected
 	        if (intersections==null) return false;
-	    	LOGGER.trace("Updating intersections");
+	    	LOGGER.trace("Updating intersections: sono "+this);
 	
 	    	// init of the DB connectio to the ORACLE datastore
 	    	String dbHost = config.getGlobal().getDb().getHost();
@@ -296,7 +318,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	    	try {
 	    		dataStoreOracle = new OracleDataStoreManager(dbHost,port,db,schema,user,pwd);
 			} catch (Exception e1) {
-				LOGGER.trace("Problems creating the ORACLE datastore instance, check the parameters");   
+				LOGGER.trace("Problems creating the ORACLE datastore instance, check the parameters: sono "+this);   
 				return false;
 			}
 	    	
@@ -313,23 +335,25 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	        	long id = intersection.getId();
 	        	// in case the intersection has been scheduled to be deleted, delete the intersection from the list
 	        	// and its intersection from the DB
+	        	LOGGER.trace(">>>>>>>>>>>>>>>>>>>>status before entry: "+status+" sono "+this+"\n");
 	        	if (status==Status.TODELETE) {
 	        		Request.deleteIntersectionById(host, id);
         			try {
 						dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer));
 					} catch (Exception e) {
-						LOGGER.trace("Problem deleting intersection from the database identified by "+srcLayer+","+trgLayer+"\n"+e);
+						LOGGER.trace("Problem deleting intersection from the database identified by "+srcLayer+","+trgLayer+": sono "+this+"\n"+e);
 					}
         			// still to implement
 	        	}
 	        	if (status==Status.TOCOMPUTE) { // if the intersection should be computed
 	        		SimpleFeatureCollection resultInt = null;
+	        		LOGGER.trace(">>>>>>>>>>>>>>>>>>>> before intersection: sono "+this+"\n");
 	        		resultInt = intersection(intersection); // compute the intersection between the layers
-	        		
+	        		LOGGER.trace(">>>>>>>>>>>>>>>>>>>> after intersection: sono "+this+"\n");
 	        		// 
 	        		String geometryType = null;
 	        		if (resultInt!=null) geometryType = resultInt.getSchema().getGeometryDescriptor().getType().getName().getLocalPart();
-	        		
+	        		LOGGER.trace(">>>>>>>>>>>>>>>>>>>> after intersection: geometryType: "+geometryType+" sono "+this+"\n");
 	        		// the intersection can be updated on the db only if the intersection generate a reuslt and it is Multipolygon typed
 	        		// else it must be deleted by both the db and by the intersection list
 	        		if (resultInt!=null && geometryType.equals("MultiPolygon")) {
@@ -337,36 +361,42 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	        			// compute again the intersection
 	        			intersection.setStatus(Status.COMPUTING); 
 	        			Request.updateIntersectionById(host, id, intersection);
-		        		LOGGER.trace("CREDENTIAL FOR "+schema+":"+db+" on "+ dbHost+":"+port+"("+user+","+pwd+")");
+		        		LOGGER.trace(">>>>>>>>>>>>>>>>>>>>CREDENTIAL FOR "+schema+":"+db+" on "+ dbHost+":"+port+"("+user+","+pwd+") sono "+this+"\n");
 						try {
+							LOGGER.trace(">>>>>>>>>>>>>>>>>>>> dataStoreOracle.perform("+resultInt+",getName("+srcLayer+"), getName("+trgLayer+"), "+srcCode+","+ trgCode+") sono "+this+"\n");
 							dataStoreOracle.perform(resultInt,getName(srcLayer), getName(trgLayer), srcCode, trgCode);
 			        	    intersection.setStatus(Status.COMPUTED);
+			        	    LOGGER.trace(">>>>>>>>>>>>>>>>>>>> after intersection: geometryType: sono "+this+"\n");
 						} catch (Exception e) {
 							// some problems occurred when saving the intersections in the db.
 							// in this case we schedule to delete this intersection and will be deleted at next action
-							LOGGER.trace("Problem performing Intersection on "+srcLayer+","+trgLayer+","+srcCode+","+trgCode+"\n"+e);
+							LOGGER.trace(">>>>>>>>>>>>>>>>>>>>Problem performing Intersection on "+srcLayer+","+trgLayer+","+srcCode+","+trgCode+" sono "+this+"\n"+e);
 			        	    intersection.setStatus(Status.TODELETE);
 						} finally {
+							LOGGER.trace(">>>>>>>>>>>>>>>>>>>> into finally sono "+this+"\n");
 			        		Request.updateIntersectionById(host, id, intersection);	
+			        		LOGGER.trace(">>>>>>>>>>>>>>>>>>>> into finally ended ok: sono "+this+"\n");
 						}
 	        		}
 	        		else {
-	        			LOGGER.trace("Skipping intersection between "+srcLayer+" and "+trgLayer+" because the intersection cannot be computed");
-	        			LOGGER.trace("Intersection will be deleted");
+	        			LOGGER.trace("Skipping intersection between "+srcLayer+" and "+trgLayer+" because the intersection cannot be computed sono "+this+"");
+	        			LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>Intersection will be deleted");
 		        		Request.deleteIntersectionById(host, id);
 		        		Request.updateIntersectionById(host, id, intersection);
 	        			try {
+	        				LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>before dataStoreOracle.deleteAll(getName("+srcLayer+"), getName("+trgLayer+")); sono "+this+"");
 							dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer));
 						} catch (IOException e) {
-							LOGGER.trace("Some problems occured deleting intersection from the database identified by "+srcLayer+","+trgLayer+"\n"+e);
+							LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>Some problems occured deleting intersection from the database identified by "+srcLayer+","+trgLayer+" sono "+this+"\n"+e);
 						}
 	        		}
 	        	}
 	        }
-	        LOGGER.trace("Intersections updates: Successfull");
+	        LOGGER.trace(">>>>>>>>>>>>>>>>>>>>Intersections updates: Successfull: sono "+this+"");
 	        return true;
     	} finally {
     		if (dataStoreOracle!=null) dataStoreOracle.close();
+    		LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>finally di chiusura esguito correttamente!!!!!sono "+this+"");
     	}
     }
     
@@ -424,13 +454,18 @@ public class IntersectionAction extends BaseAction<EventObject> {
                     // perform basic checks and return the  current config in the DB
                     Config config = basicChecks();
                     if (config!=null) {
+                    	geoserver = config.getGlobal().getGeoserver();
+                    	 LOGGER.trace(">>>>>>>>ConfigAction.execute(): geoserver: "+geoserver+" <<<<<<<<<");
                     	// create the figis temporary dir
+                    	 LOGGER.trace(">>>>>>>>ConfigAction.execute(): tmpDirName: "+tmpDirName+" <<<<<<<<<");
                     	File tmpDir = TmpDirManager.createTmpDir(tmpDirName);
+                    	 LOGGER.trace(">>>>>>>>ConfigAction.execute(): tmpDirName: tmpDirName creata <<<<<<<<<");
                         // update the status of the intersections on the basis of the new input
                         boolean areIntersectionsUpdated = executeIntersectionStatements(host, config, false);
-                        
+                        LOGGER.trace(">>>>>>>>ConfigAction.execute(): areIntersectionsUpdated: "+areIntersectionsUpdated+" <<<<<<<<<");
                         // delete the tmpDir after execution
                         TmpDirManager.deleteDir(tmpDir);
+                        LOGGER.trace(">>>>>>>>ConfigAction.execute(): cancellata tmpDir: "+tmpDir+" <<<<<<<<<");
                     }
                        
                     // add the event to the return

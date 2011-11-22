@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.geosolutions.geobatch.jetty;
+package it.geosolutions.figis.ws.jetty;
 
 import java.io.File;
 
@@ -65,7 +65,7 @@ public class Start
 
             if (port <= 0)
             {
-                port = 8082;
+                port = 8081;
             }
 
             conn.setPort(port);
@@ -74,8 +74,8 @@ public class Start
             jettyServer.setConnectors(new Connector[] { conn });
 
             WebAppContext wah = new WebAppContext();
-            wah.setContextPath("/geobatch");
-            // wah.setWar("target/geobatch");
+            wah.setContextPath("/ie-services");
+            // wah.setWar("target/ie-services");
             wah.setWar("src/main/webapp");
             jettyServer.setHandler(wah);
             wah.setTempDirectory(new File("target/work"));

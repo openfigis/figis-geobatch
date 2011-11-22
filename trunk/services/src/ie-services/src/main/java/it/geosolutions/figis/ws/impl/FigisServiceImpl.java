@@ -11,7 +11,10 @@ import it.geosolutions.figis.ws.FigisService;
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundDetails;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
+import it.geosolutions.figis.ws.exceptions.BadRequestExceptionFault;
+import it.geosolutions.figis.ws.exceptions.BadRequestExceptionDetails;
 import it.geosolutions.figis.ws.response.Intersections;
+import it.geosolutions.figis.ws.response.IntersectionsPageCount;
 import java.util.List;
 import javax.jws.WebService;
 
@@ -109,7 +112,7 @@ public class FigisServiceImpl implements FigisService{
     public Intersections getIntersectionsByLayerNames(String srcLayer, String trgLayer)  {
         Search search = new Search();
         search.addFilterAnd(
-        Filter.equal("srcLayer", "srcLayer"),
+        		Filter.equal("srcLayer", "srcLayer"),
                 Filter.equal("trgLayer", "trgLayer"));
         List<Intersection> intersectionList = intersectionDao.search(search);
         Intersections intersections = new Intersections();
@@ -122,11 +125,98 @@ public class FigisServiceImpl implements FigisService{
      * Returns all the Intersection instances
      * @return all the Intersection instances
      */
-    @Override
+    /*@Override
     public List<Intersection> getAllIntersections() {
         List<Intersection> intersectionList = intersectionDao.findAll();
         return intersectionList;
     }
+    */
+    /********************************************
+     * Returns all the Intersection instances by pagination
+     * @start: the number from which pagination start
+     * @limit: number of items for page: it must be > 0
+     * @return all the Intersection instances
+     */
+    @Override
+    public List<Intersection> getAllIntersections(Integer start,Integer limit) throws BadRequestExceptionFault{
+    	 if (((start != null) && (limit == null)) || ((start == null) && (limit != null)) || (limit!=null && limit==0))
+         {
+    		 BadRequestExceptionDetails badRequestExceptionDetails =
+                 new BadRequestExceptionDetails();
+    		 //badRequestExceptionDetails.setId(id);
+    		 badRequestExceptionDetails.setMessage("Page and entries params should be declared together.");
+             throw new BadRequestExceptionFault(badRequestExceptionDetails);
+         }
+    	 
+    	 Search searchCriteria = new Search(Intersection.class);
+
+         if (start != null && limit!=null && limit!=0)
+         {
+             searchCriteria.setMaxResults(limit);
+             searchCriteria.setPage(start/limit);
+         }
+
+         searchCriteria.addSortAsc("id");
+
+         List<Intersection> found = intersectionDao.search(searchCriteria);
+         return found;
+    }
+    
+    /********************************************
+     * Returns all the Intersection instances by pagination
+     * @start: the number from which pagination start
+     * @limit: number of items for page: it must be > 0
+     * @return all the Intersection instances
+     */
+    @Override
+    public IntersectionsPageCount getAllIntersectionsCount(Integer start,Integer limit) throws BadRequestExceptionFault{
+    	 if (((start != null) && (limit == null)) || ((start == null) && (limit != null)) || (limit!=null && limit==0))
+         {
+    		 BadRequestExceptionDetails badRequestExceptionDetails =
+                 new BadRequestExceptionDetails();
+    		 //badRequestExceptionDetails.setId(id);
+    		 badRequestExceptionDetails.setMessage("Page and entries params should be declared together.");
+             throw new BadRequestExceptionFault(badRequestExceptionDetails);
+         }
+    	 
+    	 Search searchCriteria = new Search(Intersection.class);
+
+    	 if (start != null && limit!=null && limit!=0)
+         {
+             searchCriteria.setMaxResults(limit);
+             searchCriteria.setPage(start/limit);
+         }
+
+         searchCriteria.addSortAsc("id");
+
+         List<Intersection> found = intersectionDao.search(searchCriteria);
+         IntersectionsPageCount intrsNew = new IntersectionsPageCount();
+         intrsNew.setIntersectionsPageCount(found);
+         int siz = 0;
+         List<Intersection> li = intersectionDao.findAll();
+         if(li != null)siz = li.size();
+         intrsNew.setTotalCount(siz);
+         return intrsNew;
+    }
+    
+    /********************************************
+     * Returns the total of Intersection filtered by mask
+     * nameLike: the filter: it must be null to return all items
+     * @return all the Intersection instances
+     */
+    @Override
+    public long getCountIntersections(String mask)
+    {
+        Search searchCriteria = new Search(Intersection.class);
+
+        if (mask != null)
+        {
+            searchCriteria.addFilterILike("mask", mask);
+        }
+
+        return intersectionDao.count(searchCriteria);
+    }
+    
     /***********************************
      * update the content of the Config instance identified by id
      * @param id the id to look up
@@ -302,8 +392,8 @@ public class FigisServiceImpl implements FigisService{
      * @throws ResourceNotFoundFault
      */
       @Override
-    public boolean deleteIntersections()  {
-        List<Intersection> intersections = getAllIntersections();
+    public boolean deleteIntersections()  throws BadRequestExceptionFault {
+        List<Intersection> intersections = getAllIntersections(null,null);
          for (Intersection intersection: intersections) {
              try {
              boolean isDeleted = deleteIntersection(intersection.getId());
@@ -314,6 +404,13 @@ public class FigisServiceImpl implements FigisService{
          return true;
     }
 
+      class totalCount{
+      	  
+      	  int value=0;
+      	  totalCount(int val){
+      		  this.value = val;
+      	  }
+        }
 
 
 }
