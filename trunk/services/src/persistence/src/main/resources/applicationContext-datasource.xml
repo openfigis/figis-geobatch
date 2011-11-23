@@ -7,12 +7,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
-        <bean id="ie-dataSource"
-                class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-                <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-                <property name="url" value="jdbc:hsqldb:data/intersectionengine" />
-                <property name="username" value="sa" />
-                <property name="password" value="" />
+        <!--Bean to load properties file -->
+        <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:hsqldb.properties"/>
+        </bean>
+
+        <bean id="ie-dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+              <property name="driverClassName" value="${dataSource.driverClassName}" />
+             <!--  <property name="url" value="jdbc:hsqldb:data/intersectionengine" />-->
+                 <property name="url" value="${dataSource.url}" />
+                <property name="username" value="${dataSource.username}"/>
+                <property name="password" value="${dataSource.password}" />
         </bean>
 
         <bean id="ie-entityManagerFactory"
@@ -42,6 +47,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
         <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
         <tx:annotation-driven transaction-manager="ie-transactionManager"/>
- 
+
 </beans>
 

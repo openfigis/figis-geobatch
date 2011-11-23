@@ -104,6 +104,8 @@ public class SettingAction extends BaseAction<EventObject> {
     
     	for (Intersection intersection: dbList) {
     		if (!(intersections.contains(intersection))){
+    			LOGGER.info(intersection.toString());
+    			LOGGER.info("will be set to be deleted");
     			intersection.setStatus(Status.TODELETE);
     			Request.updateIntersectionById(host, intersection.getId(), intersection);
     		}
@@ -144,7 +146,7 @@ public class SettingAction extends BaseAction<EventObject> {
     		int dbIntersectionID = dbList.indexOf(xmlIntersection);
     		if (dbIntersectionID>=0) { //if xmlIntersection exists in the DB
     			Intersection dbIntersection = dbList.get(dbIntersectionID); 
-    			if (dbIntersection.getStatus()==Status.COMPUTED || dbIntersection.getStatus()==Status.TOCOMPUTE) {
+    			if (dbIntersection.getStatus()==Status.COMPUTED || dbIntersection.getStatus()==Status.TOCOMPUTE || dbIntersection.getStatus()==Status.COMPUTING) {
     				boolean isDifferent = areIntersectionParameterDifferent(xmlIntersection, dbIntersection);
     				if (xmlIntersection.isForce() || isClean || isDifferent){
     					// if one of the three is valid we need to recompute the intersection and
@@ -183,7 +185,8 @@ public class SettingAction extends BaseAction<EventObject> {
         // get the config either from the DB or from the XML
         Request.initConfig();
         Request.initIntersection();
-        for (Intersection inter: XMLConfig.intersections) inter.setStatus(Status.TOCOMPUTE);
+        for (Intersection inter: XMLConfig.intersections) 
+        	inter.setStatus(Status.TOCOMPUTE);
         Config config =  saveOrUpdateConfig(host, XMLConfig);
         
          // config is null in case of a wrong host name or an invalid update version of XMLConfig
@@ -222,22 +225,22 @@ public class SettingAction extends BaseAction<EventObject> {
            	      	try {
                         // READ THE XML AND CREATE A CONFIG OBJECT
            	      		XMLConfig = ConfigXStreamMapper.init(fileEvent.getSource().getAbsolutePath());
-           	      		LOGGER.info("host----------------->"+host);
+           	      		LOGGER.info("Managing : "+fileEvent.getSource().getAbsolutePath());
            	      		// READ THE COMING CONFIG (XMLConfig) AND EVENTUALLY UPDATE THE CURRENT STATUS OF BOTH THE CONFIG AND THE INTERSECTIONS
                         updateDataStore(host, XMLConfig, defaultMaskLayer );
            	      	} catch(ConversionException e) {
-           	      		LOGGER.trace("Failed to convert the "+fileEvent.getSource().getName()+" configuration file");
+           	      		LOGGER.error("Failed to convert the "+fileEvent.getSource().getName()+" configuration file");
            	      	}
                     
                     // THIS IS FOR DEBUGGING AIMS. SHOW THE CURRENT STATUS OF THE INTERSECTION AS THE EVENT IS RAISED.
                     // REMOVE IF NOT NECESSARY
             		try {
             			List<Intersection> list = Request.getAllIntersections(host);
-            	        LOGGER.info("Current status");
-            	        for (int i=0; i< list.size();i++) LOGGER.info(list.get(i).toString());
+            	        LOGGER.debug("Current status of the intersections");
+            	        for (int i=0; i< list.size();i++) LOGGER.debug(list.get(i).toString());
             		} catch (MalformedURLException e) {
             		// TODO Auto-generated catch block
-            			e.printStackTrace();
+            			LOGGER.error("Failed to show the intersections",e);
             		}                    
                     
                     

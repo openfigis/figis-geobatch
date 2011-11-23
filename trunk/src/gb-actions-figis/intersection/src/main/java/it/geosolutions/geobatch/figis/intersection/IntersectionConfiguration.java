@@ -37,6 +37,7 @@ public class IntersectionConfiguration extends ActionConfiguration implements Co
 	// TODO INITIALIZE MEMBERS
     }
     String persistencyHost = null;
+    int itemsPerPages = 50;
     
     // TODO ADD YOUR MEMBERS
     
@@ -47,6 +48,16 @@ public class IntersectionConfiguration extends ActionConfiguration implements Co
 	public void setPersistencyHost(String persistencyHost) {
 		this.persistencyHost = persistencyHost;
 	}
+	
+	
+
+	public int getItemsPerPages() {
+		return itemsPerPages;
+	}
+
+	public void setItemsPerPages(int itemsPerPages) {
+		this.itemsPerPages = itemsPerPages;
+	}
 
 	@Override
     public IntersectionConfiguration clone(){
@@ -55,6 +66,7 @@ public class IntersectionConfiguration extends ActionConfiguration implements Co
 		// TODO CLONE YOUR MEMBERS
 	ret.setPersistencyHost(persistencyHost);
 		ret.setWorkingDirectory(this.getWorkingDirectory());
+		ret.setItemsPerPages(itemsPerPages);
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());
         return ret;

@@ -181,7 +181,7 @@ public class TestCron extends TestCase{
 		System.out.println("que");
 		Config fstIntersectionConfig = firstXMLComing();
 		System.out.println("quo");
-		boolean areIntersectionsUpdated = cronAction.executeIntersectionStatements(host, fstIntersectionConfig, false);
+	//	boolean areIntersectionsUpdated = cronAction.executeIntersectionStatements(host, fstIntersectionConfig, false);
 //		intersectionAction.updateDataStore(host, fstIntersectionConfig);
         // perform basic checks and return the  current config in the DB
         
