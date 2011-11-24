@@ -202,6 +202,55 @@ public class SettingAction extends BaseAction<EventObject> {
           }
     }
     
+    private boolean checkConfig(Config config) {
+    	if  (config==null) {
+    		LOGGER.error("The config object cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal()==null) {
+    		LOGGER.error("The global configuration cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getGeoserver()==null) {
+    		LOGGER.error("The geoserver configuration cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getGeoserver().getGeoserverUrl()==null) {
+    		LOGGER.error("The geoserver url  cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getGeoserver().getGeoserverUsername()==null) {
+    		LOGGER.error("The geoserver username  cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getDb()==null) {
+    		LOGGER.error("The db configuration  cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getDb().getDatabase()==null) {
+    		LOGGER.error("The db name  cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getDb().getHost()==null) {
+    		LOGGER.error("The db host  cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getDb().getUser()==null) {
+    		LOGGER.error("The db user name  cannot be null");
+    		return false;
+    	}
+    	if (config.getGlobal().getDb().getPort()==null) {
+    		LOGGER.error("The db port  cannot be null");
+    		return false;
+    	}
+    	if (config.intersections==null) {
+    		LOGGER.error("The intersection list cannot be null");
+    		return false;
+    	}
+    	LOGGER.info("The config check is successfull");
+    	return true;
+    }
+    
     /**
      * Removes TemplateModelEvents from the queue and put
      */
@@ -210,7 +259,7 @@ public class SettingAction extends BaseAction<EventObject> {
     	host =  conf.getPersistencyHost();
     	defaultMaskLayer = conf.getDefaultMaskLayer();
         final Queue<EventObject> ret=new LinkedList<EventObject>();
-                
+        LOGGER.info("Setting action started with parameters "+host+", "+defaultMaskLayer);  
         while (events.size() > 0) {
             final EventObject ev;
             try {
@@ -227,7 +276,8 @@ public class SettingAction extends BaseAction<EventObject> {
            	      		XMLConfig = ConfigXStreamMapper.init(fileEvent.getSource().getAbsolutePath());
            	      		LOGGER.info("Managing : "+fileEvent.getSource().getAbsolutePath());
            	      		// READ THE COMING CONFIG (XMLConfig) AND EVENTUALLY UPDATE THE CURRENT STATUS OF BOTH THE CONFIG AND THE INTERSECTIONS
-                        updateDataStore(host, XMLConfig, defaultMaskLayer );
+           	      		if (checkConfig(XMLConfig)) updateDataStore(host, XMLConfig, defaultMaskLayer );
+           	      		else LOGGER.error("Some errors exist in the config file, please check the log to discover it");
            	      	} catch(ConversionException e) {
            	      		LOGGER.error("Failed to convert the "+fileEvent.getSource().getName()+" configuration file");
            	      	}

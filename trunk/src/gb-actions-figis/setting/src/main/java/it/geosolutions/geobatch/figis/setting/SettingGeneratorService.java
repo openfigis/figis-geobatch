@@ -55,22 +55,46 @@ public class SettingGeneratorService extends BaseService implements
     }
 
     public boolean canCreateAction(SettingConfiguration configuration) {
+    	LOGGER.info("------------------->Checking setting parameters");
         try {
             // absolutize working dir
             String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
+            String defaultMaskLayer = configuration.getDefaultMaskLayer();
+            String host = configuration.getPersistencyHost();
             if (wd != null) {
                 configuration.setWorkingDirectory(wd);
-                return true;
+                //return true;
             } else {
                 if (LOGGER.isWarnEnabled())
                     LOGGER.warn("SettingGeneratorService::canCreateAction(): "
                             + "unable to create action, it's not possible to get an absolute working dir.");
+                return false;
+            }
+            
+            if (host != null) {
+            	LOGGER.info("Host value is "+host);
+                
+            } else {
+                if (LOGGER.isWarnEnabled())
+                    LOGGER.warn("SettingGeneratorService::canCreateAction(): "
+                            + "unable to create action, it's not possible to get the persistence host.");
+                return false;
+            }
+            
+            if (defaultMaskLayer != null) {
+            	LOGGER.info("The default mask layer is "+defaultMaskLayer);
+                
+            } else {
+                if (LOGGER.isWarnEnabled())
+                    LOGGER.warn("SettingGeneratorService::canCreateAction(): "
+                            + "unable to create action, it's not possible to get the default mask layer.");
+                return false;
             }
         } catch (Throwable e) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error(e.getLocalizedMessage(), e);
+            if (LOGGER.isErrorEnabled()) LOGGER.error(e.getLocalizedMessage(), e);
+            return false;
         }
-        return false;
+        return true;
     }
 
 }
