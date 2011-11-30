@@ -21,43 +21,46 @@
  */
 package it.geosolutions.figis.model;
 
+import java.io.Serializable;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 
-
-
 @XStreamAlias("DB")
-public class DB {
-	
+public class DB implements Serializable
+{
 
-	@XStreamAlias("database")	
-	String database;
-	
+    /**
+     *
+     */
+    private static final long serialVersionUID = -7474579778109771490L;
 
-	@XStreamAlias("schema")	
-	String schema;
-	
+    @XStreamAlias("database")
+    String database;
 
-	@XStreamAlias("user")
-	String user;
-	
+    @XStreamAlias("schema")
+    String schema;
 
-	@XStreamAlias("password")	
-	String password;
-	
+    @XStreamAlias("user")
+    String user;
 
-	@XStreamAlias("port")	
-	String port;
-	
+    @XStreamAlias("password")
+    String password;
 
-	@XStreamAlias("host")	
-	String host;
-		
-	public DB() {
-		super();
-	}
+    @XStreamAlias("port")
+    String port;
 
-    public DB(String schema,String database,  String user, String password, String host, String port) {
+    @XStreamAlias("host")
+    String host;
+
+    public DB()
+    {
+        super();
+    }
+
+    public DB(String schema, String database, String user, String password,
+        String host, String port)
+    {
         this.database = database;
         this.schema = schema;
         this.user = user;
@@ -66,81 +69,185 @@ public class DB {
         this.host = host;
     }
 
+    public String getDatabase()
+    {
+        return database;
+    }
 
+    public void setDatabase(String database)
+    {
+        this.database = database;
+    }
 
-	public String getDatabase() {
-		return database;
-	}
-	public void setDatabase(String database) {
-		this.database = database;
-	}
-	public String getSchema() {
-		return schema;
-	}
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
-	public String getUser() {
-		return user;
-	}
-	public void setUser(String user) {
-		this.user = user;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getPort() {
-		return port;
-	}
-	public void setPort(String port) {
-		this.port = port;
-	}
-	public String getHost() {
-		return host;
-	}
-	public void setHost(String host) {
-		this.host = host;
-	}
+    public String getSchema()
+    {
+        return schema;
+    }
 
+    public void setSchema(String schema)
+    {
+        this.schema = schema;
+    }
+
+    public String getUser()
+    {
+        return user;
+    }
+
+    public void setUser(String user)
+    {
+        this.user = user;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+
+    public String getPort()
+    {
+        return port;
+    }
+
+    public void setPort(String port)
+    {
+        this.port = port;
+    }
+
+    public String getHost()
+    {
+        return host;
+    }
+
+    public void setHost(String host)
+    {
+        this.host = host;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof DB))
+        {
             return false;
         }
-        final DB other = (DB) obj;
-        if ((this.database == null) ? (other.database != null) : !this.database.equals(other.database)) {
+
+        DB other = (DB) obj;
+        if (database == null)
+        {
+            if (other.database != null)
+            {
+                return false;
+            }
+        }
+        else if (!database.equals(other.database))
+        {
             return false;
         }
-        if ((this.schema == null) ? (other.schema != null) : !this.schema.equals(other.schema)) {
+        if (host == null)
+        {
+            if (other.host != null)
+            {
+                return false;
+            }
+        }
+        else if (!host.equals(other.host))
+        {
             return false;
         }
-        if ((this.user == null) ? (other.user != null) : !this.user.equals(other.user)) {
+        if (password == null)
+        {
+            if (other.password != null)
+            {
+                return false;
+            }
+        }
+        else if (!password.equals(other.password))
+        {
             return false;
         }
-        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+        if (port == null)
+        {
+            if (other.port != null)
+            {
+                return false;
+            }
+        }
+        else if (!port.equals(other.port))
+        {
             return false;
         }
-        if ((this.port == null) ? (other.port != null) : !this.port.equals(other.port)) {
+        if (schema == null)
+        {
+            if (other.schema != null)
+            {
+                return false;
+            }
+        }
+        else if (!schema.equals(other.schema))
+        {
             return false;
         }
-        if ((this.host == null) ? (other.host != null) : !this.host.equals(other.host)) {
+        if (user == null)
+        {
+            if (other.user != null)
+            {
+                return false;
+            }
+        }
+        else if (!user.equals(other.user))
+        {
             return false;
         }
+
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = (prime * result) +
+            ((database == null) ? 0 : database.hashCode());
+        result = (prime * result) + ((host == null) ? 0 : host.hashCode());
+        result = (prime * result) +
+            ((password == null) ? 0 : password.hashCode());
+        result = (prime * result) + ((port == null) ? 0 : port.hashCode());
+        result = (prime * result) + ((schema == null) ? 0 : schema.hashCode());
+        result = (prime * result) + ((user == null) ? 0 : user.hashCode());
+
+        return result;
     }
 
-	
-	
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "DB [database=" + database + ", host=" + host + ", password=" +
+            password + ", port=" + port + ", schema=" + schema +
+            ", user=" + user + "]";
+    }
+
 }

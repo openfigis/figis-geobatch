@@ -21,82 +21,158 @@
  */
 package it.geosolutions.figis.model;
 
-
+import java.io.Serializable;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 
 @XStreamAlias("geoserver")
-public class Geoserver {
-	
+public class Geoserver implements Serializable
+{
 
-	@XStreamAlias("geoserverUrl")
-	String geoserverUrl;
-	
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6543783674943716775L;
 
-	@XStreamAlias("geoserverUsername")
-	String geoserverUsername;
-	
+    @XStreamAlias("geoserverUrl")
+    String geoserverUrl;
 
-	@XStreamAlias("geoserverPassword")
-	String geoserverPassword;
-	
+    @XStreamAlias("geoserverUsername")
+    String geoserverUsername;
 
-	public Geoserver() {
-		super();
-	}
+    @XStreamAlias("geoserverPassword")
+    String geoserverPassword;
 
-    public Geoserver(String geoserverUrl, String geoserverUsername, String geoserverPassword) {
+    public Geoserver()
+    {
+        super();
+    }
+
+    public Geoserver(String geoserverUrl, String geoserverUsername,
+        String geoserverPassword)
+    {
         this.geoserverUrl = geoserverUrl;
         this.geoserverUsername = geoserverUsername;
         this.geoserverPassword = geoserverPassword;
     }
-        
 
-	public String getGeoserverUrl() {
-		return geoserverUrl;
-	}
-	public void setGeoserverUrl(String geoserverUrl) {
-		this.geoserverUrl = geoserverUrl;
-	}
-	public String getGeoserverUsername() {
-		return geoserverUsername;
-	}
-	public void setGeoserverUsername(String geoserverUsername) {
-		this.geoserverUsername = geoserverUsername;
-	}
-	public String getGeoserverPassword() {
-		return geoserverPassword;
-	}
-	public void setGeoserverPassword(String geoserverPassword) {
-		this.geoserverPassword = geoserverPassword;
-	}
+    public String getGeoserverUrl()
+    {
+        return geoserverUrl;
+    }
 
+    public void setGeoserverUrl(String geoserverUrl)
+    {
+        this.geoserverUrl = geoserverUrl;
+    }
+
+    public String getGeoserverUsername()
+    {
+        return geoserverUsername;
+    }
+
+    public void setGeoserverUsername(String geoserverUsername)
+    {
+        this.geoserverUsername = geoserverUsername;
+    }
+
+    public String getGeoserverPassword()
+    {
+        return geoserverPassword;
+    }
+
+    public void setGeoserverPassword(String geoserverPassword)
+    {
+        this.geoserverPassword = geoserverPassword;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof Geoserver))
+        {
             return false;
         }
-        final Geoserver other = (Geoserver) obj;
-        if ((this.geoserverUrl == null) ? (other.geoserverUrl != null) : !this.geoserverUrl.equals(other.geoserverUrl)) {
+
+        Geoserver other = (Geoserver) obj;
+        if (geoserverPassword == null)
+        {
+            if (other.geoserverPassword != null)
+            {
+                return false;
+            }
+        }
+        else if (!geoserverPassword.equals(other.geoserverPassword))
+        {
             return false;
         }
-        if ((this.geoserverUsername == null) ? (other.geoserverUsername != null) : !this.geoserverUsername.equals(other.geoserverUsername)) {
+        if (geoserverUrl == null)
+        {
+            if (other.geoserverUrl != null)
+            {
+                return false;
+            }
+        }
+        else if (!geoserverUrl.equals(other.geoserverUrl))
+        {
             return false;
         }
-        if ((this.geoserverPassword == null) ? (other.geoserverPassword != null) : !this.geoserverPassword.equals(other.geoserverPassword)) {
+        if (geoserverUsername == null)
+        {
+            if (other.geoserverUsername != null)
+            {
+                return false;
+            }
+        }
+        else if (!geoserverUsername.equals(other.geoserverUsername))
+        {
             return false;
         }
+
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
-    public int hashCode() {
-        int hash = 5;
-        return hash;
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = (prime *
+                result) +
+            ((geoserverPassword == null) ? 0 : geoserverPassword.hashCode());
+        result = (prime * result) +
+            ((geoserverUrl == null) ? 0 : geoserverUrl.hashCode());
+        result = (prime *
+                result) +
+            ((geoserverUsername == null) ? 0 : geoserverUsername.hashCode());
+
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "Geoserver [geoserverPassword=" + geoserverPassword +
+            ", geoserverUrl=" + geoserverUrl + ", geoserverUsername=" +
+            geoserverUsername + "]";
     }
 
 }

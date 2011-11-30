@@ -25,14 +25,17 @@ package it.geosolutions.geobatch.figis.setting;
 import it.geosolutions.geobatch.registry.AliasRegistrar;
 import it.geosolutions.geobatch.registry.AliasRegistry;
 
+
 /**
  * Register XStream aliases for the relevant services we ship in this class.
- * 
+ *
  * @author Carlo Cancellieri <carlo.cancellieri@geo-solutions.it>
  */
-public class SettingAliasRegistrar extends AliasRegistrar {
+public class SettingAliasRegistrar extends AliasRegistrar
+{
 
-    public SettingAliasRegistrar(AliasRegistry registry) {
+    public SettingAliasRegistrar(AliasRegistry registry)
+    {
         LOGGER.info(getClass().getSimpleName() + ": registering alias.");
         registry.putAlias("SettingConfiguration", SettingConfiguration.class);
     }

@@ -24,51 +24,59 @@ package it.geosolutions.geobatch.figis.intersection;
 import it.geosolutions.geobatch.catalog.Configuration;
 import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
 
+
 /**
- * 
+ *
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
- * 
+ *
  */
 
-public class IntersectionConfiguration extends ActionConfiguration implements Configuration {
-
-    public IntersectionConfiguration(String id, String name, String description) {
-        super(id, name, description);
-	// TODO INITIALIZE MEMBERS
-    }
+public class IntersectionConfiguration extends ActionConfiguration implements Configuration
+{
     String persistencyHost = null;
     int itemsPerPages = 50;
-    
+
+    public IntersectionConfiguration(String id, String name, String description)
+    {
+        super(id, name, description);
+        // TODO INITIALIZE MEMBERS
+    }
+
     // TODO ADD YOUR MEMBERS
-    
-    public String getPersistencyHost() {
-		return persistencyHost;
-	}
 
-	public void setPersistencyHost(String persistencyHost) {
-		this.persistencyHost = persistencyHost;
-	}
-	
-	
+    public String getPersistencyHost()
+    {
+        return persistencyHost;
+    }
 
-	public int getItemsPerPages() {
-		return itemsPerPages;
-	}
+    public void setPersistencyHost(String persistencyHost)
+    {
+        this.persistencyHost = persistencyHost;
+    }
 
-	public void setItemsPerPages(int itemsPerPages) {
-		this.itemsPerPages = itemsPerPages;
-	}
 
-	@Override
-    public IntersectionConfiguration clone(){
-        final IntersectionConfiguration ret=(IntersectionConfiguration)super.clone();
-        
-		// TODO CLONE YOUR MEMBERS
-	ret.setPersistencyHost(persistencyHost);
-		ret.setWorkingDirectory(this.getWorkingDirectory());
-		ret.setItemsPerPages(itemsPerPages);
+    public int getItemsPerPages()
+    {
+        return itemsPerPages;
+    }
+
+    public void setItemsPerPages(int itemsPerPages)
+    {
+        this.itemsPerPages = itemsPerPages;
+    }
+
+    @Override
+    public IntersectionConfiguration clone()
+    {
+        final IntersectionConfiguration ret = (IntersectionConfiguration) super.clone();
+
+        // TODO CLONE YOUR MEMBERS
+        ret.setPersistencyHost(persistencyHost);
+        ret.setWorkingDirectory(this.getWorkingDirectory());
+        ret.setItemsPerPages(itemsPerPages);
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());
+
         return ret;
     }
 

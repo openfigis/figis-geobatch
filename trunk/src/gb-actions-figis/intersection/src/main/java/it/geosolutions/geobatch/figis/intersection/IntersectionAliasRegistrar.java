@@ -25,14 +25,17 @@ package it.geosolutions.geobatch.figis.intersection;
 import it.geosolutions.geobatch.registry.AliasRegistrar;
 import it.geosolutions.geobatch.registry.AliasRegistry;
 
+
 /**
  * Register XStream aliases for the relevant services we ship in this class.
- * 
+ *
  * @author Carlo Cancellieri <carlo.cancellieri@geo-solutions.it>
  */
-public class IntersectionAliasRegistrar extends AliasRegistrar {
+public class IntersectionAliasRegistrar extends AliasRegistrar
+{
 
-    public IntersectionAliasRegistrar(AliasRegistry registry) {
+    public IntersectionAliasRegistrar(AliasRegistry registry)
+    {
         LOGGER.info(getClass().getSimpleName() + ": registering alias.");
         registry.putAlias("IntersectionConfiguration", IntersectionConfiguration.class);
     }

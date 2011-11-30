@@ -21,79 +21,115 @@
  */
 package it.geosolutions.geobatch.figis.setting;
 
+import java.util.EventObject;
+
 import it.geosolutions.geobatch.actions.tools.configuration.Path;
 import it.geosolutions.geobatch.catalog.impl.BaseService;
 import it.geosolutions.geobatch.flow.event.action.ActionService;
 
-import java.util.EventObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 
- * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
- * 
- */
-public class SettingGeneratorService extends BaseService implements
-        ActionService<EventObject, SettingConfiguration> {
 
-    public SettingGeneratorService(String id, String name, String description) {
+/**
+ *
+ * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
+ *
+ */
+public class SettingGeneratorService extends BaseService implements ActionService<EventObject, SettingConfiguration>
+{
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SettingGeneratorService.class);
+
+    public SettingGeneratorService(String id, String name, String description)
+    {
         super(id, name, description);
     }
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SettingGeneratorService.class);
-
-    public SettingAction createAction(SettingConfiguration configuration) {
-        try {
+    public SettingAction createAction(SettingConfiguration configuration)
+    {
+        try
+        {
             return new SettingAction(configuration);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             if (LOGGER.isInfoEnabled())
+            {
                 LOGGER.info(e.getLocalizedMessage(), e);
+            }
+
             return null;
         }
     }
 
-    public boolean canCreateAction(SettingConfiguration configuration) {
-    	LOGGER.info("------------------->Checking setting parameters");
-        try {
+    public boolean canCreateAction(SettingConfiguration configuration)
+    {
+        LOGGER.info("------------------->Checking setting parameters");
+        try
+        {
             // absolutize working dir
             String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
             String defaultMaskLayer = configuration.getDefaultMaskLayer();
             String host = configuration.getPersistencyHost();
-            if (wd != null) {
+            if (wd != null)
+            {
                 configuration.setWorkingDirectory(wd);
-                //return true;
-            } else {
+                // return true;
+            }
+            else
+            {
                 if (LOGGER.isWarnEnabled())
-                    LOGGER.warn("SettingGeneratorService::canCreateAction(): "
-                            + "unable to create action, it's not possible to get an absolute working dir.");
+                {
+                    LOGGER.warn("SettingGeneratorService::canCreateAction(): " +
+                        "unable to create action, it's not possible to get an absolute working dir.");
+                }
+
                 return false;
             }
-            
-            if (host != null) {
-            	LOGGER.info("Host value is "+host);
-                
-            } else {
+
+            if (host != null)
+            {
+                LOGGER.info("Host value is " + host);
+
+            }
+            else
+            {
                 if (LOGGER.isWarnEnabled())
-                    LOGGER.warn("SettingGeneratorService::canCreateAction(): "
-                            + "unable to create action, it's not possible to get the persistence host.");
+                {
+                    LOGGER.warn("SettingGeneratorService::canCreateAction(): " +
+                        "unable to create action, it's not possible to get the persistence host.");
+                }
+
                 return false;
             }
-            
-            if (defaultMaskLayer != null) {
-            	LOGGER.info("The default mask layer is "+defaultMaskLayer);
-                
-            } else {
+
+            if (defaultMaskLayer != null)
+            {
+                LOGGER.info("The default mask layer is " + defaultMaskLayer);
+
+            }
+            else
+            {
                 if (LOGGER.isWarnEnabled())
-                    LOGGER.warn("SettingGeneratorService::canCreateAction(): "
-                            + "unable to create action, it's not possible to get the default mask layer.");
+                {
+                    LOGGER.warn("SettingGeneratorService::canCreateAction(): " +
+                        "unable to create action, it's not possible to get the default mask layer.");
+                }
+
                 return false;
             }
-        } catch (Throwable e) {
-            if (LOGGER.isErrorEnabled()) LOGGER.error(e.getLocalizedMessage(), e);
+        }
+        catch (Throwable e)
+        {
+            if (LOGGER.isErrorEnabled())
+            {
+                LOGGER.error(e.getLocalizedMessage(), e);
+            }
+
             return false;
         }
+
         return true;
     }
 

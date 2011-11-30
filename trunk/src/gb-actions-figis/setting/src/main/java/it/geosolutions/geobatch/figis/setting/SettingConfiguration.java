@@ -24,54 +24,62 @@ package it.geosolutions.geobatch.figis.setting;
 import it.geosolutions.geobatch.catalog.Configuration;
 import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
 
+
 /**
- * 
+ *
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
- * 
+ *
  */
 
-public class SettingConfiguration extends ActionConfiguration implements Configuration {
+public class SettingConfiguration extends ActionConfiguration implements Configuration
+{
 
-	private String persistencyHost = null;
-	private String defaultMaskLayer = null;
-	
-    public String getPersistencyHost() {
-		return persistencyHost;
-	}
+    private String persistencyHost = null;
+    private String defaultMaskLayer = null;
 
-	public void setPersistencyHost(String persistencyHost) {
-		this.persistencyHost = persistencyHost;
-	}
-
-	public String getDefaultMaskLayer() {
-		return defaultMaskLayer;
-	}
-
-	public void setDefaultMaskLayer(String defaultMaskLayer) {
-		this.defaultMaskLayer = defaultMaskLayer;
-	}
-	
-	public SettingConfiguration(String id, String name, String description) {
+    public SettingConfiguration(String id, String name, String description)
+    {
         super(id, name, description);
-       
-	// TODO INITIALIZE MEMBERS
+
+        // TODO INITIALIZE MEMBERS
     }
-    
+
+    public String getPersistencyHost()
+    {
+        return persistencyHost;
+    }
+
+    public void setPersistencyHost(String persistencyHost)
+    {
+        this.persistencyHost = persistencyHost;
+    }
+
+    public String getDefaultMaskLayer()
+    {
+        return defaultMaskLayer;
+    }
+
+    public void setDefaultMaskLayer(String defaultMaskLayer)
+    {
+        this.defaultMaskLayer = defaultMaskLayer;
+    }
+
     // TODO ADD YOUR MEMBERS
-    
+
     @Override
-    public SettingConfiguration clone(){
-        final SettingConfiguration ret=new SettingConfiguration(this.getId(), this.getName(), this.getDescription());
-        
-		// TODO CLONE YOUR MEMBERS
+    public SettingConfiguration clone()
+    {
+        final SettingConfiguration ret = new SettingConfiguration(this.getId(), this.getName(), this.getDescription());
+
+        // TODO CLONE YOUR MEMBERS
         ret.setDefaultMaskLayer(defaultMaskLayer);
         ret.setPersistencyHost(persistencyHost);
-		ret.setWorkingDirectory(this.getWorkingDirectory());
+        ret.setWorkingDirectory(this.getWorkingDirectory());
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());
+
         return ret;
     }
-
 
 
 }
