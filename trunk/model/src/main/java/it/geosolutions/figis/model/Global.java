@@ -22,140 +22,77 @@
 
 package it.geosolutions.figis.model;
 
-import java.io.Serializable;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 
 @XStreamAlias("global")
-public class Global implements Serializable
-{
+public class Global {
+	
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -3454450779416778676L;
+	@XStreamAlias("geoserver")
+	Geoserver geoserver;
+	
 
-    @XStreamAlias("geoserver")
-    Geoserver geoserver;
+	@XStreamAlias("db")
+	DB db;
 
-    @XStreamAlias("db")
-    DB db;
+        @XStreamAlias("clean")
+        private boolean clean;
 
-    @XStreamAlias("clean")
-    private boolean clean;
+	public Global() {
+		super();
+		this.geoserver = new Geoserver();
+		this.db = new DB();
+	}
 
-    public Global()
-    {
-        super();
-        this.geoserver = new Geoserver();
-        this.db = new DB();
-    }
+        public boolean isClean() {
+            return clean;
+        }
 
-    public boolean isClean()
-    {
-        return clean;
-    }
+        public void setClean(boolean clean) {
+                this.clean = clean;
+        }
 
-    public void setClean(boolean clean)
-    {
-        this.clean = clean;
-    }
+	public Geoserver getGeoserver() {
+		return geoserver;
+	}
 
-    public Geoserver getGeoserver()
-    {
-        return geoserver;
-    }
+	public void setGeoserver(Geoserver geoserver) {
+		this.geoserver = geoserver;
+	}
 
-    public void setGeoserver(Geoserver geoserver)
-    {
-        this.geoserver = geoserver;
-    }
+	public DB getDb() {
+		return db;
+	}
 
-    public DB getDb()
-    {
-        return db;
-    }
+	public void setDb(DB db) {
+		this.db = db;
+	}
 
-    public void setDb(DB db)
-    {
-        this.db = db;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Global))
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-
-        Global other = (Global) obj;
-        if (clean != other.clean)
-        {
+        final Global other = (Global) obj;
+        if (this.geoserver != other.geoserver && (this.geoserver == null || !this.geoserver.equals(other.geoserver))) {
             return false;
         }
-        if (db == null)
-        {
-            if (other.db != null)
-            {
-                return false;
-            }
-        }
-        else if (!db.equals(other.db))
-        {
+        if (this.db != other.db && (this.db == null || !this.db.equals(other.db))) {
             return false;
         }
-        if (geoserver == null)
-        {
-            if (other.geoserver != null)
-            {
-                return false;
-            }
-        }
-        else if (!geoserver.equals(other.geoserver))
-        {
-            return false;
-        }
-
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = (prime * result) + (clean ? 1231 : 1237);
-        result = (prime * result) + ((db == null) ? 0 : db.hashCode());
-        result = (prime * result) +
-            ((geoserver == null) ? 0 : geoserver.hashCode());
-
-        return result;
+    public int hashCode() {
+        int hash = 7;
+        return hash;
     }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        return "Global [clean=" + clean + ", db=" + db + ", geoserver=" +
-            geoserver + "]";
-    }
+	
 
 }

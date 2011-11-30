@@ -1,227 +1,177 @@
 <classpath>
-  <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
-  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java"/>
   <classpathentry kind="src" path="src/main/resources" including="**/*.txt|**/*.sql|**/*.html|**/*.xsd|**/*.xsl|**/*.xml|**/*.utf|**/*.prj|**/*.py|**/*.properties|**/*.query|**/*.xquery|**/*.serialized|META-INF/*.jai|META-INF/mailcap|META-INF/services/**|applicationContext.xml|**/*.ftl|**/placeholder" excluding="**/doc-files/**|**/*.java"/>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes"/>
   <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="var" path="M2_REPO/javax/media/jai_codec/1.1.3/jai_codec-1.1.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/javax/media/jai_core/1.1.3/jai_core-1.1.3.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/javax/media/jai_core/1.1.3/jai_core-1.1.3-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/javax/media/jai_imageio/1.1/jai_imageio-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.1/jta-1.1.jar" sourcepath="M2_REPO/javax/transaction/jta/1.1/jta-1.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar" sourcepath="M2_REPO/javax/persistence/persistence-api/1.0/persistence-api-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
   <classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6.jar" sourcepath="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar" sourcepath="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/asm/asm/1.5.3/asm-1.5.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/asm/asm-attrs/1.5.3/asm-attrs-1.5.3.jar"/>
-  <classpathentry kind="var" path="M2_REPO/c3p0/c3p0/0.9.1.1/c3p0-0.9.1.1.jar" sourcepath="M2_REPO/c3p0/c3p0/0.9.1.1/c3p0-0.9.1.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/c3p0/c3p0/0.9.1.1/c3p0-0.9.1.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/cglib/cglib/2.2/cglib-2.2.jar" sourcepath="M2_REPO/cglib/cglib/2.2/cglib-2.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/cglib/cglib/2.2/cglib-2.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjrt/1.6.8/aspectjrt-1.6.8.jar" sourcepath="M2_REPO/org/aspectj/aspectjrt/1.6.8/aspectjrt-1.6.8-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjweaver/1.6.8/aspectjweaver-1.6.8.jar" sourcepath="M2_REPO/org/aspectj/aspectjweaver/1.6.8/aspectjweaver-1.6.8-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/c3p0/c3p0/0.9.1.1/c3p0-0.9.1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/cglib/cglib/2.2/cglib-2.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar" sourcepath="M2_REPO/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/eclipse/emf/common/2.6.0/common-2.6.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar" sourcepath="M2_REPO/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.4/commons-codec-1.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.2/commons-codec-1.2.jar">
+    <attributes>
+      <attribute value="jar:file:/C:/.m2/repository/commons-codec/commons-codec/1.2/commons-codec-1.2-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
   <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/commons-collections/commons-collections/3.1/commons-collections-3.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-compress/1.1/commons-compress-1.1.jar" sourcepath="M2_REPO/org/apache/commons/commons-compress/1.1/commons-compress-1.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/apache/commons/commons-compress/1.1/commons-compress-1.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-compress/1.1/commons-compress-1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.2.2/commons-dbcp-1.2.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar" sourcepath="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/commons-io/commons-io/2.0.1/commons-io-2.0.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-jxpath/commons-jxpath/1.3/commons-jxpath-1.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.1/commons-lang-2.1.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.1/commons-lang-2.1-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/commons-lang/commons-lang/2.1/commons-lang-2.1-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/commons-lang/commons-lang/2.1/commons-lang-2.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.3/commons-pool-1.3.jar" sourcepath="M2_REPO/commons-pool/commons-pool/1.3/commons-pool-1.3-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/easymock/easymock/2.3/easymock-2.3.jar" sourcepath="M2_REPO/org/easymock/easymock/2.3/easymock-2.3-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/easymock/easymock/2.3/easymock-2.3-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/easymock/easymockclassextension/2.3/easymockclassextension-2.3.jar" sourcepath="M2_REPO/org/easymock/easymockclassextension/2.3/easymockclassextension-2.3-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/easymock/easymockclassextension/2.3/easymockclassextension-2.3-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/easymock/easymock/2.3/easymock-2.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/easymock/easymockclassextension/2.3/easymockclassextension-2.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/eclipse/emf/ecore/2.6.1/ecore-2.6.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar" sourcepath="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/ejb3-persistence/1.0.2.GA/ejb3-persistence-1.0.2.GA.jar" sourcepath="M2_REPO/org/hibernate/ejb3-persistence/1.0.2.GA/ejb3-persistence-1.0.2.GA-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/freemarker/freemarker/2.3.16/freemarker-2.3.16.jar" sourcepath="M2_REPO/org/freemarker/freemarker/2.3.16/freemarker-2.3.16-sources.jar"/>
-  <classpathentry kind="src" path="/gb-action-figis-setting"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-action-tools/1.0/gb-action-tools-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-action-tools/1.0/gb-action-tools-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-alias-registry/1.0/gb-alias-registry-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-alias-registry/1.0/gb-alias-registry-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-core-impl/1.0/gb-core-impl-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-core-impl/1.0/gb-core-impl-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-core-model/1.0/gb-core-model-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-core-model/1.0/gb-core-model-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-fs-catalog/1.0/gb-fs-catalog-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-fs-catalog/1.0/gb-fs-catalog-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-fsm-core/1.0/gb-fsm-core-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-fsm-core/1.0/gb-fsm-core-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-fsm-quartz/1.0/gb-fsm-quartz-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-fsm-quartz/1.0/gb-fsm-quartz-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-tools/1.0/gb-tools-1.0.jar" sourcepath="M2_REPO/it/geosolutions/geobatch/gb-tools/1.0/gb-tools-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geoserver-manager/1.2-SNAPSHOT/geoserver-manager-1.2-SNAPSHOT.jar" sourcepath="M2_REPO/it/geosolutions/geoserver-manager/1.2-SNAPSHOT/geoserver-manager-1.2-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-api/8-SNAPSHOT/gt-api-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-api/8-SNAPSHOT/gt-api-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-coverage/8-SNAPSHOT/gt-coverage-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-coverage/8-SNAPSHOT/gt-coverage-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-cql/8-SNAPSHOT/gt-cql-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-cql/8-SNAPSHOT/gt-cql-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-data/8-SNAPSHOT/gt-data-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-data/8-SNAPSHOT/gt-data-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-epsg-hsql/8-SNAPSHOT/gt-epsg-hsql-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-epsg-hsql/8-SNAPSHOT/gt-epsg-hsql-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-graph/8-SNAPSHOT/gt-graph-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-graph/8-SNAPSHOT/gt-graph-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-grid/8-SNAPSHOT/gt-grid-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-grid/8-SNAPSHOT/gt-grid-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-jdbc/8-SNAPSHOT/gt-jdbc-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-jdbc/8-SNAPSHOT/gt-jdbc-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/jdbc/gt-jdbc-oracle/8-SNAPSHOT/gt-jdbc-oracle-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/jdbc/gt-jdbc-oracle/8-SNAPSHOT/gt-jdbc-oracle-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-main/8-SNAPSHOT/gt-main-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-main/8-SNAPSHOT/gt-main-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-metadata/8-SNAPSHOT/gt-metadata-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-metadata/8-SNAPSHOT/gt-metadata-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-opengis/8-SNAPSHOT/gt-opengis-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-opengis/8-SNAPSHOT/gt-opengis-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-process/8-SNAPSHOT/gt-process-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-process/8-SNAPSHOT/gt-process-8-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/freemarker/freemarker/2.3.16/freemarker-2.3.16.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/figis/gb-action-figis-setting/2.0-SNAPSHOT/gb-action-figis-setting-2.0-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-action-tools/1.0/gb-action-tools-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-alias-registry/1.0/gb-alias-registry-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-core-impl/1.0/gb-core-impl-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-core-model/1.0/gb-core-model-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-fs-catalog/1.0/gb-fs-catalog-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-fsm-core/1.0/gb-fsm-core-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-fsm-quartz/1.0/gb-fsm-quartz-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geobatch/gb-tools/1.0/gb-tools-1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/geoserver-manager/1.2-SNAPSHOT/geoserver-manager-1.2-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-api/8-SNAPSHOT/gt-api-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-coverage/8-SNAPSHOT/gt-coverage-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-cql/8-SNAPSHOT/gt-cql-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-data/8-SNAPSHOT/gt-data-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-epsg-hsql/8-SNAPSHOT/gt-epsg-hsql-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-graph/8-SNAPSHOT/gt-graph-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-grid/8-SNAPSHOT/gt-grid-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-jdbc/8-SNAPSHOT/gt-jdbc-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/jdbc/gt-jdbc-oracle/8-SNAPSHOT/gt-jdbc-oracle-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-main/8-SNAPSHOT/gt-main-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-metadata/8-SNAPSHOT/gt-metadata-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-opengis/8-SNAPSHOT/gt-opengis-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-process/8-SNAPSHOT/gt-process-8-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/geotools/gt-process-feature/8-SNAPSHOT/gt-process-feature-8-SNAPSHOT.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-referencing/8-SNAPSHOT/gt-referencing-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-referencing/8-SNAPSHOT/gt-referencing-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-shapefile/8-SNAPSHOT/gt-shapefile-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-shapefile/8-SNAPSHOT/gt-shapefile-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-wfs/8-SNAPSHOT/gt-wfs-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-wfs/8-SNAPSHOT/gt-wfs-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-xml/8-SNAPSHOT/gt-xml-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/gt-xml/8-SNAPSHOT/gt-xml-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-core/8-SNAPSHOT/gt-xsd-core-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/xsd/gt-xsd-core/8-SNAPSHOT/gt-xsd-core-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-fes/8-SNAPSHOT/gt-xsd-fes-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/xsd/gt-xsd-fes/8-SNAPSHOT/gt-xsd-fes-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-filter/8-SNAPSHOT/gt-xsd-filter-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/xsd/gt-xsd-filter/8-SNAPSHOT/gt-xsd-filter-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-gml2/8-SNAPSHOT/gt-xsd-gml2-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/xsd/gt-xsd-gml2/8-SNAPSHOT/gt-xsd-gml2-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-gml3/8-SNAPSHOT/gt-xsd-gml3-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/xsd/gt-xsd-gml3/8-SNAPSHOT/gt-xsd-gml3-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-ows/8-SNAPSHOT/gt-xsd-ows-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/xsd/gt-xsd-ows/8-SNAPSHOT/gt-xsd-ows-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-wfs/8-SNAPSHOT/gt-xsd-wfs-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/xsd/gt-xsd-wfs/8-SNAPSHOT/gt-xsd-wfs-8-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-referencing/8-SNAPSHOT/gt-referencing-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-shapefile/8-SNAPSHOT/gt-shapefile-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-wfs/8-SNAPSHOT/gt-wfs-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/gt-xml/8-SNAPSHOT/gt-xml-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-core/8-SNAPSHOT/gt-xsd-core-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-fes/8-SNAPSHOT/gt-xsd-fes-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-filter/8-SNAPSHOT/gt-xsd-filter-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-gml2/8-SNAPSHOT/gt-xsd-gml2-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-gml3/8-SNAPSHOT/gt-xsd-gml3-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-ows/8-SNAPSHOT/gt-xsd-ows-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/xsd/gt-xsd-wfs/8-SNAPSHOT/gt-xsd-wfs-8-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga.jar" sourcepath="M2_REPO/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-annotations/3.3.1.GA/hibernate-annotations-3.3.1.GA.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-commons-annotations/3.1.0.GA/hibernate-commons-annotations-3.1.0.GA.jar" sourcepath="M2_REPO/org/hibernate/hibernate-commons-annotations/3.1.0.GA/hibernate-commons-annotations-3.1.0.GA-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-core/3.3.1.GA/hibernate-core-3.3.1.GA.jar" sourcepath="M2_REPO/org/hibernate/hibernate-core/3.3.1.GA/hibernate-core-3.3.1.GA-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/hibernate/hibernate-core/3.3.1.GA/hibernate-core-3.3.1.GA-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/org/hibernate/hibernate-core/3.3.1.GA/hibernate-core-3.3.1.GA-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-entitymanager/3.3.1.ga/hibernate-entitymanager-3.3.1.ga.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-entitymanager/3.3.1.ga/hibernate-entitymanager-3.3.1.ga.jar" sourcepath="M2_REPO/org/hibernate/hibernate-entitymanager/3.3.1.ga/hibernate-entitymanager-3.3.1.ga-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-validator/3.0.0.ga/hibernate-validator-3.0.0.ga.jar"/>
-  <classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.8.0.7/hsqldb-1.8.0.7.jar"/>
+  <classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.8.0.10/hsqldb-1.8.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/figis/ie-model/2.0-SNAPSHOT/ie-model-2.0-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/imageio-ext/imageio-ext-tiff/1.2-M102011/imageio-ext-tiff-1.2-M102011.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/imageio-ext/imageio-ext-utilities/1.2-M102011/imageio-ext-utilities-1.2-M102011.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/media/jai_codec/1.1.3/jai_codec-1.1.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/media/jai_core/1.1.3/jai_core-1.1.3.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/media/jai_imageio/1.1/jai_imageio-1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/jboss/javassist/3.3.ga/javassist-3.3.ga.jar"/>
   <classpathentry kind="var" path="M2_REPO/jboss/jboss-common-core/2.0.4.GA/jboss-common-core-2.0.4.GA.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/jcl-over-slf4j/1.5.11/jcl-over-slf4j-1.5.11.jar" sourcepath="M2_REPO/org/slf4j/jcl-over-slf4j/1.5.11/jcl-over-slf4j-1.5.11-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/jcl-over-slf4j/1.5.11/jcl-over-slf4j-1.5.11.jar"/>
   <classpathentry kind="var" path="M2_REPO/jdom/jdom/1.0/jdom-1.0.jar" sourcepath="M2_REPO/jdom/jdom/1.0/jdom-1.0-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/jdom/jdom/1.1/jdom-1.1.jar" sourcepath="M2_REPO/org/jdom/jdom/1.1/jdom-1.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/jdom/jdom/1.1/jdom-1.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/net/java/dev/jsr-275/jsr-275/1.0-beta-2/jsr-275-1.0-beta-2.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/net/java/dev/jsr-275/jsr-275/1.0-beta-2/jsr-275-1.0-beta-2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/jaitools/jt-utils/1.2.0/jt-utils-1.2.0.jar" sourcepath="M2_REPO/org/jaitools/jt-utils/1.2.0/jt-utils-1.2.0-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/jaitools/jt-utils/1.2.0/jt-utils-1.2.0-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/jaitools/jt-zonalstats/1.2.0/jt-zonalstats-1.2.0.jar" sourcepath="M2_REPO/org/jaitools/jt-zonalstats/1.2.0/jt-zonalstats-1.2.0-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/jaitools/jt-zonalstats/1.2.0/jt-zonalstats-1.2.0-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/com/vividsolutions/jts/1.11/jts-1.11.jar" sourcepath="M2_REPO/com/vividsolutions/jts/1.11/jts-1.11-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/com/vividsolutions/jts/1.11/jts-1.11-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/junit/junit/4.5/junit-4.5.jar" sourcepath="M2_REPO/junit/junit/4.5/junit-4.5-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.16/log4j-1.2.16.jar" sourcepath="M2_REPO/log4j/log4j/1.2.16/log4j-1.2.16-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/log4j/log4j/1.2.16/log4j-1.2.16-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/jdom/jdom/1.1/jdom-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/jsr-275/jsr-275/1.0-beta-2/jsr-275-1.0-beta-2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/jaitools/jt-utils/1.2.0/jt-utils-1.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/jaitools/jt-zonalstats/1.2.0/jt-zonalstats-1.2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.1/jta-1.1.jar" sourcepath="M2_REPO/javax/transaction/jta/1.1/jta-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/vividsolutions/jts/1.11/jts-1.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/4.5/junit-4.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.16/log4j-1.2.16.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/mockrunner/mockrunner/0.3.1/mockrunner-0.3.1.jar"/>
-  <classpathentry kind="src" path="/model"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/figis/model/2.0-SNAPSHOT/model-2.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.fes/8-SNAPSHOT/net.opengis.fes-8-SNAPSHOT.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.ows/8-SNAPSHOT/net.opengis.ows-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/ogc/net.opengis.ows/8-SNAPSHOT/net.opengis.ows-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.wfs/8-SNAPSHOT/net.opengis.wfs-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/ogc/net.opengis.wfs/8-SNAPSHOT/net.opengis.wfs-8-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.ows/8-SNAPSHOT/net.opengis.ows-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.wfs/8-SNAPSHOT/net.opengis.wfs-8-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/essi-unidata/netcdf-java/4.0.49/netcdf-java-4.0.49.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/org.w3.xlink/8-SNAPSHOT/org.w3.xlink-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/ogc/org.w3.xlink/8-SNAPSHOT/org.w3.xlink-8-SNAPSHOT-sources.jar"/>
-  <classpathentry kind="src" path="/persistence"/>
+  <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/org.w3.xlink/8-SNAPSHOT/org.w3.xlink-8-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/figis/persistence/2.0-SNAPSHOT/persistence-2.0-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar" sourcepath="M2_REPO/javax/persistence/persistence-api/1.0/persistence-api-1.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/picocontainer/picocontainer/1.2/picocontainer-1.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/quartz-scheduler/quartz/2.0.1/quartz-2.0.1.jar" sourcepath="M2_REPO/org/quartz-scheduler/quartz/2.0.1/quartz-2.0.1-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/quartz-scheduler/quartz/2.0.1/quartz-2.0.1-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="src" path="/requester"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.5.11/slf4j-log4j12-1.5.11.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.5.11/slf4j-log4j12-1.5.11-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/quartz-scheduler/quartz/2.0.1/quartz-2.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/it/geosolutions/figis/requester/2.0-SNAPSHOT/requester-2.0-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.5.11/slf4j-log4j12-1.5.11.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-simple/1.5.2/slf4j-simple-1.5.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.0.3.RELEASE/spring-aop-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-aop/3.0.3.RELEASE/spring-aop-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-asm/3.0.3.RELEASE/spring-asm-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-asm/3.0.3.RELEASE/spring-asm-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/3.0.3.RELEASE/spring-beans-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-beans/3.0.3.RELEASE/spring-beans-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/3.0.3.RELEASE/spring-context-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-context/3.0.3.RELEASE/spring-context-3.0.3.RELEASE-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.0.3.RELEASE/spring-aop-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-asm/3.0.3.RELEASE/spring-asm-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/3.0.3.RELEASE/spring-beans-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/3.0.3.RELEASE/spring-context-3.0.3.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context-support/3.0.3.RELEASE/spring-context-support-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-context-support/3.0.3.RELEASE/spring-context-support-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/3.0.3.RELEASE/spring-core-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-core/3.0.3.RELEASE/spring-core-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-expression/3.0.3.RELEASE/spring-expression-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-expression/3.0.3.RELEASE/spring-expression-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/3.0.3.RELEASE/spring-jdbc-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-jdbc/3.0.3.RELEASE/spring-jdbc-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-orm/3.0.3.RELEASE/spring-orm-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-orm/3.0.3.RELEASE/spring-orm-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.0.3.RELEASE/spring-tx-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-tx/3.0.3.RELEASE/spring-tx-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/3.0.3.RELEASE/spring-web-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-web/3.0.3.RELEASE/spring-web-3.0.3.RELEASE-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/tika/tika-core/0.8/tika-core-0.8.jar" sourcepath="M2_REPO/org/apache/tika/tika-core/0.8/tika-core-0.8-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/apache/tika/tika-core/0.8/tika-core-0.8-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/3.0.3.RELEASE/spring-core-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-expression/3.0.3.RELEASE/spring-expression-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/3.0.3.RELEASE/spring-jdbc-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-orm/3.0.3.RELEASE/spring-orm-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/security/spring-security-core/3.0.3.RELEASE/spring-security-core-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/security/spring-security-core/3.0.3.RELEASE/spring-security-core-3.0.3.RELEASE-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.0.3.RELEASE/spring-tx-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/3.0.3.RELEASE/spring-web-3.0.3.RELEASE.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/tika/tika-core/0.8/tika-core-0.8.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/trg/trg-dao/0.5.1/trg-dao-0.5.1.jar" sourcepath="M2_REPO/com/trg/trg-dao/0.5.1/trg-dao-0.5.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/trg/trg-search/0.5.1/trg-search-0.5.1.jar" sourcepath="M2_REPO/com/trg/trg-search/0.5.1/trg-search-0.5.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/trg/trg-search-hibernate/0.5.1/trg-search-hibernate-0.5.1.jar" sourcepath="M2_REPO/com/trg/trg-search-hibernate/0.5.1/trg-search-hibernate-0.5.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/trg/trg-search-jpa-hibernate/0.5.1/trg-search-jpa-hibernate-0.5.1.jar" sourcepath="M2_REPO/com/trg/trg-search-jpa-hibernate/0.5.1/trg-search-jpa-hibernate-0.5.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/java3d/vecmath/1.3.1/vecmath-1.3.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar" sourcepath="M2_REPO/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.7.1/xercesImpl-2.7.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar" sourcepath="M2_REPO/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/xml-apis/xml-apis-xerces/2.7.1/xml-apis-xerces-2.7.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/xpp3/xpp3/1.1.3.4.O/xpp3-1.1.3.4.O.jar"/>
   <classpathentry kind="var" path="M2_REPO/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar" sourcepath="M2_REPO/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/eclipse/xsd/xsd/2.6.0/xsd-2.6.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/thoughtworks/xstream/xstream/1.3.1/xstream-1.3.1.jar" sourcepath="M2_REPO/com/thoughtworks/xstream/xstream/1.3.1/xstream-1.3.1-sources.jar">
     <attributes>
-      <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/com/thoughtworks/xstream/xstream/1.3.1/xstream-1.3.1-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/C:/.m2/repository/com/thoughtworks/xstream/xstream/1.3.1/xstream-1.3.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 </classpath>

@@ -42,7 +42,6 @@ public class IntersectionDaoImpl extends BaseDAO<Intersection, Long> implements 
      */
     @Override
     public Intersection save(Intersection entity) {
-            // TODO Auto-generated method stub
             return super.save(entity);
     }
 

@@ -21,15 +21,11 @@
  */
 package it.geosolutions.figis.model;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-
+import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -37,83 +33,19 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  */
 @XStreamAlias("configs")
 @XmlRootElement(name = "configs")
-public class Configs implements Serializable
-{
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = -1837466274916852664L;
-
+public class Configs {
+    
     @XStreamAsAttribute
-    @XStreamImplicit(itemFieldName = "config")
+    @XStreamImplicit(itemFieldName="config")
     private List<Config> configs;
 
-    public List<Config> getConfigs()
-    {
+    public List<Config> getConfigs() {
         return configs;
     }
 
-    public void setConfigs(List<Config> configs)
-    {
+    public void setConfigs(List<Config> configs) {
         this.configs = configs;
     }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = (prime * result) + ((configs == null) ? 0 : configs.hashCode());
-
-        return result;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (!(obj instanceof Configs))
-        {
-            return false;
-        }
-
-        Configs other = (Configs) obj;
-        if (configs == null)
-        {
-            if (other.configs != null)
-            {
-                return false;
-            }
-        }
-        else if (!configs.equals(other.configs))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString()
-    {
-        return "Configs [configs=" + configs + "]";
-    }
-
+    
+    
 }
