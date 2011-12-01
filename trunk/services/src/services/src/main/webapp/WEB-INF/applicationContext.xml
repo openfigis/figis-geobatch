@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:cxf="http://cxf.apache.org/core"
-	xmlns:jaxws="http://cxf.apache.org/jaxws"
-	xmlns:jaxrs="http://cxf.apache.org/jaxrs" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:cxf="http://cxf.apache.org/core"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xsi:schemaLocation="
 	    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
@@ -13,20 +10,42 @@
 			http://cxf.apache.org/core  http://cxf.apache.org/schemas/core.xsd
 			http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
             http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd"
-	   	  default-lazy-init="false"
-	      default-autowire="byName">
 
+	default-lazy-init="false">
 
+	<!--Bean to load properties file -->
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!--
+			property name="location"
+			value="classpath:ieServicesHsqldb.properties" /
+		-->
+		<property name="locations">
+			<list>
+				<value>classpath:ieServicesHsqldb.properties</value>
+				<value>classpath:users.properties</value>
+			</list>
+		</property>
+	</bean>
 
-	<!-- do not use import statements if CXFServlet init parameters link to
-		this beans.xml -->
+	<!--
+		do not use import statements if CXFServlet init parameters link to
+		this beans.xml
+	-->
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
+	<bean name="HSQLDBServer" class="it.geosolutions.figis.ws.server.InitHSQLDB">
+		<constructor-arg index="0"
+			value="${ie-services-hsqldb.serverDatabase}" />
+		<constructor-arg index="1"
+			value="${ie-services-hsqldb.serverDbname}" />
+		<constructor-arg index="2"
+			value="${ie-services-hsqldb.serverPort}" />
+	</bean>
 
-	
 	<jaxrs:server id="figisService" address="/">
 		<jaxrs:serviceBeans>
 			<ref bean="figisServiceImpl" />
@@ -37,32 +56,28 @@
 		</jaxrs:extensionMappings>
 		<!-- SECURITY INTERCEPTOR -->
 		<jaxrs:inInterceptors>
-            <ref bean="ieAuthInterceptor"/>
-            <bean class="org.apache.cxf.interceptor.security.SecureAnnotationsInterceptor">
-               <property name="securedObject" ref="figisServiceImpl"/>
-            </bean>
-        </jaxrs:inInterceptors>    
-        
-	</jaxrs:server>
-        
-	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl" />
-		   <!-- loading user authentication properties -->
-		   <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">    
-			<property name="location" value="classpath:users.properties">   
-		   </property>
-	   </bean>  
-    <bean id="ieAuthInterceptor" class="it.geosolutions.figis.security.IntersectionEngineAuthenticationInterceptor">
-    </bean>
-    <bean id="ieUserUtils" class="it.geosolutions.figis.security.UserUtils">
-       <property name="users">
-		      <map>
-		        <!-- key: rules, value: users-password -->
-		        <entry key="ADMIN" value="${user.names.admin}"/>
-		        <entry key="USER" value="${user.names.user}"/>
-		      </map>
-		</property>
-    </bean>
+			<ref bean="ieAuthInterceptor" />
+			<bean
+				class="org.apache.cxf.interceptor.security.SecureAnnotationsInterceptor">
+				<property name="securedObject" ref="figisServiceImpl" />
+			</bean>
+		</jaxrs:inInterceptors>
 
+	</jaxrs:server>
+
+	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl" />
+	<bean id="ieAuthInterceptor"
+		class="it.geosolutions.figis.security.IntersectionEngineAuthenticationInterceptor">
+	</bean>
+	<bean id="ieUserUtils" class="it.geosolutions.figis.security.UserUtils">
+		<property name="users">
+			<map>
+				<!-- key: rules, value: users-password -->
+				<entry key="ADMIN" value="${user.names.admin}" />
+				<entry key="USER" value="${user.names.user}" />
+			</map>
+		</property>
+	</bean>
 
 
 </beans>

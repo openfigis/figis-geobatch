@@ -20,44 +20,70 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package it.geosolutions.figis.persistence.dao.daoImpl;
+
 /*****************
  * The implementation of the ConfigDao interface
  */
 import it.geosolutions.figis.model.Config;
+import it.geosolutions.figis.model.Global;
 import it.geosolutions.figis.persistence.dao.ConfigDao;
+import it.geosolutions.figis.persistence.dao.util.PwEncoder;
+
 import org.springframework.transaction.annotation.Transactional;
 
 
-
 @Transactional
-public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao{
+public class ConfigDaoImpl extends BaseDAO<Config, Long> implements ConfigDao
+{
 
-	public ConfigDaoImpl() {
-		super();
-	}
+    public ConfigDaoImpl()
+    {
+        super();
+    }
 
-	/***********
-	 * Save a new Config instance into the DB
-	 * 
-	 * @param entity
-	 *            the new Config instance
-	 * @return the saved Config instance with the assigned identifier
-	 */
-	@Override
-	public Config save(Config entity) {
-		return super.save(entity);
-	}
 
-	/************************
-	 * Delete a Config instance from the DB
-	 * 
-	 * @param entity
-	 *            the instance to delete
-	 * @return true if deletion has success, false otheriwse
-	 */
-	@Override
-	public boolean remove(Config entity) {
-		return super.remove(entity);
-	}
+    /***********
+     * Save a new Config instance into the DB
+     * @param entity the new Config instance
+     * @return the saved Config instance with the assigned identifier
+     */
+    @Override
+    public Config save(Config entity)
+    {
+
+        Global globalParams = entity.getGlobal();
+        if (globalParams != null)
+        {
+            if (globalParams.getDb() != null)
+            {
+                if (globalParams.getDb().getPassword() != null)
+                {
+                    globalParams.getDb().setPassword(PwEncoder.encode(globalParams.getDb().getPassword()));
+                }
+            }
+
+            if (globalParams.getGeoserver() != null)
+            {
+                if (globalParams.getGeoserver().getGeoserverPassword() != null)
+                {
+                    globalParams.getGeoserver().setGeoserverPassword(PwEncoder.encode(globalParams.getGeoserver().getGeoserverPassword()));
+                }
+            }
+        }
+
+        return super.save(entity);
+    }
+
+    /************************
+     * Delete a Config instance from the DB
+     * @param entity the instance to delete
+     * @return true if deletion has success, false otheriwse
+     */
+    @Override
+    public boolean remove(Config entity)
+    {
+        return super.remove(entity);
+    }
+
 
 }

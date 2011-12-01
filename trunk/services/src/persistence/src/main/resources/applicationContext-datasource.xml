@@ -1,47 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-        xmlns:tx="http://www.springframework.org/schema/tx"
-        xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
-        <bean id="ie-dataSource"
-                class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-                <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-                <property name="url" value="jdbc:hsqldb:data/intersectionengine" />
-                <property name="username" value="sa" />
-                <property name="password" value="" />
-        </bean>
+	<!--Bean to load properties file -->
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:ieServicesHsqldb.properties" />
+	</bean>
 
-        <bean id="ie-entityManagerFactory"
-                class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<bean id="ie-dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${ie-services-hsqldb.dataSource.driverClassName}" />
+		<!--
+			<property name="url" value="jdbc:hsqldb:data/intersectionengine" />
+		-->
+		<property name="url" value="${ie-services-hsqldb.dataSource.url}" />
+		<property name="username" value="${ie-services-hsqldb.dataSource.username}" />
+		<property name="password" value="${ie-services-hsqldb.dataSource.password}" />
+	</bean>
 
-                <property name="dataSource" ref="ie-dataSource" />
-                <property name="loadTimeWeaver">
-                        <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
-                </property>
-                <property name="jpaVendorAdapter" ref="ie-vendorAdapter" />
-                <property name="persistenceUnitName" value="ie-units" />
-                <property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" />
+	<bean id="ie-entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 
-        </bean>
+		<property name="dataSource" ref="ie-dataSource" />
+		<property name="loadTimeWeaver">
+			<bean
+				class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		</property>
+		<property name="jpaVendorAdapter" ref="ie-vendorAdapter" />
+		<property name="persistenceUnitName" value="ie-units" />
+		<property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" />
+
+	</bean>
 
 
-        <bean id="ie-vendorAdapter"
-                class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="databasePlatform" value="org.hibernate.dialect.HSQLDialect" />
-                <property name="showSql" value="false" />
-                <property name="generateDdl" value="true" />
-        </bean>
+	<bean id="ie-vendorAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="databasePlatform" value="${ie-services-hsqldb.vendorAdapter.databasePlatform}" />
+		<property name="showSql" value="true" />
+		<property name="generateDdl" value="true" />
+	</bean>
 
-       <bean id="ie-transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-                <property name="entityManagerFactory" ref="ie-entityManagerFactory" />
-        </bean>
+	<bean id="ie-transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="ie-entityManagerFactory" />
+	</bean>
 
-        <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-        <tx:annotation-driven transaction-manager="ie-transactionManager"/>
- 
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	<tx:annotation-driven transaction-manager="ie-transactionManager" />
+
 </beans>
 

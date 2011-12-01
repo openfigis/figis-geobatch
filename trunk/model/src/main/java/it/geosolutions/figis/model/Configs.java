@@ -21,11 +21,14 @@
  */
 package it.geosolutions.figis.model;
 
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
+
 
 /**
  *
@@ -33,19 +36,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XStreamAlias("configs")
 @XmlRootElement(name = "configs")
-public class Configs {
-    
+public class Configs
+{
+
     @XStreamAsAttribute
-    @XStreamImplicit(itemFieldName="config")
+    @XStreamImplicit(itemFieldName = "config")
     private List<Config> configs;
 
-    public List<Config> getConfigs() {
+    public List<Config> getConfigs()
+    {
         return configs;
     }
 
-    public void setConfigs(List<Config> configs) {
+    public void setConfigs(List<Config> configs)
+    {
         this.configs = configs;
     }
-    
-    
+
+
 }

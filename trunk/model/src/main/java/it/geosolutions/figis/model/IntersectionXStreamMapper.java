@@ -27,23 +27,28 @@ import java.io.FileReader;
 
 import com.thoughtworks.xstream.XStream;
 
-public class IntersectionXStreamMapper {
-	private static XStream xstream = new XStream();
 
-	public static Intersection init(String fileName) throws FileNotFoundException{
+public class IntersectionXStreamMapper
+{
+    private static XStream xstream = new XStream();
 
-		BufferedReader br = null;
-		br = new BufferedReader(new FileReader(fileName));
-		xstream.aliasType("intersection", Intersection.class);
-                xstream.useAttributeFor(Intersection.class, "mask");
-                xstream.useAttributeFor(Intersection.class, "force");
-                xstream.useAttributeFor(Intersection.class, "preserveTrgGeom");
+    public static Intersection init(String fileName) throws FileNotFoundException
+    {
+
+        BufferedReader br = null;
+        br = new BufferedReader(new FileReader(fileName));
+        xstream.aliasType("intersection", Intersection.class);
+        xstream.useAttributeFor(Intersection.class, "mask");
+        xstream.useAttributeFor(Intersection.class, "force");
+        xstream.useAttributeFor(Intersection.class, "preserveTrgGeom");
 
 
-		xstream.useAttributeFor(Intersection.class, "srcLayer");
-                xstream.useAttributeFor(Intersection.class, "trgLayer");
-		Intersection config = (Intersection)xstream.fromXML(br);
-		return config;
-	}
+        xstream.useAttributeFor(Intersection.class, "srcLayer");
+        xstream.useAttributeFor(Intersection.class, "trgLayer");
+
+        Intersection config = (Intersection) xstream.fromXML(br);
+
+        return config;
+    }
 
 }

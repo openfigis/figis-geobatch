@@ -36,8 +36,8 @@ public class BadRequestExceptionFault extends Exception
 {
 
 
-	private static final long serialVersionUID = -7683684850957100514L;
-	private BadRequestExceptionDetails details;
+    private static final long serialVersionUID = -7683684850957100514L;
+    private BadRequestExceptionDetails details;
 
     /**
      * Public constructor using BadRequestExceptionDetails field

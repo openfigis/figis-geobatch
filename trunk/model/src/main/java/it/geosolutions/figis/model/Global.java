@@ -27,72 +27,89 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 
 @XStreamAlias("global")
-public class Global {
-	
+public class Global
+{
 
-	@XStreamAlias("geoserver")
-	Geoserver geoserver;
-	
 
-	@XStreamAlias("db")
-	DB db;
+    @XStreamAlias("geoserver")
+    Geoserver geoserver;
 
-        @XStreamAlias("clean")
-        private boolean clean;
 
-	public Global() {
-		super();
-		this.geoserver = new Geoserver();
-		this.db = new DB();
-	}
+    @XStreamAlias("db")
+    DB db;
 
-        public boolean isClean() {
-            return clean;
-        }
+    @XStreamAlias("clean")
+    private boolean clean;
 
-        public void setClean(boolean clean) {
-                this.clean = clean;
-        }
+    public Global()
+    {
+        super();
+        this.geoserver = new Geoserver();
+        this.db = new DB();
+    }
 
-	public Geoserver getGeoserver() {
-		return geoserver;
-	}
+    public boolean isClean()
+    {
+        return clean;
+    }
 
-	public void setGeoserver(Geoserver geoserver) {
-		this.geoserver = geoserver;
-	}
+    public void setClean(boolean clean)
+    {
+        this.clean = clean;
+    }
 
-	public DB getDb() {
-		return db;
-	}
+    public Geoserver getGeoserver()
+    {
+        return geoserver;
+    }
 
-	public void setDb(DB db) {
-		this.db = db;
-	}
+    public void setGeoserver(Geoserver geoserver)
+    {
+        this.geoserver = geoserver;
+    }
+
+    public DB getDb()
+    {
+        return db;
+    }
+
+    public void setDb(DB db)
+    {
+        this.db = db;
+    }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
+        {
             return false;
         }
+
         final Global other = (Global) obj;
-        if (this.geoserver != other.geoserver && (this.geoserver == null || !this.geoserver.equals(other.geoserver))) {
+        if ((this.geoserver != other.geoserver) && ((this.geoserver == null) || !this.geoserver.equals(other.geoserver)))
+        {
             return false;
         }
-        if (this.db != other.db && (this.db == null || !this.db.equals(other.db))) {
+        if ((this.db != other.db) && ((this.db == null) || !this.db.equals(other.db)))
+        {
             return false;
         }
+
         return true;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 7;
+
         return hash;
     }
-	
+
 
 }

@@ -12,7 +12,7 @@
 
 	<EventGeneratorConfiguration>
 	 <eventType>POLLING_EVENT</eventType>
-	 <interval>0 * * * * ?</interval>
+	 <interval>0/20 * * * * ?</interval>
 	 <id>cron_id</id>
 	 <serviceID>fsEventGeneratorService</serviceID>
 	 <description>description</description>
@@ -36,7 +36,8 @@
 			
 			<listenerConfigurations/>
 			<failIgnored>false</failIgnored>
-		  	<persistencyHost>http://localhost:9999</persistencyHost>
+		  	<persistencyHost>http://localhost:8181</persistencyHost>
+			<itemsPerPages>50</itemsPerPages>
 			<workingDirectory>intersection/</workingDirectory>
 			
 			<!-- 
