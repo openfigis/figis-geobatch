@@ -3,6 +3,7 @@ package it.geosolutions.geobatch.figis.intersection;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -277,9 +278,10 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @throws IOException
      */
-    public void action(DataStore ds, Transaction tx, String srcLayer, String trgLayer) throws IOException
+    public void action(DataStore ds, Transaction tx, String srcLayer, String trgLayer, String srcLayerCode,
+        String trgLayerCode) throws IOException
     {
-        deleteOldInstancesFromPermanent(tx, srcLayer, trgLayer);
+        deleteOldInstancesFromPermanent(tx, srcLayer, trgLayer, srcLayerCode, trgLayerCode);
         saveToPermanent(tx, statsTmpTable, statsTable);
         saveToPermanent(tx, spatialTmpTable, spatialTable);
     }
@@ -308,13 +310,13 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @throws IOException
      */
-    public void deleteAll(String srcLayer, String trgLayer) throws IOException
+    public void deleteAll(String srcLayer, String trgLayer, String srcLayerCode, String trgLayerCode) throws IOException
     {
         DefaultTransaction deleteTransaction = null;
         try
         {
             deleteTransaction = new DefaultTransaction();
-            deleteOldInstancesFromPermanent(deleteTransaction, srcLayer, trgLayer);
+            deleteOldInstancesFromPermanent(deleteTransaction, srcLayer, trgLayer, srcLayerCode, trgLayerCode);
             deleteTransaction.commit();
         }
         catch (Exception e)
@@ -335,9 +337,12 @@ public class OracleDataStoreManager
      * @param tx
      * @param srcLayer
      * @param trgLayer
+     * @param trgLayerCode
+     * @param srcLayerCode
      * @throws IOException
      */
-    public void deleteOldInstancesFromPermanent(Transaction tx, String srcLayer, String trgLayer) throws IOException
+    public void deleteOldInstancesFromPermanent(Transaction tx, String srcLayer, String trgLayer, String srcLayerCode,
+        String trgLayerCode) throws IOException
     {
         LOGGER.info("Deleting old instances of the intersection between " + srcLayer + " and " + trgLayer);
 
@@ -349,7 +354,9 @@ public class OracleDataStoreManager
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter1 = ff.equals(ff.property("SRCLAYER"), ff.literal(srcLayer));
         Filter filter2 = ff.equals(ff.property("TRGLAYER"), ff.literal(trgLayer));
-        Filter filterAnd = ff.and(filter1, filter2);
+        Filter filter3 = ff.equals(ff.property("SRCODE"), ff.literal(srcLayerCode));
+        Filter filter4 = ff.equals(ff.property("TRGCODE"), ff.literal(trgLayerCode));
+        Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4));
         SimpleFeatureIterator iterator = (SimpleFeatureIterator) featureStoreData.getFeatures(filterAnd).features();
 
         while (iterator.hasNext())
@@ -387,7 +394,7 @@ public class OracleDataStoreManager
                 actionTemp(orclDataStore, orclTransaction, collection, srcLayer, trgLayer, srcCode, trgCode,
                     itemsPerPage);
                 orclTransaction.commit();
-                action(orclDataStore, orclTransaction, srcLayer, trgLayer);
+                action(orclDataStore, orclTransaction, srcLayer, trgLayer, srcCode, trgCode);
                 orclTransaction.commit();
             }
             catch (Exception e)
@@ -457,6 +464,8 @@ public class OracleDataStoreManager
     public void saveToTemp(DataStore ds, Transaction tx, SimpleFeatureCollection source, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
+        itemsPerPage = (itemsPerPage == 0) ? 50 : itemsPerPage;
+
         LOGGER.info("Saving intersections between " + srcLayer + " and " + trgLayer + " into temporary table");
         LOGGER.debug("Attributes " + srcCode + " and " + trgCode);
         LOGGER.debug("Items per page " + itemsPerPage);

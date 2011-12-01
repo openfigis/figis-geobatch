@@ -1,54 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlowConfiguration>
-	
+
 	<id>intersection</id>
 	<description>intersection configuration flow</description>
 	<name>Intersection flow</name>
-	
+
 	<workingDirectory>intersection/</workingDirectory>
 	<autorun>true</autorun>
-	
+
 
 
 	<EventGeneratorConfiguration>
-	 <eventType>POLLING_EVENT</eventType>
-	 <interval>0/20 * * * * ?</interval>
-	 <id>cron_id</id>
-	 <serviceID>fsEventGeneratorService</serviceID>
-	 <description>description</description>
-	 <name>intersection</name>
+		<eventType>POLLING_EVENT</eventType>
+		<interval>0/20 * * * * ?</interval>
+		<id>cron_id</id>
+		<serviceID>fsEventGeneratorService</serviceID>
+		<description>description</description>
+		<name>intersection</name>
 	</EventGeneratorConfiguration>
-	
+
 	<EventConsumerConfiguration>
 		<id>intersection</id>
 		<description>intersection</description>
 		<name>intersection</name>
-		
+
 		<workingDirectory>intersection/</workingDirectory>
 		<performBackup>false</performBackup>
 
-		
+
 		<IntersectionConfiguration>
 			<serviceID>IntersectionGeneratorService</serviceID>
 			<id>IntersectionGeneratorService</id>
 			<description>Intersection action</description>
 			<name>IntersectionConfiguration</name>
-			
-			<listenerConfigurations/>
+
+			<listenerConfigurations />
 			<failIgnored>false</failIgnored>
-		  	<persistencyHost>http://localhost:8181</persistencyHost>
+			<persistencyHost>http://localhost:8181</persistencyHost>
+			<itemsPerPages>50</itemsPerPages>
 			<workingDirectory>intersection/</workingDirectory>
-			
-			<!-- 
-			<alias>
-				<entry>
-					<string>IntersectionConfiguration</string>
-					<string>it.geosolutions.geobatch.actions.intersection.IntersectionConfiguration</string>
-				</entry>
-			</alias>
-			 -->
+
+			<!--
+				<alias> <entry> <string>IntersectionConfiguration</string>
+				<string>it.geosolutions.geobatch.actions.intersection.IntersectionConfiguration</string>
+				</entry> </alias>
+			-->
 		</IntersectionConfiguration>
-		
+
 	</EventConsumerConfiguration>
 
 </FlowConfiguration>

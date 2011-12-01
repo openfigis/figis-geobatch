@@ -33,6 +33,14 @@ import java.util.Queue;
 import java.util.Random;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryComponentFilter;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
 import it.geosolutions.figis.Request;
 import it.geosolutions.figis.model.Config;
@@ -66,6 +74,76 @@ import org.slf4j.LoggerFactory;
 public class IntersectionAction extends BaseAction<EventObject>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(IntersectionAction.class);
+    private static int itemsPerPage = 50;
+
+    private static Geometry union(Geometry a, Geometry b)
+    {
+        return reduce(EnhancedPrecisionOp.union(a, b));
+    }
+
+    /**
+     * Reduce a GeometryCollection to a MultiPolygon.  This method basically explores
+     * the collection and assembles all the linear rings and polygons into a multipolygon.
+     * The idea there is that contains() works on a multi polygon but not a collection.
+     * If we throw out points and lines, etc, we should still be OK.  This is not 100%
+     * correct, but we should still be able to throw away some features which is the point
+     * of all this.
+     *
+     * @param geometry
+     * @return
+     */
+    private static Geometry reduce(Geometry geometry)
+    {
+        if (geometry instanceof GeometryCollection)
+        {
+
+            if (geometry instanceof MultiPolygon)
+            {
+                return geometry;
+            }
+
+            // WKTWriter wktWriter = new WKTWriter();
+            // logger.warn("REDUCING COLLECTION: " + wktWriter.write(geometry));
+
+            final ArrayList<Polygon> polygons = new ArrayList<Polygon>();
+            final GeometryFactory factory = geometry.getFactory();
+
+            geometry.apply(new GeometryComponentFilter()
+                {
+                    public void filter(Geometry geom)
+                    {
+                        // logger.info("FILTER: " + geom);
+                        // System.out.println("  ==>  filter:  " + geom);
+
+                        if (geom instanceof LinearRing)
+                        {
+                            // System.out.println("    --> add linear ring");
+                            polygons.add(factory.createPolygon((LinearRing) geom, null));
+                        }
+                        else if (geom instanceof LineString)
+                        {
+                            // what to do?
+                        }
+                        else if (geom instanceof Polygon)
+                        {
+                            // System.out.println("    --> add polygon");
+                            polygons.add((Polygon) geom);
+                        }
+                    }
+                });
+
+            // System.out.println("  ==>  collected " + polygons.size() + " polygons");
+            MultiPolygon multiPolygon = factory.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
+            multiPolygon.normalize();
+
+            // logger.info("REDUCED TO: " + wktWriter.write(multiPolygon));
+
+            return multiPolygon;
+        }
+
+        return geometry;
+    }
+
     private GeoServerRESTReader gsRestReader = null;
     Random generator = new Random();
     // private WFS_1_0_0_DataStore dataStore = null;
@@ -78,7 +156,6 @@ public class IntersectionAction extends BaseAction<EventObject>
 
     private String host = "http://localhost:9999";
     private String tmpDirName = "figis";
-    private int itemsPerPage = 50;
 
     public IntersectionAction(IntersectionConfiguration configuration)
     {
@@ -310,7 +387,8 @@ public class IntersectionAction extends BaseAction<EventObject>
             while (sfi.hasNext())
             {
                 Geometry geometry = (Geometry) sfi.next().getDefaultGeometry();
-                maskGeometry = maskGeometry.union(geometry);
+                // maskGeometry = maskGeometry.union(geometry);
+                maskGeometry = union(maskGeometry, geometry);
             }
             LOGGER.info("clipping the first layer");
             try
@@ -368,12 +446,6 @@ public class IntersectionAction extends BaseAction<EventObject>
         // java.util.Date().getTime()).toString());
         // LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> trgCollection: intersectionProcess: >>>>>>"+this+"<<<>>>"+(dif_end-dif_beg)+" <<<<<<<<<<");
         LOGGER.info("Intersection process prepared");
-
-        SimpleFeatureIterator iterator2 = result2.features();
-        while (iterator2.hasNext())
-        {
-            System.out.println("ID" + iterator2.next().getID());
-        }
 
         return result2;
     }
@@ -501,7 +573,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                     try
                     {
                         dataStoreOracle.deleteAll(getName(srcLayer),
-                            getName(trgLayer));
+                            getName(trgLayer), srcCode, trgCode);
                         Request.deleteIntersectionById(host, id);
                     }
                     catch (Exception e)
@@ -620,7 +692,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                         try
                         {
                             dataStoreOracle.deleteAll(getName(srcLayer),
-                                getName(trgLayer));
+                                getName(trgLayer), srcCode, trgCode);
                         }
                         catch (IOException e)
                         {
@@ -795,5 +867,4 @@ public class IntersectionAction extends BaseAction<EventObject>
 
         return ret;
     }
-
 }
