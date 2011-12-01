@@ -573,7 +573,7 @@ public class OracleDataStoreManager
                     MultiPolygon targetGeometry = (MultiPolygon) JTS.transform(geometry, transform);
                     targetGeometry.setSRID(4326);
 
-                    featureBuilderGeom.set("GEOMETRY", targetGeometry);
+                    featureBuilderGeom.set("THE_GEOM", targetGeometry);
                     featureBuilderGeom.set("INTERSECTION_ID", intersectionID);
 
                     SimpleFeature sfwGeom = featureBuilderGeom.buildFeature(intersectionID);
