@@ -13,7 +13,7 @@
 		<watchDirectory>intersection/in</watchDirectory>
 		<osType>OS_UNDEFINED</osType>
 		<eventType>FILE_ADDED</eventType>
-		<interval>* * * * * ?</interval><!-- CRON: every minute at sec 0 -->
+		<interval>0/20 * * * * ?</interval><!-- CRON: every minute at sec 0 -->
 		<!--<interval>20</interval> each 20 sec -->
 		<id>IntersectionFlow</id>
 		<serviceID>fsEventGeneratorService</serviceID>

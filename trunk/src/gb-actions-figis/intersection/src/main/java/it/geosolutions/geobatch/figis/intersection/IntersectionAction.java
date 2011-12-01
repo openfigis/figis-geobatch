@@ -272,15 +272,15 @@ public class IntersectionAction extends BaseAction<EventObject>
             {
                 LOGGER.info("download mask layer " + getName(maskLayer));
                 maskfilename = downloadFromGeoserver(getName(maskLayer), tmpDir);
+                LOGGER.info("mask layer " + maskLayer + " downloaded");
+                maskCollection = SimpleFeatureCollectionByShp(maskfilename);
+
                 if (maskCollection == null)
                 {
                     LOGGER.error("Error downloading " + maskLayer);
 
                     return null;
                 }
-
-                LOGGER.info("mask layer " + maskLayer + " downloaded");
-                maskCollection = SimpleFeatureCollectionByShp(maskfilename);
             }
 
         }
@@ -515,6 +515,9 @@ public class IntersectionAction extends BaseAction<EventObject>
                 if (status == Status.TOCOMPUTE) // if the intersection should be
                                                 // computed
                 {
+                    intersection.setStatus(Status.COMPUTING);
+                    Request.updateIntersectionById(host, id, intersection);
+
                     SimpleFeatureCollection resultInt = null;
                     resultInt = intersection(intersection, tmpdir); // compute
                                                                     // the
@@ -535,9 +538,17 @@ public class IntersectionAction extends BaseAction<EventObject>
                             geometryType =
                                 resultInt.getSchema().getGeometryDescriptor().getType().getName().getLocalPart();
                         }
+                        else
+                        {
+                            intersection.setStatus(Status.TOCOMPUTE);
+                            Request.updateIntersectionById(host, id, intersection);
+                        }
                     }
                     catch (Exception e)
                     {
+                        intersection.setStatus(Status.TOCOMPUTE);
+                        Request.updateIntersectionById(host, id, intersection);
+
                         LOGGER.error(
                             "Cannot identify the geometry type of the intersection result",
                             e);
@@ -574,6 +585,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                                 getName(srcLayer), getName(trgLayer),
                                 srcCode, trgCode, itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
+                            Request.updateIntersectionById(host, id, intersection);
                             LOGGER.info("Store operation successfully computed");
                         }
                         catch (Exception e)
@@ -585,13 +597,12 @@ public class IntersectionAction extends BaseAction<EventObject>
                             LOGGER.error("Problem performing Intersection on " +
                                 srcLayer + "," + trgLayer + "," + srcCode +
                                 "," + trgCode, e);
-                            intersection.setStatus(Status.TODELETE);
+                            intersection.setStatus(Status.TOCOMPUTE);
+                            Request.updateIntersectionById(host, id, intersection);
                         }
                         finally
                         {
                             LOGGER.info("updating intersection " +
-                                intersection);
-                            Request.updateIntersectionById(host, id,
                                 intersection);
                         }
                     }
@@ -603,8 +614,9 @@ public class IntersectionAction extends BaseAction<EventObject>
                             trgLayer +
                             " because the intersection cannot be computed");
                         LOGGER.error("Intersections will be deleted");
-                        Request.deleteIntersectionById(host, id);
-                        // Request.updateIntersectionById(host, id, intersection);
+                        // Request.deleteIntersectionById(host, id);
+                        intersection.setStatus(Status.TODELETE);
+                        Request.updateIntersectionById(host, id, intersection);
                         try
                         {
                             dataStoreOracle.deleteAll(getName(srcLayer),

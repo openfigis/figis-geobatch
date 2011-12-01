@@ -115,6 +115,7 @@ public class SettingAction extends BaseAction<EventObject>
                     if (xmlConfig.getUpdateVersion() > dbConfig.getUpdateVersion())
                     {
                         dbConfig.setUpdateVersion(xmlConfig.getUpdateVersion());
+                        dbConfig.setGlobal(xmlConfig.getGlobal());
 
                         // lets compare the intersections between xml config and db
                         List<Intersection> intersectionsToAdd = new ArrayList<Intersection>();
@@ -178,7 +179,7 @@ public class SettingAction extends BaseAction<EventObject>
                     }
 
                     // add the event to the return
-                    ret.add(ev);
+                    // ret.add(ev);
                 }
                 else
                 {

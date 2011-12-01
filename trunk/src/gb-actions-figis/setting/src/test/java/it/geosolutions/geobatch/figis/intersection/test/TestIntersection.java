@@ -84,35 +84,35 @@ public class TestIntersection
     }
 
 
-    @Test
-    public void testConfig() throws MalformedURLException
-    {
-        // firstly delete possible config in the db
-        Config currentConfig = Request.existConfig(host);
-        if (currentConfig != null)
-        {
-            Request.deleteConfig(host, currentConfig.getConfigId());
-        }
-
-        // first config, no others in the DB
-        Config config = initConfig(1, "localhost", "admin", "password", "", "figis", "localhost", "8080", "dbuser",
-                "dbpwd");
-        Config fstInsert = intersectionAction.saveOrUpdateConfig(host, config);
-        config.setConfigId(fstInsert.getConfigId());
-        assertTrue(config.equals(fstInsert));
-
-        // initialize new config with an update version less than the current one
-        Config config2 = initConfig(0, "localhost1", "admin1", "password1", "", "figis1", "localhost1", "9090",
-                "dbuser1", "dbpwd1");
-        Config sndInsert = intersectionAction.saveOrUpdateConfig(host, config2);
-        assertTrue(sndInsert == null);
-        // apply a new version to config2 and insert
-        config2.setUpdateVersion(2);
-
-        Config trdInsert = intersectionAction.saveOrUpdateConfig(host, config2);
-        config2.setConfigId(trdInsert.getConfigId());
-        assertTrue(config2.equals(trdInsert));
-    }
+//    @Test
+//    public void testConfig() throws MalformedURLException
+//    {
+//        // firstly delete possible config in the db
+//        Config currentConfig = Request.existConfig(host);
+//        if (currentConfig != null)
+//        {
+//            Request.deleteConfig(host, currentConfig.getConfigId());
+//        }
+//
+//        // first config, no others in the DB
+//        Config config = initConfig(1, "localhost", "admin", "password", "", "figis", "localhost", "8080", "dbuser",
+//                "dbpwd");
+//        Config fstInsert = intersectionAction.saveOrUpdateConfig(host, config);
+//        config.setConfigId(fstInsert.getConfigId());
+//        assertTrue(config.equals(fstInsert));
+//
+//        // initialize new config with an update version less than the current one
+//        Config config2 = initConfig(0, "localhost1", "admin1", "password1", "", "figis1", "localhost1", "9090",
+//                "dbuser1", "dbpwd1");
+//        Config sndInsert = intersectionAction.saveOrUpdateConfig(host, config2);
+//        assertTrue(sndInsert == null);
+//        // apply a new version to config2 and insert
+//        config2.setUpdateVersion(2);
+//
+//        Config trdInsert = intersectionAction.saveOrUpdateConfig(host, config2);
+//        config2.setConfigId(trdInsert.getConfigId());
+//        assertTrue(config2.equals(trdInsert));
+//    }
 
 
     public boolean compare(Intersection thi, Intersection other)
@@ -161,77 +161,77 @@ public class TestIntersection
     }
 
 
-    @Test
-    public void updateIntersectionsOnDBTest() throws MalformedURLException
-    {
-
-        // delete the old status of the DB
-        Request.deleteAllIntersections(host);
-        // setting of the initial status of the DB
-        Intersection intersection1 = new Intersection(false, true, false, "restricted1", "roads1", "cat",
-                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
-        long result1 = Request.insertIntersection(host, intersection1);
-        Intersection intersection2 = new Intersection(false, true, false, "restricted2", "roads2", "cat",
-                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
-        long result2 = Request.insertIntersection(host, intersection2);
-        Intersection intersection3 = new Intersection(false, true, false, "restricted3", "roads3", "cat",
-                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
-        long result3 = Request.insertIntersection(host, intersection3);
-        Intersection intersection4 = new Intersection(true, true, false, "restricted4", "roads4", "cat",
-                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
-        long result4 = Request.insertIntersection(host, intersection4);
-
-        List<Intersection> dbList = Request.getAllIntersections(host);
-
-
-        // setting of the initial status of the XML
-        Intersection intersectionXML1 = new Intersection(false, false, false, "restricted1", "roads1", "cat",
-                "label", "sf:restricted", "areaCRS", Status.TOCOMPUTE);
-        Intersection intersectionXML2 = new Intersection(false, true, false, "restricted2", "roads2", "cat",
-                "label", "sf:restricted", "areaCRS", Status.TOCOMPUTE);
-        Intersection intersectionXML3 = new Intersection(false, false, true, "restricted3", "roads3", "cat2",
-                "label", "sf:restricted", "areaCRS", Status.TODELETE);
-        Intersection intersectionXML5 = new Intersection(false, false, false, "restricted5", "roads4", "cat",
-                "label", "sf:restricted", "areaCRS", Status.COMPUTING);
-
-        List<Intersection> xmlList = new ArrayList<Intersection>();
-        xmlList.add(intersectionXML1);
-        xmlList.add(intersectionXML2);
-        xmlList.add(intersectionXML3);
-        xmlList.add(intersectionXML5);
-
-        intersectionAction.updateIntersectionsOnDB(host, xmlList, dbList, false, "sf:restricted");
-        // update intersections to the expected result
-        intersectionXML1.setStatus(Status.COMPUTED);
-        intersectionXML2.setStatus(Status.TOCOMPUTE);
-        intersectionXML3.setStatus(Status.TOCOMPUTE);
-        intersectionXML3.setPreserveTrgGeom(true);
-        intersectionXML5.setStatus(Status.COMPUTING);
-
-        List<Intersection> dbList1 = Request.getAllIntersections(host);
-        for (Intersection intersection : dbList1)
-        {
-            System.out.println(intersection);
-            System.out.println(intersectionXML5);
-            if (intersection.equals(intersectionXML1))
-            {
-                assertTrue(compare(intersectionXML1, intersection));
-            }
-            if (intersection.equals(intersectionXML2))
-            {
-                assertTrue(compare(intersectionXML2, intersection));
-            }
-            if (intersection.equals(intersectionXML3))
-            {
-                assertTrue(compare(intersectionXML3, intersection));
-            }
-            if (intersection.equals(intersectionXML5))
-            {
-                assertTrue(compare(intersectionXML5, intersection));
-            }
-
-
-        }
-    }
+//    @Test
+//    public void updateIntersectionsOnDBTest() throws MalformedURLException
+//    {
+//
+//        // delete the old status of the DB
+//        Request.deleteAllIntersections(host);
+//        // setting of the initial status of the DB
+//        Intersection intersection1 = new Intersection(false, true, false, "restricted1", "roads1", "cat",
+//                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
+//        long result1 = Request.insertIntersection(host, intersection1);
+//        Intersection intersection2 = new Intersection(false, true, false, "restricted2", "roads2", "cat",
+//                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
+//        long result2 = Request.insertIntersection(host, intersection2);
+//        Intersection intersection3 = new Intersection(false, true, false, "restricted3", "roads3", "cat",
+//                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
+//        long result3 = Request.insertIntersection(host, intersection3);
+//        Intersection intersection4 = new Intersection(true, true, false, "restricted4", "roads4", "cat",
+//                "label", "sf:restricted", "areaCRS", Status.COMPUTED);
+//        long result4 = Request.insertIntersection(host, intersection4);
+//
+//        List<Intersection> dbList = Request.getAllIntersections(host);
+//
+//
+//        // setting of the initial status of the XML
+//        Intersection intersectionXML1 = new Intersection(false, false, false, "restricted1", "roads1", "cat",
+//                "label", "sf:restricted", "areaCRS", Status.TOCOMPUTE);
+//        Intersection intersectionXML2 = new Intersection(false, true, false, "restricted2", "roads2", "cat",
+//                "label", "sf:restricted", "areaCRS", Status.TOCOMPUTE);
+//        Intersection intersectionXML3 = new Intersection(false, false, true, "restricted3", "roads3", "cat2",
+//                "label", "sf:restricted", "areaCRS", Status.TODELETE);
+//        Intersection intersectionXML5 = new Intersection(false, false, false, "restricted5", "roads4", "cat",
+//                "label", "sf:restricted", "areaCRS", Status.COMPUTING);
+//
+//        List<Intersection> xmlList = new ArrayList<Intersection>();
+//        xmlList.add(intersectionXML1);
+//        xmlList.add(intersectionXML2);
+//        xmlList.add(intersectionXML3);
+//        xmlList.add(intersectionXML5);
+//
+//        intersectionAction.updateIntersectionsOnDB(host, xmlList, dbList, false, "sf:restricted");
+//        // update intersections to the expected result
+//        intersectionXML1.setStatus(Status.COMPUTED);
+//        intersectionXML2.setStatus(Status.TOCOMPUTE);
+//        intersectionXML3.setStatus(Status.TOCOMPUTE);
+//        intersectionXML3.setPreserveTrgGeom(true);
+//        intersectionXML5.setStatus(Status.COMPUTING);
+//
+//        List<Intersection> dbList1 = Request.getAllIntersections(host);
+//        for (Intersection intersection : dbList1)
+//        {
+//            System.out.println(intersection);
+//            System.out.println(intersectionXML5);
+//            if (intersection.equals(intersectionXML1))
+//            {
+//                assertTrue(compare(intersectionXML1, intersection));
+//            }
+//            if (intersection.equals(intersectionXML2))
+//            {
+//                assertTrue(compare(intersectionXML2, intersection));
+//            }
+//            if (intersection.equals(intersectionXML3))
+//            {
+//                assertTrue(compare(intersectionXML3, intersection));
+//            }
+//            if (intersection.equals(intersectionXML5))
+//            {
+//                assertTrue(compare(intersectionXML5, intersection));
+//            }
+//
+//
+//        }
+//    }
 
 }

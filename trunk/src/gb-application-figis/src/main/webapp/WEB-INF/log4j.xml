@@ -22,33 +22,35 @@
 
 	<logger name="it.geosolutions" additivity="true">
 		<!-- <level value="warning" /> -->
-		<level value="trace" /><!--  DEBUG  -->
+		<level value="info" /><!--  DEBUG  -->
 		<appender-ref ref="rolling" />
-		<!--<appender-ref ref="console" />  DEBUG  -->
+		<appender-ref ref="console" />
 	</logger>
 
 	<logger name="org.quartz" additivity="true">
 		<level value="info" />
 		<appender-ref ref="rolling" />
+		<appender-ref ref="console" />
 	</logger>
 
 	<logger name="org.hibernate" additivity="true">
 		<level value="info" />
 		<appender-ref ref="rolling" />
+		<appender-ref ref="console" />
 	</logger>
 
 	<!-- SPRING  -->
 	<logger name="org.springframework" additivity="true">
 		<level value="info" />
 		<appender-ref ref="rolling" />
-		<!-- <appender-ref ref="console" />-->
+		<appender-ref ref="console" />
 	</logger>
 	
 	<!-- JETTY  -->
 	<logger name="org.mortbay.jetty"  additivity="true">
 		<level value="info" />
 		<appender-ref ref="rolling" />
-		<!-- <appender-ref ref="console" />-->
+		<appender-ref ref="console" />
 	</logger>
 
 	<root>

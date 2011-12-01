@@ -120,10 +120,13 @@ public class IEConfigDAOImpl implements IEConfigDAO
     public Config loadConfg(String host) throws MalformedURLException
     {
         Request.initConfig();
+        Request.initIntersection();
 
         Config config = null;
 
         config = Request.existConfig(host);
+
+        config.intersections = Request.getAllIntersections(host);
 
         return config;
     }
