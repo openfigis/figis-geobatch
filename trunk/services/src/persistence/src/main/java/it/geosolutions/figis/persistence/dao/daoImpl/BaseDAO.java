@@ -67,7 +67,6 @@ public class BaseDAO<T, ID extends Serializable> extends GenericDAOImpl<T, ID> {
      */
     @Override
     public EntityManager em() {
-        // TODO Auto-generated method stub
         return super.em();
     }
 }

@@ -38,6 +38,8 @@ public class Request
         xStreamConfig.aliasType("db", DB.class);
         xStreamConfig.aliasType("intersections", List.class);
         xStreamConfig.alias("intersection", it.geosolutions.figis.model.Intersection.class);
+
+
     }
 
     /***********************
@@ -59,7 +61,6 @@ public class Request
      * @return a list containing the instances
      * @throws java.net.MalformedURLException  in case the URL is not valid
      */
-    @SuppressWarnings("unchecked")
     public static List<Config> getConfigs(String host) throws java.net.MalformedURLException
     {
         String result = HTTPUtils.get(host + "/ie-services/config/", null, null);
@@ -194,18 +195,12 @@ public class Request
      * @return a list of all Intersection instances
      * @throws java.net.MalformedURLException in case the URL is not valid
      */
-    @SuppressWarnings("unchecked")
     public static List<Intersection> getAllIntersections(String host) throws java.net.MalformedURLException
     {
         String result = HTTPUtils.get(host + "/ie-services/intersection", null, null);
         // System.out.println("RESULT GET ALL INTERSECTIONS: "+result);
         if (result != null)
         {
-            if (xStreamIntersection == null)
-            {
-                initIntersection();
-            }
-
             return (List<Intersection>) xStreamIntersection.fromXML(result);
         }
 
