@@ -36,8 +36,10 @@ public class SettingConfiguration extends ActionConfiguration implements Configu
 
     private String persistencyHost = null;
     private String defaultMaskLayer = null;
-
-    public SettingConfiguration(String id, String name, String description)
+    private String ieServiceUsername = null;
+    private String ieServicePassword = null;
+    
+	public SettingConfiguration(String id, String name, String description)
     {
         super(id, name, description);
 
@@ -63,6 +65,22 @@ public class SettingConfiguration extends ActionConfiguration implements Configu
     {
         this.defaultMaskLayer = defaultMaskLayer;
     }
+    
+    public String getIeServiceUsername() {
+		return ieServiceUsername;
+	}
+
+	public void setIeServiceUsername(String ieServiceUsername) {
+		this.ieServiceUsername = ieServiceUsername;
+	}
+
+	public String getIeServicePassword() {
+		return ieServicePassword;
+	}
+
+	public void setIeServicePassword(String ieServicePassword) {
+		this.ieServicePassword = ieServicePassword;
+	}
 
     // TODO ADD YOUR MEMBERS
 
@@ -74,6 +92,8 @@ public class SettingConfiguration extends ActionConfiguration implements Configu
         // TODO CLONE YOUR MEMBERS
         ret.setDefaultMaskLayer(defaultMaskLayer);
         ret.setPersistencyHost(persistencyHost);
+        ret.setIeServiceUsername(ieServiceUsername);
+        ret.setIeServicePassword(ieServicePassword);
         ret.setWorkingDirectory(this.getWorkingDirectory());
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());

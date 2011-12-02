@@ -34,8 +34,26 @@ import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
 public class IntersectionConfiguration extends ActionConfiguration implements Configuration
 {
     String persistencyHost = null;
-    int itemsPerPages = 50;
+    int itemsPerPages = -1;
+    String ieServiceUsername = null;
+    
+    public String getIeServiceUsername() {
+		return ieServiceUsername;
+	}
 
+	public void setIeServiceUsername(String ieServiceUsername) {
+		this.ieServiceUsername = ieServiceUsername;
+	}
+
+	public String getIeServicePassword() {
+		return ieServicePassword;
+	}
+
+	public void setIeServicePassword(String ieServicePassword) {
+		this.ieServicePassword = ieServicePassword;
+	}
+
+	String ieServicePassword = null;
     public IntersectionConfiguration(String id, String name, String description)
     {
         super(id, name, description);
@@ -74,6 +92,8 @@ public class IntersectionConfiguration extends ActionConfiguration implements Co
         ret.setPersistencyHost(persistencyHost);
         ret.setWorkingDirectory(this.getWorkingDirectory());
         ret.setItemsPerPages(itemsPerPages);
+        ret.setIeServiceUsername(ieServiceUsername);
+        ret.setIeServicePassword(ieServicePassword);
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());
 

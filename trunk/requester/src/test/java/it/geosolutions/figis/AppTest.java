@@ -18,6 +18,8 @@ public class AppTest extends TestCase
 {
     Config config = new Config();
     String host = "http://localhost:9999";
+    String ieServiceUsername = "ADMIN";
+    String ieServicePassword = "ADMIN";
 
     @Override
     protected void setUp()
@@ -49,12 +51,12 @@ public class AppTest extends TestCase
         System.out.println("Start testDeleteConfig");
         Request.initConfig();
 
-        long id1 = Request.insertConfig(host, config);
-        long id2 = Request.insertConfig(host, config);
-        List<Config> list = Request.getConfigs(host);
+        long id1 = Request.insertConfig(host, config, ieServiceUsername, ieServicePassword);
+        long id2 = Request.insertConfig(host, config, ieServiceUsername, ieServicePassword);
+        List<Config> list = Request.getConfigs(host, ieServiceUsername, ieServicePassword);
         for (Config conf : list)
         {
-            boolean resultDelete = Request.deleteConfig(host, conf.getConfigId());
+            boolean resultDelete = Request.deleteConfig(host, conf.getConfigId(), ieServiceUsername, ieServicePassword);
             assertTrue(resultDelete);
         }
     }
@@ -64,11 +66,11 @@ public class AppTest extends TestCase
         System.out.println("Start testExistConfigBeforeAndAfter");
         Request.initConfig();
 
-        Config confBefore = Request.existConfig(host);
+        Config confBefore = Request.existConfig(host, ieServiceUsername, ieServicePassword);
         assertTrue(confBefore == null);
 
-        long id = Request.insertConfig(host, config);
-        Config confAfter = Request.existConfig(host);
+        long id = Request.insertConfig(host, config, ieServiceUsername, ieServicePassword);
+        Config confAfter = Request.existConfig(host, ieServiceUsername, ieServicePassword);
         assertTrue(confAfter != null);
     }
 
@@ -102,11 +104,11 @@ public class AppTest extends TestCase
         upConfig.setUpdateVersion(2);
         upConfig.setGlobal(global);
 
-        Config confBeforeUpdate = Request.existConfig(host);
+        Config confBeforeUpdate = Request.existConfig(host, ieServiceUsername, ieServicePassword);
         assertTrue(confBeforeUpdate != null);
 
-        long updateID = Request.updateConfig(host, confBeforeUpdate.getConfigId(), upConfig);
-        Config confAfterUpdate = Request.getConfigByID(host, updateID);
+        long updateID = Request.updateConfig(host, confBeforeUpdate.getConfigId(), upConfig, ieServiceUsername, ieServicePassword);
+        Config confAfterUpdate = Request.getConfigByID(host, updateID, ieServiceUsername, ieServicePassword);
         assertTrue(confAfterUpdate.getGlobal().getGeoserver().getGeoserverUsername().equals(newGSusername));
         assertTrue(confAfterUpdate.getGlobal().getGeoserver().getGeoserverPassword().equals(newGSpassword));
         assertTrue(confAfterUpdate.getGlobal().getGeoserver().getGeoserverUrl().equals(newGSURL));
@@ -123,14 +125,14 @@ public class AppTest extends TestCase
 
             Intersection int1 = new Intersection(false, true, true, "srcLayer", "trgLayer", "srcCodeField",
                     "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
-            Request.insertIntersection(host, int1);
+            Request.insertIntersection(host, int1, ieServiceUsername, ieServicePassword);
             System.out.println("AFTER INTERSECTION");
 
-            List<Intersection> list = Request.getAllIntersections(host);
+            List<Intersection> list = Request.getAllIntersections(host, ieServiceUsername, ieServicePassword);
             System.out.println("SIZE OF " + list.size());
             for (Intersection intersection : list)
             {
-                boolean value = Request.deleteIntersectionById(host, intersection.getId());
+                boolean value = Request.deleteIntersectionById(host, intersection.getId(), ieServiceUsername, ieServicePassword);
                 assertTrue(value);
             }
         }
@@ -147,10 +149,10 @@ public class AppTest extends TestCase
                 "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
         Intersection int2 = new Intersection(true, true, false, "srcLayer2", "trgLayer2", "srcCodeField2",
                 "trgCodeField", "maskLayer2", "areaCRS2", Status.COMPUTING);
-        assertTrue(Request.insertIntersection(host, int1) != 0);
-        assertTrue(Request.insertIntersection(host, int2) != 0);
+        assertTrue(Request.insertIntersection(host, int1, ieServiceUsername, ieServicePassword) != 0);
+        assertTrue(Request.insertIntersection(host, int2, ieServiceUsername, ieServicePassword) != 0);
 
-        List<Intersection> list = Request.getAllIntersections(host);
+        List<Intersection> list = Request.getAllIntersections(host, ieServiceUsername, ieServicePassword);
         assertTrue(list.size() == 2);
     }
 
@@ -159,14 +161,14 @@ public class AppTest extends TestCase
     {
         try
         {
-            assertTrue(Request.deleteAllIntersections(host));
+            assertTrue(Request.deleteAllIntersections(host, ieServiceUsername, ieServicePassword));
 
             Intersection int1 = new Intersection(false, true, true, "sf:restricted", "sf:restricted", "cat",
                     "cat", "maskLayer", "areaCRS", Status.TOCOMPUTE);
-            long id = Request.insertIntersection(host, int1);
+            long id = Request.insertIntersection(host, int1, ieServiceUsername, ieServicePassword);
             Intersection int2 = new Intersection(false, true, true, "sf:restricted", "sf:restricted", "cat",
                     "cat", "maskLayer", "areaCRS", Status.TOCOMPUTE);
-            Request.updateIntersectionById(host, id, int2);
+            Request.updateIntersectionById(host, id, int2, ieServiceUsername, ieServicePassword);
         }
         catch (Throwable e)
         {

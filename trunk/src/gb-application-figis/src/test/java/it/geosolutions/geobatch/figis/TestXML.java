@@ -34,6 +34,9 @@ public class TestXML
     String sourceDirName = "src/test/resources";
 
     private final String host = "http://localhost:9999";
+    private String ieServicesUsername = null;
+    private String ieServicesPassword = null;
+    
     SettingAction intersectionAction = null;
     private IntersectionAction cronAction = null;
 
@@ -42,12 +45,12 @@ public class TestXML
     {
         Request.initIntersection();
         Request.initConfig();
-        Request.deleteAllIntersections(host);
+        Request.deleteAllIntersections(host, ieServicesUsername, ieServicesPassword);
 
-        Config config = Request.existConfig(host);
+        Config config = Request.existConfig(host, ieServicesUsername, ieServicesPassword);
         if (config != null)
         {
-            Request.deleteConfig(host, config.getConfigId());
+            Request.deleteConfig(host, config.getConfigId(), ieServicesUsername, ieServicesPassword);
         }
 
 
@@ -67,7 +70,7 @@ public class TestXML
         List<Intersection> intersections;
         try
         {
-            intersections = Request.getAllIntersections(host);
+            intersections = Request.getAllIntersections(host, ieServicesUsername, ieServicesPassword);
             for (Intersection intersection : intersections)
             {
                 System.out.println(intersection);

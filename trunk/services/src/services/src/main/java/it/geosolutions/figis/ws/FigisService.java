@@ -52,36 +52,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Produces("application/xml")
 @WebService(name = "FigisService", targetNamespace = "http://services.figis.geosolutions.it/")
 @Transactional
-@RolesAllowed({ "ADMIN", "USER" })
+@RolesAllowed({ "ADMIN", "USER", "GUEST" })
 public interface FigisService
 {
 
     @GET
     @Path("/config/{id}")
-    @RolesAllowed({ "ADMIN", "GUEST" })
+    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
     public Config getConfig(@PathParam("id") Long id) throws ResourceNotFoundFault;
 
 
     @GET
     @Path("/config/")
-    @RolesAllowed({ "ADMIN", "GUEST" })
+    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
     public List<Config> getConfigs();
 
     @POST
     @Path("/config/")
-    @RolesAllowed({ "ADMIN", "GUEST" })
+    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
     long insertConfig(@WebParam(name = "Config") Config config);
 
 
     @PUT
     @Path("/config/{id}")
-    @RolesAllowed({ "ADMIN", "GUEST" })
+    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
     long updateConfig(@PathParam("id") long id,
         @WebParam(name = "Config") Config config);
 
     @DELETE
     @Path("/config/{id}")
-    @RolesAllowed({ "ADMIN", "GUEST" })
+    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
     boolean deleteConfig(@PathParam("id") long id) throws ResourceNotFoundFault;
 
     @GET

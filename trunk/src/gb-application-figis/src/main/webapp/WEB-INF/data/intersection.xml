@@ -38,6 +38,8 @@
 			<failIgnored>false</failIgnored>
 			<persistencyHost>http://localhost:8181</persistencyHost>
 			<itemsPerPages>50</itemsPerPages>
+			<ieServiceUsername>ADMIN</ieServiceUsername>
+			<ieServicePassword>ADMIN</ieServicePassword>
 			<workingDirectory>intersection/</workingDirectory>
 
 			<!--

@@ -55,8 +55,10 @@ public class SettingAction extends BaseAction<EventObject>
 
     private String defaultMaskLayer = null;
     private String host = null;
+    private String ieServiceUsername = null;
+    private String ieservicePassword = null;
 
-    /**
+	/**
      * configuration
      */
     private final SettingConfiguration conf;
@@ -65,6 +67,8 @@ public class SettingAction extends BaseAction<EventObject>
     {
         super(configuration);
         conf = configuration;
+        conf.getIeServiceUsername();
+        conf.getIeServicePassword();
     }
 
     /**
@@ -98,16 +102,16 @@ public class SettingAction extends BaseAction<EventObject>
                     xmlConfig = IEConfigUtils.parseXMLConfig(fileEvent.getSource().getAbsolutePath());
 
                     // if DB is empty lets insert the new configuration...
-                    if (ieConfigDAO.dbIsEmpty(host))
+                    if (ieConfigDAO.dbIsEmpty(host, getIeServiceUsername(), getIeservicePassword()))
                     {
-                        dbConfig = ieConfigDAO.saveOrUpdateConfig(host, xmlConfig);
+                        dbConfig = ieConfigDAO.saveOrUpdateConfig(host, xmlConfig, getIeServiceUsername(), getIeservicePassword());
 
-                        ieConfigDAO.setStatus(host, dbConfig.intersections, Status.TOCOMPUTE);
+                        ieConfigDAO.setStatus(host, dbConfig.intersections, Status.TOCOMPUTE, getIeServiceUsername(), getIeservicePassword());
                     }
                     // check for updates otherwise...
                     else
                     {
-                        dbConfig = ieConfigDAO.loadConfg(host);
+                        dbConfig = ieConfigDAO.loadConfg(host, getIeServiceUsername(), getIeservicePassword());
                     }
 
 
@@ -122,7 +126,7 @@ public class SettingAction extends BaseAction<EventObject>
                         for (Intersection xmlIntersection : xmlConfig.intersections)
                         {
                             Intersection dbIntersection = ieConfigDAO.searchEquivalent(host, xmlIntersection,
-                                    dbConfig.intersections);
+                                    dbConfig.intersections, getIeServiceUsername(), getIeservicePassword());
 
                             // not present in DB, lets add the new one
                             if (dbIntersection == null)
@@ -157,7 +161,7 @@ public class SettingAction extends BaseAction<EventObject>
                             for (Intersection dbIntersection : dbConfig.intersections)
                             {
                                 Intersection equivalentToAdd = ieConfigDAO.searchEquivalent(host, dbIntersection,
-                                        intersectionsToAdd);
+                                        intersectionsToAdd, getIeServiceUsername(), getIeservicePassword());
                                 if (equivalentToAdd == null)
                                 {
                                     dbIntersection.setStatus(Status.TODELETE);
@@ -175,7 +179,7 @@ public class SettingAction extends BaseAction<EventObject>
                         }
 
                         // finally update the db-config
-                        ieConfigDAO.saveOrUpdateConfig(host, dbConfig);
+                        ieConfigDAO.saveOrUpdateConfig(host, dbConfig, getIeServiceUsername(), getIeservicePassword());
                     }
 
                     // add the event to the return
@@ -207,6 +211,24 @@ public class SettingAction extends BaseAction<EventObject>
 
         return ret;
     }
+    
+
+    public String getIeServiceUsername() {
+		return ieServiceUsername;
+	}
+
+	public void setIeServiceUsername(String ieServiceUsername) {
+		this.ieServiceUsername = ieServiceUsername;
+	}
+
+	public String getIeservicePassword() {
+		return ieservicePassword;
+	}
+
+	public void setIeservicePassword(String ieservicePassword) {
+		this.ieservicePassword = ieservicePassword;
+	}
+
 
     // ------------------------------------------------------------------------------------------------------------------
 }

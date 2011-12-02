@@ -75,7 +75,21 @@ public class IntersectionAction extends BaseAction<EventObject>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(IntersectionAction.class);
     private static int itemsPerPage = 50;
-
+    private GeoServerRESTReader gsRestReader = null;
+    Random generator = new Random();
+    // private WFS_1_0_0_DataStore dataStore = null;
+    private Geoserver geoserver = null;
+    /**
+     * configuration
+     */
+    private final IntersectionConfiguration conf;
+    private String host = "http://localhost:9999";
+    private String tmpDirName = "figis";
+    /* Username ie-service */
+    private String ieServiceUsername = null;
+    /* Password ie-service */
+    private String ieServicePassword = null;
+    
     private static Geometry union(Geometry a, Geometry b)
     {
         return reduce(EnhancedPrecisionOp.union(a, b));
@@ -144,30 +158,17 @@ public class IntersectionAction extends BaseAction<EventObject>
         return geometry;
     }
 
-    private GeoServerRESTReader gsRestReader = null;
-    Random generator = new Random();
-    // private WFS_1_0_0_DataStore dataStore = null;
-    private Geoserver geoserver = null;
-
-    /**
-     * configuration
-     */
-    private final IntersectionConfiguration conf;
-
-    private String host = "http://localhost:9999";
-    private String tmpDirName = "figis";
-
+    
+    
     public IntersectionAction(IntersectionConfiguration configuration)
     {
         super(configuration);
         conf = configuration;
         host = conf.getPersistencyHost();
+        ieServiceUsername = conf.getIeServiceUsername();
+        ieServicePassword = conf.getIeServicePassword();
     }
 
-    public void setGeoserver(Geoserver geoserver)
-    {
-        this.geoserver = geoserver;
-    }
 
     /******
      * this method takes a zip file name and return its SimpleFeatureCollection
@@ -513,7 +514,7 @@ public class IntersectionAction extends BaseAction<EventObject>
             try
             {
                 Request.initIntersection();
-                intersections = Request.getAllIntersections(host);
+                intersections = Request.getAllIntersections(host, getIeServiceUsername(), getIeServicePassword());
             }
             catch (MalformedURLException e)
             {
@@ -572,9 +573,8 @@ public class IntersectionAction extends BaseAction<EventObject>
                 {
                     try
                     {
-                        dataStoreOracle.deleteAll(getName(srcLayer),
-                            getName(trgLayer), srcCode, trgCode);
-                        Request.deleteIntersectionById(host, id);
+                        dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer), srcCode, trgCode);
+                        Request.deleteIntersectionById(host, id, getIeServiceUsername(), getIeServicePassword());
                     }
                     catch (Exception e)
                     {
@@ -588,7 +588,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                                                 // computed
                 {
                     intersection.setStatus(Status.COMPUTING);
-                    Request.updateIntersectionById(host, id, intersection);
+                    Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
 
                     SimpleFeatureCollection resultInt = null;
                     resultInt = intersection(intersection, tmpdir); // compute
@@ -613,13 +613,13 @@ public class IntersectionAction extends BaseAction<EventObject>
                         else
                         {
                             intersection.setStatus(Status.TOCOMPUTE);
-                            Request.updateIntersectionById(host, id, intersection);
+                            Request.updateIntersectionById(host, id, intersection,getIeServiceUsername(),getIeServicePassword());
                         }
                     }
                     catch (Exception e)
                     {
                         intersection.setStatus(Status.TOCOMPUTE);
-                        Request.updateIntersectionById(host, id, intersection);
+                        Request.updateIntersectionById(host, id, intersection,getIeServiceUsername(),getIeServicePassword());
 
                         LOGGER.error(
                             "Cannot identify the geometry type of the intersection result",
@@ -638,7 +638,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                         // that a concurrent
                         // compute again the intersection
                         intersection.setStatus(Status.COMPUTING);
-                        Request.updateIntersectionById(host, id, intersection);
+                        Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
 
                         try
                         {
@@ -657,7 +657,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                                 getName(srcLayer), getName(trgLayer),
                                 srcCode, trgCode, itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
-                            Request.updateIntersectionById(host, id, intersection);
+                            Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                             LOGGER.info("Store operation successfully computed");
                         }
                         catch (Exception e)
@@ -670,7 +670,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                                 srcLayer + "," + trgLayer + "," + srcCode +
                                 "," + trgCode, e);
                             intersection.setStatus(Status.TOCOMPUTE);
-                            Request.updateIntersectionById(host, id, intersection);
+                            Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                         }
                         finally
                         {
@@ -686,9 +686,9 @@ public class IntersectionAction extends BaseAction<EventObject>
                             trgLayer +
                             " because the intersection cannot be computed");
                         LOGGER.error("Intersections will be deleted");
-                        // Request.deleteIntersectionById(host, id);
+                        // Request.deleteIntersectionById(host, id,getIeServiceUsername(),getIeServicePassword());
                         intersection.setStatus(Status.TODELETE);
-                        Request.updateIntersectionById(host, id, intersection);
+                        Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                         try
                         {
                             dataStoreOracle.deleteAll(getName(srcLayer),
@@ -716,7 +716,7 @@ public class IntersectionAction extends BaseAction<EventObject>
         }
     }
 
-    /**
+	/**
      *
      * @param host
      * @return
@@ -724,7 +724,7 @@ public class IntersectionAction extends BaseAction<EventObject>
      */
     public List<Intersection> getIntersection(String host) throws MalformedURLException
     {
-        return Request.getAllIntersections(host);
+        return Request.getAllIntersections(host, getIeServiceUsername(), getIeServicePassword());
     }
 
     /**
@@ -739,7 +739,7 @@ public class IntersectionAction extends BaseAction<EventObject>
         try
         {
             LOGGER.info("Reading config information");
-            config = Request.existConfig(host);
+            config = Request.existConfig(host, getIeServiceUsername(), getIeServicePassword());
         }
         catch (MalformedURLException e)
         {
@@ -779,6 +779,8 @@ public class IntersectionAction extends BaseAction<EventObject>
         LOGGER.info("*** Injected Setting *****");
         LOGGER.info("Persistence host " + host);
         LOGGER.info("Items Per Page " + itemsPerPage);
+        LOGGER.info("ieServiceUsername: " + this.ieServiceUsername);
+        LOGGER.info("ieServicePassword: " + this.ieServicePassword);
         LOGGER.info("**************************");
 
         // return
@@ -867,4 +869,35 @@ public class IntersectionAction extends BaseAction<EventObject>
 
         return ret;
     }
+    
+
+    public void setGeoserver(Geoserver geoserver)
+    {
+        this.geoserver = geoserver;
+    }
+
+    public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getIeServiceUsername() {
+		return ieServiceUsername;
+	}
+
+	public void setIeServiceUsername(String ieServiceUsername) {
+		this.ieServiceUsername = ieServiceUsername;
+	}
+
+	public String getIeServicePassword() {
+		return ieServicePassword;
+	}
+
+	public void setIeServicePassword(String ieServicePassword) {
+		this.ieServicePassword = ieServicePassword;
+	}
+
 }

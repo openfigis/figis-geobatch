@@ -24,7 +24,7 @@ public interface IEConfigDAO
     * @return
     * @throws MalformedURLException
     */
-    public boolean dbIsEmpty(String host) throws MalformedURLException;
+    public boolean dbIsEmpty(String host, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
 
     /*********
      * SET THE CONFIG IF IT NOT EXIST OR UPDATE IT IF THE XMLConfig IS MORE RECENT OF THE CURRENT STATUS
@@ -33,7 +33,7 @@ public interface IEConfigDAO
      * @return a Config object representing the current status of the configuration
      * @throws MalformedURLException
      */
-    public Config saveOrUpdateConfig(String host, Config ieConfig) throws MalformedURLException;
+    public Config saveOrUpdateConfig(String host, Config ieConfig, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
 
     /**
      *
@@ -41,7 +41,7 @@ public interface IEConfigDAO
      * @return
      * @throws MalformedURLException
      */
-    public Config loadConfg(String host) throws MalformedURLException;
+    public Config loadConfg(String host, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
 
     /**
      *
@@ -49,7 +49,7 @@ public interface IEConfigDAO
      * @param intersections
      * @param tocompute
      */
-    public void setStatus(String host, List<Intersection> intersections, Status status);
+    public void setStatus(String host, List<Intersection> intersections, Status status, String ieServiceUsername, String ieServicePassword);
 
     /**
      *
@@ -59,7 +59,7 @@ public interface IEConfigDAO
      * @throws MalformedURLException
      */
     public Intersection searchEquivalent(String host,
-        Intersection xmlIntersection) throws MalformedURLException;
+        Intersection xmlIntersection, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
 
     /**
      *
@@ -69,5 +69,5 @@ public interface IEConfigDAO
      * @return
      */
     public Intersection searchEquivalent(String host,
-        Intersection xmlIntersection, List<Intersection> intersections);
+        Intersection xmlIntersection, List<Intersection> intersections, String ieServiceUsername, String ieServicePassword);
 }
