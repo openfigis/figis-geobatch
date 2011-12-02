@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ======================================================================= 
-	Maven Project Configuration File GeoSolutions GeoBatch Project http://geobatch.codehaus.org 
-	Version: 0.1 pom.xml 63 2011-05-02 18:55:57Z ccancellieri $ ======================================================================= -->
+	<!--
+		=======================================================================
+		Maven Project Configuration File GeoSolutions GeoBatch Project
+		http://geobatch.codehaus.org Version: 0.1 pom.xml 63 2011-05-02
+		18:55:57Z ccancellieri $
+		=======================================================================
+	-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -51,13 +55,27 @@
 	<!-- =========================================================== -->
 
 	<dependencies>
-		<!-- ============================== -->
-		<!-- log4j -->
-		<!-- ============================== -->
+		<!--  log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<scope>runtime</scope>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.5.6</version>
 		</dependency>
 
 		<!-- ============================== -->
@@ -67,14 +85,14 @@
 			<groupId>it.geosolutions.geobatch</groupId>
 			<artifactId>gb-gui</artifactId>
 		</dependency>
-		 <dependency>
-			<groupId>it.geosolutions.geobatch.figis</groupId> 
-			<artifactId>gb-action-figis-intersection</artifactId> 
-		 </dependency>
-		 <dependency>
-			<groupId>it.geosolutions.geobatch.figis</groupId> 
-			<artifactId>gb-action-figis-setting</artifactId> 
-		 </dependency>
+		<dependency>
+			<groupId>it.geosolutions.geobatch.figis</groupId>
+			<artifactId>gb-action-figis-intersection</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>it.geosolutions.geobatch.figis</groupId>
+			<artifactId>gb-action-figis-setting</artifactId>
+		</dependency>
 
 		<!-- ============================== -->
 		<!-- Test: JETTY -->
@@ -156,7 +174,7 @@
 				</dependency>
 			</dependencies>
 		</profile>
-	
+
 		<profile>
 			<id>setting</id>
 			<activation>
@@ -206,9 +224,11 @@
 		</profile>
 
 
-		<!-- I wanted to select all action profiles by selecting the "all" profile, 
-			via an internal property definition, but it seems not to work as expected... 
-			You'll need to explicitly set the -Dall env var. -->
+		<!--
+			I wanted to select all action profiles by selecting the "all"
+			profile, via an internal property definition, but it seems not to
+			work as expected... You'll need to explicitly set the -Dall env var.
+		-->
 		<profile>
 			<id>all</id>
 			<properties>
@@ -300,15 +320,19 @@
 		</profile>
 
 
-		<!-- ======================================================================== 
-			ACTIONS ======================================================================== 
-			We need sample flows to be packed into the test jars of every action (was: 
-			flowmanager). maven-dependency-plugin will extract the sample flows and put 
-			them in the WEB-INF/data directory. If you need to specify all the actions, 
-			please define the all_actions env var. Before using maven-dependency-plugin, 
-			the overlay mechanism (http://maven.apache.org/plugins/maven-war-plugin/overlays.html) 
-			was checked to accomplish this very task, but when more actions were specified, 
-			only one was choosen to extract the sample data from. -->
+		<!--
+			========================================================================
+			ACTIONS
+			========================================================================
+			We need sample flows to be packed into the test jars of every action
+			(was: flowmanager). maven-dependency-plugin will extract the sample
+			flows and put them in the WEB-INF/data directory. If you need to
+			specify all the actions, please define the all_actions env var.
+			Before using maven-dependency-plugin, the overlay mechanism
+			(http://maven.apache.org/plugins/maven-war-plugin/overlays.html) was
+			checked to accomplish this very task, but when more actions were
+			specified, only one was choosen to extract the sample data from.
+		-->
 
 		<profile>
 			<id>shp2pg</id>
@@ -513,7 +537,9 @@
 			</build>
 		</profile>
 
-		<!-- GeoTIFF ======================================================== -->
+		<!--
+			GeoTIFF ========================================================
+		-->
 		<profile>
 			<id>geotiff</id>
 			<activation>
@@ -564,7 +590,9 @@
 			</build>
 		</profile>
 
-		<!-- ASCII GRIDS ==================================================== -->
+		<!--
+			ASCII GRIDS ====================================================
+		-->
 		<profile>
 			<id>ascii</id>
 			<activation>
@@ -615,7 +643,9 @@
 			</build>
 		</profile>
 
-		<!-- ShapeFile ====================================================== -->
+		<!--
+			ShapeFile ======================================================
+		-->
 		<profile>
 			<id>shapefile</id>
 			<activation>
@@ -666,7 +696,9 @@
 			</build>
 		</profile>
 
-		<!-- Task Executor ================================================== -->
+		<!--
+			Task Executor ==================================================
+		-->
 		<profile>
 			<id>task-executor</id>
 			<activation>
@@ -717,7 +749,10 @@
 			</build>
 		</profile>
 
-		<!-- action-octave-fileinfileout ================================================== -->
+		<!--
+			action-octave-fileinfileout
+			==================================================
+		-->
 
 		<profile>
 			<id>freemarker-filein-fileout</id>
@@ -777,7 +812,9 @@
 			</build>
 		</profile>
 
-		<!-- GWC ============================================================ -->
+		<!--
+			GWC ============================================================
+		-->
 		<profile>
 			<id>geowebcache</id>
 			<activation>
@@ -828,7 +865,9 @@
 			</build>
 		</profile>
 
-		<!-- FTP ============================================================ -->
+		<!--
+			FTP ============================================================
+		-->
 		<profile>
 			<id>ftp</id>
 			<activation>
@@ -879,7 +918,9 @@
 			</build>
 		</profile>
 
-		<!-- SCRIPTING ====================================================== -->
+		<!--
+			SCRIPTING ======================================================
+		-->
 		<profile>
 			<id>scripting</id>
 			<activation>
@@ -930,7 +971,9 @@
 			</build>
 		</profile>
 
-		<!-- SPLITTING ====================================================== -->
+		<!--
+			SPLITTING ======================================================
+		-->
 		<profile>
 			<id>splitting</id>
 			<activation>
@@ -981,7 +1024,9 @@
 			</build>
 		</profile>
 
-		<!-- ImageMosaic ==================================================== -->
+		<!--
+			ImageMosaic ====================================================
+		-->
 		<profile>
 			<id>imagemosaic</id>
 			<activation>

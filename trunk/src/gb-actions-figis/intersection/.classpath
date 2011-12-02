@@ -136,6 +136,7 @@
   <classpathentry kind="var" path="M2_REPO/org/hibernate/hibernate-validator/3.0.0.ga/hibernate-validator-3.0.0.ga.jar"/>
   <classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.8.0.10/hsqldb-1.8.0.10.jar"/>
   <classpathentry kind="src" path="/ie-model"/>
+  <classpathentry kind="src" path="/ie-requester"/>
   <classpathentry kind="var" path="M2_REPO/jboss/javassist/3.3.ga/javassist-3.3.ga.jar"/>
   <classpathentry kind="var" path="M2_REPO/jboss/jboss-common-core/2.0.4.GA/jboss-common-core-2.0.4.GA.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/jcl-over-slf4j/1.5.11/jcl-over-slf4j-1.5.11.jar" sourcepath="M2_REPO/org/slf4j/jcl-over-slf4j/1.5.11/jcl-over-slf4j-1.5.11-sources.jar"/>
@@ -172,7 +173,6 @@
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/com/mockrunner/mockrunner/0.3.1/mockrunner-0.3.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/figis/model/2.0-SNAPSHOT/model-2.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.fes/8-SNAPSHOT/net.opengis.fes-8-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.ows/8-SNAPSHOT/net.opengis.ows-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/ogc/net.opengis.ows/8-SNAPSHOT/net.opengis.ows-8-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/geotools/ogc/net.opengis.wfs/8-SNAPSHOT/net.opengis.wfs-8-SNAPSHOT.jar" sourcepath="M2_REPO/org/geotools/ogc/net.opengis.wfs/8-SNAPSHOT/net.opengis.wfs-8-SNAPSHOT-sources.jar"/>
@@ -186,10 +186,9 @@
       <attribute value="jar:file:/C:/Users/Alessio/.m2/repository/org/quartz-scheduler/quartz/2.0.1/quartz-2.0.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/it/geosolutions/figis/requester/2.0-SNAPSHOT/requester-2.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.5.11/slf4j-log4j12-1.5.11.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.5.11/slf4j-log4j12-1.5.11-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-simple/1.5.2/slf4j-simple-1.5.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-simple/1.5.6/slf4j-simple-1.5.6.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.0.3.RELEASE/spring-aop-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-aop/3.0.3.RELEASE/spring-aop-3.0.3.RELEASE-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-asm/3.0.3.RELEASE/spring-asm-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-asm/3.0.3.RELEASE/spring-asm-3.0.3.RELEASE-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/3.0.3.RELEASE/spring-beans-3.0.3.RELEASE.jar" sourcepath="M2_REPO/org/springframework/spring-beans/3.0.3.RELEASE/spring-beans-3.0.3.RELEASE-sources.jar"/>
