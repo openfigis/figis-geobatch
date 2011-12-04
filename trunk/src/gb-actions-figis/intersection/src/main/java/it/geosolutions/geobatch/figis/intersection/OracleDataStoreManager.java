@@ -404,6 +404,8 @@ public class OracleDataStoreManager
         String trgCode, int itemsPerPage) throws IOException
     {
 
+        boolean res = false;
+
         try
         {
             initOracleDataStore();
@@ -413,13 +415,13 @@ public class OracleDataStoreManager
                 actionTemp(orclDataStore, orclTransaction, collection, srcLayer, trgLayer, srcCode, trgCode,
                     itemsPerPage);
                 orclTransaction.commit();
-                action(orclDataStore, orclTransaction, srcLayer, trgLayer, srcCode, trgCode);
-                orclTransaction.commit();
+                res = true;
             }
             else
             {
                 LOGGER.error("The collection cannot be null");
                 orclTransaction.rollback();
+                res = false;
                 throw new IOException("The collection cannot be null ");
             }
         }
@@ -434,7 +436,32 @@ public class OracleDataStoreManager
             close();
         }
 
-
+        try
+        {
+            initOracleDataStore();
+            if (res && (orclDataStore != null))
+            {
+                action(orclDataStore, orclTransaction, srcLayer, trgLayer, srcCode, trgCode);
+                orclTransaction.commit();
+            }
+            else
+            {
+                LOGGER.error("The collection cannot be null");
+                orclTransaction.rollback();
+                res = false;
+                throw new IOException("The collection cannot be null ");
+            }
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Exception during ORACLE saving. Rolling back ", e);
+            orclTransaction.rollback();
+            throw new IOException("Exception during ORACLE saving. Rolling back ", e);
+        }
+        finally
+        {
+            close();
+        }
     }
 
     /***
@@ -444,9 +471,12 @@ public class OracleDataStoreManager
     {
         try
         {
-            orclTransaction.close();
+            if (orclTransaction != null)
+            {
+                orclTransaction.close();
+            }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             LOGGER.error("Exception closing the transaction", e);
         }

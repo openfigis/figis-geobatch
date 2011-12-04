@@ -1,0 +1,159 @@
+=========================
+Service Mix JBI component
+=========================
+
+
+The ServiceMix component has the following services:
+
+ #. Get combinations
+ #. Add combination
+ #. Delete combination
+ #. Set combination (enable/disable)
+ #. Get computations
+ #. Rebuild all
+ #. CSV2RDF
+
+In this chapter, we will describe each of the services, how they are called and
+what's the output format.
+
+JSONP Callback
+==============
+
+All the services accept and optional `jsoncallback` parameter for JSONP.
+
+
+Get Combinations
+================
+
+Returns the list of combinations (source, target, mask, source_code,
+target_code), each combination is assigned an id which is used for the
+enable/disable operations.
+
+.. code-block:: python
+
+    http://SERVICEMIX_URL/iedata/?service=getCombinations
+
+
+.. code-block:: javascript
+
+    ({'status':'DONE',  'service':'getCombinations',
+      'combinations':[{"id":101,"source":"fifao:FAO_DIV",
+                       "status":"ENABLED","target":"fifao:NJA",
+                       "mask":"fifao:COUNTRY_BOUNDARY"}]})
+
+Add Combination
+===============
+
+Adds a new combination, receives the following (non-optional) parameters:
+
+ * source
+ * target
+ * mask
+ * source_code
+ * target_code
+
+
+.. code-block:: python
+
+    http://SERVICEMIX_URL/iedata/?service=addCombination&source=fifao%3AFAO_DIV&target=fifao%3ANJA&mask=fifao%3ACOUNTRY_BOUNDARY&source_code=&target_code=
+
+
+.. code-block:: javascript
+
+    ({'status':'DONE'})
+
+Delete Combination
+==================
+
+Deletes a combination given an id.
+
+
+.. code-block:: python
+
+    http://SERVICEMIX_URL/iedata/?service=removeCombination&id=61
+
+
+.. code-block:: javascript
+
+    ({'status':'DONE'})
+
+
+Enable/Disable Combination
+==========================
+
+Enables or disables a computation given the id.
+
+.. code-block:: python
+
+    http://SERVICEMIX_URL/iedata/?service=setCombination&id=61&enabled=true
+
+.. code-block:: javascript
+
+    ({'status':'DONE'})
+
+
+Get all Computations
+====================
+
+.. code-block:: python
+
+    http://SERVICEMIX_URL/iedata/?service=getComputations
+
+
+.. code-block:: javascript
+
+    ({'status':'DONE',  'service':'getComputations',
+      'computations':[
+           {"id":3,"duration":0,"status":"COMPLETED",
+            "finished":"2009-11-13T15:26:43.657Z",
+            "started":"2009-11-13T15:24:05.345Z"},
+           {"id":6,"duration":0,"status":"COMPLETED",
+            "finished":"2009-11-13T15:52:11.027Z",
+            "started":"2009-11-13T15:29:05.331Z"},
+           {"id":22,"duration":0,"status":"COMPLETED",
+            "finished":"2009-11-13T17:04:54.304Z",
+            "started":"2009-11-13T16:44:21.182Z"},
+           {"id":43,"duration":0,"status":"COMPLETED",
+            "finished":"2009-11-17T16:54:27.160Z",
+            "started":"2009-11-17T16:52:04.169Z"},
+           {"id":2,"duration":0,"status":"FAILED",
+            "finished":"2009-11-13T15:11:03.720Z",
+            "started":"2009-11-13T15:11:03.486Z"}]})
+
+Rebuild All
+===========
+
+Performs a batch run of all the computations
+
+
+.. code-block:: python
+
+    http://SERVICEMIX_URL/iedata/?service=rebuildAll
+
+RDF (New in version 0.5)
+========================
+
+The RDF service, takes a full WFS service url with CSV output and converts it 
+to RDF. The ierdf service takes just one parameter, an encoded URL (Like the
+output of the Javascript ``encode`` function).
+
+.. code-block:: bash
+
+    http://SERVICEMIX_URL/ierdf/?url=http://geoserver:8080/geoserver%2Fwfs%3Fservice%3DWFS%26request%3DGetFeature%26typename%3Dfifao%3Astatistical%26outputFormat%3DCSV%26CQL_FILTER%3DSRC_NAME%2520LIKE%2520%27fifao:FAO_MAJOR%27%2BAND%2BTRG_NAME%2520LIKE%2520%27fifao:eez%27
+
+
+Preserve Target (New in version 0.5)
+====================================
+
+An option to preserve the target geometries instead of outputting the
+intersection between the source and target is available when saving the layer:
+
+.. figure:: images/preserve_target_checkbox.png
+
+Whether a combination has preserve target enabled (or not) can be seen in the
+grid view:
+
+.. figure:: images/preserve_target_grid.png
+
+More information about the preserve target functionality can be found in the
+core module section of this manual.

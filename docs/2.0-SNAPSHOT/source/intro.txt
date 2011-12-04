@@ -1,0 +1,96 @@
+================================
+Intersection Engine Introduction
+================================
+
+Use Cases UML
+=============
+
+Add Combination
+---------------
+.. figure:: images/query1.png
+
+* Admin logs in with name and password
+* Admin select water related source layer
+* Admin selects water related target layer
+* Admin adds the combination of source and target layer to the list of combinations
+
+.. note::
+
+    The list of layers contains all actual layers published on Geoserver 
+    (this implies that the intersectionserver always asks Geoserver for the actual list of layers). 
+    It is up to the Admin to select only a water related layer. 
+    The fact that this can lead to faulty combination(s) is considered as not to be a problem.
+
+Delete Combination
+------------------
+* Admin logs in with name and password
+* Admin selects combination from the list of combinations
+* Admin deletes combination
+
+Trigger Batch
+-------------
+
+Admin
+~~~~~
+* Admin logs in with name and password
+* Admin starts batch manually
+
+Scheduler
+~~~~~~~~~
+* Scheduler starts batch automatically
+
+.. figure:: images/trigger_batch.png
+
+* The webapplication has a fixed schedular and every week at Sunday 01:00AM the batch is started. 
+* The batch can also be started via the UI of that webapplication via a button. 
+* The button is reachable after having done a login into the webapplication. 
+* The login is a hardcoded login account.
+* The definition of the scheduler is not adjustable via the UI, it is defined in a properties or 
+  xml file as being part of the application software. 
+* The server needs to be restarted before in order to effectuate the new scheduler definition.
+
+Download Intersection
+---------------------
+.. figure:: images/query3.png
+
+* Neon user selects ouputmode (xml or csv)
+* Neon user selects combination
+* Neon user downloads combination
+
+.. note::
+
+    The downloaded xml and csv do not contain geometry
+
+Derived Use Cases
+-----------------
+
+The derived usecases will not be implemented in this project. The above usecases need to be 
+implemented before the derived usecases can be performed. The derived usecases are mentioned 
+here to have a better understanding of the context of the above usecases.
+
+Harmonization among area classifications as a basis to achieve application goals such as:
+
+* Reallocation of statistical (catch) data
+* Reallocation of species probability distributions
+* Reference marine resource distributions
+* Search and exploratory functions across integrated datab
+
+Class Diagram Context
+---------------------
+.. figure:: images/diagram.jpg
+
+Class Diagram Intersection
+--------------------------
+.. figure:: images/class_intersection.png
+
+* Resulting coastline intersection percentage and polygons are cut.
+* Binary intersection means an intersection between 2 layers.
+* An intersection is the based on 1 source and 1 target polygon.
+
+Artefact Diagram
+----------------
+.. figure:: images/artefact.png
+
+.. note::
+
+    All artefacts in the diagram are artefacts to be produced by GeoSolutions, except the GeoServer artefact.

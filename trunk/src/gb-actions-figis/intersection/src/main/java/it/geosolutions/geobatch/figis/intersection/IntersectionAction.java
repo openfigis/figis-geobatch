@@ -595,6 +595,8 @@ public class IntersectionAction extends BaseAction<EventObject>
 
                 SimpleFeatureCollection resultInt = null;
 
+                resultInt = intersect(intersection, tmpdir);
+
                 String geometryType = "unknown";
                 try
                 {
