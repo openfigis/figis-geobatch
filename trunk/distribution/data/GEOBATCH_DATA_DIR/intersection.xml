@@ -39,6 +39,8 @@
 		  	<persistencyHost>http://localhost:8181</persistencyHost>
 			<itemsPerPages>50</itemsPerPages>
 			<workingDirectory>intersection/</workingDirectory>
+			<ieServiceUsername>admin</ieServiceUsername>
+			<ieServicePassword>abramisbrama</ieServicePassword>
 			
 			<!-- 
 			<alias>

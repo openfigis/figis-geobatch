@@ -22,7 +22,6 @@
 package it.geosolutions.geobatch.figis.intersection;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
+import com.thoughtworks.xstream.InitializationException;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryComponentFilter;
@@ -42,12 +42,13 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
-import it.geosolutions.figis.Request;
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.persistence.dao.util.PwEncoder;
+import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
+import it.geosolutions.figis.requester.requester.dao.impl.IEConfigDAOImpl;
 import it.geosolutions.geobatch.figis.intersection.util.TmpDirManager;
 import it.geosolutions.geobatch.figis.intersection.util.ZipStreamReader;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
@@ -75,21 +76,7 @@ public class IntersectionAction extends BaseAction<EventObject>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(IntersectionAction.class);
     private static int itemsPerPage = 50;
-    private GeoServerRESTReader gsRestReader = null;
-    Random generator = new Random();
-    // private WFS_1_0_0_DataStore dataStore = null;
-    private Geoserver geoserver = null;
-    /**
-     * configuration
-     */
-    private final IntersectionConfiguration conf;
-    private String host = "http://localhost:9999";
-    private String tmpDirName = "figis";
-    /* Username ie-service */
-    private String ieServiceUsername = null;
-    /* Password ie-service */
-    private String ieServicePassword = null;
-    
+
     private static Geometry union(Geometry a, Geometry b)
     {
         return reduce(EnhancedPrecisionOp.union(a, b));
@@ -158,15 +145,49 @@ public class IntersectionAction extends BaseAction<EventObject>
         return geometry;
     }
 
-    
-    
-    public IntersectionAction(IntersectionConfiguration configuration)
+    private IEConfigDAO ieConfigDAO = new IEConfigDAOImpl();
+
+    private GeoServerRESTReader gsRestReader = null;
+    Random generator = new Random();
+    // private WFS_1_0_0_DataStore dataStore = null;
+    private Geoserver geoserver = null;
+
+    /**
+     * configuration
+     */
+    private final IntersectionConfiguration conf;
+    private String host = "http://localhost:9999";
+    private String tmpDirName = "figis";
+
+    /* Username ie-service */
+    private String ieServiceUsername = null;
+
+    /* Password ie-service */
+    private String ieServicePassword = null;
+
+
+    public IntersectionAction(IntersectionConfiguration configuration) throws MalformedURLException
     {
         super(configuration);
         conf = configuration;
         host = conf.getPersistencyHost();
+        itemsPerPage = conf.getItemsPerPages();
         ieServiceUsername = conf.getIeServiceUsername();
         ieServicePassword = conf.getIeServicePassword();
+
+        /*Config config = basicChecks(ieConfigDAO.loadConfg(host, ieServiceUsername, ieServicePassword));
+
+        if (config != null)
+        {
+            for (Intersection intersection : config.intersections)
+            {
+                if (intersection.getStatus().equals(Status.COMPUTING))
+                {
+                    intersection.setStatus(Status.FAILED);
+                    ieConfigDAO.updateIntersectionById(host, intersection.getId(), intersection, ieServiceUsername, ieServicePassword);
+                }
+            }
+        }*/
     }
 
 
@@ -280,7 +301,7 @@ public class IntersectionAction extends BaseAction<EventObject>
      * @return true in case no intersection is performed because any reason
      */
 
-    public SimpleFeatureCollection intersection(Intersection intersection,
+    public SimpleFeatureCollection intersect(Intersection intersection,
         String tmpDir)
     {
 
@@ -504,250 +525,140 @@ public class IntersectionAction extends BaseAction<EventObject>
      * @throws Exception
      */
     public synchronized boolean executeIntersectionStatements(String host,
-        Config config, boolean simulate, String tmpdir)
+        Config config, boolean simulate, String tmpdir) throws InitializationException
     {
         OracleDataStoreManager dataStoreOracle = null;
+        // check if this control works as expected
+        if (config.intersections == null)
+        {
+            LOGGER.error("The list of the intersections is null, cannot continue");
+
+            return false;
+        }
+        LOGGER.info("Updating intersections");
+
+        // init of the DB connectio to the ORACLE datastore
+        String dbHost = config.getGlobal().getDb().getHost();
+        String schema = config.getGlobal().getDb().getSchema();
+        String db = config.getGlobal().getDb().getDatabase();
+        String user = config.getGlobal().getDb().getUser();
+        String pwd = PwEncoder.decode(config.getGlobal().getDb().getPassword());
+        int port = Integer.parseInt(config.getGlobal().getDb().getPort());
+
         try
         {
-            List<Intersection> intersections = null;
+            dataStoreOracle = new OracleDataStoreManager(dbHost, port, db,
+                    schema, user, pwd);
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Problems creating the ORACLE datastore instance, check the parameters", e);
+            throw new InitializationException("Problems creating the ORACLE datastore instance, check the parameters",
+                e);
+        }
 
-            try
+        for (Intersection intersection : config.intersections)
+        {
+
+            Status status = intersection.getStatus();
+            String srcLayer = intersection.getSrcLayer();
+            String trgLayer = intersection.getTrgLayer();
+            String srcCode = intersection.getSrcCodeField();
+            String trgCode = intersection.getTrgCodeField();
+            long id = intersection.getId();
+
+            // in case the intersection has been scheduled to be deleted,
+            // delete the intersection from the list
+            // and its intersection from the DB
+            LOGGER.info(" Performing intersection command " + status);
+            LOGGER.info("COMMAND: " + intersection);
+            if (status == Status.TODELETE)
             {
-                Request.initIntersection();
-                intersections = Request.getAllIntersections(host, getIeServiceUsername(), getIeServicePassword());
-            }
-            catch (MalformedURLException e)
-            {
-                LOGGER.error("Problems querying the list of intersections", e);
-
-                // TODO Auto-generated catch block
-                return false;
-            }
-            // check if this control works as expected
-            if (intersections == null)
-            {
-                LOGGER.error("The list of the intersections is null, cannot continue");
-
-                return false;
-            }
-            LOGGER.info("Updating intersections");
-
-            // init of the DB connectio to the ORACLE datastore
-            String dbHost = config.getGlobal().getDb().getHost();
-            String schema = config.getGlobal().getDb().getSchema();
-            String db = config.getGlobal().getDb().getDatabase();
-            String user = config.getGlobal().getDb().getUser();
-            String pwd = PwEncoder.decode(config.getGlobal().getDb().getPassword());
-            int port = Integer.parseInt(config.getGlobal().getDb().getPort());
-
-            try
-            {
-                dataStoreOracle = new OracleDataStoreManager(dbHost, port, db,
-                        schema, user, pwd);
-            }
-            catch (Exception e1)
-            {
-                LOGGER.error(
-                    "Problems creating the ORACLE datastore instance, check the parameters",
-                    e1);
-
-                return false;
-            }
-
-            for (Intersection intersection : intersections)
-            {
-
-                Status status = intersection.getStatus();
-                String srcLayer = intersection.getSrcLayer();
-                String trgLayer = intersection.getTrgLayer();
-                String srcCode = intersection.getSrcCodeField();
-                String trgCode = intersection.getTrgCodeField();
-                long id = intersection.getId();
-
-                // in case the intersection has been scheduled to be deleted,
-                // delete the intersection from the list
-                // and its intersection from the DB
-                LOGGER.info(" Performing intersection command " + status);
-                LOGGER.info("COMMAND: " + intersection);
-                if (status == Status.TODELETE)
+                try
                 {
-                    try
-                    {
-                        dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer), srcCode, trgCode);
-                        Request.deleteIntersectionById(host, id, getIeServiceUsername(), getIeServicePassword());
-                    }
-                    catch (Exception e)
-                    {
-                        LOGGER.error(
-                            "Problem deleting intersection from the database identified by " +
-                            srcLayer + "," + trgLayer, e);
-                    }
-                    // still to implement
+                    dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer), srcCode, trgCode);
+                    ieConfigDAO.deleteIntersectionById(host, id, getIeServiceUsername(), getIeServicePassword());
                 }
-                if (status == Status.TOCOMPUTE) // if the intersection should be
-                                                // computed
+                catch (Exception e)
                 {
-                    intersection.setStatus(Status.COMPUTING);
-                    Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                    LOGGER.error(
+                        "Problem deleting intersection from the database identified by " +
+                        srcLayer + "," + trgLayer, e);
+                }
+                // still to implement
+            }
+            if (status == Status.TOCOMPUTE) // if the intersection should be
+                                            // computed
+            {
+                intersection.setStatus(Status.COMPUTING);
+                ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
 
-                    SimpleFeatureCollection resultInt = null;
-                    resultInt = intersection(intersection, tmpdir); // compute
-                                                                    // the
-                                                                    // intersection
-                                                                    // between
-                                                                    // the
-                                                                    // layers
+                SimpleFeatureCollection resultInt = null;
 
-                    // SimpleFeatureIterator iterator = resultInt.features();
-                    // while (iterator.hasNext()) {
-                    // System.out.println("ID"+iterator.next().getID());
-                    // }
-                    String geometryType = "unknown";
-                    try
+                String geometryType = "unknown";
+                try
+                {
+                    if (resultInt != null)
                     {
-                        if (resultInt != null)
+                        geometryType = resultInt.getSchema().getGeometryDescriptor().getType().getName().getLocalPart();
+
+                        // the intersection can be updated on the db only if the
+                        // intersection generate a reuslt and it is Multipolygon
+                        // typed
+                        // else it must be deleted by both the db and by the
+                        // intersection list
+                        if (geometryType.equals("MultiPolygon"))
                         {
-                            geometryType =
-                                resultInt.getSchema().getGeometryDescriptor().getType().getName().getLocalPart();
+                            // set the intersection to Computing. This is to avoid
+                            // that a concurrent
+                            // compute again the intersection
+                            intersection.setStatus(Status.COMPUTING);
+                            ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+
+                            LOGGER.info("Trying to store intersection result in ORACLE " + schema + ":" + db + " on " + dbHost + ":" + port + "(" + user + ",*****) ");
+                            dataStoreOracle.saveAll(resultInt, getName(srcLayer), getName(trgLayer), srcCode, trgCode, itemsPerPage);
+                            intersection.setStatus(Status.COMPUTED);
+                            ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                            LOGGER.info("Store operation successfully computed");
                         }
                         else
                         {
-                            intersection.setStatus(Status.TOCOMPUTE);
-                            Request.updateIntersectionById(host, id, intersection,getIeServiceUsername(),getIeServicePassword());
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        intersection.setStatus(Status.TOCOMPUTE);
-                        Request.updateIntersectionById(host, id, intersection,getIeServiceUsername(),getIeServicePassword());
-
-                        LOGGER.error(
-                            "Cannot identify the geometry type of the intersection result",
-                            e);
-                    }
-
-                    // the intersection can be updated on the db only if the
-                    // intersection generate a reuslt and it is Multipolygon
-                    // typed
-                    // else it must be deleted by both the db and by the
-                    // intersection list
-                    if ((resultInt != null) &&
-                            geometryType.equals("MultiPolygon"))
-                    {
-                        // set the intersection to Computing. This is to avoid
-                        // that a concurrent
-                        // compute again the intersection
-                        intersection.setStatus(Status.COMPUTING);
-                        Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
-
-                        try
-                        {
-                            LOGGER.info("Trying to store intersection result in ORACLE " +
-                                schema +
-                                ":" +
-                                db +
-                                " on " +
-                                dbHost +
-                                ":" +
-                                port +
-                                "(" +
-                                user +
-                                ",*****) ");
-                            dataStoreOracle.perform(resultInt,
-                                getName(srcLayer), getName(trgLayer),
-                                srcCode, trgCode, itemsPerPage);
-                            intersection.setStatus(Status.COMPUTED);
-                            Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
-                            LOGGER.info("Store operation successfully computed");
-                        }
-                        catch (Exception e)
-                        {
-                            // some problems occurred when saving the
-                            // intersections in the db.
-                            // in this case we schedule to delete this
-                            // intersection and will be deleted at next action
-                            LOGGER.error("Problem performing Intersection on " +
-                                srcLayer + "," + trgLayer + "," + srcCode +
-                                "," + trgCode, e);
-                            intersection.setStatus(Status.TOCOMPUTE);
-                            Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
-                        }
-                        finally
-                        {
-                            LOGGER.info("updating intersection " +
-                                intersection);
+                            LOGGER.error("Skipping intersection between " + srcLayer + " and " + trgLayer + " because the intersection cannot be computed");
+                            LOGGER.error("Intersections will be deleted");
+                            // Request.deleteIntersectionById(host, id,getIeServiceUsername(),getIeServicePassword());
+                            intersection.setStatus(Status.FAILED);
+                            ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                         }
                     }
                     else
                     {
-                        LOGGER.error("Skipping intersection between " +
-                            srcLayer +
-                            " and " +
-                            trgLayer +
-                            " because the intersection cannot be computed");
-                        LOGGER.error("Intersections will be deleted");
-                        // Request.deleteIntersectionById(host, id,getIeServiceUsername(),getIeServicePassword());
-                        intersection.setStatus(Status.TODELETE);
-                        Request.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
-                        try
-                        {
-                            dataStoreOracle.deleteAll(getName(srcLayer),
-                                getName(trgLayer), srcCode, trgCode);
-                        }
-                        catch (IOException e)
-                        {
-                            LOGGER.error(
-                                "Some problems occured deleting intersection from the database identified by " +
-                                srcLayer + "," + trgLayer, e);
-                        }
+                        intersection.setStatus(Status.FAILED);
+                        ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                     }
                 }
-            }
-            LOGGER.info("Intersections updates: Successfull");
+                catch (Exception e)
+                {
+                    LOGGER.error("Problem performing Intersection on " + srcLayer + "," + trgLayer + "," + srcCode + "," + trgCode, e);
+                    intersection.setStatus(Status.FAILED);
+                    ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
 
-            return true;
-        }
-        finally
-        {
-            if (dataStoreOracle != null)
-            {
-                dataStoreOracle.close();
+                    LOGGER.error("Exception caught while computing intersections.", e);
+                    throw new RuntimeException("Exception caught while computing intersections.", e);
+                }
             }
         }
-    }
 
-	/**
-     *
-     * @param host
-     * @return
-     * @throws MalformedURLException
-     */
-    public List<Intersection> getIntersection(String host) throws MalformedURLException
-    {
-        return Request.getAllIntersections(host, getIeServiceUsername(), getIeServicePassword());
+        LOGGER.info("Intersections updated successfully. DONE!");
+
+        return true;
     }
 
     /**
      *
      * @return
      */
-    public Config basicChecks()
+    public Config basicChecks(Config config)
     {
-        Request.initConfig();
-
-        Config config;
-        try
-        {
-            LOGGER.info("Reading config information");
-            config = Request.existConfig(host, getIeServiceUsername(), getIeServicePassword());
-        }
-        catch (MalformedURLException e)
-        {
-            LOGGER.error("Exception when reading config information", e);
-
-            // TODO Auto-generated catch block
-            return null;
-        }
         // check if this control works as expected
         if (config == null)
         {
@@ -776,6 +687,9 @@ public class IntersectionAction extends BaseAction<EventObject>
     {
         host = conf.getPersistencyHost();
         itemsPerPage = conf.getItemsPerPages();
+        ieServiceUsername = conf.getIeServiceUsername();
+        ieServicePassword = conf.getIeServicePassword();
+
         LOGGER.info("*** Injected Setting *****");
         LOGGER.info("Persistence host " + host);
         LOGGER.info("Items Per Page " + itemsPerPage);
@@ -803,10 +717,9 @@ public class IntersectionAction extends BaseAction<EventObject>
 
                     // perform basic checks and return the current config in the
                     // DB
-                    LOGGER.info("Trying to connect to " + host +
-                        " and retrieve config data");
+                    LOGGER.info("Trying to connect to " + host + " and retrieve config data");
 
-                    Config config = basicChecks();
+                    Config config = basicChecks(ieConfigDAO.loadConfg(host, ieServiceUsername, ieServicePassword));
                     if (config != null)
                     {
                         LOGGER.info("Config data correctly read");
@@ -869,35 +782,41 @@ public class IntersectionAction extends BaseAction<EventObject>
 
         return ret;
     }
-    
+
 
     public void setGeoserver(Geoserver geoserver)
     {
         this.geoserver = geoserver;
     }
 
-    public String getHost() {
-		return host;
-	}
+    public String getHost()
+    {
+        return host;
+    }
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+    public void setHost(String host)
+    {
+        this.host = host;
+    }
 
-	public String getIeServiceUsername() {
-		return ieServiceUsername;
-	}
+    public String getIeServiceUsername()
+    {
+        return ieServiceUsername;
+    }
 
-	public void setIeServiceUsername(String ieServiceUsername) {
-		this.ieServiceUsername = ieServiceUsername;
-	}
+    public void setIeServiceUsername(String ieServiceUsername)
+    {
+        this.ieServiceUsername = ieServiceUsername;
+    }
 
-	public String getIeServicePassword() {
-		return ieServicePassword;
-	}
+    public String getIeServicePassword()
+    {
+        return ieServicePassword;
+    }
 
-	public void setIeServicePassword(String ieServicePassword) {
-		this.ieServicePassword = ieServicePassword;
-	}
+    public void setIeServicePassword(String ieServicePassword)
+    {
+        this.ieServicePassword = ieServicePassword;
+    }
 
 }

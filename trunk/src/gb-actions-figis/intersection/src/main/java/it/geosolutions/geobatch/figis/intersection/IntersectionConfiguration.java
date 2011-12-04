@@ -34,30 +34,37 @@ import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
 public class IntersectionConfiguration extends ActionConfiguration implements Configuration
 {
     String persistencyHost = null;
+
     int itemsPerPages = -1;
+
     String ieServiceUsername = null;
-    
-    public String getIeServiceUsername() {
-		return ieServiceUsername;
-	}
 
-	public void setIeServiceUsername(String ieServiceUsername) {
-		this.ieServiceUsername = ieServiceUsername;
-	}
+    String ieServicePassword = null;
 
-	public String getIeServicePassword() {
-		return ieServicePassword;
-	}
-
-	public void setIeServicePassword(String ieServicePassword) {
-		this.ieServicePassword = ieServicePassword;
-	}
-
-	String ieServicePassword = null;
     public IntersectionConfiguration(String id, String name, String description)
     {
         super(id, name, description);
         // TODO INITIALIZE MEMBERS
+    }
+
+    public String getIeServiceUsername()
+    {
+        return ieServiceUsername;
+    }
+
+    public void setIeServiceUsername(String ieServiceUsername)
+    {
+        this.ieServiceUsername = ieServiceUsername;
+    }
+
+    public String getIeServicePassword()
+    {
+        return ieServicePassword;
+    }
+
+    public void setIeServicePassword(String ieServicePassword)
+    {
+        this.ieServicePassword = ieServicePassword;
     }
 
     // TODO ADD YOUR MEMBERS
@@ -71,7 +78,6 @@ public class IntersectionConfiguration extends ActionConfiguration implements Co
     {
         this.persistencyHost = persistencyHost;
     }
-
 
     public int getItemsPerPages()
     {

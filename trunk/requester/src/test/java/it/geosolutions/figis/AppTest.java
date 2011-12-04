@@ -7,6 +7,7 @@ import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Global;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
+import it.geosolutions.figis.requester.Request;
 
 import junit.framework.TestCase;
 

@@ -49,8 +49,9 @@
 		  	<persistencyHost>http://localhost:8181</persistencyHost>
 			<defaultMaskLayer>fifao:UN_CONTINENT</defaultMaskLayer>
 			<workingDirectory>setting/</workingDirectory>
-			<ieServiceUsername>ADMIN</ieServiceUsername>
-			<ieServicePassword>ADMIN</ieServicePassword>
+			<ieServiceUsername>admin</ieServiceUsername>
+			<ieServicePassword>abramisbrama</ieServicePassword>
+
 			<!-- 
 			<alias>
 				<entry>

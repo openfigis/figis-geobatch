@@ -58,30 +58,30 @@ public interface FigisService
 
     @GET
     @Path("/config/{id}")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     public Config getConfig(@PathParam("id") Long id) throws ResourceNotFoundFault;
 
 
     @GET
     @Path("/config/")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     public List<Config> getConfigs();
 
     @POST
     @Path("/config/")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     long insertConfig(@WebParam(name = "Config") Config config);
 
 
     @PUT
     @Path("/config/{id}")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     long updateConfig(@PathParam("id") long id,
         @WebParam(name = "Config") Config config);
 
     @DELETE
     @Path("/config/{id}")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     boolean deleteConfig(@PathParam("id") long id) throws ResourceNotFoundFault;
 
     @GET
@@ -114,23 +114,23 @@ public interface FigisService
 
     @POST
     @Path("/intersection/")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     public long insertIntersection(@WebParam(name = "Intersection") Intersection intersection);
 
     @PUT
     @Path("/intersection/{id}")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     public long updateIntersectionByID(@PathParam("id") long id,
         @WebParam(name = "Intersection") Intersection intersection) throws ResourceNotFoundFault;
 
     @DELETE
     @Path("/intersection/{id}")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     boolean deleteIntersection(@PathParam("id") long id) throws ResourceNotFoundFault;
 
     @DELETE
     @Path("/intersection/")
-    @RolesAllowed({ "ADMIN", "USER", "GUEST" })
+    @RolesAllowed({ "ADMIN" })
     boolean deleteIntersections() throws BadRequestExceptionFault;
 
 }

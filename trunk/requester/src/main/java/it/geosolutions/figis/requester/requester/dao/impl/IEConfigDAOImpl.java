@@ -1,20 +1,19 @@
 /**
  *
  */
-package it.geosolutions.geobatch.figis.setting.dao.impl;
+package it.geosolutions.figis.requester.requester.dao.impl;
 
 import java.net.MalformedURLException;
 import java.util.List;
 
-import it.geosolutions.figis.Request;
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
-import it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO;
-import it.geosolutions.geobatch.figis.setting.utils.IEConfigUtils;
+import it.geosolutions.figis.requester.Request;
+import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
+import it.geosolutions.figis.requester.requester.util.IEConfigUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -24,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class IEConfigDAOImpl implements IEConfigDAO
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IEConfigDAO.class);
+    private static final Logger LOGGER = Logger.getLogger(IEConfigDAO.class);
 
     /*
      * (non-Javadoc)
@@ -33,7 +32,8 @@ public class IEConfigDAOImpl implements IEConfigDAO
      * it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#dbIsEmpty(java
      * .lang.String)
      */
-    public boolean dbIsEmpty(String host, String ieServiceUsername, String ieServicePassword) throws MalformedURLException
+    public boolean dbIsEmpty(String host, String ieServiceUsername, String ieServicePassword)
+        throws MalformedURLException
     {
         Request.initIntersection();
 
@@ -61,19 +61,20 @@ public class IEConfigDAOImpl implements IEConfigDAO
      *
      * @see
      * it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#saveOrUpdateConfig
-     * (java.lang.String, it.geosolutions.figis.model.Config)
+     * (java.lang.String, it.geosolutions.figis.requester.model.Config)
      */
-    public Config saveOrUpdateConfig(String host, Config ieConfig, String ieServiceUsername, String ieServicePassword) throws MalformedURLException
+    public Config saveOrUpdateConfig(String host, Config ieConfig, String ieServiceUsername, String ieServicePassword)
+        throws MalformedURLException
     {
         Request.initConfig();
 
         Config config = null;
         config = Request.existConfig(host, ieServiceUsername, ieServicePassword); // check if a configuration
-                                            // currently exist in the database
+        // currently exist in the database
         if (config == null) // check if the DB config is empty
         {
             long id = Request.insertConfig(host, ieConfig, ieServiceUsername, ieServicePassword); // insert the new
-                                                            // configuration
+            // configuration
             for (Intersection intersection : ieConfig.intersections)
             {
                 Request.insertIntersection(host, intersection, ieServiceUsername, ieServicePassword);
@@ -117,7 +118,8 @@ public class IEConfigDAOImpl implements IEConfigDAO
     /* (non-Javadoc)
      * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#loadConfg(java.lang.String)
      */
-    public Config loadConfg(String host, String ieServiceUsername, String ieServicePassword) throws MalformedURLException
+    public Config loadConfg(String host, String ieServiceUsername, String ieServicePassword)
+        throws MalformedURLException
     {
         Request.initConfig();
         Request.initIntersection();
@@ -126,15 +128,16 @@ public class IEConfigDAOImpl implements IEConfigDAO
 
         config = Request.existConfig(host, ieServiceUsername, ieServicePassword);
 
-        config.intersections = Request.getAllIntersections(host, ieServiceUsername,  ieServicePassword);
+        config.intersections = Request.getAllIntersections(host, ieServiceUsername, ieServicePassword);
 
         return config;
     }
 
     /* (non-Javadoc)
-     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#setStatus(java.lang.String, java.util.List, it.geosolutions.figis.model.Intersection.Status)
+     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#setStatus(java.lang.String, java.util.List, it.geosolutions.figis.requester.model.Intersection.Status)
      */
-    public void setStatus(String host, List<Intersection> intersections, Status status, String ieServiceUsername, String ieServicePassword)
+    public void setStatus(String host, List<Intersection> intersections, Status status, String ieServiceUsername,
+        String ieServicePassword)
     {
         Request.initIntersection();
 
@@ -146,7 +149,7 @@ public class IEConfigDAOImpl implements IEConfigDAO
     }
 
     /* (non-Javadoc)
-     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#searchEquivalent(java.lang.String, it.geosolutions.figis.model.Intersection)
+     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#searchEquivalent(java.lang.String, it.geosolutions.figis.requester.model.Intersection)
      */
     public Intersection searchEquivalent(String host,
         Intersection xmlIntersection, String ieServiceUsername, String ieServicePassword) throws MalformedURLException
@@ -159,10 +162,11 @@ public class IEConfigDAOImpl implements IEConfigDAO
     }
 
     /* (non-Javadoc)
-     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#searchEquivalent(java.lang.String, it.geosolutions.figis.model.Intersection, java.util.List)
+     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#searchEquivalent(java.lang.String, it.geosolutions.figis.requester.model.Intersection, java.util.List)
      */
     public Intersection searchEquivalent(String host,
-        Intersection xmlIntersection, List<Intersection> intersections, String ieServiceUsername, String ieServicePassword)
+        Intersection xmlIntersection, List<Intersection> intersections, String ieServiceUsername,
+        String ieServicePassword)
     {
         Intersection matchingIntersection = null;
 
@@ -177,6 +181,29 @@ public class IEConfigDAOImpl implements IEConfigDAO
         }
 
         return matchingIntersection;
+    }
+
+    /* (non-Javadoc)
+     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#deleteIntersectionById(java.lang.String, long, java.lang.String, java.lang.String)
+     */
+    public boolean deleteIntersectionById(String host, long id,
+        String ieServiceUsername, String ieServicePassword)
+    {
+        Request.initIntersection();
+
+        return Request.deleteIntersectionById(host, id, ieServiceUsername, ieServicePassword);
+    }
+
+    /* (non-Javadoc)
+     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#updateIntersectionById(java.lang.String, long, it.geosolutions.figis.requester.model.Intersection, java.lang.String, java.lang.String)
+     */
+    public long updateIntersectionById(String host, long id,
+        Intersection intersection, String ieServiceUsername,
+        String ieServicePassword)
+    {
+        Request.initIntersection();
+
+        return Request.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
     }
 
 }

@@ -1,7 +1,7 @@
 /**
  *
  */
-package it.geosolutions.geobatch.figis.setting.dao;
+package it.geosolutions.figis.requester.requester.dao;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -24,7 +24,8 @@ public interface IEConfigDAO
     * @return
     * @throws MalformedURLException
     */
-    public boolean dbIsEmpty(String host, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
+    public boolean dbIsEmpty(String host, String ieServiceUsername, String ieServicePassword)
+        throws MalformedURLException;
 
     /*********
      * SET THE CONFIG IF IT NOT EXIST OR UPDATE IT IF THE XMLConfig IS MORE RECENT OF THE CURRENT STATUS
@@ -33,7 +34,8 @@ public interface IEConfigDAO
      * @return a Config object representing the current status of the configuration
      * @throws MalformedURLException
      */
-    public Config saveOrUpdateConfig(String host, Config ieConfig, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
+    public Config saveOrUpdateConfig(String host, Config ieConfig, String ieServiceUsername, String ieServicePassword)
+        throws MalformedURLException;
 
     /**
      *
@@ -41,7 +43,30 @@ public interface IEConfigDAO
      * @return
      * @throws MalformedURLException
      */
-    public Config loadConfg(String host, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
+    public Config loadConfg(String host, String ieServiceUsername, String ieServicePassword)
+        throws MalformedURLException;
+
+    /**
+     *
+     * @param host
+     * @param id
+     * @param ieServiceUsername
+     * @param ieServicePassword
+     * @return
+     */
+    public boolean deleteIntersectionById(String host, long id, String ieServiceUsername, String ieServicePassword);
+
+    /**
+     *
+     * @param host
+     * @param id
+     * @param intersection
+     * @param ieServiceUsername
+     * @param ieServicePassword
+     * @return
+     */
+    public long updateIntersectionById(String host, long id, Intersection intersection, String ieServiceUsername,
+        String ieServicePassword);
 
     /**
      *
@@ -49,7 +74,8 @@ public interface IEConfigDAO
      * @param intersections
      * @param tocompute
      */
-    public void setStatus(String host, List<Intersection> intersections, Status status, String ieServiceUsername, String ieServicePassword);
+    public void setStatus(String host, List<Intersection> intersections, Status status, String ieServiceUsername,
+        String ieServicePassword);
 
     /**
      *
@@ -69,5 +95,6 @@ public interface IEConfigDAO
      * @return
      */
     public Intersection searchEquivalent(String host,
-        Intersection xmlIntersection, List<Intersection> intersections, String ieServiceUsername, String ieServicePassword);
+        Intersection xmlIntersection, List<Intersection> intersections, String ieServiceUsername,
+        String ieServicePassword);
 }

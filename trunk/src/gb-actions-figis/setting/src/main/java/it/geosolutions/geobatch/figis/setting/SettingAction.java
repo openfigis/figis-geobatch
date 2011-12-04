@@ -30,11 +30,11 @@ import java.util.Queue;
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
+import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
+import it.geosolutions.figis.requester.requester.dao.impl.IEConfigDAOImpl;
+import it.geosolutions.figis.requester.requester.util.IEConfigUtils;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
-import it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO;
-import it.geosolutions.geobatch.figis.setting.dao.impl.IEConfigDAOImpl;
-import it.geosolutions.geobatch.figis.setting.utils.IEConfigUtils;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
 
@@ -56,19 +56,17 @@ public class SettingAction extends BaseAction<EventObject>
     private String defaultMaskLayer = null;
     private String host = null;
     private String ieServiceUsername = null;
-    private String ieservicePassword = null;
+    private String ieServicePassword = null;
 
-	/**
-     * configuration
-     */
+    /**
+    * configuration
+    */
     private final SettingConfiguration conf;
 
     public SettingAction(SettingConfiguration configuration)
     {
         super(configuration);
         conf = configuration;
-        conf.getIeServiceUsername();
-        conf.getIeServicePassword();
     }
 
     /**
@@ -79,6 +77,8 @@ public class SettingAction extends BaseAction<EventObject>
         Config xmlConfig = null;
         Config dbConfig = null;
         host = conf.getPersistencyHost();
+        ieServiceUsername = conf.getIeServiceUsername();
+        ieServicePassword = conf.getIeServicePassword();
         defaultMaskLayer = conf.getDefaultMaskLayer();
 
         final Queue<EventObject> ret = new LinkedList<EventObject>();
@@ -102,16 +102,19 @@ public class SettingAction extends BaseAction<EventObject>
                     xmlConfig = IEConfigUtils.parseXMLConfig(fileEvent.getSource().getAbsolutePath());
 
                     // if DB is empty lets insert the new configuration...
-                    if (ieConfigDAO.dbIsEmpty(host, getIeServiceUsername(), getIeservicePassword()))
+                    if (ieConfigDAO.dbIsEmpty(host, getIeServiceUsername(), getIeServicePassword()))
                     {
-                        dbConfig = ieConfigDAO.saveOrUpdateConfig(host, xmlConfig, getIeServiceUsername(), getIeservicePassword());
+                        dbConfig = ieConfigDAO.saveOrUpdateConfig(host, xmlConfig, getIeServiceUsername(), getIeServicePassword());
 
-                        ieConfigDAO.setStatus(host, dbConfig.intersections, Status.TOCOMPUTE, getIeServiceUsername(), getIeservicePassword());
+                        dbConfig.setGlobal(xmlConfig.getGlobal());
+                        dbConfig.setUpdateVersion(xmlConfig.getUpdateVersion() - 1);
+
+                        ieConfigDAO.setStatus(host, dbConfig.intersections, Status.TOCOMPUTE, getIeServiceUsername(), getIeServicePassword());
                     }
                     // check for updates otherwise...
                     else
                     {
-                        dbConfig = ieConfigDAO.loadConfg(host, getIeServiceUsername(), getIeservicePassword());
+                        dbConfig = ieConfigDAO.loadConfg(host, getIeServiceUsername(), getIeServicePassword());
                     }
 
 
@@ -126,7 +129,7 @@ public class SettingAction extends BaseAction<EventObject>
                         for (Intersection xmlIntersection : xmlConfig.intersections)
                         {
                             Intersection dbIntersection = ieConfigDAO.searchEquivalent(host, xmlIntersection,
-                                    dbConfig.intersections, getIeServiceUsername(), getIeservicePassword());
+                                    dbConfig.intersections, getIeServiceUsername(), getIeServicePassword());
 
                             // not present in DB, lets add the new one
                             if (dbIntersection == null)
@@ -161,7 +164,7 @@ public class SettingAction extends BaseAction<EventObject>
                             for (Intersection dbIntersection : dbConfig.intersections)
                             {
                                 Intersection equivalentToAdd = ieConfigDAO.searchEquivalent(host, dbIntersection,
-                                        intersectionsToAdd, getIeServiceUsername(), getIeservicePassword());
+                                        intersectionsToAdd, getIeServiceUsername(), getIeServicePassword());
                                 if (equivalentToAdd == null)
                                 {
                                     dbIntersection.setStatus(Status.TODELETE);
@@ -179,7 +182,7 @@ public class SettingAction extends BaseAction<EventObject>
                         }
 
                         // finally update the db-config
-                        ieConfigDAO.saveOrUpdateConfig(host, dbConfig, getIeServiceUsername(), getIeservicePassword());
+                        ieConfigDAO.saveOrUpdateConfig(host, dbConfig, getIeServiceUsername(), getIeServicePassword());
                     }
 
                     // add the event to the return
@@ -211,23 +214,27 @@ public class SettingAction extends BaseAction<EventObject>
 
         return ret;
     }
-    
 
-    public String getIeServiceUsername() {
-		return ieServiceUsername;
-	}
 
-	public void setIeServiceUsername(String ieServiceUsername) {
-		this.ieServiceUsername = ieServiceUsername;
-	}
+    public String getIeServiceUsername()
+    {
+        return ieServiceUsername;
+    }
 
-	public String getIeservicePassword() {
-		return ieservicePassword;
-	}
+    public void setIeServiceUsername(String ieServiceUsername)
+    {
+        this.ieServiceUsername = ieServiceUsername;
+    }
 
-	public void setIeservicePassword(String ieservicePassword) {
-		this.ieservicePassword = ieservicePassword;
-	}
+    public String getIeServicePassword()
+    {
+        return ieServicePassword;
+    }
+
+    public void setIeServicePassword(String ieServicePassword)
+    {
+        this.ieServicePassword = ieServicePassword;
+    }
 
 
     // ------------------------------------------------------------------------------------------------------------------

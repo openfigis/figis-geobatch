@@ -1,5 +1,5 @@
 
-package it.geosolutions.figis;
+package it.geosolutions.figis.requester;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class Request
     static XStream xStreamIntersection = null;
 
     /***********************
-     * initialize the XSTREAM parser for the XML representation of it.geosolutions.figis.model.Config object
+     * initialize the XSTREAM parser for the XML representation of it.geosolutions.figis.requester.model.Config object
      */
     public static void initConfig()
     {
@@ -41,7 +41,7 @@ public class Request
     }
 
     /***********************
-     * initialize the XSTREAM parser for the XML representation of it.geosolutions.figis.model.Intersection object
+     * initialize the XSTREAM parser for the XML representation of it.geosolutions.figis.requester.model.Intersection object
      */
     public static void initIntersection()
     {
@@ -60,7 +60,8 @@ public class Request
      * @throws java.net.MalformedURLException  in case the URL is not valid
      */
     @SuppressWarnings("unchecked")
-    public static List<Config> getConfigs(String host,String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static List<Config> getConfigs(String host, String ieServiceUsername, String ieServicePassword)
+        throws java.net.MalformedURLException
     {
         String result = HTTPUtils.get(host + "/ie-services/config/", ieServiceUsername, ieServicePassword);
         // System.out.println("RESULT GETCONFIG"+result);
@@ -81,7 +82,8 @@ public class Request
      * @return a reference to the found Config object
      * @throws java.net.MalformedURLException in case the URL is not valid
      */
-    public static Config existConfig(String host,String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static Config existConfig(String host, String ieServiceUsername, String ieServicePassword)
+        throws java.net.MalformedURLException
     {
         List<Config> configs = getConfigs(host, ieServiceUsername, ieServicePassword);
         if ((configs == null) || (configs.size() == 0))
@@ -99,7 +101,8 @@ public class Request
      * @param config the instance containing changes
      * @return the id of the changed instance
      */
-    public static long updateConfig(String host, long id, Config config,String ieServiceUsername, String ieServicePassword)
+    public static long updateConfig(String host, long id, Config config, String ieServiceUsername,
+        String ieServicePassword)
     {
         String xml = xStreamConfig.toXML(config);
         // System.out.println("XML : "+xml);
@@ -117,7 +120,8 @@ public class Request
      * @return the Config instance found
      * @throws java.net.MalformedURLException in case the URL is not valid
      */
-    public static Config getConfigByID(String host, Long id,String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static Config getConfigByID(String host, Long id, String ieServiceUsername, String ieServicePassword)
+        throws java.net.MalformedURLException
     {
 
         String result = HTTPUtils.get(host + "/ie-services/config/" + id, ieServiceUsername, ieServicePassword);
@@ -134,11 +138,13 @@ public class Request
      * @return the id of the instance into the DB
      * @throws java.net.MalformedURLException in case the URL is not valid
      */
-    public static long insertConfig(String host, Config config,String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static long insertConfig(String host, Config config, String ieServiceUsername, String ieServicePassword)
+        throws java.net.MalformedURLException
     {
         String xml = xStreamConfig.toXML(config);
         // System.out.println("XML INSERT CONFIG: "+xml);
-        String result = HTTPUtils.post(host + "/ie-services/config", xml, "text/xml", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.post(host + "/ie-services/config", xml, "text/xml", ieServiceUsername,
+                ieServicePassword);
         // System.out.println("RESULT POST"+result);
         if (result == null)
         {
@@ -157,7 +163,8 @@ public class Request
      * @return true if the request has success
      * @throws java.net.MalformedURLException in case the URL is not valid
      */
-    public static boolean deleteConfig(String host, long id,String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static boolean deleteConfig(String host, long id, String ieServiceUsername, String ieServicePassword)
+        throws java.net.MalformedURLException
     {
         boolean result = HTTPUtils.delete(host + "/ie-services/config/" + id, ieServiceUsername, ieServicePassword);
 
@@ -172,11 +179,13 @@ public class Request
      * @return the id of the instance into the DB
      * @throws java.net.MalformedURLException in case the URL is not valid
      */
-    public static long insertIntersection(String host, Intersection intersection, String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static long insertIntersection(String host, Intersection intersection, String ieServiceUsername,
+        String ieServicePassword) throws java.net.MalformedURLException
     {
         String xml = xStreamIntersection.toXML(intersection);
         // System.out.println("XML : "+xml);
-        String result = HTTPUtils.post(host + "/ie-services/intersection", xml, "text/xml", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.post(host + "/ie-services/intersection", xml, "text/xml", ieServiceUsername,
+                ieServicePassword);
         // System.out.println("RESULT POST INSERT INTERSECTION"+result);
         if (result != null)
         {
@@ -195,7 +204,8 @@ public class Request
      * @throws java.net.MalformedURLException in case the URL is not valid
      */
     @SuppressWarnings("unchecked")
-    public static List<Intersection> getAllIntersections(String host,String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static List<Intersection> getAllIntersections(String host, String ieServiceUsername,
+        String ieServicePassword) throws java.net.MalformedURLException
     {
         String result = HTTPUtils.get(host + "/ie-services/intersection", ieServiceUsername, ieServicePassword);
         // System.out.println("RESULT GET ALL INTERSECTIONS: "+result);
@@ -218,7 +228,8 @@ public class Request
      * @return true if all the Intersection instances where deleted from the DB
      * @throws java.net.MalformedURLException
      */
-    public static boolean deleteAllIntersections(String host, String ieServiceUsername, String ieServicePassword) throws java.net.MalformedURLException
+    public static boolean deleteAllIntersections(String host, String ieServiceUsername, String ieServicePassword)
+        throws java.net.MalformedURLException
     {
         boolean result = HTTPUtils.delete(host + "/ie-services/intersection/", ieServiceUsername, ieServicePassword);
 
@@ -232,7 +243,8 @@ public class Request
      * @param id the id of the Intersection instance to delete
      * @return true in case of success
      */
-    public static boolean deleteIntersectionById(String host, long id, String ieServiceUsername, String ieServicePassword)
+    public static boolean deleteIntersectionById(String host, long id, String ieServiceUsername,
+        String ieServicePassword)
     {
         boolean result = HTTPUtils.delete(host + "/ie-services/intersection/" + id, ieServiceUsername, ieServicePassword);
 
@@ -246,7 +258,8 @@ public class Request
      * @param status the new status
      * @return the identifier of the returned instance
      */
-    public static long updateIntersectionById(String host, long id, Intersection intersection, String ieServiceUsername, String ieServicePassword)
+    public static long updateIntersectionById(String host, long id, Intersection intersection, String ieServiceUsername,
+        String ieServicePassword)
     {
         String xml = xStreamIntersection.toXML(intersection);
         // System.out.println("XML : "+xml);

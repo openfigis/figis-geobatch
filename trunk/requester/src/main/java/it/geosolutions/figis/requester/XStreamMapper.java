@@ -1,5 +1,5 @@
 
-package it.geosolutions.figis;
+package it.geosolutions.figis.requester;
 
 /**
  *

@@ -1,7 +1,7 @@
 /**
  *
  */
-package it.geosolutions.geobatch.figis.setting.utils;
+package it.geosolutions.figis.requester.requester.util;
 
 import java.io.FileNotFoundException;
 
@@ -9,8 +9,7 @@ import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.ConfigXStreamMapper;
 import it.geosolutions.figis.model.Intersection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class IEConfigUtils
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IEConfigUtils.class);
+    private static final Logger LOGGER = Logger.getLogger(IEConfigUtils.class);
 
     // ////////////////////////////////////////////////////////////////////////////
     //
