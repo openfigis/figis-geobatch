@@ -43,7 +43,8 @@ public class Intersection
         TOCOMPUTE(1),
         COMPUTED(2),
         COMPUTING(3),
-        TODELETE(4);
+        TODELETE(4),
+        FAILED(5);
 
         // the valueOfMethod
         public static Status fromInt(int value)
@@ -60,8 +61,10 @@ public class Intersection
                 return COMPUTING;
             case 4:
                 return TODELETE;
+            case 5:
+                return FAILED;
             default:
-                return TOCOMPUTE;
+                return NOVALUE;
             }
         }
 
@@ -92,8 +95,10 @@ public class Intersection
                 return "Computing";
             case TODELETE:
                 return "toDelete";
+            case FAILED:
+                return "failed";
             default:
-                return "toCompute";
+                return "noValue";
             }
         }
     }
