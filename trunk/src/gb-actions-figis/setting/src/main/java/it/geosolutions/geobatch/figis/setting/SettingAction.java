@@ -148,6 +148,10 @@ public class SettingAction extends BaseAction<EventObject>
                                     {
                                         xmlIntersection.setStatus(Status.TOCOMPUTE);
                                     }
+                                    else
+                                    {
+                                        xmlIntersection.setStatus(dbIntersection.getStatus());
+                                    }
                                 }
                                 // otherwise in any case we assume the user wanted to re-schedule it for computation ...
                                 else
@@ -175,11 +179,13 @@ public class SettingAction extends BaseAction<EventObject>
                                 }
                             }
                         }
-                        // otherwise we can just remove the old ones from the configuration
-                        else
+
+                        for (Intersection dbIntersection : dbConfig.intersections)
                         {
-                            dbConfig.intersections = intersectionsToAdd;
+                            ieConfigDAO.deleteIntersectionById(host, dbIntersection.getId(), ieServiceUsername, ieServicePassword);
                         }
+
+                        dbConfig.intersections = intersectionsToAdd;
 
                         // finally update the db-config
                         ieConfigDAO.saveOrUpdateConfig(host, dbConfig, getIeServiceUsername(), getIeServicePassword());
