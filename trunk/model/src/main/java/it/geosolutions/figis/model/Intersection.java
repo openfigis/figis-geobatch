@@ -26,6 +26,8 @@ package it.geosolutions.figis.model;
  */
 
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -34,8 +36,10 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("intersection")
 @XmlRootElement(name = "intersection")
-public class Intersection
+public class Intersection implements Serializable
 {
+
+    private static final long serialVersionUID = -730394543483161387L;
 
     public enum Status
     {
@@ -318,6 +322,17 @@ public class Intersection
     public String toString()
     {
         return "Intersection{" + "id=" + id + ", status=" + status + ", mask=" + mask + ", force=" + force + ", preserveTrgGeom=" + preserveTrgGeom + ", srcLayer=" + srcLayer + ", trgLayer=" + trgLayer + ", srcCodeField=" + srcCodeField + ", trgCodeField=" + trgCodeField + ", maskLayer=" + maskLayer + ", areaCRS=" + areaCRS + '}';
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return new Intersection(mask, force, preserveTrgGeom, srcLayer, trgLayer, srcCodeField, trgCodeField, maskLayer,
+                areaCRS, status);
     }
 
 

@@ -141,10 +141,13 @@ public class IEConfigDAOImpl implements IEConfigDAO
     {
         Request.initIntersection();
 
-        for (Intersection intersection : intersections)
+        if (intersections != null)
         {
-            intersection.setStatus(status);
-            Request.updateIntersectionById(host, intersection.getId(), intersection, ieServiceUsername, ieServicePassword);
+            for (Intersection intersection : intersections)
+            {
+                intersection.setStatus(status);
+                Request.updateIntersectionById(host, intersection.getId(), intersection, ieServiceUsername, ieServicePassword);
+            }
         }
     }
 
@@ -170,13 +173,16 @@ public class IEConfigDAOImpl implements IEConfigDAO
     {
         Intersection matchingIntersection = null;
 
-        for (Intersection target : intersections)
+        if (intersections != null)
         {
-            if (IEConfigUtils.areIntersectionParameterDifferent(xmlIntersection, target))
+            for (Intersection target : intersections)
             {
-                matchingIntersection = target;
+                if (!IEConfigUtils.areIntersectionParameterDifferent(xmlIntersection, target))
+                {
+                    matchingIntersection = target;
 
-                break;
+                    break;
+                }
             }
         }
 

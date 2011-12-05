@@ -126,60 +126,69 @@ public class SettingAction extends BaseAction<EventObject>
 
                         // lets compare the intersections between xml config and db
                         List<Intersection> intersectionsToAdd = new ArrayList<Intersection>();
-                        for (Intersection xmlIntersection : xmlConfig.intersections)
+                        if (xmlConfig.intersections != null)
                         {
-                            Intersection dbIntersection = ieConfigDAO.searchEquivalent(host, xmlIntersection,
-                                    dbConfig.intersections, getIeServiceUsername(), getIeServicePassword());
+                            for (Intersection xmlIntersection : xmlConfig.intersections)
+                            {
+                                Intersection dbIntersection = ieConfigDAO.searchEquivalent(host, xmlIntersection,
+                                        dbConfig.intersections, getIeServiceUsername(), getIeServicePassword());
 
-                            // not present in DB, lets add the new one
-                            if (dbIntersection == null)
-                            {
-                                xmlIntersection.setStatus(Status.TOCOMPUTE);
-                                intersectionsToAdd.add(xmlIntersection);
-                            }
-                            else
-                            {
-                                // it already computed or computing but we want to force the re-computation ...
-                                if (dbIntersection.getStatus().equals(Status.COMPUTED) ||
-                                        dbIntersection.getStatus().equals(Status.COMPUTING) ||
-                                        dbIntersection.getStatus().equals(Status.NOVALUE))
+                                // not present in DB, lets add the new one
+                                if (dbIntersection == null)
                                 {
-                                    if (xmlConfig.getGlobal().isClean() || xmlIntersection.isForce())
+                                    xmlIntersection.setStatus(Status.TOCOMPUTE);
+                                    intersectionsToAdd.add(xmlIntersection);
+                                }
+                                else
+                                {
+                                    // it already computed or computing but we want to force the re-computation ...
+                                    if (dbIntersection.getStatus().equals(Status.COMPUTED) ||
+                                            dbIntersection.getStatus().equals(Status.COMPUTING) ||
+                                            dbIntersection.getStatus().equals(Status.NOVALUE))
+                                    {
+                                        if (xmlConfig.getGlobal().isClean() || xmlIntersection.isForce())
+                                        {
+                                            xmlIntersection.setStatus(Status.TOCOMPUTE);
+                                        }
+                                        else
+                                        {
+                                            xmlIntersection.setStatus(dbIntersection.getStatus());
+                                        }
+                                    }
+                                    // otherwise in any case we assume the user wanted to re-schedule it for computation ...
+                                    else
                                     {
                                         xmlIntersection.setStatus(Status.TOCOMPUTE);
                                     }
-                                    else
-                                    {
-                                        xmlIntersection.setStatus(dbIntersection.getStatus());
-                                    }
+                                    intersectionsToAdd.add(xmlIntersection);
                                 }
-                                // otherwise in any case we assume the user wanted to re-schedule it for computation ...
-                                else
-                                {
-                                    xmlIntersection.setStatus(Status.TOCOMPUTE);
-                                }
-                                intersectionsToAdd.add(xmlIntersection);
                             }
                         }
 
                         // if clean flag is set to true we need to schedule other intersections for deletion
                         if (xmlConfig.getGlobal().isClean())
                         {
-                            for (Intersection dbIntersection : dbConfig.intersections)
+                            if (dbConfig.intersections != null)
                             {
-                                Intersection equivalentToAdd = ieConfigDAO.searchEquivalent(host, dbIntersection,
-                                        intersectionsToAdd, getIeServiceUsername(), getIeServicePassword());
-                                if (equivalentToAdd == null)
+                                for (Intersection dbIntersection : dbConfig.intersections)
                                 {
-                                    dbIntersection.setStatus(Status.TODELETE);
-                                    intersectionsToAdd.add(dbIntersection);
+                                    Intersection equivalentToAdd = ieConfigDAO.searchEquivalent(host, dbIntersection,
+                                            intersectionsToAdd, getIeServiceUsername(), getIeServicePassword());
+                                    if (equivalentToAdd == null)
+                                    {
+                                        dbIntersection.setStatus(Status.TODELETE);
+                                        intersectionsToAdd.add((Intersection) dbIntersection.clone());
+                                    }
                                 }
                             }
                         }
 
-                        for (Intersection dbIntersection : dbConfig.intersections)
+                        if (dbConfig.intersections != null)
                         {
-                            ieConfigDAO.deleteIntersectionById(host, dbIntersection.getId(), ieServiceUsername, ieServicePassword);
+                            for (Intersection dbIntersection : dbConfig.intersections)
+                            {
+                                ieConfigDAO.deleteIntersectionById(host, dbIntersection.getId(), ieServiceUsername, ieServicePassword);
+                            }
                         }
 
                         dbConfig.intersections = intersectionsToAdd;
