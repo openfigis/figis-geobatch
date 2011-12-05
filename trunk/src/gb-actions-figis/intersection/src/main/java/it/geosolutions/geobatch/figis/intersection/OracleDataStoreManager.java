@@ -284,7 +284,7 @@ public class OracleDataStoreManager
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
         cleanTemp(tx);
-        saveToTemp(ds, tx, collection, srcLayer, trgLayer, srcLayer + "_" + srcCode, trgLayer + "_" + trgCode, itemsPerPage);
+        saveToTemp(ds, tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
     }
 
     /*********

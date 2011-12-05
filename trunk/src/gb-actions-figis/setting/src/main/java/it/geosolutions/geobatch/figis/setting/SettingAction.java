@@ -172,10 +172,7 @@ public class SettingAction extends BaseAction<EventObject>
                                 if (equivalentToAdd == null)
                                 {
                                     dbIntersection.setStatus(Status.TODELETE);
-                                }
-                                else
-                                {
-                                    dbIntersection = equivalentToAdd;
+                                    intersectionsToAdd.add(dbIntersection);
                                 }
                             }
                         }
