@@ -84,17 +84,6 @@ public interface IEConfigDAO
      * @return
      * @throws MalformedURLException
      */
-    public Intersection searchEquivalent(String host,
+    public Intersection searchEquivalentOnDB(String host,
         Intersection xmlIntersection, String ieServiceUsername, String ieServicePassword) throws MalformedURLException;
-
-    /**
-     *
-     * @param host
-     * @param xmlIntersection
-     * @param intersections
-     * @return
-     */
-    public Intersection searchEquivalent(String host,
-        Intersection xmlIntersection, List<Intersection> intersections, String ieServiceUsername,
-        String ieServicePassword);
 }

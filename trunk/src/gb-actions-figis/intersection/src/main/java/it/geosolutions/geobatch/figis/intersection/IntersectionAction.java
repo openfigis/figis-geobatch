@@ -757,7 +757,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                     }
 
                     // add the event to the return
-                    ret.add(ev);
+                    // ret.add(ev);
 
                 }
                 else

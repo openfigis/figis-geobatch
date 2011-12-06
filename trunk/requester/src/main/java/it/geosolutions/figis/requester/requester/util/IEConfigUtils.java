@@ -143,6 +143,15 @@ public class IEConfigUtils
      */
     public static boolean areIntersectionParameterDifferent(Intersection srcIntersection, Intersection trgIntersection)
     {
+        if (!(srcIntersection.getSrcLayer().equals(trgIntersection.getSrcLayer())))
+        {
+            return true;
+        }
+        if (!(srcIntersection.getTrgLayer().equals(trgIntersection.getTrgLayer())))
+        {
+            return true;
+        }
+
         if (!(srcIntersection.getAreaCRS().equals(trgIntersection.getAreaCRS())))
         {
             return true;

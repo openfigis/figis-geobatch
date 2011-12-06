@@ -25,6 +25,33 @@ public class IEConfigDAOImpl implements IEConfigDAO
 
     private static final Logger LOGGER = Logger.getLogger(IEConfigDAO.class);
 
+    /**
+    *
+    * @param host
+    * @param xmlIntersection
+    * @param intersections
+    * @return
+    */
+    public static Intersection searchEquivalent(Intersection xmlIntersection, List<Intersection> intersections)
+    {
+        Intersection matchingIntersection = null;
+
+        if (intersections != null)
+        {
+            for (Intersection target : intersections)
+            {
+                if (!IEConfigUtils.areIntersectionParameterDifferent(xmlIntersection, target))
+                {
+                    matchingIntersection = target;
+
+                    break;
+                }
+            }
+        }
+
+        return matchingIntersection;
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -154,39 +181,14 @@ public class IEConfigDAOImpl implements IEConfigDAO
     /* (non-Javadoc)
      * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#searchEquivalent(java.lang.String, it.geosolutions.figis.requester.model.Intersection)
      */
-    public Intersection searchEquivalent(String host,
+    public Intersection searchEquivalentOnDB(String host,
         Intersection xmlIntersection, String ieServiceUsername, String ieServicePassword) throws MalformedURLException
     {
         Request.initIntersection();
 
         List<Intersection> list = Request.getAllIntersections(host, ieServiceUsername, ieServicePassword);
 
-        return searchEquivalent(host, xmlIntersection, list, ieServiceUsername, ieServicePassword);
-    }
-
-    /* (non-Javadoc)
-     * @see it.geosolutions.geobatch.figis.setting.dao.IEConfigDAO#searchEquivalent(java.lang.String, it.geosolutions.figis.requester.model.Intersection, java.util.List)
-     */
-    public Intersection searchEquivalent(String host,
-        Intersection xmlIntersection, List<Intersection> intersections, String ieServiceUsername,
-        String ieServicePassword)
-    {
-        Intersection matchingIntersection = null;
-
-        if (intersections != null)
-        {
-            for (Intersection target : intersections)
-            {
-                if (!IEConfigUtils.areIntersectionParameterDifferent(xmlIntersection, target))
-                {
-                    matchingIntersection = target;
-
-                    break;
-                }
-            }
-        }
-
-        return matchingIntersection;
+        return searchEquivalent(xmlIntersection, list);
     }
 
     /* (non-Javadoc)

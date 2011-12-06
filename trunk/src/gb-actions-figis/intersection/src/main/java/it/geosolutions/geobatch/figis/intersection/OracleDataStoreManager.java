@@ -372,8 +372,8 @@ public class OracleDataStoreManager
         final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter filter1 = ff.equals(ff.property("SRCLAYER"), ff.literal(srcLayer));
         Filter filter2 = ff.equals(ff.property("TRGLAYER"), ff.literal(trgLayer));
-        Filter filter3 = ff.equals(ff.property("SRCODE"), ff.literal(srcLayerCode));
-        Filter filter4 = ff.equals(ff.property("TRGCODE"), ff.literal(trgLayerCode));
+        Filter filter3 = ff.equals(ff.property("SRCCODENAME"), ff.literal(srcLayerCode));
+        Filter filter4 = ff.equals(ff.property("TRGCODENAME"), ff.literal(trgLayerCode));
         Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4));
         SimpleFeatureIterator iterator = (SimpleFeatureIterator) featureStoreData.getFeatures(filterAnd).features();
 
