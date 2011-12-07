@@ -34,7 +34,6 @@ import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.figis.requester.requester.dao.impl.IEConfigDAOImpl;
 import it.geosolutions.figis.requester.requester.util.IEConfigUtils;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
-import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
 
@@ -57,8 +56,8 @@ public class SettingAction extends BaseAction<EventObject>
      * @param intersectionsToAdd
      * @throws CloneNotSupportedException
      */
-    public static void compareXMLConfigAndDBConfig(Config xmlConfig, Config dbConfig,
-        List<Intersection> intersectionsToAdd) throws CloneNotSupportedException
+    public static void compareXMLConfigAndDBConfig(Config xmlConfig,
+        Config dbConfig, List<Intersection> intersectionsToAdd) throws CloneNotSupportedException
     {
         if (xmlConfig.getUpdateVersion() > dbConfig.getUpdateVersion())
         {
@@ -82,12 +81,16 @@ public class SettingAction extends BaseAction<EventObject>
                     }
                     else
                     {
-                        // it already computed or computing but we want to force the re-computation ...
+                        // it already computed or computing but we want to force
+                        // the re-computation ...
                         if (dbIntersection.getStatus().equals(Status.COMPUTED) ||
-                                dbIntersection.getStatus().equals(Status.COMPUTING) ||
-                                dbIntersection.getStatus().equals(Status.NOVALUE))
+                                dbIntersection.getStatus().equals(
+                                    Status.COMPUTING) ||
+                                dbIntersection.getStatus().equals(
+                                    Status.NOVALUE))
                         {
-                            if (xmlConfig.getGlobal().isClean() || xmlIntersection.isForce())
+                            if (xmlConfig.getGlobal().isClean() ||
+                                    xmlIntersection.isForce())
                             {
                                 xmlIntersection.setStatus(Status.TOCOMPUTE);
                             }
@@ -96,7 +99,8 @@ public class SettingAction extends BaseAction<EventObject>
                                 xmlIntersection.setStatus(dbIntersection.getStatus());
                             }
                         }
-                        // otherwise in any case we assume the user wanted to re-schedule it for computation ...
+                        // otherwise in any case we assume the user wanted to
+                        // re-schedule it for computation ...
                         else
                         {
                             xmlIntersection.setStatus(Status.TOCOMPUTE);
@@ -106,7 +110,8 @@ public class SettingAction extends BaseAction<EventObject>
                 }
             }
 
-            // if clean flag is set to true we need to schedule other intersections for deletion
+            // if clean flag is set to true we need to schedule other
+            // intersections for deletion
             if (dbConfig.intersections != null)
             {
                 for (Intersection dbIntersection : dbConfig.intersections)
@@ -128,7 +133,7 @@ public class SettingAction extends BaseAction<EventObject>
         }
     }
 
-    private IEConfigDAO ieConfigDAO = new IEConfigDAOImpl();
+    private IEConfigDAO ieConfigDAO = null;
 
     private String defaultMaskLayer = null;
     private String host = null;
@@ -136,8 +141,8 @@ public class SettingAction extends BaseAction<EventObject>
     private String ieServicePassword = null;
 
     /**
-    * configuration
-    */
+     * configuration
+     */
     private final SettingConfiguration conf;
 
     public SettingAction(SettingConfiguration configuration)
@@ -159,7 +164,8 @@ public class SettingAction extends BaseAction<EventObject>
         defaultMaskLayer = conf.getDefaultMaskLayer();
 
         final Queue<EventObject> ret = new LinkedList<EventObject>();
-        LOGGER.info("Setting action started with parameters " + host + ", " + defaultMaskLayer);
+        LOGGER.info("Setting action started with parameters " + host + ", " +
+            defaultMaskLayer);
         while (events.size() > 0)
         {
             final EventObject ev;
@@ -169,52 +175,68 @@ public class SettingAction extends BaseAction<EventObject>
                 {
                     if (LOGGER.isTraceEnabled())
                     {
-                        LOGGER.trace("IntersectionAction.execute(): working on incoming event: " + ev.getSource());
+                        LOGGER.trace("IntersectionAction.execute(): working on incoming event: " +
+                            ev.getSource());
                     }
 
                     FileSystemEvent fileEvent = (FileSystemEvent) ev;
-                    FileSystemEventType eventType = fileEvent.getEventType();
+
+                    if (ieConfigDAO == null)
+                    {
+                        LOGGER.error("ieConfigDAO was null!");
+                        throw new ActionException(this, "ieConfigDAO was null!");
+                    }
 
                     // READ THE XML AND CREATE A CONFIG OBJECT
                     xmlConfig = IEConfigUtils.parseXMLConfig(fileEvent.getSource().getAbsolutePath());
 
                     // if DB is empty lets insert the new configuration...
-                    if (ieConfigDAO.dbIsEmpty(host, getIeServiceUsername(), getIeServicePassword()))
+                    if (getIeConfigDAO().dbIsEmpty(host,
+                                getIeServiceUsername(), getIeServicePassword()))
                     {
-                        dbConfig = ieConfigDAO.saveOrUpdateConfig(host, xmlConfig, getIeServiceUsername(), getIeServicePassword());
+                        dbConfig = getIeConfigDAO().saveOrUpdateConfig(host,
+                                xmlConfig, getIeServiceUsername(),
+                                getIeServicePassword());
 
                         dbConfig.setGlobal(xmlConfig.getGlobal());
                         dbConfig.setUpdateVersion(xmlConfig.getUpdateVersion() - 1);
 
-                        ieConfigDAO.setStatus(host, dbConfig.intersections, Status.TOCOMPUTE, getIeServiceUsername(), getIeServicePassword());
+                        getIeConfigDAO().setStatus(host,
+                            dbConfig.intersections, Status.TOCOMPUTE,
+                            getIeServiceUsername(), getIeServicePassword());
                     }
                     // check for updates otherwise...
                     else
                     {
-                        dbConfig = ieConfigDAO.loadConfg(host, getIeServiceUsername(), getIeServicePassword());
+                        dbConfig = getIeConfigDAO().loadConfg(host,
+                                getIeServiceUsername(), getIeServicePassword());
                     }
-
 
                     // after checking for a valid update version ...
                     if (xmlConfig.getUpdateVersion() > dbConfig.getUpdateVersion())
                     {
                         List<Intersection> intersectionsToAdd = new ArrayList<Intersection>();
 
-                        // lets compare the intersections between xml config and db
-                        compareXMLConfigAndDBConfig(xmlConfig, dbConfig, intersectionsToAdd);
+                        // lets compare the intersections between xml config and
+                        // db
+                        compareXMLConfigAndDBConfig(xmlConfig, dbConfig,
+                            intersectionsToAdd);
 
                         if (dbConfig.intersections != null)
                         {
                             for (Intersection dbIntersection : dbConfig.intersections)
                             {
-                                ieConfigDAO.deleteIntersectionById(host, dbIntersection.getId(), ieServiceUsername, ieServicePassword);
+                                getIeConfigDAO().deleteIntersectionById(host,
+                                    dbIntersection.getId(),
+                                    ieServiceUsername, ieServicePassword);
                             }
                         }
 
                         dbConfig.intersections = intersectionsToAdd;
 
                         // finally update the db-config
-                        ieConfigDAO.saveOrUpdateConfig(host, dbConfig, getIeServiceUsername(), getIeServicePassword());
+                        getIeConfigDAO().saveOrUpdateConfig(host, dbConfig,
+                            getIeServiceUsername(), getIeServicePassword());
                     }
 
                     // add the event to the return
@@ -247,6 +269,22 @@ public class SettingAction extends BaseAction<EventObject>
         return ret;
     }
 
+    /**
+     * @param ieConfigDAO
+     *            the ieConfigDAO to set
+     */
+    public void setIeConfigDAO(IEConfigDAO ieConfigDAO)
+    {
+        this.ieConfigDAO = ieConfigDAO;
+    }
+
+    /**
+     * @return the ieConfigDAO
+     */
+    public IEConfigDAO getIeConfigDAO()
+    {
+        return ieConfigDAO;
+    }
 
     public String getIeServiceUsername()
     {
@@ -267,7 +305,6 @@ public class SettingAction extends BaseAction<EventObject>
     {
         this.ieServicePassword = ieServicePassword;
     }
-
 
     // ------------------------------------------------------------------------------------------------------------------
 }

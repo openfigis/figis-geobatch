@@ -5,7 +5,7 @@
 
 	<!-- Environment Initialization -->
 	<bean id="IntersectionGeneratorService"
-		class="it.geosolutions.geobatch.figis.intersection.IntersectionGeneratorService">
+		class="it.geosolutions.geobatch.figis.intersection.IntersectionGeneratorService" depends-on="IEConfigDAO">
 		<constructor-arg type="String">
 			<value>IntersectionGeneratorService</value>
 		</constructor-arg>
@@ -15,7 +15,11 @@
 		<constructor-arg type="String">
 			<value>IntersectionGeneratorService</value>
 		</constructor-arg>
+		
+		<property name="ieConfigDAO" ref="IEConfigDAO" />
+		
 	</bean>
+	
 	<bean id="IntersectionAliasRegistrar"
 		class="it.geosolutions.geobatch.figis.intersection.IntersectionAliasRegistrar"
 		lazy-init="false">

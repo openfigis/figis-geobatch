@@ -23,6 +23,7 @@ package it.geosolutions.geobatch.figis.intersection;
 
 import java.util.EventObject;
 
+import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.geobatch.actions.tools.configuration.Path;
 import it.geosolutions.geobatch.catalog.impl.BaseService;
 import it.geosolutions.geobatch.flow.event.action.ActionService;
@@ -42,6 +43,8 @@ public class IntersectionGeneratorService extends BaseService
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IntersectionGeneratorService.class);
 
+    private IEConfigDAO ieConfigDAO = null;
+
     public IntersectionGeneratorService(String id, String name, String description)
     {
         super(id, name, description);
@@ -51,7 +54,10 @@ public class IntersectionGeneratorService extends BaseService
     {
         try
         {
-            return new IntersectionAction(configuration);
+            IntersectionAction intersectAction = new IntersectionAction(configuration);
+            intersectAction.setIeConfigDAO(ieConfigDAO);
+
+            return intersectAction;
         }
         catch (Exception e)
         {
@@ -68,6 +74,17 @@ public class IntersectionGeneratorService extends BaseService
     {
         try
         {
+            if (getIeConfigDAO() == null)
+            {
+                if (LOGGER.isWarnEnabled())
+                {
+                    LOGGER.warn("SettingGeneratorService::canCreateAction(): " +
+                        "unable to create action, it's not possible to get the ieConfigDAO.");
+                }
+
+                return false;
+            }
+
             // absolutize working dir
             String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
             if (wd != null)
@@ -94,6 +111,22 @@ public class IntersectionGeneratorService extends BaseService
         }
 
         return false;
+    }
+
+    /**
+     * @param ieConfigDAO the ieConfigDAO to set
+     */
+    public void setIeConfigDAO(IEConfigDAO ieConfigDAO)
+    {
+        this.ieConfigDAO = ieConfigDAO;
+    }
+
+    /**
+     * @return the ieConfigDAO
+     */
+    public IEConfigDAO getIeConfigDAO()
+    {
+        return ieConfigDAO;
     }
 
 }

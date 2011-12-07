@@ -23,6 +23,7 @@ package it.geosolutions.geobatch.figis.setting;
 
 import java.util.EventObject;
 
+import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.geobatch.actions.tools.configuration.Path;
 import it.geosolutions.geobatch.catalog.impl.BaseService;
 import it.geosolutions.geobatch.flow.event.action.ActionService;
@@ -41,6 +42,8 @@ public class SettingGeneratorService extends BaseService implements ActionServic
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingGeneratorService.class);
 
+    private IEConfigDAO ieConfigDAO = null;
+
     public SettingGeneratorService(String id, String name, String description)
     {
         super(id, name, description);
@@ -50,7 +53,10 @@ public class SettingGeneratorService extends BaseService implements ActionServic
     {
         try
         {
-            return new SettingAction(configuration);
+            SettingAction settingAction = new SettingAction(configuration);
+            settingAction.setIeConfigDAO(ieConfigDAO);
+
+            return settingAction;
         }
         catch (Exception e)
         {
@@ -68,6 +74,17 @@ public class SettingGeneratorService extends BaseService implements ActionServic
         LOGGER.info("------------------->Checking setting parameters");
         try
         {
+            if (ieConfigDAO == null)
+            {
+                if (LOGGER.isWarnEnabled())
+                {
+                    LOGGER.warn("SettingGeneratorService::canCreateAction(): " +
+                        "unable to create action, it's not possible to get the ieConfigDAO.");
+                }
+
+                return false;
+            }
+
             // absolutize working dir
             String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
             String defaultMaskLayer = configuration.getDefaultMaskLayer();
@@ -91,7 +108,6 @@ public class SettingGeneratorService extends BaseService implements ActionServic
             if (host != null)
             {
                 LOGGER.info("Host value is " + host);
-
             }
             else
             {
@@ -131,6 +147,22 @@ public class SettingGeneratorService extends BaseService implements ActionServic
         }
 
         return true;
+    }
+
+    /**
+     * @param ieConfigDAO the ieConfigDAO to set
+     */
+    public void setIeConfigDAO(IEConfigDAO ieConfigDAO)
+    {
+        this.ieConfigDAO = ieConfigDAO;
+    }
+
+    /**
+     * @return the ieConfigDAO
+     */
+    public IEConfigDAO getIeConfigDAO()
+    {
+        return ieConfigDAO;
     }
 
 }

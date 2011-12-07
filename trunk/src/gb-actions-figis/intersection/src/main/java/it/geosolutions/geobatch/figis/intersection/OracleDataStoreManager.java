@@ -67,8 +67,6 @@ public class OracleDataStoreManager
     private static String dbtype = "oracle";
 
 
-    public DataStore orclDataStore = null;
-    Transaction orclTransaction = null;
     SimpleFeatureType sfTmpGeom = null;
     SimpleFeatureType sfTmpStats = null;
     SimpleFeatureType sfStats = null;
@@ -81,34 +79,42 @@ public class OracleDataStoreManager
         String schema, String user, String password) throws Exception
     {
 
+        DataStore orclDataStore = null;
+        Transaction orclTransaction = null;
         try
         {
             initOrclMap(hostname, port, database, schema, user, password);
-            initOracleDataStore();
-            initTables();
+
+            orclDataStore = initOracleDataStore();
+            orclTransaction = new DefaultTransaction();
+            initTables(orclDataStore, orclTransaction);
+            orclTransaction.commit();
         }
         catch (Exception e)
         {
             LOGGER.error("Exception creating tables in ORACLE", e);
+            orclTransaction.rollback();
             throw new Exception("Error creating tables in ORACLE", e);
         }
         finally
         {
-            close();
+            close(orclDataStore, orclTransaction);
         }
 
     }
 
 
     /**
+     * @return
      * @throws Exception
      */
-    private void initOracleDataStore() throws Exception
+    private DataStore initOracleDataStore() throws Exception
     {
         try
         {
-            orclDataStore = new OracleNGDataStoreFactory().createDataStore(orclMap);
-            orclTransaction = new DefaultTransaction();
+            DataStore orclDataStore = new OracleNGDataStoreFactory().createDataStore(orclMap);
+
+            return orclDataStore;
         }
         catch (Exception e)
         {
@@ -149,9 +155,10 @@ public class OracleDataStoreManager
 
     /************
      * initialize the tables: create them if they do not exist
+     * @param tx
      * @throws IOException
      */
-    private void initTables() throws Exception
+    private void initTables(DataStore ds, Transaction tx) throws Exception
     {
         // init of the Temp table for stats
         SimpleFeatureTypeBuilder sftbTmpStats = new SimpleFeatureTypeBuilder();
@@ -210,61 +217,48 @@ public class OracleDataStoreManager
         sfGeom = sftbGeoms.buildFeatureType();
 
 
-        try
+        // check if tables exist, if not create them
+
+        String[] listTables = ds.getTypeNames();
+
+        boolean statsTmpTableExists = false;
+        boolean statsTableExists = false;
+        boolean spatialTmpTableExists = false;
+        boolean spatialTableExists = false;
+        for (int i = 0; i < listTables.length; i++)
         {
-            // check if tables exist, if not create them
-
-            String[] listTables = orclDataStore.getTypeNames();
-
-            boolean statsTmpTableExists = false;
-            boolean statsTableExists = false;
-            boolean spatialTmpTableExists = false;
-            boolean spatialTableExists = false;
-            for (int i = 0; i < listTables.length; i++)
+            if (listTables[i].equals(statsTmpTable))
             {
-                if (listTables[i].equals(statsTmpTable))
-                {
-                    statsTmpTableExists = true;
-                }
-                if (listTables[i].equals(statsTable))
-                {
-                    statsTableExists = true;
-                }
-                if (listTables[i].equals(spatialTable))
-                {
-                    spatialTableExists = true;
-                }
-                if (listTables[i].equals(spatialTmpTable))
-                {
-                    spatialTmpTableExists = true;
-                }
+                statsTmpTableExists = true;
             }
-            if (!statsTmpTableExists)
+            if (listTables[i].equals(statsTable))
             {
-
-                orclDataStore.createSchema(sfTmpStats);
+                statsTableExists = true;
             }
-            if (!statsTableExists)
+            if (listTables[i].equals(spatialTable))
             {
-
-                orclDataStore.createSchema(sfStats);
+                spatialTableExists = true;
             }
-            if (!spatialTableExists)
+            if (listTables[i].equals(spatialTmpTable))
             {
-
-                orclDataStore.createSchema(sfGeom);
+                spatialTmpTableExists = true;
             }
-            if (!spatialTmpTableExists)
-            {
-
-                orclDataStore.createSchema(sfTmpGeom);
-            }
-
-            orclTransaction.commit();
         }
-        catch (Exception e)
+        if (!statsTmpTableExists)
         {
-            orclTransaction.rollback();
+            ds.createSchema(sfTmpStats);
+        }
+        if (!statsTableExists)
+        {
+            ds.createSchema(sfStats);
+        }
+        if (!spatialTableExists)
+        {
+            ds.createSchema(sfGeom);
+        }
+        if (!spatialTmpTableExists)
+        {
+            ds.createSchema(sfTmpGeom);
         }
     }
 
@@ -283,7 +277,7 @@ public class OracleDataStoreManager
     private void actionTemp(DataStore ds, Transaction tx, SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
-        cleanTemp(tx);
+        cleanTemp(ds, tx);
         saveToTemp(ds, tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
     }
 
@@ -294,14 +288,14 @@ public class OracleDataStoreManager
      * @param tx
      * @param srcLayer
      * @param trgLayer
-     * @throws IOException
+     * @throws Exception
      */
     private void action(DataStore ds, Transaction tx, String srcLayer, String trgLayer, String srcLayerCode,
-        String trgLayerCode) throws IOException
+        String trgLayerCode) throws Exception
     {
-        deleteOldInstancesFromPermanent(tx, srcLayer, trgLayer, srcLayerCode, trgLayerCode);
-        saveToPermanent(tx, statsTmpTable, statsTable);
-        saveToPermanent(tx, spatialTmpTable, spatialTable);
+        deleteOldInstancesFromPermanent(ds, tx, srcLayer, trgLayer, srcLayerCode, trgLayerCode);
+        saveToPermanent(ds, tx, statsTmpTable, statsTable);
+        saveToPermanent(ds, tx, spatialTmpTable, spatialTable);
     }
 
 
@@ -310,45 +304,28 @@ public class OracleDataStoreManager
      * @param tx
      * @param tableFrom
      * @param tableTo
+     * @param ds
      * @throws IOException
      */
-    private void saveToPermanent(Transaction tx, String tableFrom, String tableTo) throws IOException
+    private void saveToPermanent(DataStore ds, Transaction tx, String tableFrom, String tableTo) throws IOException
     {
         LOGGER.info("Saving data from permanent table " + tableFrom + " to " + tableTo);
 
-        SimpleFeatureSource sfs = orclDataStore.getFeatureSource(tableFrom);
-        FeatureStore featureStore = (FeatureStore) orclDataStore.getFeatureSource(tableTo);
+        SimpleFeatureSource sfs = ds.getFeatureSource(tableFrom);
+        FeatureStore featureStore = (FeatureStore) ds.getFeatureSource(tableTo);
         featureStore.setTransaction(tx);
-        featureStore.addFeatures(sfs.getFeatures());
-    }
-
-    /*********
-     * manage the delete all the information about the srcLayer and trgLayer pair from the permanent tables from a transaction
-     * @param srcLayer
-     * @param trgLayer
-     * @throws IOException
-     */
-    public void deleteAll(String srcLayer, String trgLayer, String srcLayerCode, String trgLayerCode) throws IOException
-    {
         try
         {
-            initOracleDataStore();
-            deleteOldInstancesFromPermanent(orclTransaction, srcLayer, trgLayer, srcLayerCode, trgLayerCode);
-            orclTransaction.commit();
-        }
-        catch (Exception e)
-        {
-            LOGGER.error("Exception performing the delete all " + srcLayer + ", " + trgLayer, e);
-            orclTransaction.rollback();
-            throw new IOException("Delete all raised an exception ", e);
+            featureStore.addFeatures(sfs.getFeatures());
         }
         finally
         {
-            close();
+            if (featureStore != null)
+            {
+                featureStore.getDataStore().dispose();
+            }
         }
-
     }
-
 
     /*********
      * delete all the information about the srcLayer and trgLayer pair from the permanent tables
@@ -357,123 +334,77 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @param trgLayerCode
      * @param srcLayerCode
+     * @param ds
      * @throws IOException
      */
-    private void deleteOldInstancesFromPermanent(Transaction tx, String srcLayer, String trgLayer, String srcLayerCode,
-        String trgLayerCode) throws IOException
+    private void deleteOldInstancesFromPermanent(DataStore ds, Transaction tx, String srcLayer, String trgLayer,
+        String srcLayerCode, String trgLayerCode) throws Exception
     {
         LOGGER.info("Deleting old instances of the intersection between " + srcLayer + " and " + trgLayer);
 
-        FeatureStore featureStoreData = (FeatureStore) orclDataStore.getFeatureSource(statsTable);
-        FeatureStore featureStoreGeom = (FeatureStore) orclDataStore.getFeatureSource(spatialTable);
-        featureStoreData.setTransaction(tx);
-        featureStoreGeom.setTransaction(tx);
-
-        final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Filter filter1 = ff.equals(ff.property("SRCLAYER"), ff.literal(srcLayer));
-        Filter filter2 = ff.equals(ff.property("TRGLAYER"), ff.literal(trgLayer));
-        Filter filter3 = ff.equals(ff.property("SRCCODENAME"), ff.literal(srcLayerCode));
-        Filter filter4 = ff.equals(ff.property("TRGCODENAME"), ff.literal(trgLayerCode));
-        Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4));
-        SimpleFeatureIterator iterator = (SimpleFeatureIterator) featureStoreData.getFeatures(filterAnd).features();
-
-        while (iterator.hasNext())
-        {
-            String id = (String) iterator.next().getAttribute("INTERSECTION_ID");
-            LOGGER.debug("Cascade delete of " + id);
-
-            Filter filter = ff.equals(ff.property("INTERSECTION_ID"), ff.literal(id));
-            featureStoreGeom.removeFeatures(filter);
-            featureStoreData.removeFeatures(filter);
-        }
-
-    }
-
-    /**********
-     * recall the steps from updating the database
-     * firstly delete all the information from temp tables
-     * then, perform the intersection, update temporary and finally update permanent
-     * @param collection
-     * @param srcLayer
-     * @param trgLayer
-     * @param srcCode
-     * @param trgCode
-     * @throws IOException
-     */
-    public void saveAll(SimpleFeatureCollection collection, String srcLayer, String trgLayer, String srcCode,
-        String trgCode, int itemsPerPage) throws IOException
-    {
-
-        boolean res = false;
+        FeatureStore featureStoreData = null;
+        FeatureStore featureStoreGeom = null;
+        SimpleFeatureIterator iterator = null;
 
         try
         {
-            initOracleDataStore();
-            if (orclDataStore != null)
+            featureStoreData = (FeatureStore) ds.getFeatureSource(statsTable);
+            featureStoreGeom = (FeatureStore) ds.getFeatureSource(spatialTable);
+            featureStoreData.setTransaction(tx);
+            featureStoreGeom.setTransaction(tx);
+
+            final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+            Filter filter1 = ff.equals(ff.property("SRCLAYER"), ff.literal(srcLayer));
+            Filter filter2 = ff.equals(ff.property("TRGLAYER"), ff.literal(trgLayer));
+            Filter filter3 = ff.equals(ff.property("SRCCODENAME"), ff.literal(srcLayerCode));
+            Filter filter4 = ff.equals(ff.property("TRGCODENAME"), ff.literal(trgLayerCode));
+            Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4));
+            iterator = (SimpleFeatureIterator) featureStoreData.getFeatures(filterAnd).features();
+
+            while (iterator.hasNext())
             {
-                LOGGER.info("Performing data saving: SRCLAYER " + srcLayer + ", SRCCODE " + srcCode + ", TRGLAYER " + trgLayer + ", TRGLAYER " + trgCode);
-                actionTemp(orclDataStore, orclTransaction, collection, srcLayer, trgLayer, srcCode, trgCode,
-                    itemsPerPage);
-                orclTransaction.commit();
-                res = true;
-            }
-            else
-            {
-                LOGGER.error("The collection cannot be null");
-                orclTransaction.rollback();
-                res = false;
-                throw new IOException("The collection cannot be null ");
+                String id = (String) iterator.next().getAttribute("INTERSECTION_ID");
+                LOGGER.debug("Cascade delete of " + id);
+
+                Filter filter = ff.equals(ff.property("INTERSECTION_ID"), ff.literal(id));
+                featureStoreGeom.removeFeatures(filter);
+                featureStoreData.removeFeatures(filter);
             }
         }
         catch (Exception e)
         {
-            LOGGER.error("Exception during ORACLE saving. Rolling back ", e);
-            orclTransaction.rollback();
-            throw new IOException("Exception during ORACLE saving. Rolling back ", e);
+            throw e;
         }
         finally
         {
-            close();
+            if (featureStoreGeom != null)
+            {
+                featureStoreGeom.getDataStore().dispose();
+            }
+            if (featureStoreData != null)
+            {
+                featureStoreData.getDataStore().dispose();
+            }
+            if (iterator != null)
+            {
+                iterator.close();
+            }
         }
 
-        try
-        {
-            initOracleDataStore();
-            if (res && (orclDataStore != null))
-            {
-                action(orclDataStore, orclTransaction, srcLayer, trgLayer, srcCode, trgCode);
-                orclTransaction.commit();
-            }
-            else
-            {
-                LOGGER.error("The collection cannot be null");
-                orclTransaction.rollback();
-                res = false;
-                throw new IOException("The collection cannot be null ");
-            }
-        }
-        catch (Exception e)
-        {
-            LOGGER.error("Exception during ORACLE saving. Rolling back ", e);
-            orclTransaction.rollback();
-            throw new IOException("Exception during ORACLE saving. Rolling back ", e);
-        }
-        finally
-        {
-            close();
-        }
     }
 
     /***
      * close the transactions and the datastore
+     * @param tx
+     * @param ds
      */
-    private void close()
+    private void close(DataStore ds, Transaction tx)
     {
         try
         {
-            if (orclTransaction != null)
+            if (tx != null)
             {
-                orclTransaction.close();
+                tx.close();
             }
         }
         catch (Exception e)
@@ -482,24 +413,40 @@ public class OracleDataStoreManager
         }
         finally
         {
-            if (orclDataStore != null)
+            if (ds != null)
             {
-                orclDataStore.dispose();
+                ds.dispose();
             }
         }
     }
 
-    private void cleanTemp(Transaction tx) throws IOException
+    private void cleanTemp(DataStore ds, Transaction tx) throws IOException
     {
         LOGGER.info("Cleaning temp table");
 
-        FeatureStore featureStoreData = (FeatureStore) orclDataStore.getFeatureSource(spatialTmpTable);
-        FeatureStore featureStoreGeom = (FeatureStore) orclDataStore.getFeatureSource(statsTmpTable);
+        FeatureStore featureStoreData = null;
+        FeatureStore featureStoreGeom = null;
+        try
+        {
+            featureStoreData = (FeatureStore) ds.getFeatureSource(spatialTmpTable);
+            featureStoreGeom = (FeatureStore) ds.getFeatureSource(statsTmpTable);
 
-        featureStoreData.setTransaction(tx);
-        featureStoreGeom.setTransaction(tx);
-        featureStoreData.removeFeatures(Filter.INCLUDE);
-        featureStoreGeom.removeFeatures(Filter.INCLUDE);
+            featureStoreData.setTransaction(tx);
+            featureStoreGeom.setTransaction(tx);
+            featureStoreData.removeFeatures(Filter.INCLUDE);
+            featureStoreGeom.removeFeatures(Filter.INCLUDE);
+        }
+        finally
+        {
+            if (featureStoreGeom != null)
+            {
+                featureStoreGeom.getDataStore().dispose();
+            }
+            if (featureStoreData != null)
+            {
+                featureStoreData.getDataStore().dispose();
+            }
+        }
     }
 
     /*****
@@ -520,12 +467,15 @@ public class OracleDataStoreManager
         itemsPerPage = (itemsPerPage == 0) ? 50 : itemsPerPage;
 
         LOGGER.info("Saving intersections between " + srcLayer + " and " + trgLayer + " into temporary table");
-        LOGGER.debug("Attributes " + srcCode + " and " + trgCode);
-        LOGGER.debug("Items per page " + itemsPerPage);
+        if (LOGGER.isDebugEnabled())
+        {
+            LOGGER.debug("Attributes " + srcCode + " and " + trgCode);
+            LOGGER.debug("Items per page " + itemsPerPage);
+        }
 
-        SimpleFeatureIterator iterator = null;
         FeatureStore featureStoreData = null;
         FeatureStore featureStoreGeom = null;
+        SimpleFeatureIterator iterator = null;
         try
         {
             if (source == null)
@@ -542,7 +492,6 @@ public class OracleDataStoreManager
 
             iterator = source.features();
 
-
             SimpleFeatureBuilder featureBuilderData = new SimpleFeatureBuilder(sfTmpStats);
             SimpleFeatureBuilder featureBuilderGeom = new SimpleFeatureBuilder(sfTmpGeom);
             int i = 0;
@@ -550,10 +499,8 @@ public class OracleDataStoreManager
             featureStoreData = (FeatureStore) ds.getFeatureSource(statsTmpTable);
             featureStoreData.setTransaction(tx);
 
-
             featureStoreGeom = (FeatureStore) ds.getFeatureSource(spatialTmpTable);
             featureStoreGeom.setTransaction(tx);
-
 
             // follow the iterator of the resulting set and divide information into two collection: geometrical and statistical
             boolean iteratorHasFinished = false;
@@ -617,7 +564,6 @@ public class OracleDataStoreManager
                         // LOGGER.debug("TRGOVLPCT : "+sf.getAttribute("percentageB"));
                     }
 
-
                     SimpleFeature sfwData = featureBuilderData.buildFeature(intersectionID);
                     sfcData.add(sfwData);
 
@@ -658,7 +604,118 @@ public class OracleDataStoreManager
             {
                 iterator.close();
             }
-            LOGGER.info("Disposing datastore. EXIT FROM SAVE TO TEMP");
         }
     }
+
+    /********************************************************************************************************************/
+
+    /**
+     * recall the steps from updating the database
+     * firstly delete all the information from temp tables
+     * then, perform the intersection, update temporary and finally update permanent
+     * @param collection
+     * @param srcLayer
+     * @param trgLayer
+     * @param srcCode
+     * @param trgCode
+     * @throws IOException
+     */
+    public void saveAll(SimpleFeatureCollection collection, String srcLayer,
+        String trgLayer, String srcCode,
+        String trgCode, int itemsPerPage) throws Exception
+    {
+
+        boolean res = false;
+
+        DataStore ds = null;
+        Transaction tx = null;
+        try
+        {
+            ds = initOracleDataStore();
+            tx = new DefaultTransaction();
+            if (ds != null)
+            {
+                LOGGER.info("Performing data saving: SRCLAYER " + srcLayer + ", SRCCODE " + srcCode + ", TRGLAYER " + trgLayer + ", TRGLAYER " + trgCode);
+                actionTemp(ds, tx, collection, srcLayer, trgLayer, srcCode, trgCode,
+                    itemsPerPage);
+                tx.commit();
+                res = true;
+            }
+            else
+            {
+                LOGGER.error("The collection cannot be null");
+                res = false;
+                throw new IOException("The collection cannot be null ");
+            }
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Exception during ORACLE saving. Rolling back ", e);
+            tx.rollback();
+            throw new IOException("Exception during ORACLE saving. Rolling back ", e);
+        }
+        finally
+        {
+            close(ds, tx);
+        }
+
+        try
+        {
+            ds = initOracleDataStore();
+            tx = new DefaultTransaction();
+            if (res && (ds != null))
+            {
+                action(ds, tx, srcLayer, trgLayer, srcCode, trgCode);
+                tx.commit();
+            }
+            else
+            {
+                LOGGER.error("The collection cannot be null");
+                res = false;
+                throw new IOException("The collection cannot be null ");
+            }
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Exception during ORACLE saving. Rolling back ", e);
+            tx.rollback();
+            throw new IOException("Exception during ORACLE saving. Rolling back ", e);
+        }
+        finally
+        {
+            close(ds, tx);
+        }
+    }
+
+    /**
+     * manage the delete all the information about the srcLayer and trgLayer pair from the permanent tables from a transaction
+     * @param srcLayer
+     * @param trgLayer
+     * @throws IOException
+     */
+    public void deleteAll(String srcLayer, String trgLayer, String srcLayerCode, String trgLayerCode) throws IOException
+    {
+        DataStore orclDatastore = null;
+        Transaction orclTransaction = null;
+        try
+        {
+            orclDatastore = initOracleDataStore();
+            orclTransaction = new DefaultTransaction();
+            deleteOldInstancesFromPermanent(orclDatastore, orclTransaction, srcLayer, trgLayer, srcLayerCode,
+                trgLayerCode);
+            orclTransaction.commit();
+        }
+        catch (Exception e)
+        {
+            LOGGER.error("Exception performing the delete all " + srcLayer + ", " + trgLayer, e);
+            orclTransaction.rollback();
+            throw new IOException("Delete all raised an exception ", e);
+        }
+        finally
+        {
+            close(orclDatastore, orclTransaction);
+        }
+
+    }
+
 }

@@ -48,7 +48,6 @@ import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.persistence.dao.util.PwEncoder;
 import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
-import it.geosolutions.figis.requester.requester.dao.impl.IEConfigDAOImpl;
 import it.geosolutions.geobatch.figis.intersection.util.TmpDirManager;
 import it.geosolutions.geobatch.figis.intersection.util.ZipStreamReader;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
@@ -138,18 +137,16 @@ public class IntersectionAction extends BaseAction<EventObject>
             multiPolygon.normalize();
 
             // logger.info("REDUCED TO: " + wktWriter.write(multiPolygon));
-
             return multiPolygon;
         }
 
         return geometry;
     }
 
-    private IEConfigDAO ieConfigDAO = new IEConfigDAOImpl();
+    private IEConfigDAO ieConfigDAO = null;
 
     private GeoServerRESTReader gsRestReader = null;
     Random generator = new Random();
-    // private WFS_1_0_0_DataStore dataStore = null;
     private Geoserver geoserver = null;
 
     /**
@@ -164,7 +161,6 @@ public class IntersectionAction extends BaseAction<EventObject>
 
     /* Password ie-service */
     private String ieServicePassword = null;
-
 
     public IntersectionAction(IntersectionConfiguration configuration) throws MalformedURLException
     {
@@ -200,10 +196,6 @@ public class IntersectionAction extends BaseAction<EventObject>
      */
     private SimpleFeatureCollection SimpleFeatureCollectionByShp(String filename)
     {
-        // ShapefileDirectoryFactory factory = new ShapefileDirectoryFactory();
-        // URL url = new URL(directory);
-        // String typeName = factory.getTypeName(url);
-
         File shpfile = new File(filename);
         LOGGER.trace("ZSR: SimpleFeatureCollection: shpfile: " + shpfile);
         if (shpfile != null)
@@ -330,7 +322,6 @@ public class IntersectionAction extends BaseAction<EventObject>
         try
         {
             // try to load src collection
-
             LOGGER.info("download first geometry " + srcLayer + " " +
                 srcCodeField);
             srcfilename = downloadFromGeoserver(srcLayer, tmpDir);
@@ -382,94 +373,101 @@ public class IntersectionAction extends BaseAction<EventObject>
                 }
             }
 
+            // check if intersection requires masking
+            if (isMasked)
+            {
+                LOGGER.info("Mask flag is set on true");
+
+                // generate the union of the mask geometries
+                ClipProcess clipProcess = new ClipProcess();
+
+                SimpleFeatureIterator sfi = maskCollection.features();
+                Geometry maskGeometry = null;
+                LOGGER.trace("Generating the union geometry");
+                if (sfi.hasNext())
+                {
+                    maskGeometry = (Geometry) sfi.next().getDefaultGeometry();
+                }
+                while (sfi.hasNext())
+                {
+                    Geometry geometry = (Geometry) sfi.next().getDefaultGeometry();
+                    // maskGeometry = maskGeometry.union(geometry);
+                    maskGeometry = union(maskGeometry, geometry);
+                }
+                LOGGER.info("clipping the first layer");
+                try
+                {
+                    // clip the src Collection using the mask collection
+                    srcCollection = clipProcess.execute(srcCollection, maskGeometry);
+                }
+                catch (Exception e)
+                {
+                    LOGGER.error("Exception when clipping the first layer", e);
+
+                    return null;
+                }
+                LOGGER.info("clipping the second layer");
+                try
+                {
+                    // clip the trg Collection using the mask collection
+                    trgCollection = clipProcess.execute(trgCollection, maskGeometry);
+                }
+                catch (Exception e)
+                {
+                    LOGGER.error("Exception when clipping the second layer", e);
+
+                    return null;
+                }
+
+            }
+
+            // setup for the IntersectionFeatureCollectionProcess
+            List<String> srcAttributes = new ArrayList<String>();
+            srcAttributes.add(srcCodeField);
+
+            List<String> trgAttributes = new ArrayList<String>();
+
+            trgAttributes.add(trgCodeField);
+
+            // perform the IntersectionFeatureCollection process
+            IntersectionFeatureCollection intersectionProcess = new IntersectionFeatureCollection();
+            SimpleFeatureCollection result2 = null;
+            try
+            {
+                result2 = intersectionProcess.execute(srcCollection, trgCollection,
+                        srcAttributes, trgAttributes, mode, true, true);
+            }
+            catch (Exception e)
+            {
+                LOGGER.error("Exception when performing the intersection", e);
+
+                return null;
+            }
+            LOGGER.info("Intersection process prepared");
+
+            return result2;
         }
         catch (Throwable e)
         {
             LOGGER.error("Failed to load some layers", e);
 
             return null;
-
         }
-
-        // check if intersection requires masking
-        if (isMasked)
+        finally
         {
-            LOGGER.info("Mask flag is set on true");
-
-            // generate the union of the mask geometries
-            ClipProcess clipProcess = new ClipProcess();
-
-            SimpleFeatureIterator sfi = maskCollection.features();
-            Geometry maskGeometry = null;
-            LOGGER.trace("Generating the union geometry");
-            if (sfi.hasNext())
+            if (srcCollection != null)
             {
-                maskGeometry = (Geometry) sfi.next().getDefaultGeometry();
+                srcCollection.features().close();
             }
-            while (sfi.hasNext())
+            if (trgCollection != null)
             {
-                Geometry geometry = (Geometry) sfi.next().getDefaultGeometry();
-                // maskGeometry = maskGeometry.union(geometry);
-                maskGeometry = union(maskGeometry, geometry);
+                trgCollection.features().close();
             }
-            LOGGER.info("clipping the first layer");
-            try
+            if (maskCollection != null)
             {
-                // clip the src Collection using the mask collection
-                srcCollection = clipProcess.execute(srcCollection, maskGeometry);
+                maskCollection.features().close();
             }
-            catch (Exception e)
-            {
-                LOGGER.error("Exception when clipping the first layer", e);
-
-                return null;
-            }
-            LOGGER.info("clipping the second layer");
-            try
-            {
-                // clip the trg Collection using the mask collection
-                trgCollection = clipProcess.execute(trgCollection, maskGeometry);
-            }
-            catch (Exception e)
-            {
-                LOGGER.error("Exception when clipping the second layer", e);
-
-                return null;
-            }
-
         }
-
-        // setup for the IntersectionFeatureCollectionProcess
-        List<String> srcAttributes = new ArrayList<String>();
-        srcAttributes.add(srcCodeField);
-
-        List<String> trgAttributes = new ArrayList<String>();
-
-        trgAttributes.add(trgCodeField);
-
-        // perform the IntersectionFeatureCollection process
-        IntersectionFeatureCollection intersectionProcess = new IntersectionFeatureCollection();
-        // long dif_beg = Long.parseLong(new Timestamp(new
-        // java.util.Date().getTime()).toString());
-        // LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> trgCollection: intersectionProcess: >>>>>>"+this+"<<<>>>"+dif_beg+" <<<<<<<<<<");
-        SimpleFeatureCollection result2 = null;
-        try
-        {
-            result2 = intersectionProcess.execute(srcCollection, trgCollection,
-                    srcAttributes, trgAttributes, mode, true, true);
-        }
-        catch (Exception e)
-        {
-            LOGGER.error("Exception when performing the intersection", e);
-
-            return null;
-        }
-        // long dif_end = Long.parseLong(new Timestamp(new
-        // java.util.Date().getTime()).toString());
-        // LOGGER.trace(">>>>>>>>>>>>>>>>>>>>>>>>>>> trgCollection: intersectionProcess: >>>>>>"+this+"<<<>>>"+(dif_end-dif_beg)+" <<<<<<<<<<");
-        LOGGER.info("Intersection process prepared");
-
-        return result2;
     }
 
     public boolean initConnections(Geoserver geoserver)
@@ -577,7 +575,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                 try
                 {
                     dataStoreOracle.deleteAll(getName(srcLayer), getName(trgLayer), srcCode, trgCode);
-                    ieConfigDAO.deleteIntersectionById(host, id, getIeServiceUsername(), getIeServicePassword());
+                    getIeConfigDAO().deleteIntersectionById(host, id, getIeServiceUsername(), getIeServicePassword());
                 }
                 catch (Exception e)
                 {
@@ -591,15 +589,16 @@ public class IntersectionAction extends BaseAction<EventObject>
                                             // computed
             {
                 intersection.setStatus(Status.COMPUTING);
-                ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                getIeConfigDAO().updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
 
                 SimpleFeatureCollection resultInt = null;
 
-                resultInt = intersect(intersection, tmpdir);
-
-                String geometryType = "unknown";
                 try
                 {
+                    resultInt = intersect(intersection, tmpdir);
+
+                    String geometryType = "unknown";
+
                     if (resultInt != null)
                     {
                         geometryType = resultInt.getSchema().getGeometryDescriptor().getType().getName().getLocalPart();
@@ -615,12 +614,12 @@ public class IntersectionAction extends BaseAction<EventObject>
                             // that a concurrent
                             // compute again the intersection
                             intersection.setStatus(Status.COMPUTING);
-                            ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                            getIeConfigDAO().updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
 
                             LOGGER.info("Trying to store intersection result in ORACLE " + schema + ":" + db + " on " + dbHost + ":" + port + "(" + user + ",*****) ");
                             dataStoreOracle.saveAll(resultInt, getName(srcLayer), getName(trgLayer), srcCode, trgCode, itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
-                            ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                            getIeConfigDAO().updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                             LOGGER.info("Store operation successfully computed");
                         }
                         else
@@ -629,23 +628,30 @@ public class IntersectionAction extends BaseAction<EventObject>
                             LOGGER.error("Intersections will be deleted");
                             // Request.deleteIntersectionById(host, id,getIeServiceUsername(),getIeServicePassword());
                             intersection.setStatus(Status.FAILED);
-                            ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                            getIeConfigDAO().updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                         }
                     }
                     else
                     {
                         intersection.setStatus(Status.FAILED);
-                        ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                        getIeConfigDAO().updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
                     }
                 }
                 catch (Exception e)
                 {
                     LOGGER.error("Problem performing Intersection on " + srcLayer + "," + trgLayer + "," + srcCode + "," + trgCode, e);
                     intersection.setStatus(Status.FAILED);
-                    ieConfigDAO.updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
+                    getIeConfigDAO().updateIntersectionById(host, id, intersection, getIeServiceUsername(), getIeServicePassword());
 
                     LOGGER.error("Exception caught while computing intersections.", e);
                     throw new RuntimeException("Exception caught while computing intersections.", e);
+                }
+                finally
+                {
+                    if (resultInt != null)
+                    {
+                        resultInt.features().close();
+                    }
                 }
             }
         }
@@ -715,13 +721,17 @@ public class IntersectionAction extends BaseAction<EventObject>
                             ev.getSource());
                     }
 
-                    // FileSystemEvent fileEvent=(FileSystemEvent)ev;
-
                     // perform basic checks and return the current config in the
                     // DB
                     LOGGER.info("Trying to connect to " + host + " and retrieve config data");
 
-                    Config config = basicChecks(ieConfigDAO.loadConfg(host, ieServiceUsername, ieServicePassword));
+                    if (ieConfigDAO == null)
+                    {
+                        LOGGER.error("ieConfigDAO was null!");
+                        throw new ActionException(this, "ieConfigDAO was null!");
+                    }
+
+                    Config config = basicChecks(getIeConfigDAO().loadConfg(host, ieServiceUsername, ieServicePassword));
                     if (config != null)
                     {
                         LOGGER.info("Config data correctly read");
@@ -785,6 +795,22 @@ public class IntersectionAction extends BaseAction<EventObject>
         return ret;
     }
 
+
+    /**
+     * @param ieConfigDAO the ieConfigDAO to set
+     */
+    public void setIeConfigDAO(IEConfigDAO ieConfigDAO)
+    {
+        this.ieConfigDAO = ieConfigDAO;
+    }
+
+    /**
+     * @return the ieConfigDAO
+     */
+    public IEConfigDAO getIeConfigDAO()
+    {
+        return ieConfigDAO;
+    }
 
     public void setGeoserver(Geoserver geoserver)
     {
