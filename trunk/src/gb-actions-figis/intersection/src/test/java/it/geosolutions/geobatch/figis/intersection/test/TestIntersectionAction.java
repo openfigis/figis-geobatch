@@ -43,6 +43,8 @@ public class TestIntersectionAction extends TestCase
         queue = new LinkedBlockingQueue<EventObject>();
         queue.add(new FileSystemEvent(inputFile, FileSystemEventType.FILE_ADDED));
 
+        config = IEConfigUtils.parseXMLConfig(loadXMLConfig("ie-config.xml").getAbsolutePath());
+
         IntersectionConfiguration cronConfiguration = new IntersectionConfiguration("id", "name", " description");
         cronConfiguration.setPersistencyHost("http://localhost:8181");
         cronConfiguration.setItemsPerPages(50);
