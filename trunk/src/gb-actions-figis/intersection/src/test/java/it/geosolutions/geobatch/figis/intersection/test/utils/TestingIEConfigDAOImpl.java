@@ -1,11 +1,13 @@
 package it.geosolutions.geobatch.figis.intersection.test.utils;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
+import it.geosolutions.figis.persistence.dao.util.PwEncoder;
 import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.figis.requester.requester.dao.impl.IEConfigDAOImpl;
 
@@ -27,6 +29,8 @@ public class TestingIEConfigDAOImpl implements IEConfigDAO
     public TestingIEConfigDAOImpl(Config ieConfig)
     {
         this.ieConfig = ieConfig;
+        this.ieConfig.getGlobal().getDb().setPassword(PwEncoder.encode(this.ieConfig.getGlobal().getDb().getPassword()));
+        this.ieConfig.getGlobal().getGeoserver().setGeoserverPassword(PwEncoder.encode(this.ieConfig.getGlobal().getGeoserver().getGeoserverPassword()));
     }
 
     /**
@@ -76,17 +80,19 @@ public class TestingIEConfigDAOImpl implements IEConfigDAO
     public boolean deleteIntersectionById(String host, long id,
         String ieServiceUsername, String ieServicePassword)
     {
+        List<Intersection> reducedIntersections = new ArrayList<Intersection>();
+
         for (Intersection intersection : getDbIntersections())
         {
-            if (intersection.getId() == id)
+            if (intersection.getId() != id)
             {
-                getDbIntersections().remove(intersection);
-
-                return true;
+                reducedIntersections.add(intersection);
             }
         }
 
-        return false;
+        setDbIntersections(reducedIntersections);
+
+        return true;
     }
 
     /* (non-Javadoc)

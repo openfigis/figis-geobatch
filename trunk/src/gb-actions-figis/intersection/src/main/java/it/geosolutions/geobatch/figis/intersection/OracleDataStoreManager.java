@@ -11,12 +11,12 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
 import org.geotools.data.oracle.OracleNGDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -290,12 +290,26 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @throws Exception
      */
-    private void action(DataStore ds, Transaction tx, String srcLayer, String trgLayer, String srcLayerCode,
-        String trgLayerCode) throws Exception
+    private void action(DataStore ds, Transaction tx, String srcLayer, String trgLayer, String srcCode,
+        String trgCode) throws Exception
     {
-        deleteOldInstancesFromPermanent(ds, tx, srcLayer, trgLayer, srcLayerCode, trgLayerCode);
-        saveToPermanent(ds, tx, statsTmpTable, statsTable);
-        saveToPermanent(ds, tx, spatialTmpTable, spatialTable);
+        FeatureStore featureStoreTmpData = (FeatureStore) ds.getFeatureSource(statsTmpTable);
+        FeatureStore featureStoreTmpGeom = (FeatureStore) ds.getFeatureSource(statsTmpTable);
+
+        featureStoreTmpData.setTransaction(tx);
+        featureStoreTmpGeom.setTransaction(tx);
+
+        FeatureStore featureStoreData = (FeatureStore) ds.getFeatureSource(statsTable);
+        FeatureStore featureStoreGeom = (FeatureStore) ds.getFeatureSource(spatialTable);
+
+        featureStoreData.setTransaction(tx);
+        featureStoreGeom.setTransaction(tx);
+
+        deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData,
+            featureStoreGeom);
+
+        saveToPermanent(featureStoreTmpData, featureStoreData);
+        saveToPermanent(featureStoreTmpGeom, featureStoreGeom);
     }
 
 
@@ -307,22 +321,24 @@ public class OracleDataStoreManager
      * @param ds
      * @throws IOException
      */
-    private void saveToPermanent(DataStore ds, Transaction tx, String tableFrom, String tableTo) throws IOException
+    private void saveToPermanent(FeatureStore featureStoreFrom, FeatureStore featureStoreTo) throws IOException
     {
-        LOGGER.info("Saving data from permanent table " + tableFrom + " to " + tableTo);
+        LOGGER.info("Saving data from permanent table.");
 
-        SimpleFeatureSource sfs = ds.getFeatureSource(tableFrom);
-        FeatureStore featureStore = (FeatureStore) ds.getFeatureSource(tableTo);
-        featureStore.setTransaction(tx);
         try
         {
-            featureStore.addFeatures(sfs.getFeatures());
+            featureStoreTo.addFeatures(featureStoreFrom.getFeatures());
         }
         finally
         {
-            if (featureStore != null)
+            if (featureStoreFrom != null)
             {
-                featureStore.getDataStore().dispose();
+                featureStoreFrom.getDataStore().dispose();
+            }
+
+            if (featureStoreTo != null)
+            {
+                featureStoreTo.getDataStore().dispose();
             }
         }
     }
@@ -334,25 +350,21 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @param trgLayerCode
      * @param srcLayerCode
+     * @param featureStoreData
+     * @param featureStoreGeom
      * @param ds
      * @throws IOException
      */
-    private void deleteOldInstancesFromPermanent(DataStore ds, Transaction tx, String srcLayer, String trgLayer,
-        String srcLayerCode, String trgLayerCode) throws Exception
+    private void deleteOldInstancesFromPermanent(String srcLayer, String trgLayer,
+        String srcLayerCode, String trgLayerCode, FeatureStore featureStoreData, FeatureStore featureStoreGeom)
+        throws Exception
     {
         LOGGER.info("Deleting old instances of the intersection between " + srcLayer + " and " + trgLayer);
 
-        FeatureStore featureStoreData = null;
-        FeatureStore featureStoreGeom = null;
         SimpleFeatureIterator iterator = null;
 
         try
         {
-            featureStoreData = (FeatureStore) ds.getFeatureSource(statsTable);
-            featureStoreGeom = (FeatureStore) ds.getFeatureSource(spatialTable);
-            featureStoreData.setTransaction(tx);
-            featureStoreGeom.setTransaction(tx);
-
             final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Filter filter1 = ff.equals(ff.property("SRCLAYER"), ff.literal(srcLayer));
             Filter filter2 = ff.equals(ff.property("TRGLAYER"), ff.literal(trgLayer));
@@ -402,6 +414,11 @@ public class OracleDataStoreManager
     {
         try
         {
+            if (ds != null)
+            {
+                ds.dispose();
+            }
+
             if (tx != null)
             {
                 tx.close();
@@ -409,14 +426,7 @@ public class OracleDataStoreManager
         }
         catch (Exception e)
         {
-            LOGGER.error("Exception closing the transaction", e);
-        }
-        finally
-        {
-            if (ds != null)
-            {
-                ds.dispose();
-            }
+            LOGGER.trace("Exception closing the transaction", e);
         }
     }
 
@@ -620,7 +630,7 @@ public class OracleDataStoreManager
      * @param trgCode
      * @throws IOException
      */
-    public void saveAll(SimpleFeatureCollection collection, String srcLayer,
+    public boolean saveAll(SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode,
         String trgCode, int itemsPerPage) throws Exception
     {
@@ -636,6 +646,7 @@ public class OracleDataStoreManager
             if (ds != null)
             {
                 LOGGER.info("Performing data saving: SRCLAYER " + srcLayer + ", SRCCODE " + srcCode + ", TRGLAYER " + trgLayer + ", TRGLAYER " + trgCode);
+
                 actionTemp(ds, tx, collection, srcLayer, trgLayer, srcCode, trgCode,
                     itemsPerPage);
                 tx.commit();
@@ -667,6 +678,7 @@ public class OracleDataStoreManager
             {
                 action(ds, tx, srcLayer, trgLayer, srcCode, trgCode);
                 tx.commit();
+                res = true;
             }
             else
             {
@@ -685,6 +697,8 @@ public class OracleDataStoreManager
         {
             close(ds, tx);
         }
+
+        return res;
     }
 
     /**
@@ -693,7 +707,7 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @throws IOException
      */
-    public void deleteAll(String srcLayer, String trgLayer, String srcLayerCode, String trgLayerCode) throws IOException
+    public void deleteAll(String srcLayer, String trgLayer, String srcCode, String trgCode) throws IOException
     {
         DataStore orclDatastore = null;
         Transaction orclTransaction = null;
@@ -701,8 +715,22 @@ public class OracleDataStoreManager
         {
             orclDatastore = initOracleDataStore();
             orclTransaction = new DefaultTransaction();
-            deleteOldInstancesFromPermanent(orclDatastore, orclTransaction, srcLayer, trgLayer, srcLayerCode,
-                trgLayerCode);
+
+            FeatureStore featureStoreTmpData = (FeatureStore) orclDatastore.getFeatureSource(statsTmpTable);
+            FeatureStore featureStoreTmpGeom = (FeatureStore) orclDatastore.getFeatureSource(statsTmpTable);
+
+            featureStoreTmpData.setTransaction(orclTransaction);
+            featureStoreTmpGeom.setTransaction(orclTransaction);
+
+            FeatureStore featureStoreData = (FeatureStore) orclDatastore.getFeatureSource(statsTable);
+            FeatureStore featureStoreGeom = (FeatureStore) orclDatastore.getFeatureSource(spatialTable);
+
+            featureStoreData.setTransaction(orclTransaction);
+            featureStoreGeom.setTransaction(orclTransaction);
+
+            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData,
+                featureStoreGeom);
+
             orclTransaction.commit();
         }
         catch (Exception e)

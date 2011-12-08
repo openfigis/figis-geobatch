@@ -784,11 +784,13 @@ public class IntersectionAction extends BaseAction<EventObject>
             {
                 final String message = "ConfigAction.execute(): Unable to produce the output: " +
                     ioe.getLocalizedMessage();
-                if (LOGGER.isErrorEnabled())
-                {
-                    LOGGER.error(message);
-                }
-                throw new ActionException(this, message);
+
+                /*if (LOGGER.isErrorEnabled())
+                {*/
+                LOGGER.error(message, ioe);
+
+                /*}*/
+                throw new ActionException(this, message, ioe);
             }
         }
 

@@ -4,20 +4,20 @@
        <geoserver>
            <geoserverUrl>http://192.168.1.106:8484/figis/geoserver</geoserverUrl> 
            <geoserverUsername>admin</geoserverUsername>
-           <geoserverPassword>******</geoserverPassword>
+           <geoserverPassword>abramisbrama</geoserverPassword>
        </geoserver>
        <db>
            <database>orcl</database>
            <schema>FIGIS_GIS</schema>
            <user>FIGIS_GIS</user>
-           <password>******</password>
+           <password>FIGIS</password>
            <port>1521</port>
            <host>192.168.1.106</host>
        </db>
        <clean>false</clean>
    </global>
    <intersections>
-       <intersection mask="true" force="true" preserveTrgGeom="false">
+       <intersection mask="false" force="true" preserveTrgGeom="true">
            <id>1</id>
            <srcLayer>fifao:FAO_DIV</srcLayer>
            <trgLayer>fifao:NJA</trgLayer>
@@ -37,7 +37,7 @@
            <areaCRS>EPSG:54012</areaCRS>
            <status>COMPUTED</status>
        </intersection>
-       <intersection mask="true" force="false" preserveTrgGeom="false">
+       <intersection mask="false" force="false" preserveTrgGeom="false">
            <id>3</id>
            <srcLayer>fifao:FAO_MAJOR</srcLayer>
            <trgLayer>fifao:ICCAT_SMU</trgLayer>
@@ -45,7 +45,7 @@
            <srcCodeField>F_AREA</srcCodeField>
            <trgCodeField>ICCAT_SMU</trgCodeField>
            <areaCRS>EPSG:54012</areaCRS>
-           <status>COMPUTED</status>
+           <status>TOCOMPUTE</status>
        </intersection>
    </intersections>
 </ie-config>

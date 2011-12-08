@@ -77,7 +77,7 @@ public class TestIntersectionAction extends TestCase
         return inputFile;
     }
 
-    @Test
+    /*@Test
     public void testDBOracleConnection()
     {
         try
@@ -97,7 +97,7 @@ public class TestIntersectionAction extends TestCase
             assertTrue(e.getMessage(), false);
         }
 
-    }
+    }*/
 
     @Test
     public void test1_IntersectionsComputation() throws Exception
