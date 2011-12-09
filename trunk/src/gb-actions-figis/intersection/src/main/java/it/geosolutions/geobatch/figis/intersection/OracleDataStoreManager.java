@@ -401,7 +401,11 @@ public class OracleDataStoreManager
         {
             if (iterator != null)
             {
-                iterator.close();
+            	try{
+            		iterator.close();
+            	}catch(Exception e){
+            		LOGGER.error("ERROR on closing Features iterator: ", e);
+            	}
             }
 
         }
@@ -425,7 +429,7 @@ public class OracleDataStoreManager
         }
         catch (Exception e)
         {
-            LOGGER.trace("Exception closing the transaction", e);
+            LOGGER.error("Exception closing the transaction", e);
         }    	
     	
         try
@@ -438,7 +442,7 @@ public class OracleDataStoreManager
         }
         catch (Exception e)
         {
-            LOGGER.trace("Exception closing the transaction", e);
+            LOGGER.error("Exception closing the transaction", e);
         }
     }
 

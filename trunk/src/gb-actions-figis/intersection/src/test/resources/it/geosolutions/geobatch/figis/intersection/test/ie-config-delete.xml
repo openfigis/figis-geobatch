@@ -2,7 +2,7 @@
 <ie-config updateVersion="0">
    <global>
        <geoserver>
-           <geoserverUrl>http://192.168.1.106:8484/figis/geoserver</geoserverUrl> 
+           <geoserverUrl>http://192.168.139.128:8484/figis/geoserver</geoserverUrl> 
            <geoserverUsername>admin</geoserverUsername>
            <geoserverPassword>abramisbrama</geoserverPassword>
        </geoserver>
@@ -12,7 +12,7 @@
            <user>FIGIS_GIS</user>
            <password>FIGIS</password>
            <port>1521</port>
-           <host>192.168.1.106</host>
+           <host>192.168.139.128</host>
        </db>
        <clean>false</clean>
    </global>

@@ -273,7 +273,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 						try {
 							sfi.close();
 						} catch (Exception e) {
-							// TODO: handle exception
+							LOGGER.trace(e.getLocalizedMessage(), e);
 						}
 					}
 				}
@@ -343,14 +343,18 @@ public class IntersectionAction extends BaseAction<EventObject> {
 				try {
 					trgCollection.clear();
 				} catch (Exception e) {
-					// TODO: handle exception
+					if(LOGGER.isErrorEnabled()){
+						LOGGER.error("Failed to clear srcCollection", e);
+					}
 				}
 			}
 			if (maskCollection != null) {
 				try {
 					maskCollection.clear();
 				} catch (Exception e) {
-					// TODO: handle exception
+					if(LOGGER.isErrorEnabled()){
+						LOGGER.error("Failed to clear srcCollection", e);
+					}
 				}
 			}
 		}
