@@ -59,14 +59,13 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  */
 public class IntersectionAction extends BaseAction<EventObject> {
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(IntersectionAction.class);
 	
 	private final List<ShapefileDataStore> shapeFileStores= new ArrayList<ShapefileDataStore>();
 	
 	private int itemsPerPage = 50;
-
 	private IEConfigDAO ieConfigDAO = null;
-
 	private GeoServerRESTReader gsRestReader = null;
 	private Geoserver geoserver = null;
 
@@ -83,15 +82,13 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	/** Password ie-service */
 	private String ieServicePassword = null;
 
-	public IntersectionAction(IntersectionConfiguration configuration)
-			throws MalformedURLException {
+	public IntersectionAction(IntersectionConfiguration configuration) throws MalformedURLException {
 		super(configuration);
 		conf = configuration;
 		host = conf.getPersistencyHost();
 		itemsPerPage = conf.getItemsPerPages();
 		ieServiceUsername = conf.getIeServiceUsername();
 		ieServicePassword = conf.getIeServicePassword();
-
 	}
 
 	/******
@@ -259,8 +256,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 						LOGGER.trace("Generating the union geometry");
 					}
 					if (sfi.hasNext()) {
-						maskGeometry = (Geometry) sfi.next()
-								.getDefaultGeometry();
+						maskGeometry = (Geometry) sfi.next().getDefaultGeometry();
 					}
 					while (sfi.hasNext()) {
 						Geometry geometry = (Geometry) sfi.next().getDefaultGeometry();
@@ -320,9 +316,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 			IntersectionFeatureCollection intersectionProcess = new IntersectionFeatureCollection();
 			SimpleFeatureCollection result2 = null;
 			try {
-				result2 = intersectionProcess.execute(srcCollection,
-						trgCollection, srcAttributes, trgAttributes, mode,
-						true, true);
+				result2 = intersectionProcess.execute(srcCollection,trgCollection, srcAttributes, trgAttributes, mode,true, true);
 			} catch (Exception e) {
 				LOGGER.error("Exception when performing the intersection", e);
 				return null;
@@ -368,8 +362,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 			String url = geoserver.getGeoserverUrl();
 			LOGGER.trace(url + " USER " + geoserver.getGeoserverUsername() + ", PWD(enc) " + geoserver.getGeoserverPassword());
 			gsRestReader = new GeoServerRESTReader(url, geoserver
-					.getGeoserverUsername(), PwEncoder.decode(geoserver
-					.getGeoserverPassword()));
+					.getGeoserverUsername(), PwEncoder.decode(geoserver.getGeoserverPassword()));
 
 			if (!gsRestReader.existGeoserver()) {
 				return false;
@@ -399,8 +392,8 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	 * @return true everything goes well
 	 * @throws Exception
 	 */
-	boolean executeIntersectionStatements(String host, Config config,
-			boolean simulate, String tmpdir) throws InitializationException {
+	boolean executeIntersectionStatements(String host, Config config, boolean simulate, String tmpdir) throws InitializationException {
+		
 		OracleDataStoreManager dataStoreOracle = null;
 		// check if this control works as expected
 		if (config.intersections == null) {
@@ -419,12 +412,9 @@ public class IntersectionAction extends BaseAction<EventObject> {
 		int port = Integer.parseInt(config.getGlobal().getDb().getPort());
 
 		try {
-			dataStoreOracle = new OracleDataStoreManager(dbHost, port, db,
-					schema, user, pwd);
+			dataStoreOracle = new OracleDataStoreManager(dbHost, port, db, schema, user, pwd);
 		} catch (Exception e) {
-			throw new InitializationException(
-					"Problems creating the ORACLE datastore instance, check the parameters",
-					e);
+			throw new InitializationException("Problems creating the ORACLE datastore instance, check the parameters", e);
 		}
 
 		for (Intersection intersection : config.intersections) {
@@ -443,14 +433,10 @@ public class IntersectionAction extends BaseAction<EventObject> {
 			LOGGER.info("COMMAND: " + intersection);
 			if (status == Status.TODELETE) {
 				try {
-					dataStoreOracle.deleteAll(Utilities.getName(srcLayer),
-							Utilities.getName(trgLayer), srcCode, trgCode);
-					ieConfigDAO.deleteIntersectionById(host, id,
-							ieServiceUsername, ieServicePassword);
+					dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode);
+					ieConfigDAO.deleteIntersectionById(host, id, ieServiceUsername, ieServicePassword);
 				} catch (Exception e) {
-					LOGGER.error(
-							"Problem deleting intersection from the database identified by "
-									+ srcLayer + "," + trgLayer, e);
+					LOGGER.error("Problem deleting intersection from the database identified by " + srcLayer + "," + trgLayer, e);
 				}
 				// still to implement
 			}
@@ -458,8 +444,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 			// computed
 			{
 				intersection.setStatus(Status.COMPUTING);
-				ieConfigDAO.updateIntersectionById(host, id, intersection,
-						ieServiceUsername, ieServicePassword);
+				ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
 
 				SimpleFeatureCollection resultFeatureCollection = null;
 				try {
@@ -469,8 +454,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 
 					if (resultFeatureCollection != null) {
 						geometryType = resultFeatureCollection.getSchema()
-								.getGeometryDescriptor().getType().getName()
-								.getLocalPart();
+								.getGeometryDescriptor().getType().getName().getLocalPart();
 
 						// the intersection can be updated on the db only if the
 						// intersection generate a reuslt and it is Multipolygon
@@ -483,12 +467,9 @@ public class IntersectionAction extends BaseAction<EventObject> {
 							// that a concurrent
 							// compute again the intersection
 							intersection.setStatus(Status.COMPUTING);
-							ieConfigDAO.updateIntersectionById(host, id,
-									intersection, ieServiceUsername,
-									ieServicePassword);
+							ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
 
-							LOGGER
-									.info("Trying to store intersection result in ORACLE "
+							LOGGER.info("Trying to store intersection result in ORACLE "
 											+ schema
 											+ ":"
 											+ db
@@ -504,14 +485,10 @@ public class IntersectionAction extends BaseAction<EventObject> {
 											.getName(trgLayer), srcCode,
 									trgCode, itemsPerPage);
 							intersection.setStatus(Status.COMPUTED);
-							ieConfigDAO.updateIntersectionById(host, id,
-									intersection, ieServiceUsername,
-									ieServicePassword);
-							LOGGER
-									.info("Store operation successfully computed");
+							ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
+							LOGGER.info("Store operation successfully computed");
 						} else {
-							LOGGER
-									.error("Skipping intersection between "
+							LOGGER.error("Skipping intersection between "
 											+ srcLayer
 											+ " and "
 											+ trgLayer
@@ -520,26 +497,19 @@ public class IntersectionAction extends BaseAction<EventObject> {
 							// Request.deleteIntersectionById(host,
 							// id,ieServiceUsername,ieServicePassword);
 							intersection.setStatus(Status.FAILED);
-							ieConfigDAO.updateIntersectionById(host, id,
-									intersection, ieServiceUsername,
-									ieServicePassword);
+							ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
 						}
 					} else {
 						intersection.setStatus(Status.FAILED);
-						ieConfigDAO.updateIntersectionById(host, id,
-								intersection, ieServiceUsername,
-								ieServicePassword);
+						ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
 					}
 				} catch (Exception e) {
 					LOGGER.error("Problem performing Intersection on "
 							+ srcLayer + "," + trgLayer + "," + srcCode + ","
 							+ trgCode, e);
 					intersection.setStatus(Status.FAILED);
-					ieConfigDAO.updateIntersectionById(host, id, intersection,
-							ieServiceUsername, ieServicePassword);
-					throw new RuntimeException(
-							"Exception caught while computing intersections.",
-							e);
+					ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
+					throw new RuntimeException("Exception caught while computing intersections.", e);
 				} finally {
 					if (resultFeatureCollection != null) {
 						resultFeatureCollection.clear();
@@ -561,8 +531,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 
 			return null;
 		}
-		LOGGER
-				.info("Config information correctly read. Trying to connect to Geoserver on "
+		LOGGER.info("Config information correctly read. Trying to connect to Geoserver on "
 						+ config.getGlobal().getGeoserver().getGeoserverUrl());
 		// check the datastore and REST manager geoserver connections
 		if (!initConnections(config.getGlobal().getGeoserver())) {
@@ -578,8 +547,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	/**
 	 * Removes TemplateModelEvents from the queue and put
 	 */
-	public Queue<EventObject> execute(Queue<EventObject> events)
-			throws ActionException {
+	public Queue<EventObject> execute(Queue<EventObject> events) throws ActionException {
 		host = conf.getPersistencyHost();
 		itemsPerPage = conf.getItemsPerPages();
 		ieServiceUsername = conf.getIeServiceUsername();
@@ -600,22 +568,18 @@ public class IntersectionAction extends BaseAction<EventObject> {
 			try {
 				if ((ev = events.remove()) != null) {
 					if (LOGGER.isTraceEnabled()) {
-						LOGGER
-								.trace("ConfigAction.execute(): working on incoming event: "
-										+ ev.getSource());
+						LOGGER.trace("ConfigAction.execute(): working on incoming event: " + ev.getSource());
 					}
 
 					// perform basic checks and return the current config in the
 					// DB
-					LOGGER.info("Trying to connect to " + host
-							+ " and retrieve config data");
+					LOGGER.info("Trying to connect to " + host + " and retrieve config data");
 
 					if (ieConfigDAO == null) {
 						throw new ActionException(this, "ieConfigDAO was null!");
 					}
 
-					Config config = checkConfiguration(ieConfigDAO.loadConfg(
-							host, ieServiceUsername, ieServicePassword));
+					Config config = checkConfiguration(ieConfigDAO.loadConfg(host, ieServiceUsername, ieServicePassword));
 					if (config != null) {
 						LOGGER.info("Config data correctly read");
 						geoserver = config.getGlobal().getGeoserver();

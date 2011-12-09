@@ -228,7 +228,6 @@ public class OracleDataStoreManager
 
         sfGeom = sftbGeoms.buildFeatureType();
 
-
         // check if tables exist, if not create them
 
         String[] listTables = ds.getTypeNames();
@@ -317,8 +316,7 @@ public class OracleDataStoreManager
         featureStoreData.setTransaction(tx);
         featureStoreGeom.setTransaction(tx);
 
-        deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData,
-            featureStoreGeom);
+        deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData, featureStoreGeom);
 
         saveToPermanent(featureStoreTmpData, featureStoreData);
         saveToPermanent(featureStoreTmpGeom, featureStoreGeom);
@@ -335,7 +333,7 @@ public class OracleDataStoreManager
      */
     private void saveToPermanent(FeatureStore featureStoreFrom, FeatureStore featureStoreTo) throws IOException
     {
-        LOGGER.info("Saving data from permanent table.");
+        LOGGER.trace("Saving data from permanent table.");
 
         try
         {
@@ -446,7 +444,7 @@ public class OracleDataStoreManager
 
     private void cleanTemp(DataStore ds, Transaction tx) throws IOException
     {
-        LOGGER.info("Cleaning temp table");
+        LOGGER.trace("Cleaning temp table");
 
         FeatureStore featureStoreData = null;
         FeatureStore featureStoreGeom = null;
@@ -541,14 +539,12 @@ public class OracleDataStoreManager
                 while (iterator.hasNext() && !save)
                 {
                     i++;
-                    if ((i % itemsPerPage) == 0)
-                    {
+                    if ((i % itemsPerPage) == 0){
                         save = true;
                     }
-                    // LOGGER.debug("SAVING "+save);
 
-                    // String intersectionID = srcLayer+"_"+trgLayer+"_"+i;
                     String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + i;
+                    
                     SimpleFeature sf = iterator.next();
 
                     featureBuilderData.set("SRCODE", sf.getAttribute(srcLayer + "_" + srcCode));
@@ -564,28 +560,22 @@ public class OracleDataStoreManager
                     featureBuilderData.set("TRGCODENAME", trgCode);
 
                     LOGGER.debug("INTERSECTION_ID : " + intersectionID);
-                    // LOGGER.debug("SRCLAYER : "+srcLayer+", SRCCODE : "+sf.getAttribute(srcCode));
-                    // LOGGER.debug("TRGLAYER : "+trgLayer+", TRGCODE : "+sf.getAttribute(trgCode));
-
+                   
                     if (sf.getAttribute("areaA") != null)
                     {
                         featureBuilderData.set("SRCAREA", sf.getAttribute("areaA"));
-                        // LOGGER.debug("SRCAREA : "+sf.getAttribute("areaA"));
                     }
                     if (sf.getAttribute("areaB") != null)
                     {
                         featureBuilderData.set("TRGAREA", sf.getAttribute("areaB"));
-                        // LOGGER.debug("TRGAREA : "+sf.getAttribute("areaB"));
                     }
                     if (sf.getAttribute("percentageA") != null)
                     {
                         featureBuilderData.set("SRCOVLPCT", sf.getAttribute("percentageA"));
-                        // LOGGER.debug("SRCOVLPCT : "+sf.getAttribute("percentageA"));
                     }
                     if (sf.getAttribute("percentageB") != null)
                     {
                         featureBuilderData.set("TRGOVLPCT", sf.getAttribute("percentageB"));
-                        // LOGGER.debug("TRGOVLPCT : "+sf.getAttribute("percentageB"));
                     }
 
                     SimpleFeature sfwData = featureBuilderData.buildFeature(intersectionID);
@@ -600,7 +590,6 @@ public class OracleDataStoreManager
                     featureBuilderGeom.set("INTERSECTION_ID", intersectionID);
 
                     SimpleFeature sfwGeom = featureBuilderGeom.buildFeature(intersectionID);
-                    // LOGGER.debug("INTERSECTION_ID : "+intersectionID+", GEOMETRY : "+targetGeometry);
                     sfcGeom.add(sfwGeom);
                 }
 
@@ -659,10 +648,9 @@ public class OracleDataStoreManager
             tx = new DefaultTransaction();
             if (ds != null)
             {
-                LOGGER.info("Performing data saving: SRCLAYER " + srcLayer + ", SRCCODE " + srcCode + ", TRGLAYER " + trgLayer + ", TRGLAYER " + trgCode);
+                LOGGER.trace("Performing data saving: SRCLAYER " + srcLayer + ", SRCCODE " + srcCode + ", TRGLAYER " + trgLayer + ", TRGLAYER " + trgCode);
 
-                actionTemp(ds, tx, collection, srcLayer, trgLayer, srcCode, trgCode,
-                    itemsPerPage);
+                actionTemp(ds, tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
                 tx.commit();
                 res = true;
             }

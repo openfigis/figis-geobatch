@@ -33,6 +33,7 @@ import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.IntersectionDao;
+import it.geosolutions.figis.security.UserUtils;
 import it.geosolutions.figis.ws.FigisService;
 import it.geosolutions.figis.ws.exceptions.BadRequestExceptionDetails;
 import it.geosolutions.figis.ws.exceptions.BadRequestExceptionFault;
@@ -41,6 +42,7 @@ import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
 import it.geosolutions.figis.ws.response.Intersections;
 import it.geosolutions.figis.ws.response.IntersectionsPageCount;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -48,14 +50,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @WebService(name = "FigisService", serviceName = "FigisServiceService", portName = "FigisServicePort", endpointInterface = "it.geosolutions.figis.ws.FigisService", targetNamespace = "http://services.figis.geosolutions.it/")
 public class FigisServiceImpl implements FigisService
 {
-
+	private static final Logger LOGGER = Logger.getLogger(FigisServiceImpl.class);
     ConfigDao configDao = null;
     IntersectionDao intersectionDao = null;
 
     public FigisServiceImpl()
     {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext(
-                "applicationContext.xml");
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         this.configDao = (ConfigDao) ctx.getBean("ie-configDAO");
         intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
     }
@@ -100,7 +101,6 @@ public class FigisServiceImpl implements FigisService
             resourceNotFoundDetails.setMessage("the id's config does not exist");
             throw new ResourceNotFoundFault(resourceNotFoundDetails);
         }
-
         return config;
     }
 
@@ -116,7 +116,6 @@ public class FigisServiceImpl implements FigisService
     @Override
     public Intersection getIntersection(Long id) throws ResourceNotFoundFault
     {
-        // intersectionDao = new IntersectionDaoImpl();
         Intersection intersection = intersectionDao.find(id);
         if (intersection == null)
         {
@@ -144,8 +143,7 @@ public class FigisServiceImpl implements FigisService
         String trgLayer)
     {
         Search search = new Search();
-        search.addFilterAnd(Filter.equal("srcLayer", "srcLayer"), Filter.equal(
-                "trgLayer", "trgLayer"));
+        search.addFilterAnd(Filter.equal("srcLayer", "srcLayer"), Filter.equal("trgLayer", "trgLayer"));
 
         List<Intersection> intersectionList = intersectionDao.search(search);
         Intersections intersections = new Intersections();
@@ -154,16 +152,6 @@ public class FigisServiceImpl implements FigisService
         return intersections;
     }
 
-    /********************************************
-     * Returns all the Intersection instances
-     *
-     * @return all the Intersection instances
-     */
-    /*
-     * @Override public List<Intersection> getAllIntersections() {
-     * List<Intersection> intersectionList = intersectionDao.findAll(); return
-     * intersectionList; }
-     */
     /********************************************
      * Returns all the Intersection instances by pagination
      *
@@ -179,7 +167,6 @@ public class FigisServiceImpl implements FigisService
                 ((limit != null) && (limit == 0)))
         {
             BadRequestExceptionDetails badRequestExceptionDetails = new BadRequestExceptionDetails();
-            // badRequestExceptionDetails.setId(id);
             badRequestExceptionDetails.setMessage("Page and entries params should be declared together.");
             throw new BadRequestExceptionFault(badRequestExceptionDetails);
         }
@@ -215,7 +202,6 @@ public class FigisServiceImpl implements FigisService
                 ((limit != null) && (limit == 0)))
         {
             BadRequestExceptionDetails badRequestExceptionDetails = new BadRequestExceptionDetails();
-            // badRequestExceptionDetails.setId(id);
             badRequestExceptionDetails.setMessage("Page and entries params should be declared together.");
             throw new BadRequestExceptionFault(badRequestExceptionDetails);
         }
@@ -281,12 +267,16 @@ public class FigisServiceImpl implements FigisService
         // if no config exists yet
         if (conf == null)
         {
-            System.out.println("**************************IL VALORE è nullo");
+        	if(LOGGER.isTraceEnabled()){
+        		LOGGER.trace("The value for config is null");
+        	}
             insertConfig(config);
 
             return config.getConfigId();
         }
-        System.out.println("************** HO trovato l'elemento");
+        if(LOGGER.isTraceEnabled()){
+        	LOGGER.trace("Config retrieved");
+        }
         // update all the fields
 
         String userName = config.getGlobal().getGeoserver().getGeoserverUsername();
@@ -531,7 +521,7 @@ public class FigisServiceImpl implements FigisService
             }
             catch (ResourceNotFoundFault e)
             {
-                // FIXME logger
+                LOGGER.error("ERROR on delete Intersection:", e);
                 return false;
             }
         }

@@ -114,7 +114,7 @@ final class Utilities {
 	static File createTmpDir(String tmpDirName) throws IOException
 	{
 	    // creates the temporary $tmp/figis and $tmpfigis/$layername
-	    LOGGER.info("Creating the temp dir " + tmpDirName);
+	    LOGGER.trace("Creating the temp dir " + tmpDirName);
 	
 	    final File sysTempDir = new File(System.getProperty("java.io.tmpdir"));
 	    String figisTmpDir = sysTempDir + "/" + tmpDirName;
@@ -126,7 +126,7 @@ final class Utilities {
 	
 	    if (tmpDir.exists() && tmpDir.isDirectory() && tmpDir.canWrite())
 	    {
-	        LOGGER.info("Temp dir successfully created : " + tmpDir.getAbsolutePath());
+	        LOGGER.trace("Temp dir successfully created : " + tmpDir.getAbsolutePath());
 	
 	        return tmpDir;
 	    }
@@ -148,7 +148,7 @@ final class Utilities {
 	static boolean deleteDir(File dir) throws IOException
 	{
 	
-	    LOGGER.info("Deleting dir " + dir);
+	    LOGGER.trace("Deleting dir " + dir);
 	    if (dir.exists() && dir.isDirectory()){
 	        FileUtils.deleteDirectory(dir);
 	    }
@@ -174,7 +174,7 @@ final class Utilities {
 	    // init the folder name where to save and uncompress the zip file
 	    String destDir = figisTmpDir + "/" +
 	        layername;
-	    LOGGER.info("Destination dir " + destDir);
+	    LOGGER.trace("Destination dir " + destDir);
 	
 	    File finalDestDir = new File(destDir);
 	
@@ -185,9 +185,9 @@ final class Utilities {
 	        finalDestDir.mkdir();
 	        try
 	        {
-	            LOGGER.info("downloading from : " + textUrl);
+	            LOGGER.trace("downloading from : " + textUrl);
 	            saveZipToLocal(textUrl, destDir, layername);
-	            LOGGER.info("download completed successfully");
+	            LOGGER.trace("download completed successfully");
 	        }
 	        catch (Exception e)
 	        {
@@ -196,12 +196,9 @@ final class Utilities {
 	        }
 	        try
 	        {
-	            LOGGER.trace("Extracting the zip file " + destDir +
-	                "/" + layername +
-	                ".zip");
-	            Extract.extract(destDir + "/" +
-	                layername + ".zip");
-	            LOGGER.info("Extraction completed successfully");
+	            LOGGER.trace("Extracting the zip file " + destDir + "/" + layername + ".zip");
+	            Extract.extract(destDir + "/" + layername + ".zip");
+	            LOGGER.trace("Extraction completed successfully");
 	        }
 	        catch (Exception e)
 	        {
@@ -215,10 +212,8 @@ final class Utilities {
 	
 	    // return the simple feature collection from the uncompressed shp file
 	    // name
-	    String shpfilename = figisTmpDir + "/" +
-	        layername + "/" + layername +
-	        "/" + layername + ".shp";
-	    LOGGER.info("Shpfilename: " + shpfilename);
+	    String shpfilename = figisTmpDir + "/" + layername + "/" + layername + "/" + layername + ".shp";
+	    LOGGER.trace("Shpfilename: " + shpfilename);
 	
 	    // return SimpleFeatureCollectionByShp(shpfilename);
 	    return shpfilename;

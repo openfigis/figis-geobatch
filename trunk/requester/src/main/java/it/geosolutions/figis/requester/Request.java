@@ -1,4 +1,27 @@
-
+/*
+* Request - 
+*
+* Copyright (C) 2007,2011 GeoSolutions S.A.S.
+* http://www.geo-solutions.it
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
+*/
 package it.geosolutions.figis.requester;
 
 import java.util.List;
@@ -48,9 +71,6 @@ public class Request
         xStreamIntersection = new XStream(new DomDriver());
         xStreamIntersection.aliasType("intersections", List.class);
         xStreamIntersection.alias("intersection", it.geosolutions.figis.model.Intersection.class);
-/*        xStreamIntersection.useAttributeFor(boolean.class, "mask");
-        xStreamIntersection.useAttributeFor(boolean.class, "force");
-        xStreamIntersection.useAttributeFor(boolean.class, "preserveTrgGeom");*/
     }
 
     /***************
@@ -64,7 +84,7 @@ public class Request
         throws java.net.MalformedURLException
     {
         String result = HTTPUtils.get(host + "/ie-services/config/", ieServiceUsername, ieServicePassword);
-        // System.out.println("RESULT GETCONFIG"+result);
+        
         if (result == null)
         {
             return null;
@@ -72,7 +92,6 @@ public class Request
 
         List<Config> configs = (List<Config>) xStreamConfig.fromXML(result);
 
-        // System.out.println("LA SIZE E'"+configs.size());
         return configs;
     }
 
@@ -105,9 +124,9 @@ public class Request
         String ieServicePassword)
     {
         String xml = xStreamConfig.toXML(config);
-        // System.out.println("XML : "+xml);
+     
         String result = HTTPUtils.put(host + "/ie-services/config/" + id, xml, "text/xml", ieServiceUsername, ieServicePassword);
-        // System.out.println("RESULT PUT"+result);
+       
         Long value = Long.parseLong(result);
 
         return value;
@@ -125,7 +144,7 @@ public class Request
     {
 
         String result = HTTPUtils.get(host + "/ie-services/config/" + id, ieServiceUsername, ieServicePassword);
-        // System.out.println("RESULT PUT"+result);
+      
         Config config = (Config) xStreamConfig.fromXML(result);
 
         return config;
@@ -142,10 +161,9 @@ public class Request
         throws java.net.MalformedURLException
     {
         String xml = xStreamConfig.toXML(config);
-        // System.out.println("XML INSERT CONFIG: "+xml);
-        String result = HTTPUtils.post(host + "/ie-services/config", xml, "text/xml", ieServiceUsername,
-                ieServicePassword);
-        // System.out.println("RESULT POST"+result);
+        
+        String result = HTTPUtils.post(host + "/ie-services/config", xml, "text/xml", ieServiceUsername, ieServicePassword);
+        
         if (result == null)
         {
             return -1;
@@ -168,7 +186,6 @@ public class Request
     {
         boolean result = HTTPUtils.delete(host + "/ie-services/config/" + id, ieServiceUsername, ieServicePassword);
 
-        // System.out.println("RESULT DELETE"+result);
         return result;
     }
 
@@ -183,10 +200,9 @@ public class Request
         String ieServicePassword) throws java.net.MalformedURLException
     {
         String xml = xStreamIntersection.toXML(intersection);
-        // System.out.println("XML : "+xml);
-        String result = HTTPUtils.post(host + "/ie-services/intersection", xml, "text/xml", ieServiceUsername,
-                ieServicePassword);
-        // System.out.println("RESULT POST INSERT INTERSECTION"+result);
+       
+        String result = HTTPUtils.post(host + "/ie-services/intersection", xml, "text/xml", ieServiceUsername, ieServicePassword);
+        
         if (result != null)
         {
             Long value = Long.parseLong(result);
@@ -208,7 +224,7 @@ public class Request
         String ieServicePassword) throws java.net.MalformedURLException
     {
         String result = HTTPUtils.get(host + "/ie-services/intersection", ieServiceUsername, ieServicePassword);
-        // System.out.println("RESULT GET ALL INTERSECTIONS: "+result);
+       
         if (result != null)
         {
             if (xStreamIntersection == null)
@@ -233,7 +249,6 @@ public class Request
     {
         boolean result = HTTPUtils.delete(host + "/ie-services/intersection/", ieServiceUsername, ieServicePassword);
 
-        // System.out.println("RESULT DELETE ALL INTERSECTIONS"+result);
         return result;
     }
 
@@ -248,7 +263,6 @@ public class Request
     {
         boolean result = HTTPUtils.delete(host + "/ie-services/intersection/" + id, ieServiceUsername, ieServicePassword);
 
-        // System.out.println("RESULT PUT"+result);
         return result;
     }
 
@@ -262,9 +276,9 @@ public class Request
         String ieServicePassword)
     {
         String xml = xStreamIntersection.toXML(intersection);
-        // System.out.println("XML : "+xml);
+      
         String result = HTTPUtils.put(host + "/ie-services/intersection/" + id, xml, "text/xml", ieServiceUsername, ieServicePassword);
-        // System.out.println("RESULT PUT"+result);
+        
         if (result != null)
         {
             Long value = Long.parseLong(result);

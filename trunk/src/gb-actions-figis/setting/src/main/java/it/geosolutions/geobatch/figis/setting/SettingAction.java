@@ -166,8 +166,9 @@ public class SettingAction extends BaseAction<EventObject>
         defaultMaskLayer = conf.getDefaultMaskLayer();
 
         final Queue<EventObject> ret = new LinkedList<EventObject>();
-        LOGGER.info("Setting action started with parameters " + host + ", " +
-            defaultMaskLayer);
+        if(LOGGER.isInfoEnabled()){
+        	LOGGER.info("Setting action started with parameters " + host + ", " + defaultMaskLayer);
+        }
         while (events.size() > 0)
         {
             final EventObject ev;

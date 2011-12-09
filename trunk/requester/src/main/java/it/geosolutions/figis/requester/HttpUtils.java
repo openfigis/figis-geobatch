@@ -1,6 +1,5 @@
-package it.geosolutions.figis.requester;
 /*
-* GeoServer-Manager - Simple Manager Library for GeoServer
+* HttpUtils - 
 *
 * Copyright (C) 2007,2011 GeoSolutions S.A.S.
 * http://www.geo-solutions.it
@@ -23,7 +22,7 @@ package it.geosolutions.figis.requester;
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-
+package it.geosolutions.figis.requester;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,7 +82,6 @@ class HTTPUtils
     */
     public static String get(String url, String username, String pw) throws MalformedURLException
     {
-
         GetMethod httpMethod = null;
         try
         {
@@ -115,11 +113,11 @@ class HTTPUtils
         }
         catch (ConnectException e)
         {
-            LOGGER.info("Couldn't connect to [" + url + "]",e);
+            LOGGER.error("Couldn't connect to [" + url + "]",e);
         }
         catch (IOException e)
         {
-            LOGGER.info("Error talking to [" + url + "]", e);
+            LOGGER.error("Error talking to [" + url + "]", e);
         }
         finally
         {
@@ -310,7 +308,6 @@ class HTTPUtils
         {
             HttpClient client = new HttpClient();
             setAuth(client, url, username, pw);
-// httpMethod = new PutMethod(url);
             client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
             if (requestEntity != null)
             {
@@ -326,9 +323,9 @@ class HTTPUtils
             case HttpURLConnection.HTTP_ACCEPTED:
 
                 String response = IOUtils.toString(httpMethod.getResponseBodyAsStream());
-                
-                LOGGER.info("HTTP " + httpMethod.getStatusText() + ": " + response);
-
+                if(LOGGER.isInfoEnabled()){
+                	LOGGER.info("HTTP " + httpMethod.getStatusText() + ": " + response);
+                }
                 return response;
             default:
                 LOGGER.warn("Bad response: code[" + status + "]" +
@@ -342,7 +339,7 @@ class HTTPUtils
         }
         catch (ConnectException e)
         {
-            LOGGER.info("Couldn't connect to [" + url + "]",e);
+            LOGGER.error("Couldn't connect to [" + url + "]",e);
 
             return null;
         }
@@ -383,8 +380,7 @@ class HTTPUtils
                 {
                     if (LOGGER.isDebugEnabled())
                     {
-                        LOGGER.debug(
-                            "ResponseBody is empty (this may be not an error since we just performed a DELETE call)");
+                        LOGGER.debug("ResponseBody is empty (this may be not an error since we just performed a DELETE call)");
                     }
 
                     return true;
@@ -398,8 +394,10 @@ class HTTPUtils
             }
             else
             {
-                LOGGER.info("(" + status + ") " + httpMethod.getStatusText() + " -- " + url);
-                LOGGER.info("Response: '" + response + "'");
+            	if(LOGGER.isInfoEnabled()){
+	                LOGGER.info("(" + status + ") " + httpMethod.getStatusText() + " -- " + url);
+	                LOGGER.info("Response: '" + response + "'");
+            	}
             }
         }
         catch (ConnectException e)
