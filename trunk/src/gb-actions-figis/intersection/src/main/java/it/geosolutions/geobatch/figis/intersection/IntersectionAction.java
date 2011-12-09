@@ -82,6 +82,8 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	/** Password ie-service */
 	private String ieServicePassword = null;
 
+	private OracleDataStoreManager dataStoreOracle;
+
 	public IntersectionAction(IntersectionConfiguration configuration) throws MalformedURLException {
 		super(configuration);
 		conf = configuration;
@@ -398,11 +400,9 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	 */
 	boolean executeIntersectionStatements(String host, Config config, boolean simulate, String tmpdir) throws InitializationException {
 		
-		OracleDataStoreManager dataStoreOracle = null;
 		// check if this control works as expected
 		if (config.intersections == null) {
 			LOGGER.error("The list of the intersections is null, cannot continue");
-
 			return false;
 		}
 		LOGGER.info("Updating intersections");
@@ -414,6 +414,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 		String user = config.getGlobal().getDb().getUser();
 		String pwd = PwEncoder.decode(config.getGlobal().getDb().getPassword());
 		int port = Integer.parseInt(config.getGlobal().getDb().getPort());
+
 
 		try {
 			dataStoreOracle = new OracleDataStoreManager(dbHost, port, db, schema, user, pwd);
@@ -624,6 +625,16 @@ public class IntersectionAction extends BaseAction<EventObject> {
 				throw new ActionException(this, message, ioe);
 				
 			} finally {
+				
+				
+				// dispose the oracle store
+					if(dataStoreOracle!=null){
+						try{
+							dataStoreOracle.dispose();
+						} catch (Exception e) {
+							LOGGER.trace(e.getLocalizedMessage(),e);
+						}
+					}
 				
 				// dispose all the shapefile resources
 				for(ShapefileDataStore st:shapeFileStores){
