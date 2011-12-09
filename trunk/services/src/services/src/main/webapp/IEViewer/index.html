@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+    <head>
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <meta name="description" content="Map application to display Atlas of Tuna and Billfish Catches." />
+      <meta name="author-corporate" content="FAO of the UN" />
+      <meta name="copyright" content="http://www.fao.org/corp/copyright/en/" />
+      <meta name="keywords" content="Atlas, Tuna, Map, FAO" />
+	    
+      <title>TUNA ATLAS DEMO</title>
+      
+      <script type="text/javascript" src="lib/ext-3.3.1/adapter/ext/ext-base.js"></script>
+      <script type="text/javascript" src="lib/ext-3.3.1/ext-all.js"></script>
+      <link rel="stylesheet" type="text/css" href="lib/ext-3.3.1/resources/css/ext-all.css" />
+
+      <link href="jQueryUI/development-bundle/themes/start/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
+      <script src="jQueryUI/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+      <script src="jQueryUI/js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+
+      <link rel="stylesheet" type="text/css" href="ui.css" />
+
+      <script src="lib/OpenLayers-2.10/OpenLayers.js"></script>
+      <script src="lib/LoadingPanel.js"></script>
+      <script type="text/javascript" src="lib/GeoExt/script/GeoExt.js"></script>
+      
+      <script type="text/javascript" src="AnimationPanel.js"></script>
+
+      <script type="text/javascript" src="tunaConfig.js"></script>
+      <script type="text/javascript" src="tunaAtlas.js"></script>
+      <style type="text/css">
+
+          #main-panel td {
+                  padding:2px;
+          }
+                    
+          .olControlLoadingPanel {
+                  background-image:url(images/blue-loading.gif);
+                  position: absolute;
+                  width: 700px;
+                  height: 350px;
+                  background-position:center;
+                  background-repeat:no-repeat;
+                  display: none;
+          }		
+          	
+          table.featureInfo, table.featureInfo td, table.featureInfo th {
+                  border:1px solid #15428B; 
+                  margin:0; 
+                  padding:0; 
+                  font-size: 12px; 
+          }
+          
+          table.featureInfo th{
+                  padding:.2em .2em; 
+                  color:#fff; 
+                  font-weight:bold; 
+                  font-size: 12px; 
+                  background:#15428B; 
+          }
+          
+          table.featureInfo td{
+                  background:#fff; 
+                  font-size: 12px; 
+          }
+          
+          table.featureInfo tr.odd td{
+                  background:#CEDFF5; 
+                  font-size: 12px; 
+          }
+          
+          table.featureInfo caption{
+                  text-align:left; 
+                  font-size:100%; 
+                  font-weight:bold; 
+                  text-transform:lowercase;
+                  padding:.2em .2em; 
+          }
+			
+    </style>		
+    </head>
+    <body>
+    
+        <div id="wrapper">
+          <div id="top">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                <td align="left">
+                  <a href="http://www.fao.org/" target="_blank"><img style="vertical-align: middle;" src="images/FIGIS_banner-logo.gif" alt="FOOD AND AGRICULTURE ORGANIZATION OF THE UNITED NATIONS" title="Food and Agriculture Organization of the United Nations" border="0"></a>
+                </td>
+                <td align="right">
+                  <a href="http://www.fao.org/fishery" target="_blank"><img style="vertical-align: middle;" src="images/FIGIS_banner-text.gif" alt="FAO Fisheries and Aquaculture Department" title="FAO Fisheries and Aquaculture Department" border="0"></a>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                  <h1 id="title">Atlas of Tuna and Billfish Catches</h1>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div id="topBar">
+             <br>
+          </div>
+          
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                    <td>
+                        <div id="info">
+                            <h1 id="smalltext">
+                                To define your Query, select items of interest from the Selection Tabs, define your Display Options and click the Submit button to see results. 
+                                Due to the amount of data, it may take some time to obtain result, please be patient.	For background information, 
+                                please <a href="http://www.fao.org/figis/servlet/static?dom=collection&xml=tunabillfishatlas.xml">read here</a>. 
+                                User can also download the full set of data used to prepare the maps for <a href="ftp://ftp.fao.org//fi/document/tunatlas/llcatch.zip">Longline</a>, 
+                                <a href="ftp://ftp.fao.org//fi/document/tunatlas/plcatch.zip">Pole & Line</a> and <a href="ftp://ftp.fao.org//fi/document/tunatlas/pscatch.zip">Purse Seine</a>.
+                            </h1>
+                        </div>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+          
+          <br>
+          
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                    <br>
+                    <td id="ext-main" align="center" valign="middle">
+                        <div id="mappanel"></div>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+          
+          
+          <div id="br"></div>
+          <script type="text/javascript">
+              if(Ext.isIE7){
+                  document.getElementById('br').innerHTML = "<br><br><br><br><br><br><br>";
+              }
+          </script>
+          
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                    <td>
+                        <div id ="disclaimer">
+                            <p>
+                                Each cell in the map is defined through a 6 digits number: "XYYZZZ". X is the Quadrant (1=NE, 2=SE, 3=SW and 4=NW), YY is Latitude and ZZZ is Longitude.  Latitude and  longitude define the corner of the cell nearest to the point where the Equator is crossed by the Greenwich Meridian. For further information please refer to <a href="http://www.fao.org/fishery/cwp/handbook/G/en" target="_blank">Section G in CWP Handbook of Fishery Statistical Standards</a>.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id ="disclaimer">
+                            <p><strong>Disclaimer:</strong> The designations employed and the presentation of material in the map(s) are for illustration only and do not imply the expression of any opinion whatsoever on the part of FAO concerning the legal or constitutional status of any country, territory or sea area, or concerning the delimitation of frontiers or boundaries.</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="bottomBar1">
+                          powered by
+                          <a alt="FIGIS web site" title="FIGIS web site" href="/fishery/figis/en">FIGIS</a>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <a alt="FAO (C)Copyright" title="FAO Copyright" target="_blank" href="http://www.fao.org/corp/copyright/en/">
+                            &copy;&nbsp;FAO,
+                            <span id="copyYear">2011</span>
+                            &nbsp;
+                          </a>
+                        </div>
+                        <div id="bottomBar2"></div>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+
+    </body>
+</html>
