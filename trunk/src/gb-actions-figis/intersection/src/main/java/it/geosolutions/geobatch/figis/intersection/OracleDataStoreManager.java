@@ -50,7 +50,9 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 public class OracleDataStoreManager
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OracleDataStoreManager.class);
+    static final int DEFAULT_PAGE_SIZE = 50;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(OracleDataStoreManager.class);
 
     private static final Semaphore SYNCH= new Semaphore(1);
 
@@ -64,7 +66,7 @@ public class OracleDataStoreManager
 
     private final Map<String, Serializable> orclMap = new HashMap<String, Serializable>();
 
-    private static String dbtype = "oracle";
+    private static String DEFAULT_DBTYPE = "oracle";
 
 
     SimpleFeatureType sfTmpGeom = null;
@@ -90,7 +92,7 @@ public class OracleDataStoreManager
         try
         {
         	// init arguments
-            orclMap.put(DBTYPE.key, dbtype);
+            orclMap.put(DBTYPE.key, DEFAULT_DBTYPE);
             orclMap.put(HOST.key, hostname);
             orclMap.put(PORT.key, port);
             orclMap.put(DATABASE.key, database);
@@ -312,7 +314,9 @@ public class OracleDataStoreManager
 
         deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData, featureStoreGeom);
         
-        LOGGER.trace("Saving data from permanent table.");
+        if(LOGGER.isTraceEnabled()){
+        	LOGGER.trace("Saving data from permanent table.");
+        }
         featureStoreData.addFeatures(featureStoreTmpData.getFeatures());
         featureStoreGeom.addFeatures(featureStoreTmpGeom.getFeatures());
     }
@@ -425,7 +429,7 @@ public class OracleDataStoreManager
     private void saveToTemp(Transaction tx, SimpleFeatureCollection source, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
-        itemsPerPage = (itemsPerPage == 0) ? 50 : itemsPerPage;
+        itemsPerPage = (itemsPerPage <= 1) ? DEFAULT_PAGE_SIZE : itemsPerPage;
 
         LOGGER.info("Saving intersections between " + srcLayer + " and " + trgLayer + " into temporary table");
         if (LOGGER.isDebugEnabled())
@@ -465,12 +469,13 @@ public class OracleDataStoreManager
 
             // this cycle is necessary to save itemsPerPage items at time
             int page = 0;
-            
+            if(LOGGER.isDebugEnabled()){
+            	LOGGER.debug("PAGE : " + (page));
+            }
             SimpleFeatureCollection sfcData = FeatureCollections.newCollection();
             SimpleFeatureCollection sfcGeom = FeatureCollections.newCollection();
             while (iterator.hasNext())
             {
-                LOGGER.debug("PAGE : " + (page));
 
                 String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + i;
                 
@@ -488,7 +493,9 @@ public class OracleDataStoreManager
                 featureBuilderData.set("SRCCODENAME", srcCode);
                 featureBuilderData.set("TRGCODENAME", trgCode);
 
-                LOGGER.debug("INTERSECTION_ID : " + intersectionID);
+                if(LOGGER.isDebugEnabled()){
+                	LOGGER.debug("INTERSECTION_ID : " + intersectionID);
+                }
                
                 if (sf.getAttribute("areaA") != null)
                 {
@@ -534,6 +541,10 @@ public class OracleDataStoreManager
                     
                     //increment page
                     page++;
+                    
+                    if(LOGGER.isDebugEnabled()){
+                    	LOGGER.debug("PAGE : " + (page));
+                    }
                 }
 
                 

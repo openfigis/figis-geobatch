@@ -1,5 +1,17 @@
 package it.geosolutions.geobatch.figis.setting.test;
 
+import static org.junit.Assert.assertTrue;
+import it.geosolutions.figis.model.Config;
+import it.geosolutions.figis.model.Global;
+import it.geosolutions.figis.model.Intersection;
+import it.geosolutions.figis.model.Intersection.Status;
+import it.geosolutions.figis.requester.Request;
+import it.geosolutions.figis.requester.requester.util.IEConfigUtils;
+import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
+import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
+import it.geosolutions.geobatch.figis.setting.SettingAction;
+import it.geosolutions.geobatch.figis.setting.SettingConfiguration;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,29 +24,16 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import it.geosolutions.figis.model.Config;
-import it.geosolutions.figis.model.Global;
-import it.geosolutions.figis.model.Intersection;
-import it.geosolutions.figis.model.Intersection.Status;
-import it.geosolutions.figis.requester.Request;
-import it.geosolutions.figis.requester.requester.util.IEConfigUtils;
-import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
-import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
-import it.geosolutions.geobatch.figis.setting.SettingAction;
-import it.geosolutions.geobatch.figis.setting.SettingConfiguration;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertTrue;
-
 
 public class TestSettingAction
 {
 
-    private static final Logger log = LoggerFactory.getLogger(TestSettingAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestSettingAction.class);
 
     private SettingAction settingAction = null;
     private Config xmlConfig = null;

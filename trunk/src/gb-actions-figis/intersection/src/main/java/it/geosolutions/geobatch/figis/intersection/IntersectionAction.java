@@ -33,6 +33,7 @@ import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.LinkedList;
@@ -40,7 +41,6 @@ import java.util.List;
 import java.util.Queue;
 
 import org.geotools.data.FeatureSource;
-import org.geotools.data.FileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -64,7 +64,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	
 	private final List<ShapefileDataStore> shapeFileStores= new ArrayList<ShapefileDataStore>();
 	
-	private int itemsPerPage = 50;
+	private int itemsPerPage = OracleDataStoreManager.DEFAULT_PAGE_SIZE;
 	private IEConfigDAO ieConfigDAO = null;
 	private GeoServerRESTReader gsRestReader = null;
 	private Geoserver geoserver = null;
@@ -73,7 +73,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	 * configuration
 	 */
 	private final IntersectionConfiguration conf;
-	private String host = "http://localhost:9999";
+	private String host = Utilities.DEFAULT_GEOSERVER_ADDRESS;
 	private final String TMP_DIR_NAME = "figis";
 
 	/** Username ie-service */
@@ -83,6 +83,8 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	private String ieServicePassword = null;
 
 	private OracleDataStoreManager dataStoreOracle;
+
+	private File tmpDir;
 
 	public IntersectionAction(IntersectionConfiguration configuration) throws MalformedURLException {
 		super(configuration);
@@ -116,7 +118,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 		}
 
 		try {
-			ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL());
+			ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL(),new URI("http://geo-solutions.it"),true,true,ShapefileDataStore.DEFAULT_STRING_CHARSET);
 			shapeFileStores.add(store);
 			FeatureSource fs = store.getFeatureSource();
 			return (SimpleFeatureCollection) fs.getFeatures();
@@ -332,33 +334,33 @@ public class IntersectionAction extends BaseAction<EventObject> {
 
 			return null;
 		} finally {
-			if (srcCollection != null) {
-				try {
-					srcCollection.clear();
-				} catch (Exception e) {
-					if(LOGGER.isErrorEnabled()){
-						LOGGER.error("Failed to clear srcCollection", e);
-					}
-				}
-			}
-			if (trgCollection != null) {
-				try {
-					trgCollection.clear();
-				} catch (Exception e) {
-					if(LOGGER.isErrorEnabled()){
-						LOGGER.error("Failed to clear srcCollection", e);
-					}
-				}
-			}
-			if (maskCollection != null) {
-				try {
-					maskCollection.clear();
-				} catch (Exception e) {
-					if(LOGGER.isErrorEnabled()){
-						LOGGER.error("Failed to clear srcCollection", e);
-					}
-				}
-			}
+//			if (srcCollection != null) {
+//				try {
+//					srcCollection.clear();
+//				} catch (Exception e) {
+//					if(LOGGER.isErrorEnabled()){
+//						LOGGER.error("Failed to clear srcCollection", e);
+//					}
+//				}
+//			}
+//			if (trgCollection != null) {
+//				try {
+//					trgCollection.clear();
+//				} catch (Exception e) {
+//					if(LOGGER.isErrorEnabled()){
+//						LOGGER.error("Failed to clear srcCollection", e);
+//					}
+//				}
+//			}
+//			if (maskCollection != null) {
+//				try {
+//					maskCollection.clear();
+//				} catch (Exception e) {
+//					if(LOGGER.isErrorEnabled()){
+//						LOGGER.error("Failed to clear srcCollection", e);
+//					}
+//				}
+//			}
 		}
 	}
 
@@ -515,15 +517,16 @@ public class IntersectionAction extends BaseAction<EventObject> {
 					intersection.setStatus(Status.FAILED);
 					ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
 					throw new RuntimeException("Exception caught while computing intersections.", e);
-				} finally {
-					if (resultFeatureCollection != null) {
-						try{
-							resultFeatureCollection.clear();
-						} catch (Exception e){
-							LOGGER.error("ERROR on cleaning resultFeatureCollection: ", e);
-						}
-					}
-				}
+				} 
+//				finally {
+//					if (resultFeatureCollection != null) {
+//						try{
+//							resultFeatureCollection.clear();
+//						} catch (Exception e){
+//							LOGGER.error("ERROR on cleaning resultFeatureCollection: ", e);
+//						}
+//					}
+//				}
 			}
 		}
 		return true;
@@ -595,8 +598,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 						// create the figis temporary dir
 						LOGGER.info("Creating the temporary dir: " + TMP_DIR_NAME);
 
-						File tmpDir = Utilities.createTmpDir(TMP_DIR_NAME + "/" + System.nanoTime());
-						
+						tmpDir = Utilities.createTmpDir(TMP_DIR_NAME + "/" + System.nanoTime());					
 						LOGGER.info(TMP_DIR_NAME + " successfully created");
 
 						// update the status of the intersections on the basis
@@ -605,12 +607,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 						if (!areIntersectionsUpdated) {
 							LOGGER.error("Problems occurred during the execution, check the log to see the reason");
 						}
-						// delete the tmpDir after execution
-						LOGGER.trace("Deleting the temporary dir: " + TMP_DIR_NAME);
-						
-						Utilities.deleteDir(tmpDir);
-						
-						LOGGER.trace(TMP_DIR_NAME + " successfully deleted");
+
 					} else {
 						LOGGER.error("Cannot read the configuration " + config + ". Skip execution");
 					}
@@ -645,6 +642,15 @@ public class IntersectionAction extends BaseAction<EventObject> {
 							LOGGER.trace(e.getLocalizedMessage(),e);
 						}
 					}
+				}
+				
+				try{
+					// delete the tmpDir after execution
+					LOGGER.trace("Deleting the temporary dir: " + TMP_DIR_NAME);
+					Utilities.deleteDir(tmpDir);
+					LOGGER.trace(TMP_DIR_NAME + " successfully deleted");
+				} catch (Exception e) {
+					LOGGER.trace(e.getLocalizedMessage(),e);
 				}
 			}
 		}

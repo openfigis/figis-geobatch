@@ -29,6 +29,7 @@ import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 final class Utilities {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Utilities.class);
+	public static final String DEFAULT_GEOSERVER_ADDRESS = "http://localhost:9999";
 	
 	private Utilities(){
 		

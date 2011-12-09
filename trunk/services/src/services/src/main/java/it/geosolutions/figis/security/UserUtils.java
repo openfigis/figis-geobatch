@@ -50,7 +50,7 @@ public class UserUtils
     private static String TOKENIZ = ",";
 
     /** The users: possible to config it by applicationContext.xml  */
-    private static Map users;
+    private static Map USERS;
 
     /**
      * This method return the User authenticated or throw new AccessDeniedException
@@ -70,13 +70,13 @@ public class UserUtils
         // check users authorization
         try
         {
-            Iterator itrUsersKey = users.keySet().iterator();
+            Iterator itrUsersKey = USERS.keySet().iterator();
             while (itrUsersKey.hasNext() && !verified)
             {
                 // key:
                 Object o = itrUsersKey.next();
                 // value:
-                Object usrs = users.get(o);
+                Object usrs = USERS.get(o);
                 if (usrs != null)
                 {
                     String t = (String) usrs;
@@ -117,13 +117,13 @@ public class UserUtils
     }
 
 
-    public Map getUsers()
+    public static Map getUsers()
     {
-        return users;
+        return USERS;
     }
 
-    public void setUsers(Map users)
+    public static void setUsers(Map users)
     {
-        this.users = users;
+        users = users;
     }
 }

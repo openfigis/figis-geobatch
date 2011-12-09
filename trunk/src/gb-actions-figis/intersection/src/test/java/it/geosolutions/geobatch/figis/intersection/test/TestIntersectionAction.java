@@ -1,10 +1,5 @@
 package it.geosolutions.geobatch.figis.intersection.test;
 
-import java.io.File;
-import java.util.EventObject;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
@@ -14,8 +9,12 @@ import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 import it.geosolutions.geobatch.figis.intersection.IntersectionAction;
 import it.geosolutions.geobatch.figis.intersection.IntersectionConfiguration;
-import it.geosolutions.geobatch.figis.intersection.OracleDataStoreManager;
 import it.geosolutions.geobatch.figis.intersection.test.utils.TestingIEConfigDAOImpl;
+
+import java.io.File;
+import java.util.EventObject;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import junit.framework.TestCase;
 
