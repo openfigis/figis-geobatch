@@ -95,7 +95,8 @@ public class IEConfigDAOImpl implements IEConfigDAO
         if (LOGGER.isDebugEnabled())
         {
             LOGGER.debug("Current status of the intersections");
-            for (int i = 0; i < list.size(); i++)
+            final int size=list.size();
+            for (int i = 0; i < size; i++)
             {
                 LOGGER.debug(list.get(i).toString());
             }
