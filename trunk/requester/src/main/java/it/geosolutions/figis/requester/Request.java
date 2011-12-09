@@ -47,7 +47,7 @@ public class Request
 {
     static XStream xStreamConfig = null;
     static XStream xStreamIntersection = null;
-
+    static final String IE_SERV_CONF = "/ie-services/config";
     /***********************
      * initialize the XSTREAM parser for the XML representation of it.geosolutions.figis.requester.model.Config object
      */
@@ -83,7 +83,7 @@ public class Request
     public static List<Config> getConfigs(String host, String ieServiceUsername, String ieServicePassword)
         throws java.net.MalformedURLException
     {
-        String result = HTTPUtils.get(host + "/ie-services/config/", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.get(host + IE_SERV_CONF+"/", ieServiceUsername, ieServicePassword);
         
         if (result == null)
         {
@@ -125,7 +125,7 @@ public class Request
     {
         String xml = xStreamConfig.toXML(config);
      
-        String result = HTTPUtils.put(host + "/ie-services/config/" + id, xml, "text/xml", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.put(host + IE_SERV_CONF+"/" + id, xml, "text/xml", ieServiceUsername, ieServicePassword);
        
         Long value = Long.parseLong(result);
 
@@ -143,7 +143,7 @@ public class Request
         throws java.net.MalformedURLException
     {
 
-        String result = HTTPUtils.get(host + "/ie-services/config/" + id, ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.get(host + IE_SERV_CONF+"/" + id, ieServiceUsername, ieServicePassword);
       
         Config config = (Config) xStreamConfig.fromXML(result);
 
@@ -162,7 +162,7 @@ public class Request
     {
         String xml = xStreamConfig.toXML(config);
         
-        String result = HTTPUtils.post(host + "/ie-services/config", xml, "text/xml", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.post(host + IE_SERV_CONF, xml, "text/xml", ieServiceUsername, ieServicePassword);
         
         if (result == null)
         {
@@ -184,7 +184,7 @@ public class Request
     public static boolean deleteConfig(String host, long id, String ieServiceUsername, String ieServicePassword)
         throws java.net.MalformedURLException
     {
-        boolean result = HTTPUtils.delete(host + "/ie-services/config/" + id, ieServiceUsername, ieServicePassword);
+        boolean result = HTTPUtils.delete(host + IE_SERV_CONF+"/" + id, ieServiceUsername, ieServicePassword);
 
         return result;
     }

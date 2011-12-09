@@ -110,11 +110,6 @@ public class TestXML
             queue.add(new FileSystemEvent(inputFile2, FileSystemEventType.FILE_ADDED));
             intersectionAction.execute(queue);
             printIntersections();
-            /*
-                            System.out.println("update database");
-                            queue.add(new FileSystemEvent(inputFile2, FileSystemEventType.FILE_ADDED));
-                            cronAction.execute(queue);
-                            printIntersections();*/
 
             System.out.println("update configuration config3.xml");
             queue.add(new FileSystemEvent(inputFile3, FileSystemEventType.FILE_ADDED));

@@ -512,7 +512,11 @@ public class IntersectionAction extends BaseAction<EventObject> {
 					throw new RuntimeException("Exception caught while computing intersections.", e);
 				} finally {
 					if (resultFeatureCollection != null) {
-						resultFeatureCollection.clear();
+						try{
+							resultFeatureCollection.clear();
+						} catch (Exception e){
+							LOGGER.error("ERROR on cleaning resultFeatureCollection: ", e);
+						}
 					}
 				}
 			}
