@@ -25,19 +25,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class IntersectionEngineTest {
 	
-//	final static Logger LOGGER = Logger.getLogger(IntersectionEngineTest.class.toString());
+	final static Logger LOGGER = Logger.getLogger(IntersectionEngineTest.class.toString());
 	ConfigDao configDao = null;
 	IntersectionDao intersectionDao = null;
 	
 	@Before
 	public void setUp() throws Exception {
             try {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        configDao = (ConfigDao) ctx.getBean("ie-configDAO");
-        intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
-       // configDao.findAll();
+		        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		        configDao = (ConfigDao) ctx.getBean("ie-configDAO");
+		        intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
             }catch(Throwable e) {
-                e.printStackTrace();
+                LOGGER.trace("ON SETUP ERROR ", e);
             }
 	}
 	@Test

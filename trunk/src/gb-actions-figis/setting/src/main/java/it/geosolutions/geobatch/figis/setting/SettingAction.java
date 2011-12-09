@@ -50,6 +50,14 @@ public class SettingAction extends BaseAction<EventObject>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingAction.class);
 
+
+    private IEConfigDAO ieConfigDAO = null;
+
+    private String defaultMaskLayer = null;
+    private String host = null;
+    private String ieServiceUsername = null;
+    private String ieServicePassword = null;
+    
     /**
      * @param xmlConfig
      * @param dbConfig
@@ -133,12 +141,6 @@ public class SettingAction extends BaseAction<EventObject>
         }
     }
 
-    private IEConfigDAO ieConfigDAO = null;
-
-    private String defaultMaskLayer = null;
-    private String host = null;
-    private String ieServiceUsername = null;
-    private String ieServicePassword = null;
 
     /**
      * configuration
@@ -254,15 +256,10 @@ public class SettingAction extends BaseAction<EventObject>
             }
             catch (Exception ioe)
             {
-                ioe.printStackTrace();
-
-                final String message = "IntersectionAction.execute(): Unable to produce the output: " +
-                    ioe.getLocalizedMessage();
-                if (LOGGER.isErrorEnabled())
-                {
-                    LOGGER.error(message);
+                if (LOGGER.isErrorEnabled()){
+                    LOGGER.error( "IntersectionAction.execute(): Unable to produce the output: ",ioe.getLocalizedMessage(),ioe);
                 }
-                throw new ActionException(this, message);
+                throw new ActionException(this,ioe.getLocalizedMessage(),ioe );
             }
         }
 

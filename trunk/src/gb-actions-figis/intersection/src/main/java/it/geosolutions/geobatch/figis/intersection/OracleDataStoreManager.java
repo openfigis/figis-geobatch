@@ -1,38 +1,6 @@
 package it.geosolutions.geobatch.figis.intersection;
 
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.vividsolutions.jts.geom.MultiPolygon;
-
-import org.geotools.data.DataStore;
-import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.FeatureStore;
-import org.geotools.data.Transaction;
-import org.geotools.data.oracle.OracleNGDataStoreFactory;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureCollections;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
 import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
@@ -45,24 +13,56 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
 import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
 import static org.geotools.jdbc.JDBCDataStoreFactory.VALIDATECONN;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Semaphore;
+
+import org.geotools.data.DataStore;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureStore;
+import org.geotools.data.Transaction;
+import org.geotools.data.oracle.OracleNGDataStoreFactory;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.vividsolutions.jts.geom.MultiPolygon;
+
 
 public class OracleDataStoreManager
 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OracleDataStoreManager.class);
 
+    private static final Semaphore SYNCH= new Semaphore(1);
 
-    public static String statsTable = "STATISTICAL_TABLE";
-    public static String spatialTable = "SPATIAL_TABLE";
-    public static String statsTmpTable = "STATISTICAL_TMP_TABLE";
-    public static String spatialTmpTable = "SPATIAL_TMP_TABLE";
-    public static String listTable = "LISTINTERSECTIONS";
+	private static final JDBCDataStoreFactory ORACLE_FACTORY = new OracleNGDataStoreFactory();
 
-    // ////////////////////////////////////////////////////////////////////////
-    //
-    // ////////////////////////////////////////////////////////////////////////
 
-    private static Map<String, Serializable> orclMap = new HashMap<String, Serializable>();
+    final static String STATS_TABLE = "STATISTICAL_TABLE";
+    final static String SPATIAL_TABLE = "SPATIAL_TABLE";
+    final static String STATS_TMP_TABLE = "STATISTICAL_TMP_TABLE";
+    final static String SPATIAL_TMP_TABLE = "SPATIAL_TMP_TABLE";
+
+    private final Map<String, Serializable> orclMap = new HashMap<String, Serializable>();
 
     private static String dbtype = "oracle";
 
@@ -84,21 +84,35 @@ public class OracleDataStoreManager
         try
         {
             initOrclMap(hostname, port, database, schema, user, password);
-
-            orclDataStore = initOracleDataStore();
+            
+            // check that all table are there
+            orclDataStore = createOracleDataStore();
+            
             orclTransaction = new DefaultTransaction();
-            initTables(orclDataStore, orclTransaction);
+            
+            SYNCH.acquire();
+            initTables(orclDataStore, orclTransaction); 
+            
+            // commit the transaction
             orclTransaction.commit();
         }
         catch (Exception e)
         {
-            LOGGER.error("Exception creating tables in ORACLE", e);
-            orclTransaction.rollback();
+        	try{
+                orclTransaction.rollback();
+        	} catch (Exception e1) {
+				if(LOGGER.isErrorEnabled()){
+					LOGGER.error(e1.getLocalizedMessage(),e1);
+				}
+			}
             throw new Exception("Error creating tables in ORACLE", e);
         }
         finally
         {
             close(orclDataStore, orclTransaction);
+            
+            //permits to other threads to check if the tables are there or not
+            SYNCH.release();
         }
 
     }
@@ -108,17 +122,15 @@ public class OracleDataStoreManager
      * @return
      * @throws Exception
      */
-    private DataStore initOracleDataStore() throws Exception
+    private DataStore createOracleDataStore() throws Exception
     {
         try
         {
-            DataStore orclDataStore = new OracleNGDataStoreFactory().createDataStore(orclMap);
+            return ORACLE_FACTORY.createDataStore(orclMap);
 
-            return orclDataStore;
         }
         catch (Exception e)
         {
-            LOGGER.error("Error creating the ORACLE data store, check the connection parameters", e);
             throw new Exception("Error creating the ORACLE data store, check the connection parameters", e);
         }
     }
@@ -137,7 +149,7 @@ public class OracleDataStoreManager
     private void initOrclMap(String hostname, Integer port, String database, String schema, String user,
         String password)
     {
-        Map<String, Object> params = new HashMap<String, Object>();
+    	
         orclMap.put(DBTYPE.key, dbtype);
         orclMap.put(HOST.key, hostname);
         orclMap.put(PORT.key, port);
@@ -162,7 +174,7 @@ public class OracleDataStoreManager
     {
         // init of the Temp table for stats
         SimpleFeatureTypeBuilder sftbTmpStats = new SimpleFeatureTypeBuilder();
-        sftbTmpStats.setName(statsTmpTable);
+        sftbTmpStats.setName(STATS_TMP_TABLE);
         sftbTmpStats.add("INTERSECTION_ID", String.class);
         sftbTmpStats.add("SRCODE", String.class);
         sftbTmpStats.add("TRGCODE", String.class);
@@ -179,7 +191,7 @@ public class OracleDataStoreManager
 
         // init of the permanent table for stats
         SimpleFeatureTypeBuilder sftbStats = new SimpleFeatureTypeBuilder();
-        sftbStats.setName(statsTable);
+        sftbStats.setName(STATS_TABLE);
         sftbStats.add("INTERSECTION_ID", String.class);
         sftbStats.add("SRCODE", String.class);
         sftbStats.add("TRGCODE", String.class);
@@ -197,7 +209,7 @@ public class OracleDataStoreManager
         // init of the temp table for the list of geometries
         SimpleFeatureTypeBuilder sftbTempGeoms = new SimpleFeatureTypeBuilder();
 
-        sftbTempGeoms.setName(spatialTmpTable);
+        sftbTempGeoms.setName(SPATIAL_TMP_TABLE);
         sftbTempGeoms.add("THE_GEOM", MultiPolygon.class);
         sftbTempGeoms.add("INTERSECTION_ID", String.class);
 
@@ -209,7 +221,7 @@ public class OracleDataStoreManager
         // init of the table for the list of geometries
         SimpleFeatureTypeBuilder sftbGeoms = new SimpleFeatureTypeBuilder();
 
-        sftbGeoms.setName(spatialTable);
+        sftbGeoms.setName(SPATIAL_TABLE);
         sftbGeoms.add("THE_GEOM", MultiPolygon.class);
         sftbGeoms.add("INTERSECTION_ID", String.class);
         sftbGeoms.setCRS(DefaultGeographicCRS.WGS84);
@@ -227,19 +239,19 @@ public class OracleDataStoreManager
         boolean spatialTableExists = false;
         for (int i = 0; i < listTables.length; i++)
         {
-            if (listTables[i].equals(statsTmpTable))
+            if (listTables[i].equals(STATS_TMP_TABLE))
             {
                 statsTmpTableExists = true;
             }
-            if (listTables[i].equals(statsTable))
+            if (listTables[i].equals(STATS_TABLE))
             {
                 statsTableExists = true;
             }
-            if (listTables[i].equals(spatialTable))
+            if (listTables[i].equals(SPATIAL_TABLE))
             {
                 spatialTableExists = true;
             }
-            if (listTables[i].equals(spatialTmpTable))
+            if (listTables[i].equals(SPATIAL_TMP_TABLE))
             {
                 spatialTmpTableExists = true;
             }
@@ -293,14 +305,14 @@ public class OracleDataStoreManager
     private void action(DataStore ds, Transaction tx, String srcLayer, String trgLayer, String srcCode,
         String trgCode) throws Exception
     {
-        FeatureStore featureStoreTmpData = (FeatureStore) ds.getFeatureSource(statsTmpTable);
-        FeatureStore featureStoreTmpGeom = (FeatureStore) ds.getFeatureSource(statsTmpTable);
+        FeatureStore featureStoreTmpData = (FeatureStore) ds.getFeatureSource(STATS_TMP_TABLE);
+        FeatureStore featureStoreTmpGeom = (FeatureStore) ds.getFeatureSource(STATS_TMP_TABLE);
 
         featureStoreTmpData.setTransaction(tx);
         featureStoreTmpGeom.setTransaction(tx);
 
-        FeatureStore featureStoreData = (FeatureStore) ds.getFeatureSource(statsTable);
-        FeatureStore featureStoreGeom = (FeatureStore) ds.getFeatureSource(spatialTable);
+        FeatureStore featureStoreData = (FeatureStore) ds.getFeatureSource(STATS_TABLE);
+        FeatureStore featureStoreGeom = (FeatureStore) ds.getFeatureSource(SPATIAL_TABLE);
 
         featureStoreData.setTransaction(tx);
         featureStoreGeom.setTransaction(tx);
@@ -389,18 +401,11 @@ public class OracleDataStoreManager
         }
         finally
         {
-            if (featureStoreGeom != null)
-            {
-                featureStoreGeom.getDataStore().dispose();
-            }
-            if (featureStoreData != null)
-            {
-                featureStoreData.getDataStore().dispose();
-            }
             if (iterator != null)
             {
                 iterator.close();
             }
+
         }
 
     }
@@ -414,15 +419,24 @@ public class OracleDataStoreManager
     {
         try
         {
+            if (tx != null)
+            {
+                tx.close();
+            }
+        
+        }
+        catch (Exception e)
+        {
+            LOGGER.trace("Exception closing the transaction", e);
+        }    	
+    	
+        try
+        {
             if (ds != null)
             {
                 ds.dispose();
             }
 
-            if (tx != null)
-            {
-                tx.close();
-            }
         }
         catch (Exception e)
         {
@@ -438,8 +452,8 @@ public class OracleDataStoreManager
         FeatureStore featureStoreGeom = null;
         try
         {
-            featureStoreData = (FeatureStore) ds.getFeatureSource(spatialTmpTable);
-            featureStoreGeom = (FeatureStore) ds.getFeatureSource(statsTmpTable);
+            featureStoreData = (FeatureStore) ds.getFeatureSource(SPATIAL_TMP_TABLE);
+            featureStoreGeom = (FeatureStore) ds.getFeatureSource(STATS_TMP_TABLE);
 
             featureStoreData.setTransaction(tx);
             featureStoreGeom.setTransaction(tx);
@@ -506,10 +520,10 @@ public class OracleDataStoreManager
             SimpleFeatureBuilder featureBuilderGeom = new SimpleFeatureBuilder(sfTmpGeom);
             int i = 0;
 
-            featureStoreData = (FeatureStore) ds.getFeatureSource(statsTmpTable);
+            featureStoreData = (FeatureStore) ds.getFeatureSource(STATS_TMP_TABLE);
             featureStoreData.setTransaction(tx);
 
-            featureStoreGeom = (FeatureStore) ds.getFeatureSource(spatialTmpTable);
+            featureStoreGeom = (FeatureStore) ds.getFeatureSource(SPATIAL_TMP_TABLE);
             featureStoreGeom.setTransaction(tx);
 
             // follow the iterator of the resulting set and divide information into two collection: geometrical and statistical
@@ -537,13 +551,13 @@ public class OracleDataStoreManager
                     String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + i;
                     SimpleFeature sf = iterator.next();
 
-                    featureBuilderData.set("SRCODE", sf.getAttribute(srcCode));
+                    featureBuilderData.set("SRCODE", sf.getAttribute(srcLayer + "_" + srcCode));
 
                     featureBuilderData.set("SRCLAYER", srcLayer);
 
                     featureBuilderData.set("TRGLAYER", trgLayer);
 
-                    featureBuilderData.set("TRGCODE", sf.getAttribute(trgCode));
+                    featureBuilderData.set("TRGCODE", sf.getAttribute(trgLayer + "_" + trgCode));
 
                     featureBuilderData.set("INTERSECTION_ID", intersectionID);
                     featureBuilderData.set("SRCCODENAME", srcCode);
@@ -641,7 +655,7 @@ public class OracleDataStoreManager
         Transaction tx = null;
         try
         {
-            ds = initOracleDataStore();
+            ds = createOracleDataStore();
             tx = new DefaultTransaction();
             if (ds != null)
             {
@@ -672,7 +686,7 @@ public class OracleDataStoreManager
 
         try
         {
-            ds = initOracleDataStore();
+            ds = createOracleDataStore();
             tx = new DefaultTransaction();
             if (res && (ds != null))
             {
@@ -713,30 +727,34 @@ public class OracleDataStoreManager
         Transaction orclTransaction = null;
         try
         {
-            orclDatastore = initOracleDataStore();
+            orclDatastore = createOracleDataStore();
             orclTransaction = new DefaultTransaction();
 
-            FeatureStore featureStoreTmpData = (FeatureStore) orclDatastore.getFeatureSource(statsTmpTable);
-            FeatureStore featureStoreTmpGeom = (FeatureStore) orclDatastore.getFeatureSource(statsTmpTable);
+            FeatureStore featureStoreTmpData = (FeatureStore) orclDatastore.getFeatureSource(STATS_TMP_TABLE);
+            FeatureStore featureStoreTmpGeom = (FeatureStore) orclDatastore.getFeatureSource(STATS_TMP_TABLE);
 
             featureStoreTmpData.setTransaction(orclTransaction);
             featureStoreTmpGeom.setTransaction(orclTransaction);
 
-            FeatureStore featureStoreData = (FeatureStore) orclDatastore.getFeatureSource(statsTable);
-            FeatureStore featureStoreGeom = (FeatureStore) orclDatastore.getFeatureSource(spatialTable);
+            FeatureStore featureStoreData = (FeatureStore) orclDatastore.getFeatureSource(STATS_TABLE);
+            FeatureStore featureStoreGeom = (FeatureStore) orclDatastore.getFeatureSource(SPATIAL_TABLE);
 
             featureStoreData.setTransaction(orclTransaction);
             featureStoreGeom.setTransaction(orclTransaction);
 
-            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData,
-                featureStoreGeom);
+            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData,featureStoreGeom);
 
+            //commit!
             orclTransaction.commit();
         }
         catch (Exception e)
         {
-            LOGGER.error("Exception performing the delete all " + srcLayer + ", " + trgLayer, e);
-            orclTransaction.rollback();
+            try{
+            	orclTransaction.rollback();
+            } catch (Exception e1) {
+				if(LOGGER.isInfoEnabled())
+					LOGGER.info(e1.getLocalizedMessage(),e1);
+			}
             throw new IOException("Delete all raised an exception ", e);
         }
         finally

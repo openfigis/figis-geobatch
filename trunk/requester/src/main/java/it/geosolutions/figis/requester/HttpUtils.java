@@ -1,15 +1,4 @@
-
-
 package it.geosolutions.figis.requester;
-
-/**
- *
- * @author Luca
- */
-/**
- *
- * @author Luca
- */
 /*
 * GeoServer-Manager - Simple Manager Library for GeoServer
 *
@@ -59,6 +48,7 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 
@@ -125,7 +115,7 @@ class HTTPUtils
         }
         catch (ConnectException e)
         {
-            LOGGER.info("Couldn't connect to [" + url + "]");
+            LOGGER.info("Couldn't connect to [" + url + "]",e);
         }
         catch (IOException e)
         {
@@ -336,7 +326,7 @@ class HTTPUtils
             case HttpURLConnection.HTTP_ACCEPTED:
 
                 String response = IOUtils.toString(httpMethod.getResponseBodyAsStream());
-// LOGGER.info("================= POST " + url);
+                
                 LOGGER.info("HTTP " + httpMethod.getStatusText() + ": " + response);
 
                 return response;
@@ -352,13 +342,13 @@ class HTTPUtils
         }
         catch (ConnectException e)
         {
-            LOGGER.info("Couldn't connect to [" + url + "]");
+            LOGGER.info("Couldn't connect to [" + url + "]",e);
 
             return null;
         }
         catch (IOException e)
         {
-            LOGGER.error("Error talking to " + url + " : " + e.getLocalizedMessage());
+            LOGGER.error("Error talking to " + url + " : " + e.getLocalizedMessage(),e);
 
             return null;
         }
@@ -414,7 +404,7 @@ class HTTPUtils
         }
         catch (ConnectException e)
         {
-            LOGGER.info("Couldn't connect to [" + url + "]");
+            LOGGER.info("Couldn't connect to [" + url + "]",e);
         }
         catch (IOException e)
         {
@@ -466,12 +456,16 @@ class HTTPUtils
         }
         catch (ConnectException e)
         {
+        	if(LOGGER.isInfoEnabled()){
+        		LOGGER.log(Level.INFO, e.getLocalizedMessage(),e);
+        	}
             return false;
         }
         catch (IOException e)
         {
-            e.printStackTrace();
-
+        	if(LOGGER.isInfoEnabled()){
+        		LOGGER.log(Level.INFO, e.getLocalizedMessage(),e);
+        	}
             return false;
         }
         finally
