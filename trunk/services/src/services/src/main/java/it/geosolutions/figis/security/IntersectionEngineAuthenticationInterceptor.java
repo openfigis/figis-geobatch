@@ -31,7 +31,7 @@
 package it.geosolutions.figis.security;
 
 import it.geosolutions.figis.model.User;
-import it.geosolutions.figis.security.propreloader.CredentialsManager;
+import it.geosolutions.figis.security.authentication.CredentialsManager;
 
 import org.apache.cxf.configuration.security.AuthorizationPolicy;
 import org.apache.cxf.interceptor.Fault;

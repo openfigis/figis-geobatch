@@ -13,51 +13,26 @@
 
 	default-lazy-init="false">
 
-	<!--
-		do not use import statements if CXFServlet init parameters link to
-		this beans.xml
-	-->
-
-	<import resource="classpath:META-INF/cxf/cxf.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	
-	<import resource="applicationContext-datasource.xml" />
-	
 	<!--Bean to load properties file -->
 	<bean id="placeholderConfig"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<!--
-			property name="location"
-			value="classpath:ieServicesHsqldb.properties" /
-		-->
 		<property name="locations">
 			<list>
 				<value>classpath:ieServicesHsqldb.properties</value>
-				<value>classpath:users.properties</value>
 				<value>classpath:userac.properties</value>
-				<!-- value>classpath:config.properties</value -->
 			</list>
 		</property>
 	</bean>
 
-
-	<!--**** Revere Group DAO Setup ****-->
 	<!--
-		Need one search processor and one metadata util per persistence unit
-		(i.e. EntityManagerFactory). We're wiring these to the Generic DAOs
-		using an autowire annotation in BaseDAO.
-	-->
+		do not use import statements if CXFServlet init parameters link to
+		this beans.xml-->
 
-	<bean id="ie-searchProcessor" class="com.trg.search.jpa.JPASearchProcessor">
-		<constructor-arg ref="ie-metadataUtil" />
-	</bean>
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-	<bean id="ie-metadataUtil" class="com.trg.search.jpa.hibernate.HibernateMetadataUtil"
-		factory-method="getInstanceForEntityManagerFactory">
-		<constructor-arg ref="ie-entityManagerFactory" />
-	</bean>
-	<bean name="HSQLDBServer" class="it.geosolutions.figis.ws.server.InitHSQLDB">
+	<bean name="HSQLDBServer" class="it.geosolutions.figis.ws.server.InitHSQLDB" init-method="init" destroy-method="destroy">
 		<constructor-arg index="0"
 			value="${ie-services-hsqldb.serverDatabase}" />
 		<constructor-arg index="1"
@@ -85,104 +60,19 @@
 
 	</jaxrs:server>
 
-	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl">
-		<property name="configDao" ref="ie-configDAO" />
-		<property name="intersectionDao" ref="ie-intersectionDAO" />
-	</bean>
-	<bean id="ie-configDAO"
-		class="it.geosolutions.figis.persistence.dao.daoImpl.ConfigDaoImpl" />
-	<bean id="ie-intersectionDAO"
-		class="it.geosolutions.figis.persistence.dao.daoImpl.IntersectionDaoImpl" />
-		
+	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl" />
+
 	<bean id="ieAuthInterceptor"
 		class="it.geosolutions.figis.security.IntersectionEngineAuthenticationInterceptor">
+		<property name="userCheckUtils" ref="ieUsersCheckUtils" />
 	</bean>
-	<bean id="ieUserUtils" class="it.geosolutions.figis.security.UserUtils">
-		<property name="users" >
-			<map>
-				<!-- key: rules, value: users-password -->
-				<entry key="ADMIN" value="${user.names.admin}" />
-				<entry key="USER" value="${user.names.user}" />
-			</map>
-		</property>
-	</bean>
-	
-	<bean id="ieUsersCheckUtils" class="it.geosolutions.figis.security.propreloader.util.test.UsersCheckUtils">
+
+	<bean id="ieUsersCheckUtils" class="it.geosolutions.figis.security.authentication.CredentialsManager">
 		<constructor-arg index="0" value="${PROPERTIES_FILE}" />
 		<constructor-arg index="1" value="${usersRoleAdmin}" />
 		<constructor-arg index="2" value="${usersRoleUser}" />
+		<constructor-arg index="3" value="10000" />
 	</bean>
 	
-
-	<!-- 3 version -->
-  <!-- bean id="configproperties" class="it.geosolutions.figis.security.propreloader.ReloadablePropertiesFactoryBean">
-    <property name="location" value="file:src/main/resources/config.properties" />
-  </bean>
-
-  <bean id="propertyConfigurer"
-        class="it.geosolutions.figis.security.propreloader.ReloadingPropertyPlaceholderConfigurer">
-    <property name="properties" ref="configproperties"/>
-  </bean>
-
-  <bean id="mybean" class="it.geosolutions.figis.security.propreloader.test.example.MyBean">
-    <property name="cachesize" value="#{my.cache.size}"/>
-  </bean>
-  <bean id="timer" class="org.springframework.scheduling.timer.TimerFactoryBean">
-    <property name="scheduledTimerTasks">
-      <bean id="reloadProperties" class="org.springframework.scheduling.timer.ScheduledTimerTask">
-	<property name="period" value="1000"/>
-	<property name="runnable">
-	  <bean class="it.geosolutions.figis.security.propreloader.ReloadConfiguration">
-	    <property name="reconfigurableBeans">
-	      <list>
-				<ref bean="configproperties"/>
-	      </list>
-	    </property>
-	  </bean>
-	</property>
-      </bean>
-    </property>
-     <property name="daemon" value="true"/>
-  </bean -->
-  <!-- version 2 standard examples configuration dynamic properties reloading -->
-  <!-- bean id="properties" class="it.geosolutions.figis.security.propreloader.test.example.MyBeanReloadableProperties">
-    <property name="properties">
-      <props>
-        <prop key="my.cache.size">120</prop>
-      </props>
-    </property>
-  </bean>
-  <bean id="configproperties" class="it.geosolutions.figis.security.propreloader.ReloadablePropertiesFactoryBean">
-    <property name="location" value="file:src/main/resources/config.properties" />
-  </bean>
-
-  <bean id="propertyConfigurer" class="it.geosolutions.figis.security.propreloader.ReloadingPropertyPlaceholderConfigurer">
-  	 <property name="properties" ref="properties"/>
-  </bean>
-  <bean id="configurer" class="it.geosolutions.figis.security.propreloader.ReloadingPropertyPlaceholderConfigurer">
-    <property name="properties" ref="properties"/>
-  </bean>
-  <bean id="mybean" class="it.geosolutions.figis.security.propreloader.test.example.MyBean">
-   
-    <property name="cachesize" value="#{my.cache.size}"/>
-  </bean>
-
- 
-  <bean id="timer" class="org.springframework.scheduling.timer.TimerFactoryBean">
-    <property name="scheduledTimerTasks">
-      <bean id="reloadProperties" class="org.springframework.scheduling.timer.ScheduledTimerTask">
-	<property name="period" value="5000"/>
-	<property name="runnable">
-	  <bean class="it.geosolutions.figis.security.propreloader.ReloadConfiguration">
-	    <property name="reconfigurableBeans">
-	      <list>
-		    <ref bean="properties"/>
-	      </list>
-	    </property>
-	  </bean>
-	</property>
-      </bean>
-    </property>
-  </bean -->
-
+		
 </beans>

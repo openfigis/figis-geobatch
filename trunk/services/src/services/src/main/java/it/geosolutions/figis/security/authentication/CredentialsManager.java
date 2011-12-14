@@ -28,7 +28,7 @@
  * <http://www.geo-solutions.it/>.
  *
  */
-package it.geosolutions.figis.security.propreloader;
+package it.geosolutions.figis.security.authentication;
 
 import it.geosolutions.figis.model.User;
 import it.geosolutions.figis.model.enums.Role;

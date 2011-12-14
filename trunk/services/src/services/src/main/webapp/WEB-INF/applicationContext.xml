@@ -67,7 +67,7 @@
 		<property name="userCheckUtils" ref="ieUsersCheckUtils" />
 	</bean>
 
-	<bean id="ieUsersCheckUtils" class="it.geosolutions.figis.security.propreloader.CredentialsManager">
+	<bean id="ieUsersCheckUtils" class="it.geosolutions.figis.security.authentication.CredentialsManager">
 		<constructor-arg index="0" value="${PROPERTIES_FILE}" />
 		<constructor-arg index="1" value="${usersRoleAdmin}" />
 		<constructor-arg index="2" value="${usersRoleUser}" />

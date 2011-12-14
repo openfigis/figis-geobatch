@@ -41,7 +41,7 @@ import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.IntersectionDao;
-import it.geosolutions.figis.security.propreloader.CredentialsManager;
+import it.geosolutions.figis.security.authentication.CredentialsManager;
 import it.geosolutions.figis.ws.FigisService;
 import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
 import it.geosolutions.figis.ws.impl.FigisServiceImpl;
