@@ -27,7 +27,7 @@
            <areaCRS>EPSG:54012</areaCRS>
            <status>COMPUTED</status>
        </intersection>
-       <intersection mask="true" force="false" preserveTrgGeom="false">
+       <intersection mask="false" force="false" preserveTrgGeom="false">
            <id>2</id>
            <srcLayer>fifao:FAO_SUB_DIV</srcLayer>
            <trgLayer>fifao:NJA</trgLayer>

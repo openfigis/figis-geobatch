@@ -1,39 +1,40 @@
 /*
- *  GeoBatch - Open Source geospatial batch processing system
- *  http://code.google.com/p/geobatch/
- *  Copyright (C) 2007-2008-2009 GeoSolutions S.A.S.
- *  http://www.geo-solutions.it
+ * ====================================================================
  *
- *  GPLv3 + Classpath exception
+ * Intersection Engine
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
+ * http://www.geo-solutions.it
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GPLv3 + Classpath exception
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ *
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by developers
+ * of GeoSolutions.  For more information on GeoSolutions, please see
+ * <http://www.geo-solutions.it/>.
+ *
  */
 package it.geosolutions.figis.ws.impl;
-
-import java.util.List;
-
-import javax.jws.WebService;
-
-import com.trg.search.Filter;
-import com.trg.search.Search;
 
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.IntersectionDao;
-import it.geosolutions.figis.security.UserUtils;
 import it.geosolutions.figis.ws.FigisService;
 import it.geosolutions.figis.ws.exceptions.BadRequestExceptionDetails;
 import it.geosolutions.figis.ws.exceptions.BadRequestExceptionFault;
@@ -42,11 +43,20 @@ import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
 import it.geosolutions.figis.ws.response.Intersections;
 import it.geosolutions.figis.ws.response.IntersectionsPageCount;
 
+import java.util.List;
+
+import javax.jws.WebService;
+
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.trg.search.Filter;
+import com.trg.search.Search;
 
+/**
+ * Implementation of FigisServices interface for rest xml request
+ */
 @WebService(name = "FigisService", serviceName = "FigisServiceService", portName = "FigisServicePort", endpointInterface = "it.geosolutions.figis.ws.FigisService", targetNamespace = "http://services.figis.geosolutions.it/")
 public class FigisServiceImpl implements FigisService
 {
@@ -58,7 +68,7 @@ public class FigisServiceImpl implements FigisService
     {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         this.configDao = (ConfigDao) ctx.getBean("ie-configDAO");
-        intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
+        this.intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
     }
 
     public ConfigDao getConfigDao()

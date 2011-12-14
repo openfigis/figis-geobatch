@@ -1,25 +1,37 @@
 /*
- *  Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
- *  http://www.geo-solutions.it
+ * ====================================================================
  *
- *  GPLv3 + Classpath exception
+ * Intersection Engine
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
+ * http://www.geo-solutions.it
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GPLv3 + Classpath exception
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ *
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by developers
+ * of GeoSolutions.  For more information on GeoSolutions, please see
+ * <http://www.geo-solutions.it/>.
+ *
  */
 package it.geosolutions.figis.security;
 
 import it.geosolutions.figis.model.User;
+import it.geosolutions.figis.security.propreloader.CredentialsManager;
 
 import org.apache.cxf.configuration.security.AuthorizationPolicy;
 import org.apache.cxf.interceptor.Fault;
@@ -42,8 +54,9 @@ public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseIn
 
     private static final Logger LOGGER = Logger.getLogger(IntersectionEngineAuthenticationInterceptor.class);
 
-    public IntersectionEngineAuthenticationInterceptor()
-    {
+    private CredentialsManager userCheckUtils;
+    
+    public IntersectionEngineAuthenticationInterceptor(){
         super(Phase.UNMARSHAL);
     }
 
@@ -84,7 +97,9 @@ public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseIn
             // throw new AccessDeniedException("Unauthorized");
             // ///////////////////////////////////////////////////////////////////
 
-            user = UserUtils.getUser(username, password);
+            //user = UserUtils.getUser(username, password);
+            user = userCheckUtils.getUser(username, password);
+            
             if (!password.equalsIgnoreCase(user.getPassword()))
             {
                 if (LOGGER.isInfoEnabled())
@@ -107,5 +122,10 @@ public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseIn
         securityContext.setPrincipal(principal);
         message.put(SecurityContext.class, securityContext);
     }
+
+
+	public void setUserCheckUtils(CredentialsManager userCheckUtils) {
+		this.userCheckUtils = userCheckUtils;
+	}
 
 }

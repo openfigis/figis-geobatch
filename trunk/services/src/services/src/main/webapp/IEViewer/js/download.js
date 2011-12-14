@@ -14,7 +14,7 @@
 	var proxyUrl = application_context_path+'/ie-services/intersections/count/';//'/ie-services/intersection2/';//intersections/count//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/extjs/search/';
 	var proxyUrlDel = application_context_path+'/ie-services/intersections/count/';//'/ie-services/intersection2/';//intersections/count//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/resources/resource/';
 	//var proxyUrlCount = application_context_path+'/ie-services/intersection/countallintersection/';//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/resources/resource/';
-	var proxyFigis = 'http://192.168.1.101:8484/figis';
+	var proxyFigis = 'http://192.168.1.110:8484/figis';
 	
 	var proxyFigisDownloadUrl = proxyFigis+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
 	

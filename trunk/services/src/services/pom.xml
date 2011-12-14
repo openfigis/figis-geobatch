@@ -11,7 +11,7 @@
 	<!--     Module Description                                      -->
 	<!-- =========================================================== -->
 	<groupId>it.geosolutions.figis</groupId>
-	<artifactId>services</artifactId>
+	<artifactId>ie-services</artifactId>
 	<packaging>war</packaging>
 	<version>2.0-SNAPSHOT</version>
 	<name>services Maven Webapp</name>
@@ -29,7 +29,7 @@
 		</dependency>
 		<dependency>
 			<groupId>it.geosolutions.figis</groupId>
-			<artifactId>persistence</artifactId>
+			<artifactId>ie-persistence</artifactId>
 			<version>2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

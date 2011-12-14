@@ -1,3 +1,33 @@
+/*
+ * ====================================================================
+ *
+ * Intersection Engine
+ *
+ * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
+ * http://www.geo-solutions.it
+ *
+ * GPLv3 + Classpath exception
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ *
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by developers
+ * of GeoSolutions.  For more information on GeoSolutions, please see
+ * <http://www.geo-solutions.it/>.
+ *
+ */
 package it.geosolutions.figis.persistence.test;
 
 import static org.junit.Assert.assertTrue;
@@ -36,7 +66,7 @@ public class IntersectionEngineTest {
 		        configDao = (ConfigDao) ctx.getBean("ie-configDAO");
 		        intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
             }catch(Throwable e) {
-                LOGGER.trace("ON SETUP ERROR ", e);
+                LOGGER.info("ON SETUP ERROR ", e);
             }
 	}
 	@Test
@@ -161,13 +191,13 @@ public class IntersectionEngineTest {
 		  
 		  if (results!=null) {
 		  for (Intersection intStep: results) {
-			  System.out.println("srcLayer : "+intStep.getSrcLayer()+", trgLayer : "+intStep.getTrgLayer());
+			  LOGGER.trace("srcLayer : "+intStep.getSrcLayer()+", trgLayer : "+intStep.getTrgLayer());
 		  	}
 		  }
-		  System.out.println("stop");
+		  LOGGER.trace("stop");
 		  assertTrue(results.size()==3);
 		  tx.commit();
-		  System.out.println("stop2");
+		  LOGGER.trace("stop2");
 		  Session sess2 = sessionFactory.getCurrentSession();
 		  Transaction tx2 = sess2.beginTransaction();
 		  IntersectionDao intDao = new IntersectionDaoImpl(sessionFactory);
@@ -183,7 +213,7 @@ public class IntersectionEngineTest {
 		  
 		  if (results!=null) {
 		  for (Intersection intStep: results) {
-			  System.out.println("srcLayer : "+intStep.getSrcLayer()+", trgLayer : "+intStep.getTrgCodeField());
+			  LOGGER.trace("srcLayer : "+intStep.getSrcLayer()+", trgLayer : "+intStep.getTrgCodeField());
 		  	}
 		  }		  
 

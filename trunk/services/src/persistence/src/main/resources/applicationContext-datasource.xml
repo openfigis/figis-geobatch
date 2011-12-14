@@ -17,9 +17,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
 			value="${ie-services-hsqldb.dataSource.driverClassName}" />
-		<!--
-			<property name="url" value="jdbc:hsqldb:data/intersectionengine" />
-		-->
 		<property name="url" value="${ie-services-hsqldb.dataSource.url}" />
 		<property name="username" value="${ie-services-hsqldb.dataSource.username}" />
 		<property name="password" value="${ie-services-hsqldb.dataSource.password}" />
@@ -44,7 +41,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="databasePlatform"
 			value="${ie-services-hsqldb.vendorAdapter.databasePlatform}" />
-		<property name="showSql" value="true" />
+		<property name="showSql" value="false" />
 		<property name="generateDdl" value="true" />
 	</bean>
 

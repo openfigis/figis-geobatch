@@ -1,3 +1,33 @@
+/*
+ * ====================================================================
+ *
+ * GeoBatch - Intersection Engine
+ *
+ * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
+ * http://www.geo-solutions.it
+ *
+ * GPLv3 + Classpath exception
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ *
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by developers
+ * of GeoSolutions.  For more information on GeoSolutions, please see
+ * <http://www.geo-solutions.it/>.
+ *
+ */
 package it.geosolutions.geobatch.figis.intersection;
 
 import it.geosolutions.geobatch.tools.file.Extract;
@@ -32,7 +62,6 @@ final class Utilities {
 	public static final String DEFAULT_GEOSERVER_ADDRESS = "http://localhost:9999";
 	
 	private Utilities(){
-		
 	}
 	
 	static Geometry union(Geometry a, Geometry b)
@@ -95,6 +124,12 @@ final class Utilities {
 	    return geometry;
 	}
 
+	/**
+	 * Get the Layer's name
+	 * 
+	 * @param layername
+	 * @return
+	 */
 	static String getName(String layername)
 	{
 	    int i = layername.indexOf(":");
@@ -107,7 +142,8 @@ final class Utilities {
 	}
 
 	/**************
-	 * this method create the tmpdirName dir in the temporary dir
+	 * This method create the tmpdirName dir in the temporary dir
+	 * 
 	 * @param tmpDirName
 	 * @return
 	 * @throws IOException
@@ -139,27 +175,28 @@ final class Utilities {
 	}
 
 	/************
-	 *      Deletes all files and subdirectories under dir.
-	* Returns true if all deletions were successful.
-	* If a deletion fails, the method stops attempting to delete and returns false.
+	 * Deletes all files and subdirectories under dir.
+	 * Returns true if all deletions were successful.
+	 * If a deletion fails, the method stops attempting to delete and returns false.
 	 * @param dir
 	 * @return
 	 * @throws IOException
 	 */
-	static boolean deleteDir(File dir) throws IOException
+	static boolean deleteDir(File dir) //throws IOException
 	{
 	
 	    LOGGER.trace("Deleting dir " + dir);
-	    if (dir.exists() && dir.isDirectory()){
-	        FileUtils.deleteDirectory(dir);
-	    }
-	
+	    try{
+		    if (dir.exists() && dir.isDirectory()){
+		        FileUtils.deleteDirectory(dir);
+		    }
+	    }catch(IOException e){LOGGER.error(e.getLocalizedMessage(), e);}
 	    // The directory is now empty so delete it
 	    return !dir.exists();
 	}
 
 	/*****
-	 * this method takes a wfs url, download the layername features, save it in
+	 * This method takes a wfs url, download the layername features, save it in
 	 * the figisTmpDir directory and return its SimpleFEatureCollection
 	 *
 	 * @param textUrl
@@ -168,14 +205,14 @@ final class Utilities {
 	 * @throws IOException
 	 * @throws MalformedURLException
 	 */
-	static String getShapeFileFromURLbyZIP(String textUrl,
-	    String figisTmpDir, String layername) throws MalformedURLException, IOException
+	static String getShapeFileFromURLbyZIP(String textUrl, String figisTmpDir, String layername) throws MalformedURLException, IOException
 	{
-	
 	    // init the folder name where to save and uncompress the zip file
-	    String destDir = figisTmpDir + "/" +
-	        layername;
-	    LOGGER.trace("Destination dir " + destDir);
+	    String destDir = figisTmpDir + "/" + layername;
+	    
+	    if(LOGGER.isTraceEnabled()){
+	    	LOGGER.trace("Destination dir " + destDir);
+	    }
 	
 	    File finalDestDir = new File(destDir);
 	
@@ -186,22 +223,28 @@ final class Utilities {
 	        finalDestDir.mkdir();
 	        try
 	        {
-	            LOGGER.trace("downloading from : " + textUrl);
+	        	 if(LOGGER.isTraceEnabled()){
+	        		 LOGGER.trace("downloading from : " + textUrl);
+	        	 }
 	            saveZipToLocal(textUrl, destDir, layername);
-	            LOGGER.trace("download completed successfully");
-	        }
-	        catch (Exception e)
+	            if(LOGGER.isTraceEnabled()){
+	            	LOGGER.trace("download completed successfully");
+	            }
+	        }catch (Exception e)
 	        {
 	            LOGGER.error("Error downloading the zip file", e);
 	            throw new IOException("Error downloading the zip file", e);
 	        }
 	        try
 	        {
-	            LOGGER.trace("Extracting the zip file " + destDir + "/" + layername + ".zip");
+	        	 if(LOGGER.isTraceEnabled()){
+	        		 LOGGER.trace("Extracting the zip file " + destDir + "/" + layername + ".zip");
+	        	 }
 	            Extract.extract(destDir + "/" + layername + ".zip");
-	            LOGGER.trace("Extraction completed successfully");
-	        }
-	        catch (Exception e)
+	            if(LOGGER.isTraceEnabled()){
+	            	LOGGER.trace("Extraction completed successfully");
+	            }
+	        }catch (Exception e)
 	        {
 	            // some exception during the file extraction, return a null
 	            // value
@@ -214,7 +257,9 @@ final class Utilities {
 	    // return the simple feature collection from the uncompressed shp file
 	    // name
 	    String shpfilename = figisTmpDir + "/" + layername + "/" + layername + "/" + layername + ".shp";
-	    LOGGER.trace("Shpfilename: " + shpfilename);
+	    if(LOGGER.isTraceEnabled()){
+	    	LOGGER.trace("Shpfilename: " + shpfilename);
+	    }
 	
 	    // return SimpleFeatureCollectionByShp(shpfilename);
 	    return shpfilename;
@@ -233,8 +278,7 @@ final class Utilities {
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
-	private static void saveZipToLocal(String textUrl, String dest,
-	    String filename) throws MalformedURLException, IOException
+	private static void saveZipToLocal(String textUrl, String dest, String filename) throws MalformedURLException, IOException
 	{
 		OutputStream destinationStream=null;
 	    InputStream sourceStream=  null;

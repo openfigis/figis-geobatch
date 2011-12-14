@@ -209,29 +209,33 @@ Ext.ux.grid.RowExpander = Ext.extend(Ext.util.Observable, {
     },
 
     expandRow : function(row){
-        if(typeof row == 'number'){
-            row = this.grid.view.getRow(row);
-        }
-        var record = this.grid.store.getAt(row.rowIndex);
-        var body = Ext.DomQuery.selectNode('tr:nth(2) div.x-grid3-row-body', row);
-        if(this.beforeExpand(record, body, row.rowIndex)){
-            this.state[record.id] = true;
-            Ext.fly(row).replaceClass('x-grid3-row-collapsed', 'x-grid3-row-expanded');
-            this.fireEvent('expand', this, record, body, row.rowIndex);
-        }
+		try{
+			if(typeof row == 'number'){
+				row = this.grid.view.getRow(row);
+			}
+			var record = this.grid.store.getAt(row.rowIndex);
+			var body = Ext.DomQuery.selectNode('tr:nth(2) div.x-grid3-row-body', row);
+			if(this.beforeExpand(record, body, row.rowIndex)){
+				this.state[record.id] = true;
+				Ext.fly(row).replaceClass('x-grid3-row-collapsed', 'x-grid3-row-expanded');
+				this.fireEvent('expand', this, record, body, row.rowIndex);
+			}
+		}catch(e){}
     },
 
     collapseRow : function(row){
-        if(typeof row == 'number'){
-            row = this.grid.view.getRow(row);
-        }
-        var record = this.grid.store.getAt(row.rowIndex);
-        var body = Ext.fly(row).child('tr:nth(1) div.x-grid3-row-body', true);
-        if(this.fireEvent('beforecollapse', this, record, body, row.rowIndex) !== false){
-            this.state[record.id] = false;
-            Ext.fly(row).replaceClass('x-grid3-row-expanded', 'x-grid3-row-collapsed');
-            this.fireEvent('collapse', this, record, body, row.rowIndex);
-        }
+		try{
+			if(typeof row == 'number'){
+				row = this.grid.view.getRow(row);
+			}
+			var record = this.grid.store.getAt(row.rowIndex);
+			var body = Ext.fly(row).child('tr:nth(1) div.x-grid3-row-body', true);
+			if(this.fireEvent('beforecollapse', this, record, body, row.rowIndex) !== false){
+				this.state[record.id] = false;
+				Ext.fly(row).replaceClass('x-grid3-row-expanded', 'x-grid3-row-collapsed');
+				this.fireEvent('collapse', this, record, body, row.rowIndex);
+			}
+		}catch(e){}
     }
 });
 

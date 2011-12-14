@@ -68,7 +68,7 @@
 		<module>../requester</module>
 		<module>../services/src</module>
 		<module>../src</module>
-		<module>../distribution</module>
+		<!--module>../distribution</module-->
 	</modules>
      <distributionManagement>
 		  <!--..................................-->

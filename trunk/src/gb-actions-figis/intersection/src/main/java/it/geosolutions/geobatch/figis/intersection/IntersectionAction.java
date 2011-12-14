@@ -1,23 +1,32 @@
 /*
- *  GeoBatch - Open Source geospatial batch processing system
- *  http://code.google.com/p/geobatch/
- *  Copyright (C) 2007-2008-2009 GeoSolutions S.A.S.
- *  http://www.geo-solutions.it
+ * ====================================================================
  *
- *  GPLv3 + Classpath exception
+ * GeoBatch - Intersection Engine
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
+ * http://www.geo-solutions.it
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * GPLv3 + Classpath exception
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ *
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by developers
+ * of GeoSolutions.  For more information on GeoSolutions, please see
+ * <http://www.geo-solutions.it/>.
+ *
  */
 package it.geosolutions.geobatch.figis.intersection;
 
@@ -74,7 +83,8 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	 */
 	private final IntersectionConfiguration conf;
 	private String host = Utilities.DEFAULT_GEOSERVER_ADDRESS;
-	private final String TMP_DIR_NAME = "figis";
+	private final static String TMP_DIR_NAME = "figis";
+	private final static String URI_URL = "http://geo-solutions.it";
 
 	/** Username ie-service */
 	private String ieServiceUsername = null;
@@ -118,12 +128,12 @@ public class IntersectionAction extends BaseAction<EventObject> {
 		}
 
 		try {
-			ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL(),new URI("http://geo-solutions.it"),true,true,ShapefileDataStore.DEFAULT_STRING_CHARSET);
+			ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL(),new URI(URI_URL),true,true,ShapefileDataStore.DEFAULT_STRING_CHARSET);
 			shapeFileStores.add(store);
 			FeatureSource fs = store.getFeatureSource();
 			return (SimpleFeatureCollection) fs.getFeatures();
 		} catch (Exception e1) {
-			LOGGER.trace("ZSR: error:", e1.getLocalizedMessage(), e1);
+			LOGGER.error("ZSR: error:", e1.getLocalizedMessage(), e1);
 			return null;
 		}
 
@@ -142,11 +152,15 @@ public class IntersectionAction extends BaseAction<EventObject> {
 	private String downloadFromGeoserver(String layername, String tmpDir) {
 		String urlCollection = "";
 		try {
-			LOGGER.info("Downloading " + layername + " ");
+			 if(LOGGER.isInfoEnabled()){
+				 LOGGER.info("Downloading " + layername + " ");
+			 }
 
 			String name = Utilities.getName(layername);
 			if (geoserver != null) {
-				LOGGER.info("Georserverl URL " + geoserver.getGeoserverUrl());
+				 if(LOGGER.isInfoEnabled()){
+					 LOGGER.info("Georserverl URL " + geoserver.getGeoserverUrl());
+				 }
 				// build the url to download the zip file by wfs
 				urlCollection = geoserver.getGeoserverUrl()
 						+ "/wfs?outputFormat=SHAPE-ZIP&request=GetFeature&version=1.1.1&typeName="
@@ -650,7 +664,7 @@ public class IntersectionAction extends BaseAction<EventObject> {
 					Utilities.deleteDir(tmpDir);
 					LOGGER.trace(TMP_DIR_NAME + " successfully deleted");
 				} catch (Exception e) {
-					LOGGER.trace(e.getLocalizedMessage(),e);
+					LOGGER.error(e.getLocalizedMessage(),e);
 				}
 			}
 		}

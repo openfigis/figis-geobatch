@@ -22,7 +22,6 @@
 <assembly>
   <id>bin</id>
   <formats>
-    <format>tar.gz</format>
     <format>zip</format>
   </formats>
   <fileSets>
@@ -41,7 +40,7 @@
   <dependencySets>
     <dependencySet>
       <includes>
-        <include>it.geosolutions.figis:services:war</include>
+        <include>it.geosolutions.figis:ie-services:war</include>
         <include>it.geosolutions.geobatch.figis:gb-application-figis:war</include>
       </includes>
       <outputDirectory>deployables</outputDirectory>

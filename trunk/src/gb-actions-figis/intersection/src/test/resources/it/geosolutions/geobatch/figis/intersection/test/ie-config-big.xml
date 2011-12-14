@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ie-config updateVersion="0">
+   <global>
+       <geoserver>
+           <geoserverUrl>http://192.168.139.128:8484/figis/geoserver</geoserverUrl> 
+           <geoserverUsername>admin</geoserverUsername>
+           <geoserverPassword>abramisbrama</geoserverPassword>
+       </geoserver>
+       <db>
+           <database>orcl</database>
+           <schema>FIGIS_GIS</schema>
+           <user>FIGIS_GIS</user>
+           <password>FIGIS</password>
+           <port>1521</port>
+           <host>192.168.139.128</host>
+       </db>
+       <clean>false</clean>
+   </global>
+   <intersections>
+        <intersection mask="false" force="true" preserveTrgGeom="false">
+        	<id>1</id>
+           <srcLayer>fifao:FAO_DIV</srcLayer>
+           <trgLayer>fifao:NJA</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>F_SUBAREA</srcCodeField>
+           <trgCodeField>ISO3_TERRI</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+       <intersection mask="false" force="true" preserveTrgGeom="false">
+       		<id>2</id>
+           <srcLayer>fifao:FAO_SUB_DIV</srcLayer>
+           <trgLayer>fifao:NJA</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>F_SUBDIVIS</srcCodeField>
+           <trgCodeField>ISO3_TERRI</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+       <intersection mask="false" force="true" preserveTrgGeom="false">
+       		<id>3</id>
+           <srcLayer>fifao:FAO_MAJOR</srcLayer>
+           <trgLayer>fifao:ICCAT_SMU</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>F_AREA</srcCodeField>
+           <trgCodeField>ICCAT_SMU</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	   <intersection mask="false" force="true" preserveTrgGeom="false">
+	   	   <id>4</id>
+		   <srcLayer>fifao:NJA</srcLayer>
+           <trgLayer>fifao:FAO_DIV</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>ISO3_TERRI</srcCodeField>
+		   <trgCodeField>F_SUBAREA</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+       <intersection mask="false" force="true" preserveTrgGeom="false">
+       	   <id>5</id>
+           <srcLayer>fifao:NJA</srcLayer>
+		   <trgLayer>fifao:FAO_SUB_DIV</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+			<srcCodeField>ISO3_TERRI</srcCodeField>
+           <trgCodeField>F_SUBDIVIS</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+       <intersection mask="false" force="true" preserveTrgGeom="false">
+       	   <id>6</id>
+	       <srcLayer>fifao:ICCAT_SMU</srcLayer>
+           <trgLayer>fifao:FAO_MAJOR</trgLayer>
+		   <maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>ICCAT_SMU</srcCodeField>
+           <trgCodeField>F_AREA</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	   <intersection mask="false" force="true" preserveTrgGeom="false">
+	   	   <id>7</id>
+           <srcLayer>fifao:ICCAT_SMU</srcLayer>
+           <trgLayer>fifao:FAO_MAJOR</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+            <srcCodeField>ICCAT_SMU</srcCodeField>
+			<trgCodeField>F_AREA</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	   <intersection mask="false" force="true" preserveTrgGeom="false">
+	   	    <id>8</id>
+            <srcLayer>fifao:EEZ</srcLayer>
+			<trgLayer>fifao:SPECIES_DIST</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+            <srcCodeField>I_O</srcCodeField>
+			<trgCodeField>SHAPE_AREA</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	   <intersection mask="false" force="true" preserveTrgGeom="false">
+	   	    <id>9</id>
+            <srcLayer>fifao:FAO_MAJOR</srcLayer>
+			<trgLayer>fifao:SPECIES_DIST</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+            <srcCodeField>F_AREA</srcCodeField>
+			<trgCodeField>SHAPE_AREA</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	    <intersection mask="false" force="true" preserveTrgGeom="false">
+	       <id>10</id>
+           <srcLayer>fifao:NJA</srcLayer>
+		   <trgLayer>fifao:SPECIES_DIST</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>ISO3_TERRI</srcCodeField>
+           <trgCodeField>SHAPE_AREA</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	   <intersection mask="false" force="true" preserveTrgGeom="false">
+	   	    <id>11</id>
+            <srcLayer>fifao:SPECIES_DIST</srcLayer>
+			<trgLayer>fifao:EEZ</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>SHAPE_AREA</srcCodeField>
+		   <trgCodeField>I_O</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	  <intersection mask="false" force="true" preserveTrgGeom="false">
+	  	   <id>12</id>
+           <srcLayer>fifao:SPECIES_DIST</srcLayer>
+           <trgLayer>fifao:FAO_MAJOR</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+            <srcCodeField>SHAPE_AREA</srcCodeField>
+			<trgCodeField>F_AREA</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+	  <intersection mask="false" force="true" preserveTrgGeom="false">
+	  	   <id>13</id>
+           <srcLayer>fifao:SPECIES_DIST</srcLayer>
+           <trgLayer>fifao:NJA</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <srcCodeField>SHAPE_AREA</srcCodeField>
+           <trgCodeField>ISO3_TERRI</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>	    
+   </intersections>
+</ie-config>

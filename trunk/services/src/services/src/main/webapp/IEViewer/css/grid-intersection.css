@@ -95,7 +95,7 @@
 
 .csv .x-btn-text {
     font-size:10px;
-	    line-height: 2px;
+	line-height: 2px;
     margin-left: -12px;
 	margin-top: 3px;
 	margin-bottom: 3px;
@@ -121,7 +121,7 @@
 	margin-top: 3px;
 	margin-bottom: 3px;
 	margin-right: 3px;
-    background-image: url(../images/page_white_excel.png);
+    background-image: url(../images/file-xml.png);
 	width: 65px;
 }
 
@@ -205,7 +205,7 @@
 	margin-top: 3px;
 	margin-bottom: 3px;
 	margin-right: 3px;
-    background-image: url(../images/text-csv.png);
+    background-image: url(../images/json.png);
 	width: 65px;
 }
 
@@ -311,14 +311,22 @@ width: 900px;
 }
 .x-grid3-scroller {
     margin-left: -20px;
+	/*width: 100%;
+	overflow-x: hidden;*/
 }
-
+.x-grid3-header-inner{
+/*margin-left: -2px;*/
+}
 .map_edit .x-btn-text-icon {
     background-image: url(../images/map_edit.png);
 }
 
 .row_expand .x-btn-text {
     background-image: url(../images/zoom.png);
+}
+
+.polling .x-btn-text {
+    background-image: url(../images/database_refresh.png);
 }
 
 .pencil .x-btn-text {
@@ -447,4 +455,12 @@ margin-right: -20px;
     font: 11px/13px Arial,Helvetica,Verdana,sans-serif;
    /* height: 22px;*/
    width:100%;
+}
+
+.price-fall { 
+ background-color: red;
+}
+
+.price-rise {
+ background-color: light-cyan;
 }

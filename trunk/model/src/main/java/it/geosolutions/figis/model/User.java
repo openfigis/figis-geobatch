@@ -1,6 +1,8 @@
 /*
  * ====================================================================
  *
+ * Intersection Engine
+ *
  * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
  * http://www.geo-solutions.it
  *

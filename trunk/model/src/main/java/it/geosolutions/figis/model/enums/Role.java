@@ -1,9 +1,7 @@
 /*
- * $ Header: it.geosolutions.georepo.core.enums.Role,v. 0.1 14-set-2011 13.19.58 created by tobaro <tobia.dipisa at geo-solutions.it> $
- * $ Revision: 0.1 $
- * $ Date: 8-set-2011 13.19.58 $
- *
  * ====================================================================
+ *
+ * Intersection Engine
  *
  * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
  * http://www.geo-solutions.it
@@ -35,7 +33,7 @@ package it.geosolutions.figis.model.enums;
 /**
  * Enum Role.
  *
- * @author Tobia di Pisa (tobia.dipisa at geo-solutions.it)
+ * @author Riccardo Galiberti (riccardo.galiberti at geo-solutions.it)
  *
  */
 public enum Role

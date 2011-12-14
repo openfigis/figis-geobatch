@@ -16,28 +16,23 @@
 	<!--Bean to load properties file -->
 	<bean id="placeholderConfig"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<!--
-			property name="location"
-			value="classpath:ieServicesHsqldb.properties" /
-		-->
 		<property name="locations">
 			<list>
 				<value>classpath:ieServicesHsqldb.properties</value>
-				<value>classpath:users.properties</value>
+				<value>classpath:userac.properties</value>
 			</list>
 		</property>
 	</bean>
 
 	<!--
 		do not use import statements if CXFServlet init parameters link to
-		this beans.xml
-	-->
+		this beans.xml-->
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-	<bean name="HSQLDBServer" class="it.geosolutions.figis.ws.server.InitHSQLDB">
+	<bean name="HSQLDBServer" class="it.geosolutions.figis.ws.server.InitHSQLDB" init-method="init" destroy-method="destroy">
 		<constructor-arg index="0"
 			value="${ie-services-hsqldb.serverDatabase}" />
 		<constructor-arg index="1"
@@ -66,18 +61,18 @@
 	</jaxrs:server>
 
 	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl" />
+
 	<bean id="ieAuthInterceptor"
 		class="it.geosolutions.figis.security.IntersectionEngineAuthenticationInterceptor">
-	</bean>
-	<bean id="ieUserUtils" class="it.geosolutions.figis.security.UserUtils">
-		<property name="users">
-			<map>
-				<!-- key: rules, value: users-password -->
-				<entry key="ADMIN" value="${user.names.admin}" />
-				<entry key="USER" value="${user.names.user}" />
-			</map>
-		</property>
+		<property name="userCheckUtils" ref="ieUsersCheckUtils" />
 	</bean>
 
-
+	<bean id="ieUsersCheckUtils" class="it.geosolutions.figis.security.propreloader.CredentialsManager">
+		<constructor-arg index="0" value="${PROPERTIES_FILE}" />
+		<constructor-arg index="1" value="${usersRoleAdmin}" />
+		<constructor-arg index="2" value="${usersRoleUser}" />
+		<constructor-arg index="3" value="10000" />
+	</bean>
+	
+		
 </beans>

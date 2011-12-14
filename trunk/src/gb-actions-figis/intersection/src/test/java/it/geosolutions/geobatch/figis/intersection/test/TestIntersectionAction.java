@@ -1,3 +1,33 @@
+/*
+ * ====================================================================
+ *
+ * GeoBatch - Intersection Engine
+ *
+ * Copyright (C) 2007 - 2011 GeoSolutions S.A.S.
+ * http://www.geo-solutions.it
+ *
+ * GPLv3 + Classpath exception
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.
+ *
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by developers
+ * of GeoSolutions.  For more information on GeoSolutions, please see
+ * <http://www.geo-solutions.it/>.
+ *
+ */
 package it.geosolutions.geobatch.figis.intersection.test;
 
 import it.geosolutions.figis.model.Config;
@@ -97,7 +127,18 @@ public class TestIntersectionAction extends TestCase
         }
 
     }*/
+    /*@Test
+    public void test3_IntersectionDeletion() throws Exception
+    {
+        config = IEConfigUtils.parseXMLConfig(loadXMLConfig("ie-config-delete.xml").getAbsolutePath());
 
+        IEConfigDAO ieConfigDAO = new TestingIEConfigDAOImpl(config);
+
+        intersectionAction.setIeConfigDAO(ieConfigDAO);
+        intersectionAction.execute(queue);
+
+        assertTrue(config.intersections.size() == 0);
+    }*/
     @Test
     public void test1_IntersectionsComputation() throws Exception
     {
@@ -113,7 +154,8 @@ public class TestIntersectionAction extends TestCase
             assertTrue(intersection.getStatus().equals(Status.COMPUTED));
         }
     }
-
+   /* */
+/*
     @Test
     public void test2_IntersectionReomputationWithForce() throws Exception
     {
@@ -128,9 +170,9 @@ public class TestIntersectionAction extends TestCase
         {
             assertTrue(intersection.getStatus().equals(Status.COMPUTED));
         }
-    }
+    }*/
 
-    @Test
+   /* @Test
     public void test3_IntersectionDeletion() throws Exception
     {
         config = IEConfigUtils.parseXMLConfig(loadXMLConfig("ie-config-delete.xml").getAbsolutePath());
@@ -141,6 +183,20 @@ public class TestIntersectionAction extends TestCase
         intersectionAction.execute(queue);
 
         assertTrue(config.intersections.size() == 0);
-    }
+    }*/
+   /* @Test
+    public void test1_IntersectionsBigComputation() throws Exception
+    {
+        config = IEConfigUtils.parseXMLConfig(loadXMLConfig("ie-config-big.xml").getAbsolutePath());
 
+        IEConfigDAO ieConfigDAO = new TestingIEConfigDAOImpl(config);
+
+        intersectionAction.setIeConfigDAO(ieConfigDAO);
+        intersectionAction.execute(queue);
+
+        for (Intersection intersection : config.intersections)
+        {
+            assertTrue(intersection.getStatus().equals(Status.COMPUTED));
+        }
+    }*/
 }
