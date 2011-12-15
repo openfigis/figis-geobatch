@@ -53,7 +53,7 @@
 	var proxyDownload = '';
 	var proxyFigisDownloadUrl = proxyFigis+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
 	var proxyUrlGenStatus = application_context_path+'/ie-services/intersection/';//generalStatusComputing/
-	alert('intersection3IE7.js');
+	
 	function getParameter ( queryString1, parameterName1 ) {
 	try{
 		// Add "=" to the parameter name (i.e. parameterName=value)
@@ -314,6 +314,7 @@
 		t=setTimeout("timedCount()",timerInterval/30);
 		if(c==0){
 			c=timerInterval/1000;
+			reloadGrid();
 		}
 		}
 	}
@@ -406,7 +407,7 @@
 		function customRenderer(value,p,r){
 			var ret = value;
 			var stt = (r.data['status']);
-			if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+ value +'</span>';//blue
+			if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+ value +'</span>';
 			if(stt=='COMPUTING')ret='<span style=\'color: orange\'>'+ value +'</span>';
 			if(stt=='TOCOMPUTE')ret='<span style=\'color: #FF0000\'>'+ value +'</span>';
 			if(stt=='NOSTATE')ret='<span style=\'color: #FF0000\'>'+ value +'</span>';
@@ -432,7 +433,7 @@
 							'<button type="button" id="gml2Btn" class="x-btn-img-gml2"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2\',true,\'{status}\',\'GML2\');"> </button>'+
 							'</td>'+
 		-					'<td>'+
-							'<button type="button" id="zipBtn" class="x-btn-img-zip" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2-ZIP\',true,\'{status}\',\'ZIP\');">GML2-ZIP</button>'+
+							'<button type="button" id="zipBtn" class="x-btn-img-zip" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2-ZIP\',true,\'{status}\',\'ZIP\');"> </button>'+
 							'</td>'+
 							'<td>'+
 							'<button type="button" id="gml31Btn" class="x-btn-img-gml31"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.1.1\',true,\'{status}\',\'GML3.1.1\');"> </button>'+

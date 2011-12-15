@@ -313,6 +313,7 @@
 		t=setTimeout("timedCount()",TIMER_INTERVAL/30);
 		if(c==0){
 			c=TIMER_INTERVAL/1000;
+			reloadGrid();
 		}
 		}
 	}
@@ -432,8 +433,7 @@
 						'<em unselectable="on" class=" x-btn-text csv">'+
 						'<button type="button" id="csvBtn" class=" x-btn-text csv" alt="Export CSV" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'csv\',true,\'{status}\',\'CSV\');">CSV</button></em></td>'+
 						'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
-			'</tpl>',
-			'<tpl if="abilitaPulsanti==true">'+
+		
 					'<td class=""><i>&nbsp;</i></td>'+
 							'<td class=""></td>'+
 							'<td class=""><i>&nbsp;</i></td>'+
@@ -442,8 +442,7 @@
 							'<em unselectable="on" class=" x-btn-text gml2">'+
 							'<button type="button" id="gml2Btn" class=" x-btn-text gml2"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2\',true,\'{status}\',\'GML2\');">GML2</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
-			'</tpl>',
-			'<tpl if="abilitaPulsanti==true">'+
+		
 				'<td class=""><i>&nbsp;</i></td>'+
 							'<td class=""></td>'+
 							'<td class=""><i>&nbsp;</i></td>'+
@@ -452,8 +451,7 @@
 							'<em unselectable="on" class=" x-btn-text gml2-gzip">'+
 							'<button type="button" id="zipBtn" class=" x-btn-text zip" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2-ZIP\',true,\'{status}\',\'ZIP\');">ZIP</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
-			'</tpl>',
-			'<tpl if="abilitaPulsanti==true">'+
+	
 					'<td class=""><i>&nbsp;</i></td>'+
 							'<td class=""></td>'+
 							'<td class=""><i>&nbsp;</i></td>'+
@@ -462,8 +460,7 @@
 							'<em unselectable="on" class=" x-btn-text gml31">'+
 							'<button type="button" id="gml31Btn" class=" x-btn-text gml31"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.1.1\',true,\'{status}\',\'GML3.1.1\');">GML3.1</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
-			'</tpl>',
-			'<tpl if="abilitaPulsanti==true">'+
+		
 					'<td class=""><i>&nbsp;</i></td>'+
 							'<td class=""></td>'+
 							'<td class=""><i>&nbsp;</i></td>'+
@@ -472,8 +469,7 @@
 							'<em unselectable="on" class=" x-btn-text gml32">'+
 							'<button type="button" id="gml32Btn" class=" x-btn-text gml32"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.2\',true,\'{status}\',\'GML3.2\');">GML3.2</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
-			'</tpl>',
-			'<tpl if="abilitaPulsanti==true">'+
+	
 					'<td class=""><i>&nbsp;</i></td>'+
 							'<td class=""></td>'+
 							'<td class=""><i>&nbsp;</i></td>'+
@@ -482,8 +478,7 @@
 							'<em unselectable="on" class=" x-btn-text geoJSON">'+
 							'<button type="button" id="geoJSONVBtn" class=" x-btn-text geoJSON"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'json\',true,\'{status}\',\'GML-JSON\');">GML-JSON</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
-			'</tpl>',
-			'<tpl if="abilitaPulsanti==true">'+
+		
 					'<td class=""><i>&nbsp;</i></td>'+
 							'<td class=""></td>'+
 							'<td class=""><i>&nbsp;</i></td>'+
