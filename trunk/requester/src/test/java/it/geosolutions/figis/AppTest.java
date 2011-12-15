@@ -53,8 +53,8 @@ public class AppTest extends TestCase
 	final static Logger LOGGER = Logger.getLogger(AppTest.class.toString());
     Config config = new Config();
     String host = "http://localhost:9999";
-    String ieServiceUsername = "ADMIN";
-    String ieServicePassword = "ADMIN";
+    String ieServiceUsername = "admin";
+    String ieServicePassword = "abramisbrama";
 
     @Override
     protected void setUp()
@@ -69,7 +69,7 @@ public class AppTest extends TestCase
             global.getDb().setDatabase("trial");
             global.getDb().setHost("localhost");
             global.getDb().setPassword("password");
-            global.getDb().setPort("8080");
+            global.getDb().setPort("8082");
             global.getDb().setSchema("empty");
             global.getDb().setUser("dbuser");
             config.setUpdateVersion(1);

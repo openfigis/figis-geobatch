@@ -35,7 +35,7 @@
 	var userProfile = 'view';
 	var queryString = '';
 	var searchString = '';
-	var pagination = 20;
+	var PAGINATION = 20;
 	var store;
 	var xg;
 	var grid;
@@ -43,16 +43,16 @@
 	var expandPressed = false;
 	var mapIdToOpen = ""; mapIdToOpen = window.top.location;
 	var timerStarted = false;
-	var timerInterval = 30000;
-	var application_context_path = '';
-	var FDHUrl = application_context_path+'/ie-services/intersection/count/';
-	var proxyUrl = application_context_path+'/ie-services/intersection/count/';
-	var proxyUrlDel = application_context_path+'/ie-services/intersection/count/';
-	//var proxyUrlCount = application_context_path+'/ie-services/intersection/countallintersection/';
-	var proxyFigis = 'http://192.168.139.128:8484/figis';
-	var proxyDownload = '';
-	var proxyFigisDownloadUrl = proxyFigis+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
-	var proxyUrlGenStatus = application_context_path+'/ie-services/intersection/';//generalStatusComputing/
+	var TIMER_INTERVAL = 30000;
+	var APPLICATION_CONTEXT_PATH = '';
+	var FDHUrl = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
+	var PROXY_URL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
+	var PROXY_URL_DEL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
+	//var proxyUrlCount = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/countallintersection/';
+	var PROXY_FIGIS = 'http://192.168.139.128:8484/figis';
+	var PROXY_DOWNLOAD = '';
+	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
+	var PROXY_URL_GEN_STATUS = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/generalStatusComputing/';
 	//alert('intersection3.js');
 	function getParameter ( queryString1, parameterName1 ) {
 	try{
@@ -125,13 +125,13 @@
 				var srcCodeFieldCut = cutStr(srcCodeField);
 				var trgLayerCut = cutStr(trgLayer);
 				var trgCodeFieldCut = cutStr(trgCodeField);
-				var downlSrc = proxyFigisDownloadUrl+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
+				var downlSrc = PROXY_FIGIS_DOWNLOAD+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
 				//downlSrc = 'http://localhost:8081/download/TUNA_SPATIAL_STAT_DATA.zip';
 				if(debug)alert('downlSrc=='+downlSrc);
 
                //funziona se sono sul server da cui scarico o se downlSrc passa per il proxy
 			   //-->
-			   var downlSrcPrxy = proxyDownload+'download.html?src2Down='+downlSrc;
+			   var downlSrcPrxy = PROXY_DOWNLOAD+'download.html?src2Down='+downlSrc;
 			  // download3(downlSrcPrxy);
 			   /**/
 			   //funziona ovunque, poco elegante
@@ -148,7 +148,7 @@
 			  // alert(stylew);
 			  var w = window.open(downlSrc,'Download',stylew);//funziona ovunque, sistema classico --> vedi anche downlSrcPrxy
 			  //funziona ovunque, ma deve essere nel server da cui si scarica e funziona da proxy per la richiesta ajaxsistema classico con pagina
-			  //mettere proxyFigis+'download....' e montare la pagina 'download.html' nella dir di proxyFigis
+			  //mettere PROXY_FIGIS+'download....' e montare la pagina 'download.html' nella dir di PROXY_FIGIS
 			  //-->var w = window.open(proxyDownload+'download.html?src2Down='+downlSrc,'Download','location=1,status=0,scrollbars=0, menubar=0, toolbar=0, width=600,height=300');
 				  /*w.document.write("<html>");
 				  w.document.write("<head>");
@@ -282,19 +282,15 @@
 			   });
 			  if(debug)alert('downloading resource from link: '+src);
 				Ext.Ajax.request({
-						url : src,//proxyUrlDel+id , 
-						//headers: {
-						//'X-CUSTOM-USERID': 'foo'
-						//},
-						//params : {  },
+						url : src,
 						method: 'GET',
 						success: function() { 
-							Ext.MessageBox.alert('Success', 'Downloading...');//result.responseText
+							Ext.MessageBox.alert('Success', 'Downloading...');
 							wms.hide();
 						},
 						failure: function() { 
 							wms.hide();
-							Ext.MessageBox.alert('Failed', 'Something wrong has appened ');//+result.date 
+							Ext.MessageBox.alert('Failed', 'Something wrong has appened '); 
 						} 
 					});
 	}
@@ -305,25 +301,26 @@
 	}
 	
 	
-	var c=timerInterval/1000;
+	var c=TIMER_INTERVAL/1000;
 	var t;
 
 	function timedCount()
 	{
-		document.getElementById('idBtnPolling').value=c;
+		//document.getElementById('idBtnPolling').value=c;
 		c=c-1;
 		if(timerStarted){
 		
-		t=setTimeout("timedCount()",timerInterval/30);
+		t=setTimeout("timedCount()",TIMER_INTERVAL/30);
 		if(c==0){
-			c=timerInterval/1000
+			c=TIMER_INTERVAL/1000;
 		}
 		}
 	}
-
+	/*function for refreshing data*/
 	function doTimer(){
 		timerStarted=!timerStarted;
 		if (timerStarted){
+		  //Ext.Msg.alert('Polling', 'You have started the polling');
 		  timedCount();
 	  }
 	}
@@ -372,7 +369,7 @@
 			proxy: new Ext.data.HttpProxy({
 				type: 'ajax',
 				restful: true,
-				url: proxyUrl+searchString.replace(' ',''),
+				url: PROXY_URL+searchString.replace(' ',''),
 				method : 'GET',
 				success: function ( result ) {
 
@@ -408,12 +405,12 @@
 		function customRenderer(value,p,r){
 			var ret = value;
 			var stt = (r.data['status']);
-			 if(stt=='TODELETE')ret='<font style=\'color: #0000FF\'>'+value+'</font>';//blue
-			if(stt=='COMPUTING')ret='<font style=\'color: orange\'>'+value+'</font>';
-			if(stt=='TOCOMPUTE')ret='<font style=\'color: #FF0000\'>'+value+'</font>';
-			if(stt=='NOSTATE')ret='<font style=\'color: #FF0000\'>'+value+'</font>';
-			if(stt=='COMPUTED')ret='<font style=\'color: GREEN\'>'+ value +'</font>';
-			if(stt=='FAILED')ret='<font style=\'color: RED\'>'+ value +'</font>';
+			 if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+value+'</span>';//blue
+			if(stt=='COMPUTING')ret='<span style=\'color: orange\'>'+value+'</span>';
+			if(stt=='TOCOMPUTE')ret='<span style=\'color: #FF0000\'>'+value+'</span>';
+			if(stt=='NOSTATE')ret='<span style=\'color: #FF0000\'>'+value+'</span>';
+			if(stt=='COMPUTED')ret='<span style=\'color: GREEN\'>'+ value +'</span>';
+			if(stt=='FAILED')ret='<span style=\'color: RED\'>'+ value +'</span>';
 			return ret;
 		}
 
@@ -639,7 +636,7 @@
 					
 			// paging bar on the bottom
 			bbar: new Ext.PagingToolbar({
-				pageSize: pagination,
+				pageSize: PAGINATION,
 				store: store,
 				displayInfo: true,
 				//encode: true,
@@ -697,7 +694,7 @@
 		});
 		
 		// trigger the data store load
-		store.load({params:{start:0, limit:pagination}});
+		store.load({params:{start:0, limit:PAGINATION}});
 
 		// render it
 		grid.render('topic-grid');

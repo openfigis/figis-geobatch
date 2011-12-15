@@ -187,7 +187,7 @@ final class Utilities {
 	
 	    LOGGER.trace("Deleting dir " + dir);
 	    try{
-		    if (dir.exists() && dir.isDirectory()){
+		    if (dir!=null && dir.exists() && dir.isDirectory()){
 		        FileUtils.deleteDirectory(dir);
 		    }
 	    }catch(IOException e){LOGGER.error(e.getLocalizedMessage(), e);}

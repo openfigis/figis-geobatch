@@ -40,6 +40,8 @@ import org.apache.log4j.Logger;
 
 
 /**
+ * Utility class for accessing ie-db
+ * 
  * @author Alessio
  *
  */
@@ -86,7 +88,8 @@ public class IEConfigUtils
     }
 
     /**
-     *
+     * Method to validate configuration
+     * 
      * @param config
      * @return
      */

@@ -10,9 +10,13 @@
 	
 
 
+<!-- Examples configurations from http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger -->
+<!-- 0 0/5 14 * * ? 	Fire every 5 minutes starting at 2pm and ending at 2:55pm, every day -->
+<!-- 0 0-5 14 * * ? 	Fire every minute starting at 2pm and ending at 2:05pm, every day -->
+<!-- '5/15' in the seconds field means "the seconds 5, 20, 35, and 50" -->
 	<EventGeneratorConfiguration>
 	 <eventType>POLLING_EVENT</eventType>
-	 <interval>0/20 * * * * ?</interval>
+	 <interval>30 0-1 * * * ?</interval>
 	 <id>cron_id</id>
 	 <serviceID>fsEventGeneratorService</serviceID>
 	 <description>description</description>

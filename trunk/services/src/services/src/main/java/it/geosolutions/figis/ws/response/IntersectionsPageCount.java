@@ -42,9 +42,9 @@ import it.geosolutions.figis.model.Intersection;
 /**
  * This class return a map for xml response with
  * a value 'count' for pagination of Extjs client
+ * 
  * @author Riccardo Galiberti
  */
-
 @XmlRootElement(name = "Intersections")
 public class IntersectionsPageCount
 {
@@ -53,6 +53,8 @@ public class IntersectionsPageCount
 
 
     /**
+     * Returns the intersections
+     * 
      * @return the intersections
      */
     @XmlElement(name = "Intersection")
@@ -62,6 +64,9 @@ public class IntersectionsPageCount
     }
 
     /**
+     * Returns the totalCount of the intersections
+     * for client-viewer
+     * 
      * @return the intersections
      */
     @XmlElement(name = "totalCount")
@@ -78,6 +83,10 @@ public class IntersectionsPageCount
         this.intersections = intersections;
     }
 
+    /**
+     * 
+     * @param val
+     */
     public void setTotalCount(int val)
     {
         this.totalCount = val;

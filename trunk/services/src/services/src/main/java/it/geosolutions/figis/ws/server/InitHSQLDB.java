@@ -40,6 +40,9 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * Servlet to initialize ie-db (hsql db). This can start fronm servlet
+ * or by initialization injection by context-spring
+ * 
  * @author Alessio
  *
  */

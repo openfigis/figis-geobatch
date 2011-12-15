@@ -307,17 +307,17 @@
 
 	function timedCount()
 	{
-		document.getElementById('idBtnPolling').value=c;
+		//document.getElementById('idBtnPolling').value=c;
 		c=c-1;
 		if(timerStarted){
 		
 		t=setTimeout("timedCount()",timerInterval/30);
 		if(c==0){
-			c=timerInterval/1000
+			c=timerInterval/1000;
 		}
 		}
 	}
-
+	/*function for refreshing data*/
 	function doTimer(){
 		timerStarted=!timerStarted;
 		if (timerStarted){
@@ -406,12 +406,12 @@
 		function customRenderer(value,p,r){
 			var ret = value;
 			var stt = (r.data['status']);
-			if(stt=='TODELETE')ret='<font style=\'color: #0000FF\'>'+ value +'</font>';//blue
-			if(stt=='COMPUTING')ret='<font style=\'color: orange\'>'+ value +'</font>';
-			if(stt=='TOCOMPUTE')ret='<font style=\'color: #FF0000\'>'+ value +'</font>';
-			if(stt=='NOSTATE')ret='<font style=\'color: #FF0000\'>'+ value +'</font>';
-			if(stt=='COMPUTED')ret='<font style=\'color: GREEN\'>'+ value +'</font>';
-			if(stt=='FAILED')ret='<font style=\'color: RED\'>'+ value +'</font>';
+			if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+ value +'</span>';//blue
+			if(stt=='COMPUTING')ret='<span style=\'color: orange\'>'+ value +'</span>';
+			if(stt=='TOCOMPUTE')ret='<span style=\'color: #FF0000\'>'+ value +'</span>';
+			if(stt=='NOSTATE')ret='<span style=\'color: #FF0000\'>'+ value +'</span>';
+			if(stt=='COMPUTED')ret='<span style=\'color: GREEN\'>'+ value +'</span>';
+			if(stt=='FAILED')ret='<span style=\'color: RED\'>'+ value +'</span>';
 			return ret;
 		}
 		

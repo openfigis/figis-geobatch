@@ -30,17 +30,6 @@
  */
 package it.geosolutions.geobatch.figis;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.EventObject;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.requester.Request;
@@ -52,15 +41,23 @@ import it.geosolutions.geobatch.figis.setting.SettingAction;
 import it.geosolutions.geobatch.figis.setting.SettingConfiguration;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.EventObject;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class TestXML
 {
-
+	private static final Logger log = LoggerFactory.getLogger(TestXML.class);
+	 
     String sourceDirName = "src/test/resources";
 
     private final String host = "http://localhost:9001";
@@ -103,9 +100,9 @@ public class TestXML
             intersections = Request.getAllIntersections(host, ieServicesUsername, ieServicesPassword);
             for (Intersection intersection : intersections)
             {
-                System.out.println(intersection);
+                log.debug(intersection.toString());
             }
-            System.out.println("\n");
+            log.debug("\n");
         }
         catch (MalformedURLException e)
         {
@@ -126,27 +123,27 @@ public class TestXML
 
         try
         {
-            System.out.println("update configuration config1.xml");
+            log.debug("update configuration config1.xml");
             queue.add(new FileSystemEvent(inputFile1, FileSystemEventType.FILE_ADDED));
             intersectionAction.execute(queue);
             printIntersections();
 
-            System.out.println("update database");
+            log.debug("update database");
             queue.add(new FileSystemEvent(inputFile1, FileSystemEventType.FILE_ADDED));
             cronAction.execute(queue);
             printIntersections();
 
-            System.out.println("update configuration config2.xml");
+            log.debug("update configuration config2.xml");
             queue.add(new FileSystemEvent(inputFile2, FileSystemEventType.FILE_ADDED));
             intersectionAction.execute(queue);
             printIntersections();
 
-            System.out.println("update configuration config3.xml");
+            log.debug("update configuration config3.xml");
             queue.add(new FileSystemEvent(inputFile3, FileSystemEventType.FILE_ADDED));
             intersectionAction.execute(queue);
             printIntersections();
 
-            System.out.println("update database");
+            log.debug("update database");
             queue.add(new FileSystemEvent(inputFile3, FileSystemEventType.FILE_ADDED));
             cronAction.execute(queue);
             printIntersections();
@@ -157,7 +154,7 @@ public class TestXML
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("end test");
+        log.debug("end test");
 
     }
 
@@ -189,19 +186,19 @@ public class TestXML
 /*
         @Test
         public void testXML(){
-                System.out.println("TESTXML IS STARTED");
+                log.debug("TESTXML IS STARTED");
                 String destDirName = "C:/work/GEOBATCH_DATA_DIR/intersection/in";
                 String sourceDirName = "src/test/resources";
                 File destDir = new File(destDirName);
                 if (destDir.exists())
-                        System.out.println("DIRECTORY DEST EXIST"+destDir.getAbsolutePath());
+                        log.debug("DIRECTORY DEST EXIST"+destDir.getAbsolutePath());
                 else
-                        System.out.println("DIRECTORY DEST EXIST");
+                        log.debug("DIRECTORY DEST EXIST");
                 File sourceDir = new File(sourceDirName);
-                if (sourceDir.exists()) System.out.println("DIRECTORY SOURCE EXIST"+sourceDir.getAbsolutePath());
+                if (sourceDir.exists()) log.debug("DIRECTORY SOURCE EXIST"+sourceDir.getAbsolutePath());
                 String[] children = sourceDir.list();
                 if (children == null) {
-                    System.out.println("NO FILE WITHIN SOURCE DIRECTORY");
+                    log.debug("NO FILE WITHIN SOURCE DIRECTORY");
                 } else {
                     for (int i=0; i<children.length; i++) {
                         // Get filename of file or directory

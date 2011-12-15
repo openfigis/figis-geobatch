@@ -18,6 +18,7 @@
 	</global>
 <intersections>
 		<intersection mask="true" force="true" preserveTrgGeom="false">
+			<id>1</id>
 			<srcLayer>fifao:EEZ</srcLayer>
 			<trgLayer>fifao:FAO_MAJOR</trgLayer>
 			<srcCodeField>eez</srcCodeField>

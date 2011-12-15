@@ -111,14 +111,14 @@ public class WSTest extends TestCase
     public void testInsertIntersection()
     {
        try{
-        Intersection int1 = new Intersection(true, true, true, "srcLayer", "trgLayer", "srcCodeField",
-                "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
+        Intersection int1 = new Intersection(true, true, true, "srcLayer1", "trgLayer1", "srcCodeField1",
+                "trgCodeField1", "maskLayer1", "areaCRS1", Status.TOCOMPUTE);
         Intersection int2 = new Intersection(true, true, false, "srcLayer2", "trgLayer2", "srcCodeField2",
-                "trgCodeField", "maskLayer2", "areaCRS2", Status.COMPUTING);
+                "trgCodeField2", "maskLayer2", "areaCRS2", Status.COMPUTING);
         Intersection int3 = new Intersection(true, true, true, "srcLayer3", "trgLayer3", "srcCodeField3",
-                "trgCodeField", "maskLayer3", "areaCRS3", Status.TOCOMPUTE);
+                "trgCodeField3", "maskLayer3", "areaCRS3", Status.TOCOMPUTE);
         Intersection int4 = new Intersection(true, true, false, "srcLayer4", "trgLayer4", "srcCodeField4",
-                "trgCodeField", "maskLayer4", "areaCRS4", Status.COMPUTING);
+                "trgCodeField4", "maskLayer4", "areaCRS4", Status.COMPUTING);
         assertTrue(figisService.insertIntersection(int1) >= 0);
         assertTrue(figisService.insertIntersection(int2) >= 0);
         assertTrue(figisService.insertIntersection(int3) >= 0);
@@ -133,7 +133,7 @@ public class WSTest extends TestCase
     {
     try{
         Intersection int1 = new Intersection(true, true, false, "srcLayer2", "trgLayer2", "srcCodeField2",
-                "trgCodeField", "maskLayer2", "areaCRS2", Status.TOCOMPUTE);
+                "trgCodeField2", "maskLayer2", "areaCRS2", Status.TOCOMPUTE);
         long id = figisService.insertIntersection(int1);
         assertTrue(id >= 0);
         assertTrue(figisService.deleteIntersection(id));

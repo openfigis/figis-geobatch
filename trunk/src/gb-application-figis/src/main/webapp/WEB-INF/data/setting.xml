@@ -13,7 +13,7 @@
 		<watchDirectory>setting/in</watchDirectory>
 		<osType>OS_UNDEFINED</osType>
 		<eventType>FILE_ADDED</eventType>
-		<interval>0/20 * * * * ?</interval><!-- CRON: every minute at sec 0 -->
+		<interval>0/20 * * * * ?</interval>
 		<!--<interval>20</interval> each 20 sec -->
 		<id>SettingFlow</id>
 		<serviceID>fsEventGeneratorService</serviceID>

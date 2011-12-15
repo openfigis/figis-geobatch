@@ -129,8 +129,8 @@ public class OracleDataStoreManager
             orclMap.put(SCHEMA.key, schema);
             orclMap.put(USER.key, user);
             orclMap.put(PASSWD.key, password);
-            orclMap.put(MINCONN.key, 5);
-            orclMap.put(MAXCONN.key, 10);
+            orclMap.put(MINCONN.key, 1);
+            orclMap.put(MAXCONN.key, 5);
             orclMap.put(MAXWAIT.key, 100000);
             orclMap.put(VALIDATECONN.key, true);
             

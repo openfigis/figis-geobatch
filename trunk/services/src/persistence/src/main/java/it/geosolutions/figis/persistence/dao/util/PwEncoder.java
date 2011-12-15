@@ -43,7 +43,7 @@ import org.apache.commons.codec.binary.Base64;
 
 
 /**
- *
+ * Class for encoding password
  * @author ETj <etj at geo-solutions.it>
  */
 public class PwEncoder
@@ -52,6 +52,11 @@ public class PwEncoder
     // 123456789 123456789 123456789 12
     private static final byte[] KEY = "installation dependant key needed".substring(0, 16).getBytes();
 
+    /**
+     * Encoding the password on base64
+     * @param msg
+     * @return
+     */
     public static String encode(String msg)
     {
         try
@@ -88,6 +93,11 @@ public class PwEncoder
         }
     }
 
+    /**
+     * Decode the password on base 64
+     * @param msg
+     * @return
+     */
     public static String decode(String msg)
     {
         try

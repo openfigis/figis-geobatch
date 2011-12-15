@@ -14,7 +14,7 @@
            <port>1521</port>
            <host>192.168.139.128</host>
        </db>
-       <clean>false</clean>
+       <clean>true</clean>
    </global>
    <intersections>
         <intersection mask="false" force="true" preserveTrgGeom="false">

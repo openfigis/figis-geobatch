@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ie-config updateVersion="0">
+   <global>
+       <geoserver>
+           <geoserverUrl>http://192.168.139.128:8484/figis/geoserver</geoserverUrl> 
+           <geoserverUsername>admin</geoserverUsername>
+           <geoserverPassword>abramisbrama</geoserverPassword>
+       </geoserver>
+       <db>
+           <database>orcl</database>
+           <schema>FIGIS_GIS</schema>
+           <user>FIGIS_GIS</user>
+           <password>FIGIS</password>
+           <port>1521</port>
+           <host>192.168.139.128</host>
+       </db>
+       <clean>true</clean>
+   </global>
+   <intersections>
+       <intersection mask="false" force="true" preserveTrgGeom="false">
+       	   <id>1</id>
+           <srcLayer>fifao:NJA</srcLayer>
+		   <trgLayer>fifao:FAO_SUB_DIV</trgLayer>
+			<maskLayer>fifao:UN_CONTINENT</maskLayer>
+			<srcCodeField>ISO3_TERRI</srcCodeField>
+           <trgCodeField>F_SUBDIVIS</trgCodeField>
+           <areaCRS>EPSG:54012</areaCRS>
+           <status>TOCOMPUTE</status>
+       </intersection>
+   </intersections>
+</ie-config>

@@ -46,13 +46,15 @@ import org.springframework.security.access.AccessDeniedException;
 /**
  *
  * Class IntersectionEngineAuthenticationInterceptor. Starting point was JAASLoginInterceptor.
+ * UserCheckUtils reference is injecting from applicationContext.
  *
  * @author Riccardo Galiberti (riccardo.galiberti at geo-solutions.it)
  */
 public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseInterceptor<Message>
 {
 
-    private static final Logger LOGGER = Logger.getLogger(IntersectionEngineAuthenticationInterceptor.class);
+   
+	private static final Logger LOGGER = Logger.getLogger(IntersectionEngineAuthenticationInterceptor.class);
 
     private CredentialsManager userCheckUtils;
     
@@ -123,9 +125,14 @@ public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseIn
         message.put(SecurityContext.class, securityContext);
     }
 
-
+    /**
+     * Setting for injectiong from spring
+     * 
+     * @param userCheckUtils
+     */
 	public void setUserCheckUtils(CredentialsManager userCheckUtils) {
 		this.userCheckUtils = userCheckUtils;
 	}
+	
 
 }

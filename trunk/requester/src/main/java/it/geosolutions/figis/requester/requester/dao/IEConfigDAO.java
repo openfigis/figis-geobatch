@@ -46,7 +46,7 @@ public interface IEConfigDAO
 {
 
     /**
-    *
+    * Check for db empty
     * @param host
     * @return
     * @throws MalformedURLException

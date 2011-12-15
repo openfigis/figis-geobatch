@@ -63,6 +63,8 @@ public class TestIntersectionAction extends TestCase
 
     private IntersectionAction intersectionAction = null;
     private Config config = null;
+    private String TEST_CRITICAL_CONFIG1 = "ie-config-FMAJ_SPCDST_FAREA_SHPAREA.xml";
+    private String TEST_CRITICAL_CONFIG2 = "ie-config-NJA_FSD_ISO3T_FSDV.xml";
 
     @Before
     public void setUp() throws Exception
@@ -78,7 +80,7 @@ public class TestIntersectionAction extends TestCase
         cronConfiguration.setPersistencyHost("http://localhost:8181");
         cronConfiguration.setItemsPerPages(50);
         cronConfiguration.setIeServiceUsername("admin");
-        cronConfiguration.setIeServicePassword("admin");
+        cronConfiguration.setIeServicePassword("abramisbrama");
 
         intersectionAction = new IntersectionAction(cronConfiguration);
     }
@@ -139,7 +141,7 @@ public class TestIntersectionAction extends TestCase
 
         assertTrue(config.intersections.size() == 0);
     }*/
-    @Test
+    /*   @Test
     public void test1_IntersectionsComputation() throws Exception
     {
         config = IEConfigUtils.parseXMLConfig(loadXMLConfig("ie-config.xml").getAbsolutePath());
@@ -154,7 +156,7 @@ public class TestIntersectionAction extends TestCase
             assertTrue(intersection.getStatus().equals(Status.COMPUTED));
         }
     }
-   /* */
+   */
 /*
     @Test
     public void test2_IntersectionReomputationWithForce() throws Exception
@@ -199,4 +201,19 @@ public class TestIntersectionAction extends TestCase
             assertTrue(intersection.getStatus().equals(Status.COMPUTED));
         }
     }*/
+    
+    public void test1_IntersectionsCritical() throws Exception
+    {
+        config = IEConfigUtils.parseXMLConfig(loadXMLConfig(TEST_CRITICAL_CONFIG1).getAbsolutePath());
+
+        IEConfigDAO ieConfigDAO = new TestingIEConfigDAOImpl(config);
+
+        intersectionAction.setIeConfigDAO(ieConfigDAO);
+        intersectionAction.execute(queue);
+
+        for (Intersection intersection : config.intersections)
+        {
+            assertTrue(intersection.getStatus().equals(Status.COMPUTED));
+        }
+    }
 }

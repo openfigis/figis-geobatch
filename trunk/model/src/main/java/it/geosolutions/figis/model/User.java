@@ -39,7 +39,7 @@ import it.geosolutions.figis.model.enums.Role;
 
 
 /**
- * Class User.
+ * Class User for check Credential Authorization
  *
  * @author Riccardo Galiberti (riccardo.galiberti at geo-solutions.it)
  *

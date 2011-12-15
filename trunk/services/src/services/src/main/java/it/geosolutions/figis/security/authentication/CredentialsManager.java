@@ -55,7 +55,7 @@ public class CredentialsManager {
 	
 	/**
 	 * Periodic reloader for the configuration.
-	 * @author Simone Giannecchin, GeoSolutions SAs
+	 * @author Simone Giannecchini, GeoSolutions SAs
 	 *
 	 */
 	private final class Reloader extends Thread{
