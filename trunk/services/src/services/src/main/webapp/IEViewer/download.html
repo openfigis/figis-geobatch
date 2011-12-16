@@ -11,51 +11,25 @@
 	    
       <title>INTERSECTION ENGINE DOWNLOADER</title>
       
-      <script type="text/javascript" src="lib/ext-3.3.1/adapter/ext/ext-base.js"></script>
-      <script type="text/javascript" src="lib/ext-3.3.1/ext-all.js"></script>
-	  <!--
-	   <script type="text/javascript" src="js/msg-box.js"></script>
-	  -->
-      <link rel="stylesheet" type="text/css" href="lib/ext-3.3.1/resources/css/ext-all.css" />
-<!--
-      <link href="jQueryUI/development-bundle/themes/start/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
-      <script src="jQueryUI/js/jquery-1.4.2.min.js" type="text/javascript"></script>
-      <script src="jQueryUI/js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
--->
-      <link rel="stylesheet" type="text/css" href="ui.css" />
+		<script type="text/javascript" src="lib/ext-3.3.1/adapter/ext/ext-base.js"></script>
+		
+		<script type="text/javascript" src="lib/ext-3.3.1/ext-all.js"></script>
 
-      <!-- script src="lib/OpenLayers-2.10/OpenLayers.js"></script>
-      <script src="lib/LoadingPanel.js"></script>
-      <script type="text/javascript" src="lib/GeoExt/script/GeoExt.js"></script -->
-   <!--   
-      <script type="text/javascript" src="AnimationPanel.js"></script>
--->
-      <!-- script type="text/javascript" src="tunaConfig.js"></script>
-      <script type="text/javascript" src="tunaAtlas.js"></script -->
-	  <!--
-	  <link rel="stylesheet" type="text/css" href="css/ext-all.css" media='screen' />
-		<link rel="stylesheet" type="text/css" href="css/mapmanager.css"  media='screen' />-->
-		<link rel="stylesheet" type="text/css" href="../IntersectionEngineMockup/css/grid-examples.css"  media='screen' />
-		<!-- link rel="stylesheet" type="text/css" href="../IntersectionEngineMockup/rfbs_files/style.css" media='screen'/ -->
-		<!-- link rel="stylesheet" type="text/css" href="../IntersectionEngineMockup/rfbs_files/rfb.css" media='screen' -->
-		<!-- C'E' GIà link rel="stylesheet" type="text/css" href="css/ui.css"  media='screen' / -->
-		<!-- LIBS -->
-		<!-- C'E' GIà script type="text/javascript" src="adapter/ext/ext-base.js"></script -->
-		<!-- ENDLIBS -->
+		<link rel="stylesheet" type="text/css" href="lib/ext-3.3.1/resources/css/ext-all.css" />
 
-		<script>
-		 /* if(navigator.userAgent.indexOf("Chrome")!=-1){
-		  
-				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"../IntersectionEngineMockup/css/grid-examples-chrome.css\"  media=\"screen\" />");
-				
+		<link rel="stylesheet" type="text/css" href="css/ui.css" />
+
+		<script type="text/javascript" >
+		 if(navigator.userAgent.indexOf("Chrome")!=-1){
+				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/grid-intersection-chrome.css\"  media=\"screen\" />");
+			}else if(navigator.userAgent.indexOf("MSIE 7")!=-1){
+				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/grid-intersectionIE7.css\"  media=\"screen\" />");
 			}else{
-				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"../IntersectionEngineMockup/css/grid-examples.css\"  media=\"screen\" />");
-			}*/
+				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/grid-intersection.css\"  media=\"screen\" />");
+			}
 		</script>
-		<!-- C'E' GIà script type="text/javascript" src="js/ext-all.js"></script -->
-		<!--
-		<script type="text/javascript" src="../IntersectionEngineMockup/js/ux/RowExpander.js"></script>
--->
+		
+		<script type="text/javascript" src="js/path.js"></script>
 		<script type="text/javascript" src="js/download.js"></script>
 
       <style type="text/css">
@@ -142,25 +116,12 @@
           <div id="topBar">
              <br>
           </div>
-          
-          <!-- table border="0" cellpadding="0" cellspacing="0" width="100%">
-              <tbody>
-                <tr>
-                    <td>
-                        <div id="info">
-                        </div>
-                    </td>
-                </tr>
-              </tbody>
-          </table -->
-          
+         
           
           <table border="0" cellpadding="0" cellspacing="0" width="100%">
               <tbody>
                 <tr>
-                    <!-- br -->
-					<!-- div id="topic-grid" align="center"  style="top: 10px;vertical-align: middle; width: 100%; height: 100%"></div -->
-					
+                 	
                     <td id="ext-main" align="center" valign="middle">
                         <div id="topic-grid"></div>
                     </td>
@@ -170,11 +131,7 @@
           
           
           <div id="br"></div>
-          <script type="text/javascript">
-              if(Ext.isIE7){
-                  document.getElementById('br').innerHTML = "<br><br><br><br><br><br><br>";
-              }
-          </script>
+
           
           <table border="0" cellpadding="0" cellspacing="0" width="100%">
               <tbody>
@@ -184,9 +141,9 @@
                     <td>
                         <div id="bottomBar1">
 						<span class="floatLeft" STYLE="margin-left: 10px">&nbsp;&nbsp;
-				<a alt="Geo-solutions web site" title="Geo-solutions web site" href="http://www.geo-solutions.it">credits</a>
-			</span>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+							<a alt="Geo-solutions web site" title="Geo-solutions web site" href="http://www.geo-solutions.it">credits</a>
+						</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                           powered by
                           <a alt="FIGIS web site" title="FIGIS web site" href="/fishery/figis/en">FIGIS</a>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -1,4 +1,4 @@
-
+/*
 	var debug = false;
 
 	var searchString = '';
@@ -10,14 +10,14 @@
 	var expandPressed = false;
 	var mapIdToOpen = ""; mapIdToOpen = window.top.location;
 	var application_context_path = '';//'/test/test';
-	var FDHUrl = application_context_path+'/ie-services/intersections/count/';//'/ie-services/intersection2/';//'data/intersection.xml';//'data/sheldonIntersection.json';//'/mapcomposer/?mapId=';
-	var proxyUrl = application_context_path+'/ie-services/intersections/count/';//'/ie-services/intersection2/';//intersections/count//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/extjs/search/';
-	var proxyUrlDel = application_context_path+'/ie-services/intersections/count/';//'/ie-services/intersection2/';//intersections/count//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/resources/resource/';
+	var FDHUrl = application_context_path+'/ie-services/intersection/count/';
+	var PROXY_URL = application_context_path+'/ie-services/intersection/count/';
+	var PROXY_URL_DEL = application_context_path+'/ie-services/intersection/count/';
 	//var proxyUrlCount = application_context_path+'/ie-services/intersection/countallintersection/';//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/resources/resource/';
-	var proxyFigis = 'http://192.168.1.110:8484/figis';
+	var PROXY_FIGIS = 'http://192.168.1.110:8484/figis';
 	
-	var proxyFigisDownloadUrl = proxyFigis+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
-	
+	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
+	*/
 	function getParameter ( queryString1, parameterName1 ) {
 	try{
 		// Add "=" to the parameter name (i.e. parameterName=value)
@@ -89,7 +89,7 @@
 				var srcCodeFieldCut = cutStr(srcCodeField);
 				var trgLayerCut = cutStr(trgLayer);
 				var trgCodeFieldCut = cutStr(trgCodeField);
-				var downlSrc = proxyFigisDownloadUrl+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
+				var downlSrc = PROXY_FIGIS_DOWNLOAD+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
 				downlSrc = 'http://localhost:8081/download/TUNA_SPATIAL_STAT_DATA.zip';
 				if(debug)alert('downlSrc=='+downlSrc);
 //"http://192.168.1.110:8484/figis/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA&outputFormat=csv&CQL_FILTER=
@@ -205,7 +205,7 @@
 			   });
 			  if(debug)alert('download3: downloading resource from link: '+src);
 				Ext.Ajax.request({
-						url : src,//proxyUrlDel+id , 
+						url : src,//PROXY_URL_DEL+id , 
 						//headers: {
 						//'X-CUSTOM-USERID': 'foo'
 						//},
@@ -237,7 +237,7 @@
 					   });
 					   //Ext.MessageBox.hide();
 					Ext.Ajax.request({
-						url : src;//proxyUrlDel+id , 
+						url : src;//PROXY_URL_DEL+id , 
 						//headers: {
 						//'X-CUSTOM-USERID': 'foo'
 						//},

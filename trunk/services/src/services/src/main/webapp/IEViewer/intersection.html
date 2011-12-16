@@ -30,7 +30,8 @@
 		</script>
 
 		<script type="text/javascript" src="js/ux/RowExpander.js"></script>
-
+		
+		<script type="text/javascript" src="js/path.js" ></script>
 		<![if !IE]>
 			<script type="text/javascript" src="js/intersection3.js" ></script>
 		<![endif]>	
@@ -131,13 +132,13 @@
                    
                     <td id="ext-main" align="center" valign="left">
 					
-						  <fieldset style="width: 96%;border-color:#336699">
-							<legend align="left">Legend:</legend>
-							COMPUTED: <input type="text" size="3" style="background-color: GREEN;border:none" disabled/>&nbsp;
-							TOCOMPUTE: <input type="text" size="3" style="background-color: #FF0000;border:none" disabled/>&nbsp;
-							TODELETE: <input type="text" size="3" style="background-color: #0000FF;border:none" disabled/>&nbsp;
-							COMPUTING: <input type="text" size="3" style="background-color: orange;border:none" disabled/>&nbsp; 
-							 <input type="hidden" size="3" id="idBtnPolling" style="border:none;editable:false"  disabled/>
+						  <fieldset style="width: 96%;border-color:#336699;padding: 1px 5px 9px;">
+							<legend align="left" style="padding-bottom:3px">Legend:</legend>
+							COMPUTED:&nbsp;<img src='images/buttonGreen.png'  width="40" height="16" style="position:relative; top:3px;" />&nbsp; <!-- <input type="text" size="3" style="background-color: GREEN;border:none" disabled/>&nbsp; -->
+							TOCOMPUTE:&nbsp;<img src='images/buttonRed.png'  width="40" height="16" style="position:relative; top:3px;" />&nbsp; <!-- <input type="text" size="3" style="background-color: #FF0000;border:none" disabled/>&nbsp; -->
+							TODELETE:&nbsp;<img src='images/buttonBlue.png'  width="40" height="16" style="position:relative; top:3px;" />&nbsp;<!-- <input type="text" size="3" style="background-color: #0000FF;border:none" disabled/>&nbsp; -->
+							COMPUTING:&nbsp;<img src='images/buttonOrange.png'  width="40" height="16" style="position:relative; top:3px;" />&nbsp; <!-- <input type="text" size="3" style="background-color: orange;border:none" disabled/>&nbsp;  -->
+							 <input type="hidden" size="3" id="idBtnPolling" style="border:none;editable:false"  disabled/>&nbsp;
 						  </fieldset>
 						
 						  <br/>

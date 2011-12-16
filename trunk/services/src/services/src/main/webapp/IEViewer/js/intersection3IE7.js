@@ -28,6 +28,7 @@
  * <http://www.geo-solutions.it/>.
  *
  */
+ /*
 	var debug = false;
 	var abilitaPulsanti = true;
 	var myWindow;
@@ -43,17 +44,17 @@
 	var expandPressed = false;
 	var mapIdToOpen = ""; mapIdToOpen = window.top.location;
 	var timerStarted = false;
-	var timerInterval = 30000;
-	var application_context_path = '';
-	var FDHUrl = application_context_path+'/ie-services/intersection/count/';
-	var proxyUrl = application_context_path+'/ie-services/intersection/count/';
-	var proxyUrlDel = application_context_path+'/ie-services/intersection/count/';
-	//var proxyUrlCount = application_context_path+'/ie-services/intersection/countallintersection/';
-	var proxyFigis = 'http://192.168.139.128:8484/figis';
-	var proxyDownload = '';
-	var proxyFigisDownloadUrl = proxyFigis+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
-	var proxyUrlGenStatus = application_context_path+'/ie-services/intersection/';//generalStatusComputing/
-	
+	var TIMER_INTERVAL = 30000;
+	var APPLICATION_CONTEXT_PATH = '';
+	var FDHUrl = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
+	var PROXY_URL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
+	var PROXY_URL_DEL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
+	//var proxyUrlCount = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/countallintersection/';
+	var PROXY_FIGIS = 'http://192.168.139.128:8484/figis';
+	var PROXY_DOWNLOAD = '';
+	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
+	var PROXY_URL_GEN_STATUS = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/';//generalStatusComputing/
+	*/
 	function getParameter ( queryString1, parameterName1 ) {
 	try{
 		// Add "=" to the parameter name (i.e. parameterName=value)
@@ -127,13 +128,13 @@
 				var srcCodeFieldCut = cutStr(srcCodeField);
 				var trgLayerCut = cutStr(trgLayer);
 				var trgCodeFieldCut = cutStr(trgCodeField);
-				var downlSrc = proxyFigisDownloadUrl+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
+				var downlSrc = PROXY_FIGIS_DOWNLOAD+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
 				//downlSrc = 'http://localhost:8081/download/TUNA_SPATIAL_STAT_DATA.zip';
 				if(debug)alert('downlSrc=='+downlSrc);
 
                //funziona se sono sul server da cui scarico o se downlSrc passa per il proxy
 			   //-->
-			   var downlSrcPrxy = proxyDownload+'download.html?src2Down='+downlSrc;
+			   var downlSrcPrxy = PROXY_DOWNLOAD+'download.html?src2Down='+downlSrc;
 			  // download3(downlSrcPrxy);
 			   /**/
 			   //funziona ovunque, poco elegante
@@ -150,8 +151,8 @@
 			  // alert(stylew);
 			  var w = window.open(downlSrc,'Download',stylew);//work everywhere, classic system --> also see downlSrcPrxy oss: attention to insert spaces on window title
 			  //funziona ovunque, ma deve essere nel server da cui si scarica e funziona da proxy per la richiesta ajaxsistema classico con pagina
-			  //mettere proxyFigis+'download....' e montare la pagina 'download.html' nella dir di proxyFigis
-			  //-->var w = window.open(proxyDownload+'download.html?src2Down='+downlSrc,'Download','location=1,status=0,scrollbars=0, menubar=0, toolbar=0, width=600,height=300');
+			  //mettere PROXY_FIGIS+'download....' e montare la pagina 'download.html' nella dir di PROXY_FIGIS
+			  //-->var w = window.open(PROXY_DOWNLOAD+'download.html?src2Down='+downlSrc,'Download','location=1,status=0,scrollbars=0, menubar=0, toolbar=0, width=600,height=300');
 				  /*w.document.write("<html>");
 				  w.document.write("<head>");
 				  //w.document.write("<meta http-equiv='refresh' content='1;url=\'"+downlSrc+"\''>");
@@ -210,7 +211,7 @@
 					height: '500px',
 					title:"Download window - '"+(type!='-1'?(type+", "):'')+type+"'",
 					
-					src: (proxyDownload+'download.html?src2Down='+downlSrc),//(downlSrc),
+					src: (PROXY_DOWNLOAD+'download.html?src2Down='+downlSrc),//(downlSrc),
 					buttons: [{
 							text: 'Close',
 							handler: function(){
@@ -302,7 +303,7 @@
 	}
 	
 	
-	var c=timerInterval/1000;
+	var c=TIMER_INTERVAL/1000;
 	var t;
 
 	function timedCount()
@@ -311,9 +312,9 @@
 		c=c-1;
 		if(timerStarted){
 		
-		t=setTimeout("timedCount()",timerInterval/30);
+		t=setTimeout("timedCount()",TIMER_INTERVAL/30);
 		if(c==0){
-			c=timerInterval/1000;
+			c=TIMER_INTERVAL/1000;
 			reloadGrid();
 		}
 		}
@@ -374,7 +375,7 @@
 			proxy: new Ext.data.HttpProxy({
 				type: 'ajax',
 				restful: true,
-				url: proxyUrl+searchString.replace(' ',''),
+				url: PROXY_URL+searchString.replace(' ',''),
 				method : 'GET',
 				success: function ( result ) {
 				},

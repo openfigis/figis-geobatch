@@ -28,6 +28,7 @@
  * <http://www.geo-solutions.it/>.
  *
  */
+ /*
 	var debug = false;
 	var abilitaPulsanti = true;
 	var myWindow;
@@ -53,6 +54,8 @@
 	var PROXY_DOWNLOAD = '';
 	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
 	var PROXY_URL_GEN_STATUS = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/generalStatusComputing/';
+	*/
+	
 	
 	function getParameter ( queryString1, parameterName1 ) {
 	try{
