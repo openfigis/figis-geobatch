@@ -316,8 +316,8 @@ public class OracleDataStoreManager
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
 	//FIX ME: with synchronized don't fail any intersection
-        cleanTempTables(tx, SimpleFeatureCollection collection, String srcLayer,
-        String trgLayer, String srcCode, String trgCode, int itemsPerPage);
+        cleanTempTables(tx,  collection,  srcLayer,
+                 trgLayer,  srcCode,  trgCode,  itemsPerPage);
         saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
     }
 

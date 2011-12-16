@@ -182,7 +182,7 @@ final class Utilities {
 	 * @return
 	 * @throws IOException
 	 */
-	static boolean deleteDir(File dir) //throws IOException
+	static boolean deleteDir(File dir)
 	{
 	
 	    LOGGER.trace("Deleting dir " + dir);
