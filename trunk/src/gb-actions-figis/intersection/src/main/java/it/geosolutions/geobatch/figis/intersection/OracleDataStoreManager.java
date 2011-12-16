@@ -314,7 +314,7 @@ public class OracleDataStoreManager
     private void actionTemp(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
-        cleanTempTables(tx, collection, srcLayer,trgLayer, srcCode, trgCode, itemsPerPage);
+        cleanTempTables(tx);
         saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
     }
 
@@ -430,13 +430,14 @@ public class OracleDataStoreManager
 
     }
 
-    private synchronized void cleanTempTables(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
-            String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws IOException
+    private  void cleanTempTables(Transaction tx) throws IOException
     {
         LOGGER.trace("Cleaning temp tables");
       
         FeatureStore featureStoreData = (FeatureStore) orclDataStore.getFeatureSource(SPATIAL_TMP_TABLE);
+        featureStoreData.setTransaction(tx);
         FeatureStore featureStoreGeom = (FeatureStore) orclDataStore.getFeatureSource(STATS_TMP_TABLE);
+        featureStoreGeom.setTransaction(tx);
         featureStoreData.removeFeatures(Filter.INCLUDE);
         featureStoreGeom.removeFeatures(Filter.INCLUDE);
     }
