@@ -496,7 +496,8 @@
 			'<td class=""><i>&nbsp;</i></td><td class=""><i>&nbsp;</i></td><td class=""><i>&nbsp;</i></td>'+
 			'<td class=""><i>&nbsp;</i></td><td class=""><i>&nbsp;</i></td><td class=""><i>&nbsp;</i></td>'+
 			'<td class=""><i>&nbsp;</i></td><td class=""><i>&nbsp;</i></td><td class=""><i>&nbsp;</i></td>'+
-			'</tr></tbody>'+
+			'</tr>'+
+			'</tbody>'+
 			'</table>'+
 		'</div>',
 		'</div>'
@@ -521,7 +522,6 @@
 			disableSelection:false,
 
 			loadMask: true,
-			
 			colModel: new xg.ColumnModel({
 				columns: [
 					expander,
@@ -614,15 +614,15 @@
 			viewConfig: {
 				forceFit: true,
 				showPreview: true, // custom property
-				enableRowBody: true, // required to create a second, full-width row to show expanded Record data
+				enableRowBody: true/*, // required to create a second, full-width row to show expanded Record data
 				getRowClass : function(record, rowIndex, p, store){
 					if(this.showPreview){
 						p.body = '<p>'+record.data.excerpt+'</p>';
 						return 'x-grid3-row-expanded';
 					}
 					return 'x-grid3-row-collapsed';
-				}
-			},
+				}*/
+			},/*
 			sm: new Ext.grid.RowSelectionModel({
 				singleSelect: true,
 				listeners: {
@@ -631,7 +631,7 @@
 				    }
 			       }
 			    }),
-					
+					*/
 			// paging bar on the bottom
 			bbar: new Ext.PagingToolbar({
 				pageSize: PAGINATION,
@@ -645,7 +645,7 @@
 					pressed: expandPressed,
 					enableToggle:true,
 					text: 'Expand All',
-					cls: 'x-btn-text-icon row_expand',
+					//cls: 'x-btn-text-icon row_expand',
 					toggleHandler: function(btn, pressed){
 					var i = 0;
 						if(pressed){
@@ -674,22 +674,7 @@
 			plugins: expander//,buttons
 		});
 		
-		grid.on('render', function(){
-			try{
-				for(i = 0; i < grid.getStore().getCount(); i++) {
-						var stt = grid.getStore().getAt(i).get('status');
-							    if(stt=='TODELETE')grid.getView().getRow(i).style.color="#0000FF";//blue
-								if(stt=='COMPUTING')grid.getView().getRow(i).style.color="#FF0000";
-								if(stt=='TOCOMPUTE')grid.getView().getRow(i).style.color="#FF0000";//red
-								if(stt=='NOSTATE')grid.getView().getRow(i).style.color="#FF0000";
-								 var record = grid.getStore().getAt(i);  // Get the Record
-								 grid.getSelectionModel().selectRow(i);
-							}
-							
-			}catch(e3){alert(e3.message);}
-			}, this, {
-			single: true
-		});
+
 		
 		// trigger the data store load
 		store.load({params:{start:0, limit:PAGINATION}});

@@ -36,7 +36,7 @@
 	var userProfile = 'view';
 	var queryString = '';
 	var searchString = '';
-	var pagination = 20;
+	var PAGINATION = 20;
 	var store;
 	var xg;
 	var grid;
@@ -140,7 +140,7 @@
 			   //funziona ovunque, poco elegante
 			  var stylew = "location=1,status=0, toolbar=0";
 			  //alert(stylew);
-			   if(type=='csv')stylew='location=1,status=0,toolbar=0,scrollbars=0,menubar=0,width=10,height=5';
+			     if(type=='csv')stylew='location=1,status=0,toolbar=0,scrollbars=0,menubar=0,width=10,height=5';
 			   if(type=='GML2')stylew='location=1,status=0,toolbar=0,scrollbars=1,menubar=1,width=600,height=500';
 			   if(type=='GML2-ZIP')stylew='location=1,status=0, toolbar=0,scrollbars=0,menubar=0,width=10,height=5';
 			   if(type=='text/xml;%20subtype=gml/3.1.1')stylew='location=1,status=0,toolbar=0,scrollbars=1, menubar=1, width=600,height=500';
@@ -408,10 +408,10 @@
 		function customRenderer(value,p,r){
 			var ret = value;
 			var stt = (r.data['status']);
-			if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+ value +'</span>';
-			if(stt=='COMPUTING')ret='<span style=\'color: orange\'>'+ value +'</span>';
-			if(stt=='TOCOMPUTE')ret='<span style=\'color: #FF0000\'>'+ value +'</span>';
-			if(stt=='NOSTATE')ret='<span style=\'color: #FF0000\'>'+ value +'</span>';
+			if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+value+'</span>';//blue
+			if(stt=='COMPUTING')ret='<span style=\'color: orange\'>'+value+'</span>';
+			if(stt=='TOCOMPUTE')ret='<span style=\'color: #FF0000\'>'+value+'</span>';
+			if(stt=='NOSTATE')ret='<span style=\'color: #FF0000\'>'+value+'</span>';
 			if(stt=='COMPUTED')ret='<span style=\'color: GREEN\'>'+ value +'</span>';
 			if(stt=='FAILED')ret='<span style=\'color: RED\'>'+ value +'</span>';
 			return ret;
@@ -428,26 +428,26 @@
 			'<tr align="right">',
 			'<tpl if="abilitaPulsanti==true">'+
 						'<td>'+
-						'<button type="button" id="csvBtn" class="x-btn-img-csv" alt="Export CSV" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'csv\',true,\'{status}\',\'CSV\');"></button>'+
+						'<button type="button" id="csvBtn" class="x-btn-img-csv" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'csv\',true,\'{status}\',\'CSV\');"></button>'+
 						'</td>'+
-							'<td>'+
-							'<button type="button" id="gml2Btn" class="x-btn-img-gml2"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2\',true,\'{status}\',\'GML2\');"> </button>'+
-							'</td>'+
-		-					'<td>'+
-							'<button type="button" id="zipBtn" class="x-btn-img-zip" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2-ZIP\',true,\'{status}\',\'ZIP\');"> </button>'+
-							'</td>'+
-							'<td>'+
-							'<button type="button" id="gml31Btn" class="x-btn-img-gml31"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.1.1\',true,\'{status}\',\'GML3.1.1\');"> </button>'+
-							'</td>'+
-							'<td>'+
-							'<button type="button" id="gml32Btn" class="x-btn-img-gml32"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.2\',true,\'{status}\',\'GML3.2\');"> </button>'+
-							'</td>'+
-							'<td>'+
-							'<button type="button" id="geoJSONVBtn" class="x-btn-img-gmlJSON"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'json\',true,\'{status}\',\'GML-JSON\');"> </button>'+
-							'</td>'+
-							'<td>'+
-							'<button type="button" id="shapefileBtn" class="x-btn-img-shp"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'SHAPE-ZIP\',true,\'{status}\',\'SHP\');"> </button>'+
-							'</td>'+
+						'<td>'+
+						'<button type="button" id="gml2Btn" class="x-btn-img-gml2"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2\',true,\'{status}\',\'GML2\');"> </button>'+
+						'</td>'+
+	-					'<td>'+
+						'<button type="button" id="zipBtn" class="x-btn-img-zip" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2-ZIP\',true,\'{status}\',\'ZIP\');"> </button>'+
+						'</td>'+
+						'<td>'+
+						'<button type="button" id="gml31Btn" class="x-btn-img-gml31"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.1.1\',true,\'{status}\',\'GML3.1.1\');"> </button>'+
+						'</td>'+
+						'<td>'+
+						'<button type="button" id="gml32Btn" class="x-btn-img-gml32"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.2\',true,\'{status}\',\'GML3.2\');"> </button>'+
+						'</td>'+
+						'<td>'+
+						'<button type="button" id="geoJSONVBtn" class="x-btn-img-gmlJSON"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'json\',true,\'{status}\',\'GML-JSON\');"> </button>'+
+						'</td>'+
+						'<td>'+
+						'<button type="button" id="shapefileBtn" class="x-btn-img-shp"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'SHAPE-ZIP\',true,\'{status}\',\'SHP\');"> </button>'+
+						'</td>'+
 			'</tpl>',
 
 			'</tr>'+
@@ -590,7 +590,7 @@
 					
 			// paging bar on the bottom
 			bbar: new Ext.PagingToolbar({
-				pageSize: pagination,
+				pageSize: PAGINATION,
 				store: store,
 				displayInfo: true,
 				//encode: true,
@@ -633,7 +633,7 @@
 		});
 		
 		// trigger the data store load
-		store.load({params:{start:0, limit:pagination}});
+		store.load({params:{start:0, limit:PAGINATION}});
 
 		// render it
 		grid.render('topic-grid');

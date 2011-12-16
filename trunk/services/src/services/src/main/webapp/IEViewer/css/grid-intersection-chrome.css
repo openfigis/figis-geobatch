@@ -314,7 +314,13 @@ width: 900px;
 	/*width: 100%;
 	overflow-x: hidden;*/
 }
-
+/*
+.x-grid3-header-inner{
+    margin-left: -2px;
+}
+.x-grid3-row-expanded{
+	margin-left: 8px;
+}*/
 .map_edit .x-btn-text-icon {
     background-image: url(../images/map_edit.png);
 }

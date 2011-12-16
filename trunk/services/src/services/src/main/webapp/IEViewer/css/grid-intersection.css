@@ -309,14 +309,27 @@ font-family:Tahoma;
 font-family:Tahoma;
 width: 900px;
 }
-.x-grid3-scroller {
+/*
+ .x-grid3-scroller  {
     margin-left: -20px;
-	/*width: 100%;
-	overflow-x: hidden;*/
-}
+}*/
+/*
+.x-grid3-scroller .x-grid3-body .x-grid3-row .x-grid3-row-first .x-grid3-row-expanded {
+    margin-left: -20px;
+	}
+	.x-grid3-body .x-grid3-row .x-grid3-row-first .x-grid3-row-expanded {
+    margin-left: -20px;
+	}
+	 .x-grid3-row .x-grid3-row-first .x-grid3-row-expanded {
+    margin-left: -20px;
+	}*/
+/*
 .x-grid3-header-inner{
- margin-left: -3px;
+    margin-left: -2px;
 }
+.x-grid3-row-expanded{
+margin-left: 7px;
+}*/
 .map_edit .x-btn-text-icon {
     background-image: url(../images/map_edit.png);
 }
