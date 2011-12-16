@@ -420,8 +420,8 @@
 		// row expander
 		var expander = new Ext.ux.grid.RowExpander({
 			tpl : new Ext.XTemplate(
-		'<div style="background-color: #f9f9f9;">&nbsp;&nbsp;&nbsp;&nbsp;',
-		'&nbsp;&nbsp;&nbsp;&nbsp;<hr style="margin-left:20px;margin-right: 35px"/>',
+		'<div style="background-color: #f9f9f9;">&nbsp;&nbsp;',
+		'&nbsp;&nbsp;<hr style="margin-left:20px;margin-right: 35px"/>',
 		'<div class="x-toolbar-cell" style="margin-right: 40px;" align="right" id="ext-gen29">'+
 			'<table cellspacing="0" class="" id="tableBtn" style="width: auto;">'+
 			'<tbody class="">'+

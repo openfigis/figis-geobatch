@@ -394,18 +394,8 @@
 			
 		});
 
+		
 		// pluggable renders
-		function renderTopic(value, p, r){
-			var linkToAdd = FDHUrl+'{2}';
-			return String.format('<b><a href="#" onclick="addLink(\'elID6\',\'{2}\',\'true\')">{2}</a></b>',value, r.data.name, r.id, r.data.id);
-		}
-		
-		function renderLast(value, p, r){
-			//return String.format('{0}', value, r.data['creation']);
-			var retStr = formatTimestampString(r.data['creation']);
-			return retStr;
-		}
-		
 		function customRenderer(value,p,r){
 			var ret = value;
 			var stt = (r.data['status']);
@@ -421,8 +411,8 @@
 		// row expander
 		var expander = new Ext.ux.grid.RowExpander({
 			tpl : new Ext.XTemplate(
-		'<div style="background-color: #f9f9f9;">&nbsp;&nbsp;&nbsp;&nbsp;',
-		'&nbsp;&nbsp;&nbsp;&nbsp;<hr style="margin-left:20px;margin-right: 35px"/>',
+		'<div style="background-color: #f9f9f9;">&nbsp;&nbsp;',
+		'&nbsp;&nbsp;<hr style="margin-left:20px;margin-right: 35px"/>',
 		'<div class="x-toolbar-cell" style="margin-right: 40px;" align="right" id="ext-gen29">'+
 			'<table cellspacing="0" class="x-btn x-btn-text-icon  x-btn-pressed" id="tableBtn" style="width: auto;">'+
 			'<tbody class="x-btn-small x-btn-icon-small-left">'+
