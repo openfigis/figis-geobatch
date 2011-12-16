@@ -301,6 +301,7 @@ public class OracleDataStoreManager
 
     /***********
      * delete all from temporary tables and then save intersections in them
+	 *
      * @param ds
      * @param tx
      * @param collection
@@ -314,7 +315,9 @@ public class OracleDataStoreManager
     private void actionTemp(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
-        cleanTempTables(tx);
+	//FIX ME: with synchronized don't fail any intersection
+        cleanTempTables(tx, SimpleFeatureCollection collection, String srcLayer,
+        String trgLayer, String srcCode, String trgCode, int itemsPerPage);
         saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
     }
 
@@ -430,7 +433,8 @@ public class OracleDataStoreManager
 
     }
 
-    private  void cleanTempTables(Transaction tx) throws IOException
+    private  void cleanTempTables(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
+        String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws IOException
     {
         LOGGER.trace("Cleaning temp tables");
       
