@@ -315,7 +315,7 @@ width: 900px;
 	overflow-x: hidden;*/
 }
 .x-grid3-header-inner{
-/*margin-left: -2px;*/
+ margin-left: -3px;
 }
 .map_edit .x-btn-text-icon {
     background-image: url(../images/map_edit.png);
