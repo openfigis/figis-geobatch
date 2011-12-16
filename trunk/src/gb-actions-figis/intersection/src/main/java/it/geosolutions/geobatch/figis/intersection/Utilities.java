@@ -187,10 +187,13 @@ final class Utilities {
 	
 	    LOGGER.trace("Deleting dir " + dir);
 	    try{
-		    if (dir!=null && dir.exists() && dir.isDirectory()){
+		    if (dir.exists() && dir.isDirectory()){
 		        FileUtils.deleteDirectory(dir);
 		    }
-	    }catch(IOException e){LOGGER.error(e.getLocalizedMessage(), e);}
+	    }catch(IOException e){
+	    	LOGGER.error("ERRORE ON DELETING DIR: "+dir.getAbsolutePath());
+	    	LOGGER.error(e.getLocalizedMessage(), e);
+	    	}
 	    // The directory is now empty so delete it
 	    return !dir.exists();
 	}

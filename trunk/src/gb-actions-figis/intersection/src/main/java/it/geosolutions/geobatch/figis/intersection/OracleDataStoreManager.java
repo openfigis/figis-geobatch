@@ -129,8 +129,8 @@ public class OracleDataStoreManager
             orclMap.put(SCHEMA.key, schema);
             orclMap.put(USER.key, user);
             orclMap.put(PASSWD.key, password);
-            orclMap.put(MINCONN.key, 1);
-            orclMap.put(MAXCONN.key, 5);
+            orclMap.put(MINCONN.key, 10);
+            orclMap.put(MAXCONN.key, 25);
             orclMap.put(MAXWAIT.key, 100000);
             orclMap.put(VALIDATECONN.key, true);
             
@@ -314,7 +314,7 @@ public class OracleDataStoreManager
     private void actionTemp(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
-        cleanTempTables(tx);
+        cleanTempTables(tx, collection, srcLayer,trgLayer, srcCode, trgCode, itemsPerPage);
         saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
     }
 
@@ -430,13 +430,13 @@ public class OracleDataStoreManager
 
     }
 
-    private void cleanTempTables(Transaction tx) throws IOException
+    private synchronized void cleanTempTables(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
+            String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws IOException
     {
         LOGGER.trace("Cleaning temp tables");
       
         FeatureStore featureStoreData = (FeatureStore) orclDataStore.getFeatureSource(SPATIAL_TMP_TABLE);
         FeatureStore featureStoreGeom = (FeatureStore) orclDataStore.getFeatureSource(STATS_TMP_TABLE);
-        //
         featureStoreData.removeFeatures(Filter.INCLUDE);
         featureStoreGeom.removeFeatures(Filter.INCLUDE);
     }

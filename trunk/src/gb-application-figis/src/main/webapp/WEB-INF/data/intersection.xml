@@ -16,7 +16,7 @@
 <!-- '5/15' in the seconds field means "the seconds 5, 20, 35, and 50" -->
 	<EventGeneratorConfiguration>
 	 <eventType>POLLING_EVENT</eventType>
-	 <interval>30 0-1 * * * ?</interval>
+	 <interval>0 54 22 * * ?</interval>
 	 <id>cron_id</id>
 	 <serviceID>fsEventGeneratorService</serviceID>
 	 <description>description</description>

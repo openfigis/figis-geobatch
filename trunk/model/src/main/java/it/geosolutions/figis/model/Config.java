@@ -130,7 +130,7 @@ public class Config
     @Override
     public int hashCode()
     {
-        int hash = 5;
+        int hash = 15;
 
         return hash;
     }

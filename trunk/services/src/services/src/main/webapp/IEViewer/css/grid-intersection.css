@@ -310,7 +310,7 @@ font-family:Tahoma;
 width: 900px;
 }
 .x-grid3-scroller {
-    margin-left: -20px;
+    /*margin-left: -20px;*/
 	/*width: 100%;
 	overflow-x: hidden;*/
 }

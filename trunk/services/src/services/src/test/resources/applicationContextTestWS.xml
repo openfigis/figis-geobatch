@@ -31,7 +31,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:ieServicesHsqldb.properties</value>
-				<value>classpath:users.properties</value>
+				<value>classpath:userac.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -46,10 +46,8 @@
 		<constructor-arg ref="ie-entityManagerFactory" />
 	</bean>
 	
-	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl">
-		<property name="configDao" ref="ie-configDAO" />
-		<property name="intersectionDao" ref="ie-intersectionDAO" />
-	</bean>
+	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl" />
+	
 	<bean id="ie-configDAO"
 		class="it.geosolutions.figis.persistence.dao.daoImpl.ConfigDaoImpl" />
 	<bean id="ie-intersectionDAO"

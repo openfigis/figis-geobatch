@@ -406,7 +406,7 @@
 		function customRenderer(value,p,r){
 			var ret = value;
 			var stt = (r.data['status']);
-			 if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+value+'</span>';//blue
+			if(stt=='TODELETE')ret='<span style=\'color: #0000FF\'>'+value+'</span>';//blue
 			if(stt=='COMPUTING')ret='<span style=\'color: orange\'>'+value+'</span>';
 			if(stt=='TOCOMPUTE')ret='<span style=\'color: #FF0000\'>'+value+'</span>';
 			if(stt=='NOSTATE')ret='<span style=\'color: #FF0000\'>'+value+'</span>';

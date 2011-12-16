@@ -37,6 +37,8 @@
 
 
 
+import it.geosolutions.figis.model.Intersection;
+import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.IntersectionDao;
 import it.geosolutions.figis.requester.Request;
@@ -46,10 +48,13 @@ import it.geosolutions.figis.ws.FigisService;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -75,7 +80,7 @@ public class CheckChangeUserTest extends TestCase
 	IntersectionEngineAuthenticationInterceptor ieAuthInterceptor = null;
 	CredentialsManager userCheckUtils = null;
 	//static final String HOST = "http://localhost:8082";
-	static final String HOST = "http://localhost:9999";
+	static final String HOST = "http://localhost:9001";
 	static final String IE_SERV_CONF = "/ie-services/config";
 	/*constants for changing test properties file*/
 	private static final String TEST_PROPERTIES_FILE = "test_userac.properties";
@@ -84,17 +89,18 @@ public class CheckChangeUserTest extends TestCase
 	private static final String SEPARATOR = "@";
 
 	private static final String TEST_USERS_ROLE_ADMIN = "usersRoleAdmin="+
-	TEST_USERS_ROLE_ADMIN_USER+SEPARATOR+TEST_USERS_ROLE_ADMIN_PASSWORD;
+								TEST_USERS_ROLE_ADMIN_USER+SEPARATOR+TEST_USERS_ROLE_ADMIN_PASSWORD;
 
 	private static final String TEST_USERS_ROLE_USER = "usersRoleUser=pippo@pippo";
 
 	private static final String TEST_USERS_ROLE_ADMIN_USER_MODIFIED = "admin";
 	private static final String TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED = "abramis";
 	private static final String TEST_USERS_ROLE_ADMIN_MODIFIED = "usersRoleAdmin="+
-	TEST_USERS_ROLE_ADMIN_USER_MODIFIED+SEPARATOR+TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED;
+								TEST_USERS_ROLE_ADMIN_USER_MODIFIED+SEPARATOR+TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED;
 	private static final long TEST_PERIOD = 30000;
 	
 	long PERIOD = 30000;
+	Intersection int1 = null;
 
    
     @Before
@@ -102,12 +108,15 @@ public class CheckChangeUserTest extends TestCase
     {
         try{
 	        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContextTestChangeUser.xml");
-	        configDao = (ConfigDao) ctx.getBean("ie-configDAO");
-	        intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
-	        figisService = (FigisService) ctx.getBean("figisServiceImpl");
+	        //configDao = (ConfigDao) ctx.getBean("ie-configDAO");
+	        //intersectionDao = (IntersectionDao) ctx.getBean("ie-intersectionDAO");
+	        //figisService = (FigisService) ctx.getBean("figisServiceImpl");
 	        ieAuthInterceptor  = (IntersectionEngineAuthenticationInterceptor) ctx.getBean("ieAuthInterceptor");
-	        Request.initConfig();
-			Request.initIntersection();
+	        userCheckUtils = (CredentialsManager)ctx.getBean("ieUsersCheckUtils");
+	        //Request.initConfig();
+			//Request.initIntersection();
+	        Intersection int1 = new Intersection(true, true, true,"srcLayer", "trgLayer", "srcCodeField",
+	    			"trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
         }catch(Exception e){
         	LOGGER.error("FAIL SETUP:",e);
         }
@@ -117,36 +126,41 @@ public class CheckChangeUserTest extends TestCase
     public void test_CheckUserTest() throws IOException
     {
     	LOGGER.info("START TEST");
+    	long l = -1;
     	try{
     		if(userCheckUtils==null){
     			//createUseracTestFile(PROPERTIES_TEST_FILE);
     			userCheckUtils = new CredentialsManager(TEST_PROPERTIES_FILE, TEST_USERS_ROLE_ADMIN, TEST_USERS_ROLE_USER, PERIOD);
     			modifyUseracTestFile(TEST_PROPERTIES_FILE);
-    			
+    			userCheckUtils.reload();
+    			Request.initIntersection();
+    	        Request.initConfig();
+    			l = Request.insertIntersection(HOST, int1, TEST_USERS_ROLE_ADMIN_USER_MODIFIED, TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED);
     		}else{
-    			
-    			Request.getConfigs("", TEST_USERS_ROLE_ADMIN_USER, TEST_USERS_ROLE_ADMIN_PASSWORD);
-    			
+    			Request.initIntersection();
+    	        Request.initConfig();
+    			l = Request.insertIntersection(HOST, int1, TEST_USERS_ROLE_ADMIN_USER_MODIFIED, TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED);
+    			if(l==0){
+    				assertFalse(true);
+    			}
     			userCheckUtils.reload();
     			
+    			l = Request.insertIntersection(HOST, int1, TEST_USERS_ROLE_ADMIN_USER_MODIFIED, TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED);
+    			if(l==-1){
+    				assertFalse(true);
+    			}
+    			l = Request.insertIntersection(HOST, int1, TEST_USERS_ROLE_ADMIN_USER_MODIFIED, TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED);
+    			if(l==-1){
+    				assertFalse(true);
+    			}
     		}
-			//assertTrue(id >= 0);
+			assertTrue(l!=-1 && l >= 0);
 	   }catch(Exception e){
        		LOGGER.error("FAIL testInsertConfig:",e);
        }
     }
     
-    @Test
-    public void test_ChangeUsers() throws IOException
-    {
-    	LOGGER.info("START TEST");
-    	try{
-	        
-        
-    	}catch(Exception e){
-    		LOGGER.error(e.getLocalizedMessage(), e);
-    	}
-    }
+   
     
     
     public void modifyUseracTestFile(String useracProptestFile) throws IOException{
@@ -155,8 +169,16 @@ public class CheckChangeUserTest extends TestCase
     	Properties props = new Properties();
         InputStream pin = null;
 		try {
-			pin = new BufferedInputStream(new FileInputStream(useracProptestFile));
+			//pin = new BufferedInputStream(new FileInputStream(useracProptestFile));
+			java.net.URL url = this.getClass().getClassLoader().getResource(useracProptestFile);
 			
+			File   propertyFile = new File(url.toURI());
+		        if(!propertyFile.isFile()||!propertyFile.canRead()||propertyFile.isHidden()){
+		        	throw new IllegalArgumentException("Unable to reach file:"+url.toURI().toString()+"\n"+
+		        			"canRead:"+propertyFile.canRead()+",isFile:"+propertyFile.isFile()+",isHidden:"+propertyFile.isHidden()
+		        			);
+		        }
+		        pin = new BufferedInputStream(new FileInputStream(propertyFile));
 			if(LOGGER.isTraceEnabled()){
 	        	LOGGER.trace("READING TEST_PROPERTIES_FILE " + useracProptestFile);
 	        }
@@ -167,7 +189,9 @@ public class CheckChangeUserTest extends TestCase
 	        	LOGGER.trace("PROPERTIES_FILE reloaded: " + useracProptestFile);
 	        }
 		}catch (IOException e) {
-		    throw new IOException("UsersCheckUtils: error on realoading TEST file properties: PROPERTIES_FILE: " + useracProptestFile);
+		    throw new IOException("UsersCheckUtils: error on reading TEST file properties: PROPERTIES_FILE: " + useracProptestFile);
+		} catch (URISyntaxException e) {
+			LOGGER.trace(e.getLocalizedMessage(),e);
 		}finally{
 			if(pin!=null){
 				IOUtils.closeQuietly(pin);
@@ -193,7 +217,6 @@ public class CheckChangeUserTest extends TestCase
 					IOUtils.closeQuietly(out);
 			  }
 		  }
-		  Request.getConfigs("", TEST_USERS_ROLE_ADMIN, TEST_USERS_ROLE_ADMIN);
     	}
     
     public void createUseracTestFile(String useracProptestFile){
@@ -205,18 +228,20 @@ public class CheckChangeUserTest extends TestCase
     		  out = new BufferedWriter(fstream);
     		  out.write(TEST_PROPERTIES_FILE+"\n");
     		  out.write("checkPeriod="+TEST_PERIOD+"\n");
-    		  out.write(TEST_USERS_ROLE_ADMIN+"\n");
+    		  out.write(TEST_USERS_ROLE_ADMIN_MODIFIED+"\n");
     		  out.write(TEST_USERS_ROLE_USER+"\n");
+    		  out.flush();
 		  }catch (Exception e){//Catch exception if any
 			  LOGGER.error(e.getLocalizedMessage(),e);
 		  }finally{
 			//Close the output stream
-			  if(fstream!=null){
-				  IOUtils.closeQuietly(fstream);
-			  }
 			  if(out!=null){
 				  IOUtils.closeQuietly(out);
 			  }
+			  if(fstream!=null){
+				  IOUtils.closeQuietly(fstream);
+			  }
+			  
 		  }
     	}
     
