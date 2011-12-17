@@ -63,13 +63,10 @@ public class CheckChangeUserTest extends TestCase
 	private static final String TEST_USERS_ROLE_ADMIN_USER = "admin";
 	private static final String TEST_USERS_ROLE_ADMIN_PASSWORD = "abramisbrama";
 	private static final String SEPARATOR = "@";
-	long PERIOD = 30000;
-	
+	private static final long PERIOD = 30000;
 	private static final String TEST_USERS_ROLE_ADMIN = "usersRoleAdmin="+
 								TEST_USERS_ROLE_ADMIN_USER+SEPARATOR+TEST_USERS_ROLE_ADMIN_PASSWORD;
-
 	
-
 	private static final String TEST_USERS_ROLE_ADMIN_USER_MODIFIED = "admin";
 	private static final String TEST_USERS_ROLE_ADMIN_PASSWORD_MODIFIED = "abramis";
 	private static final String TEST_USERS_ROLE_ADMIN_MODIFIED = "usersRoleAdmin="+
@@ -161,7 +158,7 @@ public class CheckChangeUserTest extends TestCase
 			  IOUtils.closeQuietly(fstream);
 		  }
 		  if(out!=null){
-				IOUtils.closeQuietly(out);
+			  IOUtils.closeQuietly(out);
 		  }
 	  }
 	}
