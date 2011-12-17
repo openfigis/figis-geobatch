@@ -19,7 +19,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:ieServicesHsqldb.properties</value>
-				<value>classpath:test_userac.properties</value>
+				<value>classpath:src/test/resources/test_userac.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -31,7 +31,7 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-
+<!--
 	<bean name="HSQLDBServer" class="it.geosolutions.figis.ws.server.InitHSQLDB" init-method="init" destroy-method="destroy">
 		<constructor-arg index="0"
 			value="${ie-services-hsqldb.serverDatabase}" />
@@ -40,7 +40,7 @@
 		<constructor-arg index="2"
 			value="${ie-services-hsqldb.serverPort}" />
 	</bean>
-
+-->
 	<jaxrs:server id="figisService" address="/">
 		<jaxrs:serviceBeans>
 			<ref bean="figisServiceImpl" />
@@ -68,10 +68,10 @@
 	</bean>
 
 	<bean id="ieUsersCheckUtils" class="it.geosolutions.figis.security.authentication.CredentialsManager">
-		<constructor-arg index="0" value="${TEST_PROPERTIES_FILE}" />
-		<constructor-arg index="1" value="${testUsersRoleAdmin}" />
-		<constructor-arg index="2" value="${testUsersRoleUser}" />
-		<constructor-arg index="3" value="${testCheckPeriod}" />
+		<constructor-arg index="0" value="${PROPERTIES_FILE}" />
+		<constructor-arg index="1" value="${usersRoleAdmin}" />
+		<constructor-arg index="2" value="${usersRoleUser}" />
+		<constructor-arg index="3" value="${checkPeriod}" />
 	</bean>
 	
 		
