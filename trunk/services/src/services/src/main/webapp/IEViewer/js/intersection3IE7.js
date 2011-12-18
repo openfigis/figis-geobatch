@@ -323,6 +323,13 @@
 	function doTimer(){
 		timerStarted=!timerStarted;
 		if (timerStarted){
+		Ext.MessageBox.show({
+           title: 'Info',
+           msg: 'Polling started',
+           buttons: Ext.MessageBox.OK,
+           icon: 'polling2'
+       });
+		 // Ext.Msg.alert('Info', 'Polling started');
 		  timedCount();
 	  }
 	}

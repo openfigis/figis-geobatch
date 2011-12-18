@@ -309,10 +309,10 @@ font-family:Tahoma;
 font-family:Tahoma;
 width: 900px;
 }
-/*
+
  .x-grid3-scroller  {
     margin-left: -20px;
-}*/
+}/**/
 /*
 .x-grid3-scroller .x-grid3-body .x-grid3-row .x-grid3-row-first .x-grid3-row-expanded {
     margin-left: -20px;
@@ -341,7 +341,10 @@ margin-left: 7px;
 .polling .x-btn-text {
     background-image: url(../images/database_refresh.png);
 }
-
+.polling2  {  
+   background:transparent url(../images/database_refresh.png) no-repeat top center;
+   /* background-image: url(../images/database_refresh.png);*/
+}
 .pencil .x-btn-text {
     background-image: url(../images/pencil.png);
 }

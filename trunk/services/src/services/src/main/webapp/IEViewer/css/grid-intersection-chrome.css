@@ -332,7 +332,10 @@ width: 900px;
 .polling .x-btn-text {
     background-image: url(../images/database_refresh.png);
 }
-
+.polling2  {  
+   background:transparent url(../images/database_refresh.png) no-repeat top center;
+   /* background-image: url(../images/database_refresh.png);*/
+}
 .pencil .x-btn-text {
     background-image: url(../images/pencil.png);
 }

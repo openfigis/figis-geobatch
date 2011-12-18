@@ -324,7 +324,13 @@
 	function doTimer(){
 		timerStarted=!timerStarted;
 		if (timerStarted){
-		  //Ext.Msg.alert('Polling', 'You have started the polling');
+		Ext.MessageBox.show({
+           title: 'Info',
+           msg: 'Polling started',
+           buttons: Ext.MessageBox.OK,
+           icon: 'polling2'
+       });
+		 // Ext.Msg.alert('Info', 'Polling started');
 		  timedCount();
 	  }
 	}
@@ -411,8 +417,8 @@
 		// row expander
 		var expander = new Ext.ux.grid.RowExpander({
 			tpl : new Ext.XTemplate(
-		'<div style="background-color: #f9f9f9;">&nbsp;&nbsp;',
-		'&nbsp;&nbsp;<hr style="margin-left:20px;margin-right: 35px"/>',
+		'<div style="background-color: #f9f9f9;">',
+		'<hr style="margin-left:20px;margin-right: 35px"/>',
 		'<div class="x-toolbar-cell" style="margin-right: 40px;" align="right" id="ext-gen29">'+
 			'<table cellspacing="0" class="x-btn x-btn-text-icon  x-btn-pressed" id="tableBtn" style="width: auto;">'+
 			'<tbody class="x-btn-small x-btn-icon-small-left">'+
