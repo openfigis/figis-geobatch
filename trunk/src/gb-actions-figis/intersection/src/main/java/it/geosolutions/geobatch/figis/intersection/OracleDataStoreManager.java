@@ -1,4 +1,4 @@
- /*
+/*
  * ====================================================================
  *
  * GeoBatch - Intersection Engine
@@ -31,24 +31,14 @@
 package it.geosolutions.geobatch.figis.intersection;
 
 
-import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
-import static org.geotools.jdbc.JDBCDataStoreFactory.MAXCONN;
-import static org.geotools.jdbc.JDBCDataStoreFactory.MAXWAIT;
-import static org.geotools.jdbc.JDBCDataStoreFactory.MINCONN;
-import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
-import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
-import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
-import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
-import static org.geotools.jdbc.JDBCDataStoreFactory.VALIDATECONN;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
+
+import com.vividsolutions.jts.geom.MultiPolygon;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
@@ -74,7 +64,17 @@ import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
+import static org.geotools.jdbc.JDBCDataStoreFactory.MAXCONN;
+import static org.geotools.jdbc.JDBCDataStoreFactory.MAXWAIT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.MINCONN;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
+import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
+import static org.geotools.jdbc.JDBCDataStoreFactory.VALIDATECONN;
 
 
 public class OracleDataStoreManager
@@ -82,21 +82,21 @@ public class OracleDataStoreManager
 
     static final int DEFAULT_PAGE_SIZE = 50;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(OracleDataStoreManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OracleDataStoreManager.class);
 
     private static final Semaphore SYNCH = new Semaphore(1);
 
-	private static final JDBCDataStoreFactory ORACLE_FACTORY = new OracleNGDataStoreFactory();
+    private static final JDBCDataStoreFactory ORACLE_FACTORY = new OracleNGDataStoreFactory();
 
 
-    final static String STATS_TABLE = "STATISTICAL_TABLE";
-    final static String SPATIAL_TABLE = "SPATIAL_TABLE";
-    final static String STATS_TMP_TABLE = "STATISTICAL_TMP_TABLE";
-    final static String SPATIAL_TMP_TABLE = "SPATIAL_TMP_TABLE";
-
-    private final Map<String, Serializable> orclMap = new HashMap<String, Serializable>();
+    static final String STATS_TABLE = "STATISTICAL_TABLE";
+    static final String SPATIAL_TABLE = "SPATIAL_TABLE";
+    static final String STATS_TMP_TABLE = "STATISTICAL_TMP_TABLE";
+    static final String SPATIAL_TMP_TABLE = "SPATIAL_TMP_TABLE";
 
     private static String DEFAULT_DBTYPE = "oracle";
+
+    private final Map<String, Serializable> orclMap = new HashMap<String, Serializable>();
 
 
     SimpleFeatureType sfTmpGeom = null;
@@ -104,24 +104,24 @@ public class OracleDataStoreManager
     SimpleFeatureType sfStats = null;
     SimpleFeatureType sfGeom = null;
 
-	private final DataStore orclDataStore;
+    private final DataStore orclDataStore;
 
     /**
      * Accepts params for connecting to the Oracle datastore
      */
     public OracleDataStoreManager(
-    		String hostname, 
-    		Integer port, 
-    		String database,
-    		String schema, 
-    		String user, 
-    		String password) throws Exception
+        String hostname,
+        Integer port,
+        String database,
+        String schema,
+        String user,
+        String password) throws Exception
     {
 
         Transaction orclTransaction = null;
         try
         {
-        	// init arguments
+            // init arguments
             orclMap.put(DBTYPE.key, DEFAULT_DBTYPE);
             orclMap.put(HOST.key, hostname);
             orclMap.put(PORT.key, port);
@@ -133,7 +133,7 @@ public class OracleDataStoreManager
             orclMap.put(MAXCONN.key, 25);
             orclMap.put(MAXWAIT.key, 100000);
             orclMap.put(VALIDATECONN.key, true);
-            
+
             // create the underlying store and check that all table are there
             try
             {
@@ -144,31 +144,35 @@ public class OracleDataStoreManager
             {
                 throw new Exception("Error creating the ORACLE data store, check the connection parameters", e);
             }
-            
+
             orclTransaction = new DefaultTransaction();
-            
+
             SYNCH.acquire();
-            initTables(orclDataStore, orclTransaction); 
-            
+            initTables(orclDataStore, orclTransaction);
+
             // commit the transaction
             orclTransaction.commit();
         }
         catch (Exception e)
         {
-        	try{
+            try
+            {
                 orclTransaction.rollback();
-        	} catch (Exception e1) {
-				if(LOGGER.isErrorEnabled()){
-					LOGGER.error(e1.getLocalizedMessage(),e1);
-				}
-			}
+            }
+            catch (Exception e1)
+            {
+                if (LOGGER.isErrorEnabled())
+                {
+                    LOGGER.error(e1.getLocalizedMessage(), e1);
+                }
+            }
             throw new Exception("Error creating tables in ORACLE", e);
         }
         finally
         {
             close(orclTransaction);
-            
-            //permits to other threads to check if the tables are there or not
+
+            // permits to other threads to check if the tables are there or not
             SYNCH.release();
         }
 
@@ -177,18 +181,22 @@ public class OracleDataStoreManager
 
     /**
      * Disposes the underlying GeoTools {@link DataStore} once for all.
-     * 
+     *
      */
-    public void dispose(){
-    	if(orclDataStore!=null){
-    		try{
-    			orclDataStore.dispose();
-    		} catch (Exception e) {
-				LOGGER.trace(e.getLocalizedMessage(),e);
-			}
-    	}
+    public void dispose()
+    {
+        if (orclDataStore != null)
+        {
+            try
+            {
+                orclDataStore.dispose();
+            }
+            catch (Exception e)
+            {
+                LOGGER.trace(e.getLocalizedMessage(), e);
+            }
+        }
     }
-
 
 
     /************
@@ -301,7 +309,7 @@ public class OracleDataStoreManager
 
     /***********
      * delete all from temporary tables and then save intersections in them
-	 *
+     *
      * @param ds
      * @param tx
      * @param collection
@@ -315,9 +323,9 @@ public class OracleDataStoreManager
     private void actionTemp(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
     {
-	//FIX ME: with synchronized don't fail any intersection
-        cleanTempTables(tx,  collection,  srcLayer,
-                 trgLayer,  srcCode,  trgCode,  itemsPerPage);
+        // FIX ME: with synchronized don't fail any intersection
+        cleanTempTables(tx, collection, srcLayer,
+            trgLayer, srcCode, trgCode, itemsPerPage);
         saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
     }
 
@@ -334,7 +342,7 @@ public class OracleDataStoreManager
         String trgCode) throws Exception
     {
         FeatureStore featureStoreTmpData = (FeatureStore) orclDataStore.getFeatureSource(STATS_TMP_TABLE);
-        FeatureStore featureStoreTmpGeom = (FeatureStore) orclDataStore.getFeatureSource(STATS_TMP_TABLE);
+        FeatureStore featureStoreTmpGeom = (FeatureStore) orclDataStore.getFeatureSource(SPATIAL_TMP_TABLE);
 
         featureStoreTmpData.setTransaction(tx);
         featureStoreTmpGeom.setTransaction(tx);
@@ -346,9 +354,10 @@ public class OracleDataStoreManager
         featureStoreGeom.setTransaction(tx);
 
         deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData, featureStoreGeom);
-        
-        if(LOGGER.isTraceEnabled()){
-        	LOGGER.trace("Saving data from permanent table.");
+
+        if (LOGGER.isTraceEnabled())
+        {
+            LOGGER.trace("Saving data from permanent table.");
         }
         featureStoreData.addFeatures(featureStoreTmpData.getFeatures());
         featureStoreGeom.addFeatures(featureStoreTmpGeom.getFeatures());
@@ -402,11 +411,14 @@ public class OracleDataStoreManager
         {
             if (iterator != null)
             {
-            	try{
-            		iterator.close();
-            	}catch(Exception e){
-            		LOGGER.error("ERROR on closing Features iterator: ", e);
-            	}
+                try
+                {
+                    iterator.close();
+                }
+                catch (Exception e)
+                {
+                    LOGGER.error("ERROR on closing Features iterator: ", e);
+                }
             }
 
         }
@@ -420,26 +432,29 @@ public class OracleDataStoreManager
      */
     private void close(Transaction tx)
     {
-        if (tx != null) {
-            try {
-            	tx.close();        
+        if (tx != null)
+        {
+            try
+            {
+                tx.close();
             }
             catch (Exception e)
             {
                 LOGGER.error("Exception closing the transaction", e);
-            }    
-        }    	
- 	
+            }
+        }
+
 
     }
 
-    private  void cleanTempTables(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
+    private void cleanTempTables(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws IOException
     {
         LOGGER.trace("Cleaning temp tables");
-      
+
         FeatureStore featureStoreData = (FeatureStore) orclDataStore.getFeatureSource(SPATIAL_TMP_TABLE);
         featureStoreData.setTransaction(tx);
+
         FeatureStore featureStoreGeom = (FeatureStore) orclDataStore.getFeatureSource(STATS_TMP_TABLE);
         featureStoreGeom.setTransaction(tx);
         featureStoreData.removeFeatures(Filter.INCLUDE);
@@ -501,16 +516,18 @@ public class OracleDataStoreManager
 
             // this cycle is necessary to save itemsPerPage items at time
             int page = 0;
-            if(LOGGER.isDebugEnabled()){
-            	LOGGER.debug("PAGE : " + (page));
+            if (LOGGER.isDebugEnabled())
+            {
+                LOGGER.debug("PAGE : " + (page));
             }
+
             SimpleFeatureCollection sfcData = FeatureCollections.newCollection();
             SimpleFeatureCollection sfcGeom = FeatureCollections.newCollection();
             while (iterator.hasNext())
             {
 
                 String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + i;
-                
+
                 SimpleFeature sf = iterator.next();
 
                 featureBuilderData.set("SRCODE", sf.getAttribute(srcLayer + "_" + srcCode));
@@ -525,10 +542,11 @@ public class OracleDataStoreManager
                 featureBuilderData.set("SRCCODENAME", srcCode);
                 featureBuilderData.set("TRGCODENAME", trgCode);
 
-                if(LOGGER.isDebugEnabled()){
-                	LOGGER.debug("INTERSECTION_ID : " + intersectionID);
+                if (LOGGER.isDebugEnabled())
+                {
+                    LOGGER.debug("INTERSECTION_ID : " + intersectionID);
                 }
-               
+
                 if (sf.getAttribute("areaA") != null)
                 {
                     featureBuilderData.set("SRCAREA", sf.getAttribute("areaA"));
@@ -561,25 +579,27 @@ public class OracleDataStoreManager
                 sfcGeom.add(sfwGeom);
 
                 i++;
-                if ((i % itemsPerPage) == 0){
+                if ((i % itemsPerPage) == 0)
+                {
                     // save statistics to the statistics temporary table
                     featureStoreData.addFeatures(sfcData);
                     // save geometries to the statistics temporary table
                     featureStoreGeom.addFeatures(sfcGeom);
-                    
+
                     // clear
                     sfcData.clear();
                     sfcGeom.clear();
-                    
-                    //increment page
+
+                    // increment page
                     page++;
-                    
-                    if(LOGGER.isDebugEnabled()){
-                    	LOGGER.debug("PAGE : " + (page));
+
+                    if (LOGGER.isDebugEnabled())
+                    {
+                        LOGGER.debug("PAGE : " + (page));
                     }
                 }
 
-                
+
             }
         }
         finally
@@ -622,11 +642,14 @@ public class OracleDataStoreManager
         }
         catch (Exception e)
         {
-            try{
-            	tx.rollback();
-            } catch (Exception e1) {
-				LOGGER.trace(e1.getLocalizedMessage(),e1);
-			}
+            try
+            {
+                tx.rollback();
+            }
+            catch (Exception e1)
+            {
+                LOGGER.trace(e1.getLocalizedMessage(), e1);
+            }
             throw new IOException("Exception during ORACLE saving. Rolling back ", e);
         }
         finally
@@ -637,10 +660,10 @@ public class OracleDataStoreManager
         try
         {
 
-            
+
             if (res)
             {
-            	tx = new DefaultTransaction();
+                tx = new DefaultTransaction();
                 action(tx, srcLayer, trgLayer, srcCode, trgCode);
                 tx.commit();
                 res = true;
@@ -653,11 +676,14 @@ public class OracleDataStoreManager
         }
         catch (Exception e)
         {
-            try{
-            	tx.rollback();
-            } catch (Exception e1) {
-				LOGGER.trace(e1.getLocalizedMessage(),e1);
-			}
+            try
+            {
+                tx.rollback();
+            }
+            catch (Exception e1)
+            {
+                LOGGER.trace(e1.getLocalizedMessage(), e1);
+            }
             throw new IOException("Exception during ORACLE saving. Rolling back ", e);
         }
         finally
@@ -694,19 +720,24 @@ public class OracleDataStoreManager
             featureStoreData.setTransaction(orclTransaction);
             featureStoreGeom.setTransaction(orclTransaction);
 
-            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData,featureStoreGeom);
+            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData, featureStoreGeom);
 
-            //commit!
+            // commit!
             orclTransaction.commit();
         }
         catch (Exception e)
         {
-            try{
-            	orclTransaction.rollback();
-            } catch (Exception e1) {
-				if(LOGGER.isInfoEnabled())
-					LOGGER.info(e1.getLocalizedMessage(),e1);
-			}
+            try
+            {
+                orclTransaction.rollback();
+            }
+            catch (Exception e1)
+            {
+                if (LOGGER.isInfoEnabled())
+                {
+                    LOGGER.info(e1.getLocalizedMessage(), e1);
+                }
+            }
             throw new IOException("Delete all raised an exception ", e);
         }
         finally

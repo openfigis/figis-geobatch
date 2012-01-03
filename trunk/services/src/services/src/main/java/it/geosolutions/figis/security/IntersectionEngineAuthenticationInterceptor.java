@@ -53,12 +53,13 @@ import org.springframework.security.access.AccessDeniedException;
 public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseInterceptor<Message>
 {
 
-   
-	private static final Logger LOGGER = Logger.getLogger(IntersectionEngineAuthenticationInterceptor.class);
+
+    private static final Logger LOGGER = Logger.getLogger(IntersectionEngineAuthenticationInterceptor.class);
 
     private CredentialsManager userCheckUtils;
-    
-    public IntersectionEngineAuthenticationInterceptor(){
+
+    public IntersectionEngineAuthenticationInterceptor()
+    {
         super(Phase.UNMARSHAL);
     }
 
@@ -99,9 +100,9 @@ public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseIn
             // throw new AccessDeniedException("Unauthorized");
             // ///////////////////////////////////////////////////////////////////
 
-            //user = UserUtils.getUser(username, password);
+            // user = UserUtils.getUser(username, password);
             user = userCheckUtils.getUser(username, password);
-            
+
             if (!password.equalsIgnoreCase(user.getPassword()))
             {
                 if (LOGGER.isInfoEnabled())
@@ -127,12 +128,13 @@ public class IntersectionEngineAuthenticationInterceptor extends AbstractPhaseIn
 
     /**
      * Setting for injectiong from spring
-     * 
+     *
      * @param userCheckUtils
      */
-	public void setUserCheckUtils(CredentialsManager userCheckUtils) {
-		this.userCheckUtils = userCheckUtils;
-	}
-	
+    public void setUserCheckUtils(CredentialsManager userCheckUtils)
+    {
+        this.userCheckUtils = userCheckUtils;
+    }
+
 
 }

@@ -54,7 +54,7 @@
 			<ieServicePassword>abramisbrama</ieServicePassword>
 			<listenerConfigurations/>
 			<failIgnored>false</failIgnored>
-		  	<persistencyHost>http://localhost:8082</persistencyHost>
+		  	<persistencyHost>http://localhost:8181</persistencyHost>
 			<defaultMaskLayer>fifao:UN_CONTINENT</defaultMaskLayer>
 			<workingDirectory>setting/</workingDirectory>
 

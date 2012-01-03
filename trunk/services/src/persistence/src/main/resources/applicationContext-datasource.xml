@@ -41,7 +41,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 		<property name="databasePlatform"
 			value="${ie-services-hsqldb.vendorAdapter.databasePlatform}" />
-		<property name="showSql" value="false" />
+		<property name="showSql" value="true" />
 		<property name="generateDdl" value="true" />
 	</bean>
 

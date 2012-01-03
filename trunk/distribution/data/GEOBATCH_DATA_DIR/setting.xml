@@ -6,6 +6,13 @@
 	<name>Setting flow</name>
 	
 	<workingDirectory>setting/</workingDirectory>
+	<maxStoredConsumers>10</maxStoredConsumers>
+	
+	<!-- to have a single istance, corePoolSize must be 2 -->
+	<corePoolSize>10</corePoolSize>
+	<maximumPoolSize>10</maximumPoolSize>
+	<workQueueSize>100</workQueueSize>
+	<keepAliveTime>150</keepAliveTime>
 	<autorun>true</autorun>
 	
 	<EventGeneratorConfiguration>
@@ -13,7 +20,7 @@
 		<watchDirectory>setting/in</watchDirectory>
 		<osType>OS_UNDEFINED</osType>
 		<eventType>FILE_ADDED</eventType>
-		<interval>0/20 * * * * ?</interval><!-- CRON: every minute at sec 0 -->
+		<interval>0/10 * * * * ?</interval><!-- CRON: every 10 sec -->
 		<!--<interval>20</interval> each 20 sec -->
 		<id>SettingFlow</id>
 		<serviceID>fsEventGeneratorService</serviceID>
@@ -43,14 +50,13 @@
 			<id>SettingGeneratorService</id>
 			<description>Setting action</description>
 			<name>SettingConfiguration</name>
-			
+			<ieServiceUsername>admin</ieServiceUsername>
+			<ieServicePassword>abramisbrama</ieServicePassword>
 			<listenerConfigurations/>
 			<failIgnored>false</failIgnored>
 		  	<persistencyHost>http://localhost:8181</persistencyHost>
 			<defaultMaskLayer>fifao:UN_CONTINENT</defaultMaskLayer>
 			<workingDirectory>setting/</workingDirectory>
-			<ieServiceUsername>admin</ieServiceUsername>
-			<ieServicePassword>abramisbrama</ieServicePassword>
 
 			<!-- 
 			<alias>

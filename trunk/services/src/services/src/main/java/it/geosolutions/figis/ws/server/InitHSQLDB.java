@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Servlet to initialize ie-db (hsql db). This can start fronm servlet
  * or by initialization injection by context-spring
- * 
+ *
  * @author Alessio
  *
  */
@@ -68,11 +68,11 @@ public class InitHSQLDB extends HttpServlet
 
     private String port;
 
-	private Server server;
+    private Server server;
 
     public InitHSQLDB() throws ServletException
     {
-    	this(DEFAULT_DATABASE,DEFAULT_DBNAME,DEFAULT_PORT);
+        this(DEFAULT_DATABASE, DEFAULT_DBNAME, DEFAULT_PORT);
 
     }
 
@@ -102,7 +102,7 @@ public class InitHSQLDB extends HttpServlet
             server.setLogWriter(null); // can use custom writer
             server.setErrWriter(null); // can use custom writer
             server.start();
-            
+
         }
         catch (Exception ex)
         {
@@ -157,14 +157,19 @@ public class InitHSQLDB extends HttpServlet
     {
         return port;
     }
-    
-    public void destroy(){
-    	if(server!=null){
-    		try{
-    			server.stop();
-    		} catch (Exception e) {
-				LOGGER.debug(e.getLocalizedMessage(),e);
-			}
-    	}
+
+    public void destroy()
+    {
+        if (server != null)
+        {
+            try
+            {
+                server.stop();
+            }
+            catch (Exception e)
+            {
+                LOGGER.debug(e.getLocalizedMessage(), e);
+            }
+        }
     }
 }

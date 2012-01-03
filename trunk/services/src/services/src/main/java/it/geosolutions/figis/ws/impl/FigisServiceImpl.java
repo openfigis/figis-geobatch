@@ -30,6 +30,13 @@
  */
 package it.geosolutions.figis.ws.impl;
 
+import java.util.List;
+
+import javax.jws.WebService;
+
+import com.trg.search.Filter;
+import com.trg.search.Search;
+
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
@@ -43,16 +50,10 @@ import it.geosolutions.figis.ws.exceptions.ResourceNotFoundFault;
 import it.geosolutions.figis.ws.response.Intersections;
 import it.geosolutions.figis.ws.response.IntersectionsPageCount;
 
-import java.util.List;
-
-import javax.jws.WebService;
-
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.trg.search.Filter;
-import com.trg.search.Search;
 
 /**
  * Implementation of FigisServices interface for rest xml request
@@ -60,7 +61,7 @@ import com.trg.search.Search;
 @WebService(name = "FigisService", serviceName = "FigisServiceService", portName = "FigisServicePort", endpointInterface = "it.geosolutions.figis.ws.FigisService", targetNamespace = "http://services.figis.geosolutions.it/")
 public class FigisServiceImpl implements FigisService
 {
-	private static final Logger LOGGER = Logger.getLogger(FigisServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(FigisServiceImpl.class);
     ConfigDao configDao = null;
     IntersectionDao intersectionDao = null;
 
@@ -111,6 +112,7 @@ public class FigisServiceImpl implements FigisService
             resourceNotFoundDetails.setMessage("the id's config does not exist");
             throw new ResourceNotFoundFault(resourceNotFoundDetails);
         }
+
         return config;
     }
 
@@ -277,15 +279,17 @@ public class FigisServiceImpl implements FigisService
         // if no config exists yet
         if (conf == null)
         {
-        	if(LOGGER.isTraceEnabled()){
-        		LOGGER.trace("The value for config is null");
-        	}
+            if (LOGGER.isTraceEnabled())
+            {
+                LOGGER.trace("The value for config is null");
+            }
             insertConfig(config);
 
             return config.getConfigId();
         }
-        if(LOGGER.isTraceEnabled()){
-        	LOGGER.trace("Config retrieved");
+        if (LOGGER.isTraceEnabled())
+        {
+            LOGGER.trace("Config retrieved");
         }
         // update all the fields
 
@@ -532,6 +536,7 @@ public class FigisServiceImpl implements FigisService
             catch (ResourceNotFoundFault e)
             {
                 LOGGER.error("ERROR on delete Intersection:", e);
+
                 return false;
             }
         }

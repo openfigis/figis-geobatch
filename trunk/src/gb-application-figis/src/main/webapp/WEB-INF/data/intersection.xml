@@ -19,8 +19,8 @@
 <!-- '5/15' in the first field means "the seconds 5, 20, 35, and 50" -->
 	<EventGeneratorConfiguration>
 	 <eventType>POLLING_EVENT</eventType>
-	  <interval>0 54 22 * * ?</interval>
-	 <!-- interval>0/50 * * * * ?</interval -->
+	 <!-- interval>0 54 22 * * ?</interval -->
+	 <interval>0/20 * * * * ?</interval>
 	 <id>cron_id</id>
 	 <serviceID>fsEventGeneratorService</serviceID>
 	 <description>description</description>
@@ -34,7 +34,6 @@
 		
 		<workingDirectory>intersection/</workingDirectory>
 		<performBackup>false</performBackup>
-
 		
 		<IntersectionConfiguration>
 			<serviceID>IntersectionGeneratorService</serviceID>
@@ -44,7 +43,7 @@
 			
 			<listenerConfigurations/>
 			<failIgnored>false</failIgnored>
-		  	<persistencyHost>http://localhost:8082</persistencyHost>
+		  	<persistencyHost>http://localhost:8181</persistencyHost>
 			<itemsPerPages>50</itemsPerPages>
 			<ieServiceUsername>admin</ieServiceUsername>
 			<ieServicePassword>abramisbrama</ieServicePassword>

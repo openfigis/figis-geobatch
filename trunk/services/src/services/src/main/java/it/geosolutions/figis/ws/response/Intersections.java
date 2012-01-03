@@ -41,7 +41,7 @@ import it.geosolutions.figis.model.Intersection;
 
 /**
  * Class for the xml response
- * 
+ *
  * @author Luca
  */
 
