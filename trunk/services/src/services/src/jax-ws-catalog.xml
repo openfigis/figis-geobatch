@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="file:/C:/git2/trunk/services/src/ie-services/target/generated/wsdl/FigisServiceImpl.wsdl" uri="wsdl/FigisServiceImpl.wsdl"/>
-    <system systemId="file:/C:/git2/trunk/services/src/ie-services/target/generated/wsdl/FigisService.wsdl" uri="wsdl/FigisService.wsdl"/>
-</catalog>
