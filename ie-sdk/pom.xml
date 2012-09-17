@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>it.geosolutions.figis.sdk</groupId>
+	<artifactId>ie-sdk</artifactId>
+	<packaging>pom</packaging>
+	<name>Intersection Engine SDK</name>
+	<version>2.0-SNAPSHOT</version>
+	<url>https://geosolutions-trac.sourcerepo.com/geosolutions_FIGIS-IntersectionEngine</url>
+	<scm>
+		<url>scm:git@geosolutions.sourcerepo.com:geosolutions/FIGIS-IntersectionEngine.git</url>
+	</scm>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<organization>
+		<name>GeoSolutions</name>
+		<url>http://www.geo-solutions.it</url>
+	</organization>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<doctitle>Building Block Interface</doctitle>
+					<windowtitle>Building Block Interface</windowtitle>
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+
+					<!-- <docletPath>/path/to/UmlGraph.jar</docletPath> -->
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>doclet</artifactId>
+						<version>5.1</version>
+					</docletArtifact>
+					<additionalparam>-views</additionalparam>
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>maven</id>
+			<name>Central Maven Repository</name>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+	</repositories>
+	<modules>
+		<module>../model</module>
+		<module>../requester</module>
+		<module>../services/src</module>
+		<module>../src</module>
+		<module>../distribution</module>
+	</modules>
+     <distributionManagement>
+		  <!--..................................-->
+		  <!--      GeoSolutions Repository     -->
+		  <!--..................................-->
+      <repository>
+       <uniqueVersion>false</uniqueVersion>
+       <id>geosolutions</id>
+       <url>ftp://maven.geo-solutions.it</url>
+      </repository>
+    </distributionManagement>
+</project>

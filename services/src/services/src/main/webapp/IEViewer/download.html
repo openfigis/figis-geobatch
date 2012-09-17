@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+    <head>
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <meta name="description" content="Application to list downloabled maps." />
+      <meta name="author-corporate" content="FAO of the UN" />
+      <meta name="copyright" content="http://www.fao.org/corp/copyright/en/" />
+      <meta name="keywords" content="Atlas, Tuna, Map, FAO, Intersection Map" />
+	    
+      <title>INTERSECTION ENGINE DOWNLOADER</title>
+      
+		<script type="text/javascript" src="lib/ext-3.3.1/adapter/ext/ext-base.js"></script>
+		
+		<script type="text/javascript" src="lib/ext-3.3.1/ext-all.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="lib/ext-3.3.1/resources/css/ext-all.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/ui.css" />
+
+		<script type="text/javascript" >
+		 if(navigator.userAgent.indexOf("Chrome")!=-1){
+				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/grid-intersection-chrome.css\"  media=\"screen\" />");
+			}else if(navigator.userAgent.indexOf("MSIE 7")!=-1){
+				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/grid-intersectionIE7.css\"  media=\"screen\" />");
+			}else{
+				document.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/grid-intersection.css\"  media=\"screen\" />");
+			}
+		</script>
+		
+		<script type="text/javascript" src="js/path.js"></script>
+		<script type="text/javascript" src="js/download.js"></script>
+
+      <style type="text/css">
+
+          #main-panel td {
+                  padding:2px;
+          }
+                    
+          .olControlLoadingPanel {
+                  background-image:url(images/blue-loading.gif);
+                  position: absolute;
+                  width: 700px;
+                  height: 350px;
+                  background-position:center;
+                  background-repeat:no-repeat;
+                  display: none;
+          }		
+          	
+          table.featureInfo, table.featureInfo td, table.featureInfo th {
+                  border:1px solid #15428B; 
+                  margin:0; 
+                  padding:0; 
+                  font-size: 12px; 
+          }
+          
+          table.featureInfo th{
+                  padding:.2em .2em; 
+                  color:#fff; 
+                  font-weight:bold; 
+                  font-size: 12px; 
+                  background:#15428B; 
+          }
+          
+          table.featureInfo td{
+                  background:#fff; 
+                  font-size: 12px; 
+          }
+          
+          table.featureInfo tr.odd td{
+                  background:#CEDFF5; 
+                  font-size: 12px; 
+          }
+          
+          table.featureInfo caption{
+                  text-align:left; 
+                  font-size:100%; 
+                  font-weight:bold; 
+                  text-transform:lowercase;
+                  padding:.2em .2em; 
+          }
+			
+    </style>		
+    </head>
+    <body>
+	<script>
+	var queryString = window.top.location;
+	//alert(queryString);
+	var downlSrc = getParameter ( queryString, 'src2Down' );
+	//alert('downlSrc: '+downlSrc);
+	download3(downlSrc);
+	</script>
+    
+        <div id="wrapper">
+          <div id="top">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                <td align="left">
+                  <a href="http://www.fao.org/" target="_blank"><img style="vertical-align: middle;" src="images/FIGIS_banner-logo.gif" alt="FOOD AND AGRICULTURE ORGANIZATION OF THE UNITED NATIONS" title="Food and Agriculture Organization of the United Nations" border="0"></a>
+                </td>
+                <td align="right">
+                  <a href="http://www.fao.org/fishery" target="_blank"><img style="vertical-align: middle;" src="images/FIGIS_banner-text.gif" alt="FAO Fisheries and Aquaculture Department" title="FAO Fisheries and Aquaculture Department" border="0"></a>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                  <h1 id="title" style="font-family: Arial">Downloading Page</h1>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div id="topBar">
+             <br>
+          </div>
+         
+          
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                 	
+                    <td id="ext-main" align="center" valign="middle">
+                        <div id="topic-grid"></div>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+          
+          
+          <div id="br"></div>
+
+          
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tbody>
+                
+               
+                <tr>
+                    <td>
+                        <div id="bottomBar1">
+						<span class="floatLeft" STYLE="margin-left: 10px">&nbsp;&nbsp;
+							<a alt="Geo-solutions web site" title="Geo-solutions web site" href="http://www.geo-solutions.it">credits</a>
+						</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                          powered by
+                          <a alt="FIGIS web site" title="FIGIS web site" href="/fishery/figis/en">FIGIS</a>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <a alt="FAO (C)Copyright" title="FAO Copyright" target="_blank" href="http://www.fao.org/corp/copyright/en/">
+                            &copy;&nbsp;FAO,
+                            <span id="copyYear">2011</span>
+                            &nbsp;&nbsp;
+                          </a>
+                        </div>
+                        <div id="bottomBar2"></div>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+
+    </body>
+</html>

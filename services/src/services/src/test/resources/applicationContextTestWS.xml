@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:annotation-config />
+	
+	<bean name="HSQLDBServer" class="it.geosolutions.figis.ws.server.InitHSQLDB">
+		<constructor-arg index="0"
+			value="${ie-services-hsqldb.serverDatabase}" />
+		<constructor-arg index="1"
+			value="${ie-services-hsqldb.serverDbname}" />
+		<constructor-arg index="2"
+			value="${ie-services-hsqldb.serverPort}" />
+	</bean>
+	
+	<import resource="applicationContext-datasource.xml" />
+
+	<!--**** Revere Group DAO Setup ****-->
+	<!--
+		Need one search processor and one metadata util per persistence unit
+		(i.e. EntityManagerFactory). We're wiring these to the Generic DAOs
+		using an autowire annotation in BaseDAO.
+	-->
+
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:ieServicesHsqldb.properties</value>
+				<value>classpath:userac.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	
+	<bean id="ie-searchProcessor" class="com.trg.search.jpa.JPASearchProcessor">
+		<constructor-arg ref="ie-metadataUtil" />
+	</bean>
+
+	<bean id="ie-metadataUtil" class="com.trg.search.jpa.hibernate.HibernateMetadataUtil"
+		factory-method="getInstanceForEntityManagerFactory">
+		<constructor-arg ref="ie-entityManagerFactory" />
+	</bean>
+	
+	<bean id="figisServiceImpl" class="it.geosolutions.figis.ws.impl.FigisServiceImpl" />
+	
+	<bean id="ie-configDAO"
+		class="it.geosolutions.figis.persistence.dao.daoImpl.ConfigDaoImpl" />
+	<bean id="ie-intersectionDAO"
+		class="it.geosolutions.figis.persistence.dao.daoImpl.IntersectionDaoImpl" />
+	
+</beans>
+ 

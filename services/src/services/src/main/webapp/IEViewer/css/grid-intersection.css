@@ -1,0 +1,482 @@
+/*!
+ * Ext JS Library 3.3.1
+ * Copyright(c) 2006-2010 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
+#grid-example .x-grid-col-1 {
+	text-align: right;
+}
+#grid-example .x-grid-col-2{
+	text-align: right;
+}
+#grid-example .x-grid-col-3 {
+	text-align: right;
+}
+#grid-example .x-grid-col-4 {
+	text-align: right;
+}
+#grid-example.x-grid-mso{
+	border: 1px solid #6593cf;
+}
+#grid-example.x-grid-vista{
+	border: 1px solid #b3bcc0;
+}
+#xml-grid-example{
+	border: 1px solid #cbc7b8;
+	left: 0;
+	position: relative;
+	top: 0;
+}
+#editor-grid .x-grid-col-2{
+    text-align:right;
+}
+.x-grid3-td-topic b {
+    font-family:tahoma, verdana;
+    display:block;
+}
+.x-grid3-td-topic b i {
+    font-weight:normal;
+    font-style: normal;
+    color:#000;
+}
+.x-grid3-td-topic .x-grid3-cell-inner {
+    white-space:normal;
+}
+.x-grid3-td-topic a {
+    color: #385F95;
+    text-decoration:none;
+}
+.x-grid3-td-topic a:hover {
+    text-decoration:underline;
+}
+.details .x-btn-text {
+    background-image: url(details.gif);
+}
+.add .x-btn-text {
+    background-image: url(../images/add.png);
+}
+.delete .x-btn-text {
+    background-image: url(../images/delete.png);
+}
+.cross .x-btn-text {
+    background-image: url(../images/cross.png);
+}
+.decline .x-btn-text {
+    background-image: url(../images/decline.png);
+}
+.delete .x-btn-text {
+    background-image: url(../images/delete.png);
+}
+.find .x-btn-text {
+    background-image: url(../images/find.png);
+}
+.clear .x-btn-text {
+    background-image: url(../images/Textfield.png);
+}
+.map_add .x-btn-text {
+    background-image: url(../images/map_add.png);
+}
+.map_delete .x-btn-text {
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/map_delete.png);
+}
+.map_edit .x-btn-text {
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/map_edit.png);
+}
+
+
+.csv .x-btn-text {
+    font-size:10px;
+	line-height: 2px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/text-csv.png);
+	width: 65px;
+}
+
+.csv .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.csv .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.gml2 .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/file-xml.png);
+	width: 65px;
+}
+
+.gml2 .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.gml2 .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.gml2-gzip .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/compress.png);
+	width: 65px;
+}
+
+.gml2-gzip .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.gml2-gzip .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.gml31 .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/page_white_excel.png);
+	width: 65px;
+}
+
+.gml31 .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.gml31 .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.gml32 .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/page_white_excel.png);
+	width: 65px;
+}
+
+.gml32 .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.gml32 .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.geoJSON .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/json.png);
+	width: 65px;
+}
+
+.geoJSON .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.geoJSON .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.shapefile .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/compress.png);
+	font-style: none;
+	width: 65px;
+}
+.shapefile  .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.shapefile .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.zip .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/compress.png);
+	width: 65px;
+}
+.zip:hover .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/compress.png);
+	background-position: 0 3240px;
+	background-color: #336699;
+	background-repeat: no-repeat;
+	font-style: none;
+	width: 65px;
+}
+.zip .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.x-btn-small .x-btn-icon-small-left .pdf .x-btn-text {
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/stock_save-pdf.png);
+	width: 65px;
+}
+.pdf .x-btn-text {
+    line-height: 2px;
+    font-size:10px;
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/stock_save-pdf.png);
+	width: 65px;
+}
+.pdf  .x-btn-text:hover {
+    line-height: 2px;
+	color: #ff9933;
+	width: 65px;
+}
+.pdf .x-btn-text:active {
+    line-height: 2px;
+	color: red;
+	width: 65px;
+}
+.map_edit .x-btn-text .x-btn {
+    background-image: url(../images/map_edit.png);
+}
+
+#title {
+font-family:Tahoma;
+}
+.wrapper {
+font-family:Tahoma;
+width: 900px;
+}
+
+ .x-grid3-scroller  {
+    margin-left: -20px;
+}/**/
+/*
+.x-grid3-scroller .x-grid3-body .x-grid3-row .x-grid3-row-first .x-grid3-row-expanded {
+    margin-left: -20px;
+	}
+	.x-grid3-body .x-grid3-row .x-grid3-row-first .x-grid3-row-expanded {
+    margin-left: -20px;
+	}
+	 .x-grid3-row .x-grid3-row-first .x-grid3-row-expanded {
+    margin-left: -20px;
+	}*/
+/*
+.x-grid3-header-inner{
+    margin-left: -2px;
+}
+.x-grid3-row-expanded{
+margin-left: 7px;
+}*/
+.map_edit .x-btn-text-icon {
+    background-image: url(../images/map_edit.png);
+}
+
+.row_expand .x-btn-text {
+    background-image: url(../images/zoom.png);
+}
+
+.polling .x-btn-text {
+    background-image: url(../images/database_refresh.png);
+}
+.polling2  {  
+   background:transparent url(../images/database_refresh.png) no-repeat top center;
+   /* background-image: url(../images/database_refresh.png);*/
+}
+.pencil .x-btn-text {
+    background-image: url(../images/pencil.png);
+}
+.tick .x-btn-text {
+    background-image: url(../images/tick.png);
+}
+.view .x-btn-text {
+    margin-left: -12px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	margin-right: 3px;
+    background-image: url(../images/zoom.png);
+}
+
+.x-btn-text-view {
+    font:normal 11px Arial,Helvetica,Verdana,sans-serif;
+    color:#333;
+    cursor:pointer;
+    white-space: nowrap;
+margin-left: -20px;
+margin-right: -20px;
+    padding-top: 1px;
+    padding-left: 20px;
+    padding-right: 2px; 
+    padding-bottom: 3px;
+    background-image: url(../images/zoom.png);
+    background-repeat: no-repeat;
+}
+.x-btn-text-view2 {
+    font:normal 11px Arial,Helvetica,Verdana,sans-serif;
+    color:#333;
+    cursor:pointer;
+    white-space: nowrap;
+margin-left: -10px;
+margin-right: -20px;
+    padding-top: 1px;
+    padding-left: 20px;
+    padding-right: 2px; 
+    padding-bottom: 3px;
+    background-image: url(../images/zoom.png);
+    background-repeat: no-repeat;
+}
+.x-btn-text-map_edit {
+    font:normal 11px Arial,Helvetica,Verdana,sans-serif;
+    color:#333;
+    cursor:pointer;
+    white-space: nowrap;
+    padding-top: 1px;
+    padding-left: 20px;
+    padding-right: 2px; 
+    padding-bottom: 3px;
+    background-image: url(../images/map_edit.png);
+    background-repeat: no-repeat;
+}
+.x-btn-text-map_delete{
+    font:normal 11px;
+	font-family: Arial,Helvetica,Verdana,sans-serif;
+    color:#333;
+    cursor:pointer;
+    white-space: nowrap;
+    padding-top: 1px;
+    padding-left: 20px;
+    padding-right: 2px; 
+    padding-bottom: 3px;
+    background-image: url(../images/map_delete.png);
+    background-repeat: no-repeat;
+}
+.x-resizable-pinned .x-resizable-handle-south{
+    background:url(../../resources/images/default/sizer/s-handle-dark.gif);
+    background-position: top;
+}
+
+#bottomBar1  .floatLeft 	{
+	float:left;
+	overflow: auto;
+	margin-left: 10px;
+}
+.floatLeft 	{
+	float:left;
+	overflow: auto;
+	margin-left: 10px;
+}
+#bottomBar1  .floatRight 	{
+	float:right;
+	overflow: auto;
+	padding-right: 30px;
+}
+
+.x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
+    background-position: 0 center;
+    background-repeat: no-repeat;
+    height: 16px;
+    padding-left: 18px;
+}
+
+
+.x-panel-header {
+    color: #15428B;
+    font-family: Arial,Helvetica,Verdana,sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#wrapper {
+	  margin : 0  auto;
+	  text-align : left;
+	  /*width : 1024px;*/
+	  width : 800px;
+}
+
+/*
+ .x-btn-menu-active .x-btn-mc {
+    background-position: 0 -3240px;
+	width: 65px;
+}
+.x-btn-menu-active:hover .x-btn-mc:hover {
+    background-position: 0 3240px;
+	background-color: #336699;
+	background-repeat: no-repeat;
+	font-style: none;
+	width: 65px;
+}*/
+.x-grid3-row td, .x-grid3-summary-row td {
+    font: 11px/13px Arial,Helvetica,Verdana,sans-serif;
+   /* height: 22px;*/
+   width:100%;
+}
+
+.price-fall { 
+ background-color: red;
+}
+
+.price-rise {
+ background-color: light-cyan;
+}
