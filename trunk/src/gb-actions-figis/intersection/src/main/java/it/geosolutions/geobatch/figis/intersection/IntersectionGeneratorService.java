@@ -95,21 +95,21 @@ public class IntersectionGeneratorService extends BaseService
             }
 
             // absolutize working dir
-            String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
-            if (wd != null)
-            {
-                configuration.setWorkingDirectory(wd);
-
-                return true;
-            }
-            else
-            {
-                if (LOGGER.isWarnEnabled())
-                {
-                    LOGGER.warn("CronGeneratorService::canCreateAction(): " +
-                        "unable to create action, it's not possible to get an absolute working dir.");
-                }
-            }
+//            String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
+//            if (wd != null)
+//            {
+//                configuration.setWorkingDirectory(wd);
+//
+//                return true;
+//            }
+//            else
+//            {
+//                if (LOGGER.isWarnEnabled())
+//                {
+//                    LOGGER.warn("CronGeneratorService::canCreateAction(): " +
+//                        "unable to create action, it's not possible to get an absolute working dir.");
+//                }
+//            }
         }
         catch (Throwable e)
         {
@@ -119,7 +119,7 @@ public class IntersectionGeneratorService extends BaseService
             }
         }
 
-        return false;
+        return true;
     }
 
     /**

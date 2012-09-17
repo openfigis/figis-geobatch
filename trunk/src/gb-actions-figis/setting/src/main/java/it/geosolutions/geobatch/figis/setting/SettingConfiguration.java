@@ -103,7 +103,6 @@ public class SettingConfiguration extends ActionConfiguration implements Configu
         ret.setPersistencyHost(persistencyHost);
         ret.setIeServiceUsername(ieServiceUsername);
         ret.setIeServicePassword(ieServicePassword);
-        ret.setWorkingDirectory(this.getWorkingDirectory());
         ret.setServiceID(this.getServiceID());
         ret.setListenerConfigurations(ret.getListenerConfigurations());
 

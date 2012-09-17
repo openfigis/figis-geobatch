@@ -30,12 +30,13 @@
  */
 package it.geosolutions.geobatch.figis.intersection;
 
-import it.geosolutions.geobatch.tools.file.Extract;
-import it.geosolutions.geobatch.tools.file.IOUtils;
+import it.geosolutions.tools.compress.file.Extract;
+import it.geosolutions.tools.io.file.IOUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,6 +44,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -260,12 +262,38 @@ final class Utilities {
 	    // return the simple feature collection from the uncompressed shp file
 	    // name
 	    String shpfilename = figisTmpDir + "/" + layername + "/" + layername + "/" + layername + ".shp";
-	    if(LOGGER.isTraceEnabled()){
-	    	LOGGER.trace("Shpfilename: " + shpfilename);
+	    File shpFile = new File(shpfilename);
+	    if(shpFile.exists() && shpFile.canRead() && shpFile.isFile()) {
+		    if(LOGGER.isTraceEnabled()){
+		    	LOGGER.trace("Shpfilename: " + shpfilename);
+		    }
+	    	return shpfilename;
+	    } else {
+	    	File shpFileDir = new File(figisTmpDir + "/" + layername + "/" + layername);
+	    	if(shpFileDir.exists() && shpFileDir.isDirectory()) {
+	    		File[] shpFiles = shpFileDir.listFiles(new FilenameFilter() {
+					
+					public boolean accept(File dir, String name) {
+						if (FilenameUtils.getExtension(name).equalsIgnoreCase("shp"))
+							return true;
+						return false;
+					}
+				});
+	    		
+	    		if (shpFiles != null && shpFiles.length == 1) {
+	    		    if(LOGGER.isTraceEnabled()){
+	    		    	LOGGER.trace("Shpfilename: " + shpfilename);
+	    		    }
+	    			return shpFiles[0].getAbsolutePath();
+	    		} else {
+	    			LOGGER.error("Could not download shapefile from GeoServer");
+		            throw new IOException("Could not download shapefile from GeoServer");
+	    		}
+	    	} else {
+	    		LOGGER.error("Could not download shapefile from GeoServer");
+	            throw new IOException("Could not download shapefile from GeoServer");
+	    	}
 	    }
-	
-	    // return SimpleFeatureCollectionByShp(shpfilename);
-	    return shpfilename;
 	}
 
 	/*********

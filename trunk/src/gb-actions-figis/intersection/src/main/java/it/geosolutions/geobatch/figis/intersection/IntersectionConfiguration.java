@@ -105,7 +105,6 @@ public class IntersectionConfiguration extends ActionConfiguration implements Co
 
         // TODO CLONE YOUR MEMBERS
         ret.setPersistencyHost(persistencyHost);
-        ret.setWorkingDirectory(this.getWorkingDirectory());
         ret.setItemsPerPages(itemsPerPages);
         ret.setIeServiceUsername(ieServiceUsername);
         ret.setIeServicePassword(ieServicePassword);

@@ -95,24 +95,24 @@ public class SettingGeneratorService extends BaseService implements ActionServic
             }
 
             // absolutize working dir
-            String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
+//            String wd = Path.getAbsolutePath(configuration.getWorkingDirectory());
             String defaultMaskLayer = configuration.getDefaultMaskLayer();
             String host = configuration.getPersistencyHost();
-            if (wd != null)
-            {
-                configuration.setWorkingDirectory(wd);
-                // return true;
-            }
-            else
-            {
-                if (LOGGER.isWarnEnabled())
-                {
-                    LOGGER.warn("SettingGeneratorService::canCreateAction(): " +
-                        "unable to create action, it's not possible to get an absolute working dir.");
-                }
-
-                return false;
-            }
+//            if (wd != null)
+//            {
+//                configuration.setWorkingDirectory(wd);
+//                // return true;
+//            }
+//            else
+//            {
+//                if (LOGGER.isWarnEnabled())
+//                {
+//                    LOGGER.warn("SettingGeneratorService::canCreateAction(): " +
+//                        "unable to create action, it's not possible to get an absolute working dir.");
+//                }
+//
+//                return false;
+//            }
 
             if (host != null)
             {

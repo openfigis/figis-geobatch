@@ -73,7 +73,7 @@ public interface FigisService
 
     @GET
     @Path("/config/")
-    @RolesAllowed({ "ADMIN" })
+    @RolesAllowed({ "ADMIN", "GUEST" })
     public List<Config> getConfigs();
 
     @POST
