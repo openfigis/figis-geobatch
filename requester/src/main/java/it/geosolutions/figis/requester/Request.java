@@ -53,7 +53,7 @@ public class Request
 {
     static XStream xStreamConfig = null;
     static XStream xStreamIntersection = null;
-    static final String IE_SERV_CONF = "/ie-services/config";
+    static final String IE_SERV_CONF = "/config";
     /***********************
      * initialize the XSTREAM parser for the XML representation of it.geosolutions.figis.requester.model.Config object
      */
@@ -207,7 +207,7 @@ public class Request
     {
         String xml = xStreamIntersection.toXML(intersection);
        
-        String result = HTTPUtils.post(host + "/ie-services/intersection", xml, "text/xml", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.post(host + "/intersection", xml, "text/xml", ieServiceUsername, ieServicePassword);
         
         if (result != null)
         {
@@ -229,7 +229,7 @@ public class Request
     public static List<Intersection> getAllIntersections(String host, String ieServiceUsername,
         String ieServicePassword) throws java.net.MalformedURLException
     {
-        String result = HTTPUtils.get(host + "/ie-services/intersection", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.get(host + "/intersection", ieServiceUsername, ieServicePassword);
        
         if (result != null)
         {
@@ -253,7 +253,7 @@ public class Request
     public static boolean deleteAllIntersections(String host, String ieServiceUsername, String ieServicePassword)
         throws java.net.MalformedURLException
     {
-        boolean result = HTTPUtils.delete(host + "/ie-services/intersection/", ieServiceUsername, ieServicePassword);
+        boolean result = HTTPUtils.delete(host + "/intersection/", ieServiceUsername, ieServicePassword);
 
         return result;
     }
@@ -267,7 +267,7 @@ public class Request
     public static boolean deleteIntersectionById(String host, long id, String ieServiceUsername,
         String ieServicePassword)
     {
-        boolean result = HTTPUtils.delete(host + "/ie-services/intersection/" + id, ieServiceUsername, ieServicePassword);
+        boolean result = HTTPUtils.delete(host + "/intersection/" + id, ieServiceUsername, ieServicePassword);
 
         return result;
     }
@@ -283,7 +283,7 @@ public class Request
     {
         String xml = xStreamIntersection.toXML(intersection);
       
-        String result = HTTPUtils.put(host + "/ie-services/intersection/" + id, xml, "text/xml", ieServiceUsername, ieServicePassword);
+        String result = HTTPUtils.put(host + "/intersection/" + id, xml, "text/xml", ieServiceUsername, ieServicePassword);
         
         if (result != null)
         {

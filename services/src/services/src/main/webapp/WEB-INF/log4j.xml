@@ -5,8 +5,8 @@
 	threshold="null" debug="false">
 
 	<appender name="rolling" class="org.apache.log4j.DailyRollingFileAppender">
-		<!-- <param name="File" value="${webapp.root}/logs/geobatch.log" /> -->
-		<param name="File" value="${catalina.base}/logs/geobatch.log" />
+		<!-- <param name="File" value="${webapp.root}/logs/ie-services.log" /> -->
+		<param name="File" value="${catalina.base}/logs/ie-services.log" />
 		<param name="DatePattern" value="yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{ISO8601} %5p %24C{1}:%L - %m%n" />
@@ -28,31 +28,45 @@
 	</logger>
 
 	<logger name="org.quartz" additivity="true">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="rolling" />
 		<appender-ref ref="console" />
 	</logger>
 
 	<logger name="org.hibernate" additivity="true">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="rolling" />
 		<appender-ref ref="console" />
 	</logger>
 
 	<!-- SPRING  -->
 	<logger name="org.springframework" additivity="true">
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="rolling" />
 		<appender-ref ref="console" />
 	</logger>
 	
 	<!-- JETTY  -->
 	<logger name="org.mortbay.jetty"  additivity="true">
-		<level value="info" />
+		<level value="debug" />
+		<appender-ref ref="rolling" />
+		<appender-ref ref="console" />
+	</logger>
+	
+	<!-- GENERIC DAO  -->
+	<logger name="com.googlecode.genericdao"  additivity="true">
+		<level value="debug" />
 		<appender-ref ref="rolling" />
 		<appender-ref ref="console" />
 	</logger>
 
+	<!-- APACHE CXF  -->
+	<logger name="org.apache.cxf"  additivity="true">
+		<level value="debug" />
+		<appender-ref ref="rolling" />
+		<appender-ref ref="console" />
+	</logger>
+	
 	<root>
 		<!-- <priority value="debug" />-->
 		<level value="debug" />

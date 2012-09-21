@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ie-config updateVersion="6">
+	<global>
+		<!-- {mandatory} The parameters of the target GeoServer -->
+		<geoserver>
+			<!-- geoserverUrl>http://figisapps.fao.org/figis/geoserver</geoserverUrl -->
+			<geoserverUrl>http://192.168.1.106:8484/figis/geoserver</geoserverUrl>
+			<geoserverUsername>admin</geoserverUsername>
+			<geoserverPassword>abramisbrama</geoserverPassword>
+		</geoserver>
+		<!-- {mandatory} DB connection parameters where to store intersections -->
+		<db>
+			<database>orcl</database>
+			<schema>FIGIS_GIS</schema>
+			<user>FIGIS_GIS</user>
+			<password>FIGIS</password>
+			<port>1521</port>
+			<host>192.168.1.106</host>
+		</db>
+		<!-- {mandatory} Configuration of the update quartz cron job -->
+		<!-- quartz>
+			<timer>
+			  <cronExpression>0 5 * * * ?</cronExpression>
+			</timer>
+		</quartz -->
+		
+		<!-- {optional} Remove all non-listed intersections and clean-up DB -->
+		<clean>true</clean>
+	</global>
+	
+	<intersections>
+	</intersections>
+</ie-config>

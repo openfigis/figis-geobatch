@@ -74,7 +74,7 @@ public class Start
 
             if (port <= 0)
             {
-                port = 8081;
+                port = 8080;
             }
 
             conn.setPort(port);

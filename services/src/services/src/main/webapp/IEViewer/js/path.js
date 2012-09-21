@@ -45,14 +45,14 @@
 	var timerStarted = false;
 	var TIMER_INTERVAL = 30000;
 	var APPLICATION_CONTEXT_PATH = '';
-	var FDHUrl = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
-	var PROXY_URL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
-	var PROXY_URL_DEL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
-	//var proxyUrlCount = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/countallintersection/';
-	var PROXY_FIGIS = 'http://192.168.139.128:8484/figis';
+	var FDHUrl = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/count/';
+	var PROXY_URL = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/count/';
+	var PROXY_URL_DEL = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/count/';
+	//var proxyUrlCount = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/countallintersection/';
+	var PROXY_FIGIS = 'http://192.168.1.115:8484/figis';
 	var PROXY_DOWNLOAD = '';
-	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
-	var PROXY_URL_GEN_STATUS = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/generalStatusComputing/';
+	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:IE_SPATIAL_STAT_DATA';
+	var PROXY_URL_GEN_STATUS = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/generalStatusComputing/';
 	
 	
 		

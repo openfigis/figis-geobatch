@@ -4,6 +4,9 @@
 	<id>intersection</id>
 	<description>intersection configuration flow</description>
 	<name>Intersection flow</name>
+	
+	<workingDirectory>intersection</workingDirectory>
+
 <!-- to have a single istance, corePoolSize must be 2 -->
 	<corePoolSize>2</corePoolSize>
 	<maximumPoolSize>2</maximumPoolSize>
@@ -11,20 +14,20 @@
 	<workQueueSize>100</workQueueSize>
 <!-- keepAliveTime: the amount of time that threads in excess of the core pool size may remain idle before being terminated -->
 	<keepAliveTime>1500</keepAliveTime>
-	<workingDirectory>intersection/</workingDirectory>
+	
 	<autorun>true</autorun>
 <!-- Examples configurations from http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger -->
 <!-- 0 0/5 14 * * ? 	Fire every 5 minutes starting at 2pm and ending at 2:55pm, every day -->
 <!-- 0 0-5 14 * * ? 	Fire every minute starting at 2pm and ending at 2:05pm, every day -->
 <!-- '5/15' in the first field means "the seconds 5, 20, 35, and 50" -->
+
 	<EventGeneratorConfiguration>
-	 <eventType>POLLING_EVENT</eventType>
-	 <!-- interval>0 54 22 * * ?</interval -->
-	 <interval>0/20 * * * * ?</interval>
-	 <id>cron_id</id>
-	 <serviceID>fsEventGeneratorService</serviceID>
-	 <description>description</description>
-	 <name>intersection</name>
+		<eventType>POLLING_EVENT</eventType>
+		<interval>0/20 * * * * ?</interval>
+		<id>cron_id</id>
+		<serviceID>fsEventGeneratorService</serviceID>
+		<description>description</description>
+		<name>intersection</name>
 	</EventGeneratorConfiguration>
 	
 	<EventConsumerConfiguration>
@@ -32,7 +35,6 @@
 		<description>intersection</description>
 		<name>intersection</name>
 		
-		<workingDirectory>intersection/</workingDirectory>
 		<performBackup>false</performBackup>
 		
 		<IntersectionConfiguration>
@@ -43,11 +45,10 @@
 			
 			<listenerConfigurations/>
 			<failIgnored>false</failIgnored>
-		  	<persistencyHost>http://localhost:8181</persistencyHost>
+		  	<persistencyHost>http://localhost:8181/ie-services/services</persistencyHost>
 			<itemsPerPages>50</itemsPerPages>
 			<ieServiceUsername>admin</ieServiceUsername>
 			<ieServicePassword>abramisbrama</ieServicePassword>
-			<workingDirectory>intersection/</workingDirectory>
 			
 			<!-- 
 			<alias>
@@ -61,4 +62,20 @@
 		
 	</EventConsumerConfiguration>
 
+    <ListenerConfigurations>
+        <LoggingProgressListener>
+            <serviceID>loggingListenerService</serviceID>
+            <id>IEIntersectionsLogger</id>
+            <loggerName>it.geosolutions.geobatch.figis.intersection</loggerName>
+        </LoggingProgressListener>
+        <CumulatingProgressListener>
+            <serviceID>cumulatingListenerService</serviceID>
+            <id>IEIntersectionsCumulator</id>
+        </CumulatingProgressListener>
+        <StatusProgressListener>
+            <serviceID>statusListenerService</serviceID>
+            <id>IEIntersectionsStatus</id>
+        </StatusProgressListener>
+    </ListenerConfigurations>
+    
 </FlowConfiguration>

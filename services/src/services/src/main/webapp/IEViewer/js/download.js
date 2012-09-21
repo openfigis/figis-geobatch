@@ -10,10 +10,10 @@
 	var expandPressed = false;
 	var mapIdToOpen = ""; mapIdToOpen = window.top.location;
 	var application_context_path = '';//'/test/test';
-	var FDHUrl = application_context_path+'/ie-services/intersection/count/';
-	var PROXY_URL = application_context_path+'/ie-services/intersection/count/';
-	var PROXY_URL_DEL = application_context_path+'/ie-services/intersection/count/';
-	//var proxyUrlCount = application_context_path+'/ie-services/intersection/countallintersection/';//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/resources/resource/';
+	var FDHUrl = application_context_path+'/ie-services/services/intersection/count/';
+	var PROXY_URL = application_context_path+'/ie-services/services/intersection/count/';
+	var PROXY_URL_DEL = application_context_path+'/ie-services/services/intersection/count/';
+	//var proxyUrlCount = application_context_path+'/ie-services/services/intersection/countallintersection/';//'data/intersection.xml';//'data/sheldonIntersection.json';//'/geostore/rest/resources/resource/';
 	var PROXY_FIGIS = 'http://192.168.1.110:8484/figis';
 	
 	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';

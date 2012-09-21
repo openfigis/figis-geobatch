@@ -46,14 +46,14 @@
 	var timerStarted = false;
 	var TIMER_INTERVAL = 30000;
 	var APPLICATION_CONTEXT_PATH = '';
-	var FDHUrl = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
-	var PROXY_URL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
-	var PROXY_URL_DEL = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/count/';
-	//var proxyUrlCount = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/countallintersection/';
+	var FDHUrl = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/count/';
+	var PROXY_URL = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/count/';
+	var PROXY_URL_DEL = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/count/';
+	//var proxyUrlCount = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/countallintersection/';
 	var PROXY_FIGIS = 'http://192.168.139.128:8484/figis';
 	var PROXY_DOWNLOAD = '';
 	var PROXY_FIGIS_DOWNLOAD = PROXY_FIGIS+'/geoserver/fifao/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=fifao:TUNA_SPATIAL_STAT_DATA';
-	var PROXY_URL_GEN_STATUS = APPLICATION_CONTEXT_PATH+'/ie-services/intersection/';//generalStatusComputing/
+	var PROXY_URL_GEN_STATUS = APPLICATION_CONTEXT_PATH+'/ie-services/services/intersection/';//generalStatusComputing/
 	*/
 	function getParameter ( queryString1, parameterName1 ) {
 	try{
@@ -440,9 +440,9 @@
 						'<td>'+
 						'<button type="button" id="gml2Btn" class="x-btn-img-gml2"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2\',true,\'{status}\',\'GML2\');"> </button>'+
 						'</td>'+
-	-					'<td>'+
+						/*'<td>'+
 						'<button type="button" id="zipBtn" class="x-btn-img-zip" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2-ZIP\',true,\'{status}\',\'ZIP\');"> </button>'+
-						'</td>'+
+						'</td>'+*/
 						'<td>'+
 						'<button type="button" id="gml31Btn" class="x-btn-img-gml31"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.1.1\',true,\'{status}\',\'GML3.1.1\');"> </button>'+
 						'</td>'+

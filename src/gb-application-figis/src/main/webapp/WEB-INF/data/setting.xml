@@ -5,7 +5,8 @@
 	<description>Setting configuration flow</description>
 	<name>Setting flow</name>
 	
-	<workingDirectory>setting/</workingDirectory>
+	<workingDirectory>setting</workingDirectory>
+	
 	<maxStoredConsumers>10</maxStoredConsumers>
 	
 	<!-- to have a single istance, corePoolSize must be 2 -->
@@ -33,17 +34,16 @@
 		<description>setting</description>
 		<name>setting</name>
 		
-		<workingDirectory>setting/</workingDirectory>
 		<performBackup>false</performBackup>
 		
-		<FileEventRule>
+		<!-- FileEventRule>
 			<optional>false</optional>
 			<originalOccurrencies>1</originalOccurrencies>
 			<regex>.*\.*</regex>
 			<id>r1</id>
 			<description>description</description>
 			<name>Setting</name>
-		</FileEventRule>
+		</FileEventRule -->
 		
 		<SettingConfiguration>
 			<serviceID>SettingGeneratorService</serviceID>
@@ -54,9 +54,8 @@
 			<ieServicePassword>abramisbrama</ieServicePassword>
 			<listenerConfigurations/>
 			<failIgnored>false</failIgnored>
-		  	<persistencyHost>http://localhost:8181</persistencyHost>
+		  	<persistencyHost>http://localhost:8080/ie-services/services</persistencyHost>
 			<defaultMaskLayer>fifao:UN_CONTINENT</defaultMaskLayer>
-			<workingDirectory>setting/</workingDirectory>
 
 			<!-- 
 			<alias>
@@ -70,4 +69,20 @@
 		
 	</EventConsumerConfiguration>
 
+    <ListenerConfigurations>
+        <LoggingProgressListener>
+            <serviceID>loggingListenerService</serviceID>
+            <id>IESettingsLogger</id>
+            <loggerName>it.geosolutions.geobatch.figis.setting</loggerName>
+        </LoggingProgressListener>
+        <CumulatingProgressListener>
+            <serviceID>cumulatingListenerService</serviceID>
+            <id>IESettingsCumulator</id>
+        </CumulatingProgressListener>
+        <StatusProgressListener>
+            <serviceID>statusListenerService</serviceID>
+            <id>IESettingsStatus</id>
+        </StatusProgressListener>
+    </ListenerConfigurations>
+    
 </FlowConfiguration>
