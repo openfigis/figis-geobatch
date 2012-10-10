@@ -1,5 +1,5 @@
 ie-sdk > 
-   mvn clean install -Dmaven.test.skip -Pdao.xstream,intersection,setting
+   mvn clean install -Dall -DdownloadSources=true  -DdownloadJavadocs=true -Pdao.xstream,intersection,setting -Dmaven.test.skip=true -U
 
    
 
@@ -147,6 +147,6 @@ INSERT INTO MDSYS.SDO_GEOM_METADATA_TABLE VALUES (
  COMMIT; 
 
  
-GEOSERVER SQL_VIEW
-====================
+GEOSERVER SQL_VIEW (IE_SPATIAL_STAT_DATA)
+==================== ====================
 SELECT STATISTICAL_TABLE.*,SPATIAL_TABLE.THE_GEOM FROM STATISTICAL_TABLE INNER JOIN SPATIAL_TABLE ON (STATISTICAL_TABLE.INTERSECTION_ID = SPATIAL_TABLE.INTERSECTION_ID)
