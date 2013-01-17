@@ -150,11 +150,6 @@
 			<version>${gt.version}</version>
 			<!-- 	  <version>8-SNAPSHOT</version>  -->
 		</dependency>
-		<!--
-			<dependency> <groupId>org.geotools</groupId>
-			<artifactId>gt-process-raster</artifactId>
-			<version>8-SNAPSHOT</version> </dependency>
-		-->
 		<!--  we need these for the connection to Oracle -->
 		<dependency>
 			<groupId>org.geotools.jdbc</groupId>
@@ -171,34 +166,18 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-epsg-hsql</artifactId>
 			<version>${gt.version}</version>
-			<!-- 	  <version>8-SNAPSHOT</version>  -->
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-shapefile</artifactId>
 			<version>${gt.version}</version>
-			<!-- 	  <version>8-SNAPSHOT</version>  -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-wfs</artifactId>
 			<version>${gt.version}</version>
-			<!-- 	  <version>8-SNAPSHOT</version>  -->
 		</dependency>
-		<!--
-			<dependency> <groupId>org.geotools.xsd</groupId>
-			<artifactId>gt-xsd-wfs</artifactId> <version>8-SNAPSHOT</version>
-			</dependency> <dependency> <groupId>org.geotools.ogc</groupId>
-			<artifactId>net.opengis.wfs</artifactId>
-			<version>8-SNAPSHOT</version> </dependency> <dependency>
-			<groupId>org.geotools.ogc</groupId>
-			<artifactId>net.opengis.wfsv</artifactId>
-			<version>8-SNAPSHOT</version> </dependency> <dependency>
-			<groupId>org.geotools.ogc</groupId>
-			<artifactId>net.opengis.ows</artifactId>
-			<version>${gt.version}</version> </dependency>
-		-->
 		<!--  geoserver manager -->
 		<dependency>
 			<groupId>it.geosolutions</groupId>

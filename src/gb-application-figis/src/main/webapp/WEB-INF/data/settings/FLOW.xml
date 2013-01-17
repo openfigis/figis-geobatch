@@ -1,7 +1,6 @@
 <it.geosolutions.geobatch.settings.flow.FlowSettings>
   <id>FLOW</id>
-  <maxStoredConsumers>100</maxStoredConsumers>
-  <keepConsumers>false</keepConsumers>
+  <maxStoredConsumers>10</maxStoredConsumers>
   <workQueueSize>100</workQueueSize>
   <corePoolSize>10</corePoolSize>
   <maximumPoolSize>30</maximumPoolSize>
