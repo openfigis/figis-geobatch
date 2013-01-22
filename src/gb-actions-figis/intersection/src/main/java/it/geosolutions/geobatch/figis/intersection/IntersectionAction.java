@@ -30,18 +30,6 @@
  */
 package it.geosolutions.geobatch.figis.intersection;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import com.thoughtworks.xstream.InitializationException;
-import com.vividsolutions.jts.geom.Geometry;
-
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Intersection;
@@ -52,6 +40,15 @@ import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -61,6 +58,9 @@ import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.thoughtworks.xstream.InitializationException;
+import com.vividsolutions.jts.geom.Geometry;
 
 
 /**
@@ -271,8 +271,10 @@ public class IntersectionAction extends BaseAction<EventObject>
 
             // try to load mask collection
             if (isMasked)
-            {
-                if (LOGGER.isTraceEnabled())
+            {   
+            	if (maskLayer==null) maskLayer = "fifao:UN_CONTINENT";
+                
+            	if (LOGGER.isTraceEnabled())
                 {
                     LOGGER.trace("download mask layer " + Utilities.getName(maskLayer));
                 }

@@ -175,28 +175,28 @@ public class IEConfigUtils
      */
     public static boolean areIntersectionParameterDifferent(Intersection srcIntersection, Intersection trgIntersection)
     {
-        if (!(srcIntersection.getSrcLayer().equals(trgIntersection.getSrcLayer())))
+        if (srcIntersection.getSrcLayer()!=null&&!(srcIntersection.getSrcLayer().equals(trgIntersection.getSrcLayer())))
         {
             return true;
         }
-        if (!(srcIntersection.getTrgLayer().equals(trgIntersection.getTrgLayer())))
+        if (srcIntersection.getTrgLayer()!=null&&!(srcIntersection.getTrgLayer().equals(trgIntersection.getTrgLayer())))
         {
             return true;
         }
 
-        if (!(srcIntersection.getAreaCRS().equals(trgIntersection.getAreaCRS())))
+        if (srcIntersection.getAreaCRS()!=null&&!(srcIntersection.getAreaCRS().equals(trgIntersection.getAreaCRS())))
         {
             return true;
         }
-        if (!(srcIntersection.getSrcCodeField().equals(trgIntersection.getSrcCodeField())))
+        if (srcIntersection.getSrcCodeField()!=null&&!(srcIntersection.getSrcCodeField().equals(trgIntersection.getSrcCodeField())))
         {
             return true;
         }
-        if (!(srcIntersection.getTrgCodeField().equals(trgIntersection.getTrgCodeField())))
+        if (srcIntersection.getTrgCodeField()!=null&&!(srcIntersection.getTrgCodeField().equals(trgIntersection.getTrgCodeField())))
         {
             return true;
         }
-        if (!(srcIntersection.getMaskLayer().equals(trgIntersection.getMaskLayer())))
+        if (srcIntersection.getMaskLayer()!=null&&!(srcIntersection.getMaskLayer().equals(trgIntersection.getMaskLayer())))
         {
             return true;
         }

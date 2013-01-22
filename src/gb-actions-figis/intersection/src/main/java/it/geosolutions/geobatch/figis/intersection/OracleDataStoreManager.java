@@ -31,14 +31,24 @@
 package it.geosolutions.geobatch.figis.intersection;
 
 
+import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
+import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
+import static org.geotools.jdbc.JDBCDataStoreFactory.MAXCONN;
+import static org.geotools.jdbc.JDBCDataStoreFactory.MAXWAIT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.MINCONN;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
+import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
+import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
+import static org.geotools.jdbc.JDBCDataStoreFactory.VALIDATECONN;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
-
-import com.vividsolutions.jts.geom.MultiPolygon;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
@@ -64,17 +74,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.geotools.jdbc.JDBCDataStoreFactory.DATABASE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.DBTYPE;
-import static org.geotools.jdbc.JDBCDataStoreFactory.HOST;
-import static org.geotools.jdbc.JDBCDataStoreFactory.MAXCONN;
-import static org.geotools.jdbc.JDBCDataStoreFactory.MAXWAIT;
-import static org.geotools.jdbc.JDBCDataStoreFactory.MINCONN;
-import static org.geotools.jdbc.JDBCDataStoreFactory.PASSWD;
-import static org.geotools.jdbc.JDBCDataStoreFactory.PORT;
-import static org.geotools.jdbc.JDBCDataStoreFactory.SCHEMA;
-import static org.geotools.jdbc.JDBCDataStoreFactory.USER;
-import static org.geotools.jdbc.JDBCDataStoreFactory.VALIDATECONN;
+import com.vividsolutions.jts.geom.MultiPolygon;
 
 
 public class OracleDataStoreManager
@@ -530,13 +530,17 @@ public class OracleDataStoreManager
 
                 SimpleFeature sf = iterator.next();
 
-                featureBuilderData.set("SRCODE", sf.getAttribute(srcLayer + "_" + srcCode));
+                Object srcCodeValue = sf.getAttribute(srcLayer + "_" + srcCode);
+                if(srcCodeValue==null) srcCodeValue = sf.getAttribute(srcLayer + "Polygon_" + srcCode);
+				featureBuilderData.set("SRCODE", srcCodeValue);
 
                 featureBuilderData.set("SRCLAYER", srcLayer);
 
                 featureBuilderData.set("TRGLAYER", trgLayer);
 
-                featureBuilderData.set("TRGCODE", sf.getAttribute(trgLayer + "_" + trgCode));
+                Object trgCodeValue = sf.getAttribute(trgLayer + "_" + trgCode);
+                if(trgCodeValue==null) trgCodeValue = sf.getAttribute(trgLayer + "Polygon_" + trgCode);
+                featureBuilderData.set("TRGCODE", trgCodeValue);
 
                 featureBuilderData.set("INTERSECTION_ID", intersectionID);
                 featureBuilderData.set("SRCCODENAME", srcCode);
