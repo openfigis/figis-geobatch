@@ -37,6 +37,7 @@ import it.geosolutions.figis.model.ConfigXStreamMapper;
 import it.geosolutions.figis.model.Intersection;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 
 /**
@@ -167,36 +168,35 @@ public class IEConfigUtils
     }
 
     /**********
-     * this method checks whether two intersections are different considering only CRS, SrcCodeField, TrgCodeField, MaskLayer, PreserveTrgGeom or isMask
-     * the srcLayer and the trgLayer are not compared
+     * this method checks whether two intersections are different comparing CRS, SrcCodeField, TrgCodeField, MaskLayer, PreserveTrgGeom isMask, srcLayer, trgLayer.
      * @param srcIntersection
      * @param trgIntersection
      * @return true if one of the parameters is different, false in the other case
      */
     public static boolean areIntersectionParameterDifferent(Intersection srcIntersection, Intersection trgIntersection)
     {
-        if (!(srcIntersection.getSrcLayer().equals(trgIntersection.getSrcLayer())))
+        if (!(compareNullAndWhitespaceSafe(srcIntersection.getSrcLayer(),trgIntersection.getSrcLayer())))
         {
             return true;
         }
-        if (!(srcIntersection.getTrgLayer().equals(trgIntersection.getTrgLayer())))
+        if (!(compareNullAndWhitespaceSafe(srcIntersection.getTrgLayer(),trgIntersection.getTrgLayer())))
         {
             return true;
         }
 
-        if (!(srcIntersection.getAreaCRS().equals(trgIntersection.getAreaCRS())))
+        if (!(compareNullAndWhitespaceSafe(srcIntersection.getAreaCRS(),trgIntersection.getAreaCRS())))
         {
             return true;
         }
-        if (!(srcIntersection.getSrcCodeField().equals(trgIntersection.getSrcCodeField())))
+        if (!(compareNullAndWhitespaceSafe(srcIntersection.getSrcCodeField(),trgIntersection.getSrcCodeField())))
         {
             return true;
         }
-        if (!(srcIntersection.getTrgCodeField().equals(trgIntersection.getTrgCodeField())))
+        if (!(compareNullAndWhitespaceSafe(srcIntersection.getTrgCodeField(),trgIntersection.getTrgCodeField())))
         {
             return true;
         }
-        if (!(srcIntersection.getMaskLayer().equals(trgIntersection.getMaskLayer())))
+        if (!(compareNullAndWhitespaceSafe(srcIntersection.getMaskLayer(),trgIntersection.getMaskLayer())))
         {
             return true;
         }
@@ -210,5 +210,29 @@ public class IEConfigUtils
         }
 
         return false;
+    }
+    
+    /**
+     * Compare if 2 Strings object are equals.
+     * The input String will be trimmed (trail and lead, not inBetween whitheSpace),
+     * the input Strings could be null: in case of a null input parameter the comparation will be done with an empty String
+     * @param src
+     * @param trg
+     * @return True if the input are equals, False otherwise
+     */
+    public static boolean compareNullAndWhitespaceSafe(String src, String trg){
+        
+        if(src == null){
+            src = "";
+        }
+        src = StringUtils.trimWhitespace(src);
+        
+        if(trg == null){
+            trg = "";
+        }
+        trg = StringUtils.trimWhitespace(trg);
+        
+        return src.equals(trg);
+       
     }
 }
