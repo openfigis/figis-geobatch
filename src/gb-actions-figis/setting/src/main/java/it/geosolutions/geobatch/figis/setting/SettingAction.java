@@ -212,7 +212,10 @@ public class SettingAction extends BaseAction<EventObject>
                         dbConfig = getIeConfigDAO().saveOrUpdateConfig(host,
                                 xmlConfig, getIeServiceUsername(),
                                 getIeServicePassword());
-
+                        if(dbConfig == null){
+                            throw new Exception("An exception is occurred while managing the configuration provided... Please check the configuration version.");
+                        }
+                        
                         dbConfig.setGlobal(xmlConfig.getGlobal());
                         dbConfig.setUpdateVersion(xmlConfig.getUpdateVersion() - 1);
 
