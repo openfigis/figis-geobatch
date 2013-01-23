@@ -41,12 +41,15 @@ import it.geosolutions.geobatch.flow.event.action.BaseAction;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 import org.geotools.data.FeatureSource;
@@ -94,7 +97,7 @@ public class IntersectionAction extends BaseAction<EventObject>
     /** Password ie-service */
     private String ieServicePassword = null;
 
-    private OracleDataStoreManager dataStoreOracle;
+    private DataStoreManager dataStoreOracle;
 
     private File tmpDir;
 
@@ -503,6 +506,7 @@ public class IntersectionAction extends BaseAction<EventObject>
         }
         LOGGER.info("Updating intersections");
 
+        Map<String,Serializable> map = new HashMap();
         // init of the DB connectio to the ORACLE datastore
         String dbHost = config.getGlobal().getDb().getHost();
         String schema = config.getGlobal().getDb().getSchema();
@@ -510,11 +514,18 @@ public class IntersectionAction extends BaseAction<EventObject>
         String user = config.getGlobal().getDb().getUser();
         String pwd = PwEncoder.decode(config.getGlobal().getDb().getPassword());
         int port = Integer.parseInt(config.getGlobal().getDb().getPort());
+        map.put("dbHost", dbHost);
+        map.put("schema", schema);
+        map.put("db", db);
+        map.put("user", user);
+        map.put("pwd", pwd);
+        map.put("port", port);
+        map.put("dbType", "oracle");
 
 
         try
         {
-            dataStoreOracle = new OracleDataStoreManager(dbHost, port, db, schema, user, pwd);
+            dataStoreOracle = new DataStoreManager(map);
         }
         catch (Exception e)
         {
