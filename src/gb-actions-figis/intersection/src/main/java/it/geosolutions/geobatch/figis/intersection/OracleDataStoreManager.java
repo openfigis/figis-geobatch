@@ -646,14 +646,7 @@ public class OracleDataStoreManager
         }
         catch (Exception e)
         {
-            try
-            {
-                tx.rollback();
-            }
-            catch (Exception e1)
-            {
-                LOGGER.trace(e1.getLocalizedMessage(), e1);
-            }
+            rollback(tx);
             throw new IOException("Exception during ORACLE saving. Rolling back ", e);
         }
         finally
@@ -680,14 +673,7 @@ public class OracleDataStoreManager
         }
         catch (Exception e)
         {
-            try
-            {
-                tx.rollback();
-            }
-            catch (Exception e1)
-            {
-                LOGGER.trace(e1.getLocalizedMessage(), e1);
-            }
+            rollback(tx);
             throw new IOException("Exception during ORACLE saving. Rolling back ", e);
         }
         finally
@@ -749,6 +735,20 @@ public class OracleDataStoreManager
             close(orclTransaction);
         }
 
+    }
+    
+    private void rollback(Transaction orclTransaction) {
+        try 
+        {
+            orclTransaction.rollback();
+        } 
+        catch (Exception e1) 
+        {
+            if (LOGGER.isInfoEnabled()) 
+            {
+                LOGGER.info(e1.getLocalizedMessage(), e1);
+            }
+        }
     }
 
 }

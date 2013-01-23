@@ -90,6 +90,7 @@ public class SettingAction extends BaseAction<EventObject>
                     // not present in DB, lets add the new one
                     if ((dbIntersection == null))
                     {
+                        // Although the intersection isn't present on db it must not be added if flag Clean equals to TRUE
                         if (!xmlConfig.getGlobal().isClean())
                         {
                             xmlIntersection.setStatus(Status.TOCOMPUTE);
@@ -98,16 +99,18 @@ public class SettingAction extends BaseAction<EventObject>
                     }
                     else
                     {
-                        // it already computed or computing but we want to force
+                        // it already computed or computing but maybe we want to force
                         // the re-computation ...
                         if (dbIntersection.getStatus().equals(Status.COMPUTED) ||
                                 dbIntersection.getStatus().equals(
                                     Status.COMPUTING) ||
                                 dbIntersection.getStatus().equals(
-                                    Status.NOVALUE))
+                                    Status.NOVALUE) ||
+                                dbIntersection.getStatus().equals(
+                                        Status.FAILED))
                         {
-                            if (xmlConfig.getGlobal().isClean() ||
-                                    xmlIntersection.isForce())
+                            // Do we want to force the re-computation?
+                            if (xmlIntersection.isForce())
                             {
                                 xmlIntersection.setStatus(Status.TOCOMPUTE);
                             }
@@ -209,7 +212,10 @@ public class SettingAction extends BaseAction<EventObject>
                         dbConfig = getIeConfigDAO().saveOrUpdateConfig(host,
                                 xmlConfig, getIeServiceUsername(),
                                 getIeServicePassword());
-
+                        if(dbConfig == null){
+                            throw new Exception("An exception is occurred while managing the configuration provided... Please check the configuration version.");
+                        }
+                        
                         dbConfig.setGlobal(xmlConfig.getGlobal());
                         dbConfig.setUpdateVersion(xmlConfig.getUpdateVersion() - 1);
 
