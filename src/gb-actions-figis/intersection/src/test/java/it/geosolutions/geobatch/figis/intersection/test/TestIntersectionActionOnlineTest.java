@@ -23,6 +23,7 @@ package it.geosolutions.geobatch.figis.intersection.test;
 
 import static org.junit.Assume.assumeTrue;
 import it.geosolutions.figis.model.Config;
+import it.geosolutions.figis.model.DB;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Global;
 import it.geosolutions.figis.requester.requester.util.IEConfigUtils;
@@ -41,6 +42,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.geotools.TestData;
+import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.test.OnlineTestSupport;
 import org.junit.Before;
 import org.junit.Rule;
@@ -65,6 +67,8 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
 
     protected Map<String, String> params;
 
+    protected IntersectionFeatureCollection process;
+
     @Rule
     public TestName _testName = new TestName();
 
@@ -75,12 +79,15 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
                         // note this will also call the connect() method
 
         try {
-            connect(); // FIXME: shouldnt this be already called by the geotools classes?
+            //connect(); // FIXME: shouldnt this be already called by the geotools classes?
         } catch (Exception e) {
             LOGGER.warn("connect() failed, skipping test " + getTestName());
             assumeTrue(false);
+            
         }
-        setUp();
+
+        setUpIntersectionAction();
+        process = new IntersectionFeatureCollection();
 
         LOGGER.info("---------- Running Test " + getClass().getSimpleName() + " :: "
                 + _testName.getMethodName());
@@ -93,7 +100,7 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
      * 
      * @throws Exception
      */
-    public void setUp() throws Exception {
+    public void setUpIntersectionAction() throws Exception {
         File inputFile = loadXMLConfig(null);
 
         queue = new LinkedBlockingQueue<EventObject>();
@@ -118,12 +125,24 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
      * @param config
      */
     public void appllyFixturesPropToConfig(Config config) {
+        
         Global globals = new Global();
+        
         Geoserver geoserverProps = new Geoserver();
         geoserverProps.setGeoserverPassword(params.get("geoserverPswd"));
         geoserverProps.setGeoserverUrl(params.get("geoserverURL"));
         geoserverProps.setGeoserverUsername(params.get("geoserverUser"));
         globals.setGeoserver(geoserverProps);
+        
+        DB db = new DB();
+        db.setDatabase(params.get("dbName"));
+        db.setHost(params.get("dbSchema"));
+        db.setPassword(params.get("dbUser"));
+        db.setPort(params.get("dbPassword"));
+        db.setSchema(params.get("dbPort"));
+        db.setUser(params.get("dbHost"));
+        globals.setDb(db);
+        
         config.getGlobal().setGeoserver(geoserverProps);
     }
 
@@ -137,7 +156,7 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
 
         File inputFile = null;
         try {
-            inputFile = TestData.file(this,configName);
+            inputFile = TestData.file(this, configName);
         } catch (Exception e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             throw e;
@@ -153,6 +172,11 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
 
     @Override
     protected void connect() throws Exception {
+        connectToGeoserver();
+        connectToOracle();
+    }
+    
+    private void connectToGeoserver() throws Exception {
         try {
             params = getParams();
             // check if this control works as expected
@@ -172,12 +196,17 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
         }
         LOGGER.info("Connection successfully initialized");
     }
+    
+    private void connectToOracle(){
+        
+    }
 
     public Map<String, String> getParams() {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("geoserverURL", getFixture().getProperty("geoserverURL"));
-        params.put("geoserverUser", getFixture().getProperty("geoserverUser"));
-        params.put("geoserverPswd", getFixture().getProperty("geoserverPswd"));
+        for(Object el : getFixture().keySet()){
+            String tmpStr = (String)el;
+            params.put(tmpStr, getFixture().getProperty(tmpStr));
+        }
         return params;
     }
 
@@ -187,6 +216,16 @@ public class TestIntersectionActionOnlineTest extends OnlineTestSupport {
         ret.setProperty("geoserverURL", "http://ip:port/geoserver_instance_name");
         ret.setProperty("geoserverUser", "username");
         ret.setProperty("geoserverPswd", "userpswd");
+        ret.setProperty("layerOrigin", "the_local_path_to_a_shapefile_rapresenting_origin_for_intersection");
+        ret.setProperty("layerTarget", "the_local_path_to_a_shapefile_rapresenting_target_for_intersection");
+        
+        ret.setProperty("dbName", "database_name");
+        ret.setProperty("dbSchema", "the_schema");
+        ret.setProperty("dbUser", "username");
+        ret.setProperty("dbPassword", "password");
+        ret.setProperty("dbPort", "db_port");
+        ret.setProperty("dbHost", "the_host_name_or_address");
+        
         return ret;
     }
 
