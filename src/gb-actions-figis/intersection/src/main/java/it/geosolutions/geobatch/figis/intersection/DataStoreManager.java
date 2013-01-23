@@ -633,33 +633,6 @@ public class DataStoreManager {
 
     }
 
-    /**
-     * 
-     * TODO MAYBE IS USELESS... don't use prop file but the command of the action !!!
-     * 
-     * Create a Map that contains the DB settings from the properties file
-     * 
-     * @param dbPropertiesFile the properties where the db settings are stored
-     * @return a map with which call the constructor of DataStoreManager
-     */
-    public static Map<String, Serializable> buildDBMapSettings(File dbPropertiesFile)
-            throws Exception {
-        Map<String, Serializable> map = null;
-        try {
-            map = new HashMap<String, Serializable>();
-            Configuration conf = new PropertiesConfiguration(dbPropertiesFile);
-            for (; conf.getKeys().hasNext();) {
-                String el = (String) conf.getKeys().next();
-                map.put(el, (Serializable) conf.getProperty(el));
-            }
-        } catch (ConfigurationException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new Exception("Unable to load DB configuration file.");
-        }
-        return map;
-
-    }
-
     private void rollback(Transaction orclTransaction) {
         try {
             orclTransaction.rollback();
