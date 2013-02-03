@@ -31,6 +31,7 @@
 package it.geosolutions.geobatch.figis.intersection;
 
 import it.geosolutions.figis.model.Config;
+import it.geosolutions.figis.model.DB;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
@@ -80,7 +81,7 @@ public class IntersectionAction extends BaseAction<EventObject>
 
     private final List<ShapefileDataStore> shapeFileStores = new ArrayList<ShapefileDataStore>();
 
-    private int itemsPerPage = OracleDataStoreManager.DEFAULT_PAGE_SIZE;
+    private int itemsPerPage = DataStoreManager.DEFAULT_PAGE_SIZE;
     private IEConfigDAO ieConfigDAO = null;
     private GeoServerRESTReader gsRestReader = null;
     private Geoserver geoserver = null;
@@ -97,7 +98,7 @@ public class IntersectionAction extends BaseAction<EventObject>
     /** Password ie-service */
     private String ieServicePassword = null;
 
-    private DataStoreManager dataStoreOracle;
+    private DataStoreManager dataStore;
 
     private File tmpDir;
 
@@ -423,33 +424,7 @@ public class IntersectionAction extends BaseAction<EventObject>
         }
         finally
         {
-//                      if (srcCollection != null) {
-//                              try {
-//                                      srcCollection.clear();
-//                              } catch (Exception e) {
-//                                      if(LOGGER.isErrorEnabled()){
-//                                              LOGGER.error("Failed to clear srcCollection", e);
-//                                      }
-//                              }
-//                      }
-//                      if (trgCollection != null) {
-//                              try {
-//                                      trgCollection.clear();
-//                              } catch (Exception e) {
-//                                      if(LOGGER.isErrorEnabled()){
-//                                              LOGGER.error("Failed to clear srcCollection", e);
-//                                      }
-//                              }
-//                      }
-//                      if (maskCollection != null) {
-//                              try {
-//                                      maskCollection.clear();
-//                              } catch (Exception e) {
-//                                      if(LOGGER.isErrorEnabled()){
-//                                              LOGGER.error("Failed to clear srcCollection", e);
-//                                      }
-//                              }
-//                      }
+
         }
     }
 
@@ -497,35 +472,21 @@ public class IntersectionAction extends BaseAction<EventObject>
         throws InitializationException
     {
 
+        DB configDb = null;
         // check if this control works as expected
-        if (config.intersections == null)
-        {
-            LOGGER.error("The list of the intersections is null, cannot continue");
-
-            return false;
+        if(config.intersections == null || config.getGlobal()!=null || config.getGlobal().getDb()!=null){
+            configDb=config.getGlobal().getDb();
         }
+        else{
+            LOGGER.error("The list of the intersections, or the global settings are null, cannot continue...");
+        }
+        
         LOGGER.info("Updating intersections");
-
-        Map<String,Serializable> map = new HashMap();
-        // init of the DB connectio to the ORACLE datastore
-        String dbHost = config.getGlobal().getDb().getHost();
-        String schema = config.getGlobal().getDb().getSchema();
-        String db = config.getGlobal().getDb().getDatabase();
-        String user = config.getGlobal().getDb().getUser();
-        String pwd = PwEncoder.decode(config.getGlobal().getDb().getPassword());
-        int port = Integer.parseInt(config.getGlobal().getDb().getPort());
-        map.put("dbHost", dbHost);
-        map.put("schema", schema);
-        map.put("db", db);
-        map.put("user", user);
-        map.put("pwd", pwd);
-        map.put("port", port);
-        map.put("dbType", "oracle");
-
-
+        
+        Map<String,Serializable> map = DataStoreManager.buildDBParameterMap(configDb);
         try
         {
-            dataStoreOracle = new DataStoreManager(map);
+            dataStore = new DataStoreManager(map);
         }
         catch (Exception e)
         {
@@ -552,7 +513,7 @@ public class IntersectionAction extends BaseAction<EventObject>
             {
                 try
                 {
-                    dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode);
+                    dataStore.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode);
                     ieConfigDAO.deleteIntersectionById(host, id, ieServiceUsername, ieServicePassword);
                 }
                 catch (Exception e)
@@ -595,17 +556,17 @@ public class IntersectionAction extends BaseAction<EventObject>
                                 ieServicePassword);
 
                             LOGGER.info("Trying to store intersection result in ORACLE " +
-                                schema +
+                                configDb.getSchema() +
                                 ":" +
-                                db +
+                                configDb.getDatabase() +
                                 " on " +
-                                dbHost +
+                                configDb.getHost() +
                                 ":" +
-                                port +
+                                configDb.getPort() +
                                 "(" +
-                                user +
+                                configDb.getUser() +
                                 ",*****) ");
-                            dataStoreOracle.saveAll(resultFeatureCollection,
+                            dataStore.saveAll(resultFeatureCollection,
                                 Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode,
                                 trgCode, itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
@@ -773,11 +734,11 @@ public class IntersectionAction extends BaseAction<EventObject>
 
 
                 // dispose the oracle store
-                if (dataStoreOracle != null)
+                if (dataStore != null)
                 {
                     try
                     {
-                        dataStoreOracle.dispose();
+                        dataStore.dispose();
                     }
                     catch (Exception e)
                     {

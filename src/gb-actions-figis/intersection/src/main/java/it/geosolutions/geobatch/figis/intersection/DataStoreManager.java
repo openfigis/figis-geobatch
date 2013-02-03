@@ -21,6 +21,9 @@
  */
 package it.geosolutions.geobatch.figis.intersection;
 
+import it.geosolutions.figis.model.DB;
+import it.geosolutions.figis.persistence.dao.util.PwEncoder;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,9 +33,6 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import static org.geotools.jdbc.JDBCDataStoreFactory.*;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DefaultTransaction;
@@ -98,20 +98,7 @@ public class DataStoreManager {
 
             // create the underlying store and check that all table are there
             try {
-                // TODO use an ad hoc naming in setting action command !!! avoid the manual mapping!!!
-                Map<String, Serializable> dbMapConfigurationGT = new HashMap<String, Serializable>();
-                dbMapConfigurationGT.put(DBTYPE.key, dbMapConfiguration.get("dbType"));
-                dbMapConfigurationGT.put(HOST.key, dbMapConfiguration.get("dbHost"));
-                dbMapConfigurationGT.put(PORT.key, dbMapConfiguration.get("port"));
-                dbMapConfigurationGT.put(DATABASE.key, dbMapConfiguration.get("db"));
-                dbMapConfigurationGT.put(SCHEMA.key, dbMapConfiguration.get("schema"));
-                dbMapConfigurationGT.put(USER.key, dbMapConfiguration.get("user"));
-                dbMapConfigurationGT.put(PASSWD.key, dbMapConfiguration.get("pwd"));
-                dbMapConfigurationGT.put(MINCONN.key, 10);
-                dbMapConfigurationGT.put(MAXCONN.key, 25);
-                dbMapConfigurationGT.put(MAXWAIT.key, 100000);
-                dbMapConfigurationGT.put(VALIDATECONN.key, true);
-                dataStore = DataStoreFinder.getDataStore(dbMapConfigurationGT);
+                dataStore = DataStoreFinder.getDataStore(dbMapConfiguration);
 
             } catch (Exception e) {
                 throw new Exception(
@@ -631,6 +618,41 @@ public class DataStoreManager {
             close(orclTransaction);
         }
 
+    }
+    
+    /**
+     * Build a Map with DB properties connection suitable for DataStoreFinder.getDatasource(Map<...>). 
+     * @param config
+     * @return
+     */
+    public static Map<String,Serializable> buildDBParameterMap(DB config){
+        
+        // init of the DB connection to the datastore
+        Map<String, Serializable> dbConfiguration = new HashMap<String, Serializable>();
+        dbConfiguration.put(DBTYPE.key, config.getDbtype());
+        dbConfiguration.put(HOST.key, config.getHost());
+        dbConfiguration.put(PORT.key, config.getPort());
+        dbConfiguration.put(DATABASE.key, config.getDatabase());
+        dbConfiguration.put(SCHEMA.key, config.getSchema());
+        dbConfiguration.put(USER.key, config.getUser());
+        dbConfiguration.put(PASSWD.key, config.getPassword());
+        dbConfiguration.put(MINCONN.key, 10);
+        dbConfiguration.put(MAXCONN.key, 25);
+        dbConfiguration.put(MAXWAIT.key, 100000);
+        dbConfiguration.put(VALIDATECONN.key, true);
+        
+        if(LOGGER.isDebugEnabled()){
+            StringBuilder builder = new StringBuilder();
+            builder.append("The DB configuration Map is:");
+            for(String key : dbConfiguration.keySet()){
+                builder.append(" - ");
+                builder.append(key);
+                builder.append(": ");
+                builder.append(dbConfiguration.get(key));
+            }
+            LOGGER.debug(builder.toString());
+        }
+        return dbConfiguration;
     }
 
     private void rollback(Transaction orclTransaction) {

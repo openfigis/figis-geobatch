@@ -37,7 +37,10 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class DB
 {
 
-
+    @XStreamAlias("dbtype")
+    String dbtype;
+    
+    
     @XStreamAlias("database")
     String database;
 
@@ -66,7 +69,7 @@ public class DB
         super();
     }
 
-    public DB(String schema, String database, String user, String password, String host, String port)
+    public DB(String schema, String database, String user, String password, String host, String port, String dbtype)
     {
         this.database = database;
         this.schema = schema;
@@ -74,6 +77,7 @@ public class DB
         this.password = password;
         this.port = port;
         this.host = host;
+        this.dbtype = dbtype;
     }
 
 
@@ -136,6 +140,14 @@ public class DB
     {
         this.host = host;
     }
+    
+    public String getDbtype() {
+        return dbtype;
+    }
+
+    public void setDbtype(String dbtype) {
+        this.dbtype = dbtype;
+    }
 
     @Override
     public boolean equals(Object obj)
@@ -171,6 +183,10 @@ public class DB
             return false;
         }
         if ((this.host == null) ? (other.host != null) : (!this.host.equals(other.host)))
+        {
+            return false;
+        }
+        if ((this.dbtype == null) ? (other.dbtype != null) : (!this.dbtype.equals(other.dbtype)))
         {
             return false;
         }
