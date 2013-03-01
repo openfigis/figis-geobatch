@@ -82,17 +82,20 @@ public class SettingAction extends BaseAction<EventObject>
             dbConfig.setGlobal(xmlConfig.getGlobal());
             if (xmlConfig.intersections != null)
             {
+                if(LOGGER.isInfoEnabled()){LOGGER.info("Iterate over the intersectons");}
                 for (Intersection xmlIntersection : xmlConfig.intersections)
                 {
                     Intersection dbIntersection = IEConfigDAOImpl.searchEquivalent(xmlIntersection,
                             dbConfig.intersections);
 
+                    
                     // not present in DB, lets add the new one
                     if ((dbIntersection == null))
                     {
                         // Although the intersection isn't present on db it must not be added if flag Clean equals to TRUE
                         if (!xmlConfig.getGlobal().isClean())
                         {
+                            if(LOGGER.isDebugEnabled()){LOGGER.debug("intersection id: " + xmlIntersection.getId() + " - Set status to TOCOMPUTE");}
                             xmlIntersection.setStatus(Status.TOCOMPUTE);
                             intersectionsToAdd.add(xmlIntersection);
                         }
@@ -101,6 +104,7 @@ public class SettingAction extends BaseAction<EventObject>
                     {
                         // it already computed or computing but maybe we want to force
                         // the re-computation ...
+                        if(LOGGER.isDebugEnabled()){LOGGER.debug("Intersection id: " + xmlIntersection.getId() + " - already stored, evaluate the right status to set...");}
                         if (dbIntersection.getStatus().equals(Status.COMPUTED) ||
                                 dbIntersection.getStatus().equals(
                                     Status.COMPUTING) ||
@@ -134,6 +138,7 @@ public class SettingAction extends BaseAction<EventObject>
             // intersections for deletion
             if (dbConfig.intersections != null)
             {
+                if(LOGGER.isInfoEnabled()){LOGGER.info("flag clean = TRUE, schedule to DELETE the other intersections too");}
                 for (Intersection dbIntersection : dbConfig.intersections)
                 {
                     Intersection equivalentToAdd = IEConfigDAOImpl.searchEquivalent(dbIntersection,
@@ -204,18 +209,25 @@ public class SettingAction extends BaseAction<EventObject>
 
                     // READ THE XML AND CREATE A CONFIG OBJECT
                     xmlConfig = IEConfigUtils.parseXMLConfig(fileEvent.getSource().getAbsolutePath());
-
+                    
+                    if(LOGGER.isInfoEnabled()){LOGGER.info("xmlConfig unmarshalled");}
+                    if(LOGGER.isDebugEnabled()){LOGGER.debug("xmlConfig unmarshalled toString: " + xmlConfig);}
+                    
                     // if DB is empty lets insert the new configuration...
                     if (getIeConfigDAO().dbIsEmpty(host,
                                 getIeServiceUsername(), getIeServicePassword()))
                     {
+                        if(LOGGER.isInfoEnabled()){LOGGER.info("DB is EMPTY: going to save or update the config... ");}
+                        
                         dbConfig = getIeConfigDAO().saveOrUpdateConfig(host,
                                 xmlConfig, getIeServiceUsername(),
                                 getIeServicePassword());
+                        if(LOGGER.isDebugEnabled()){LOGGER.debug("config returned:  unmarshalled toString: " + dbConfig);}
                         if(dbConfig == null){
                             throw new Exception("An exception is occurred while managing the configuration provided... Please check the configuration version.");
                         }
                         
+                        if(LOGGER.isInfoEnabled()){LOGGER.info("going to set global, updateVersion, status");}
                         dbConfig.setGlobal(xmlConfig.getGlobal());
                         dbConfig.setUpdateVersion(xmlConfig.getUpdateVersion() - 1);
 
@@ -226,35 +238,46 @@ public class SettingAction extends BaseAction<EventObject>
                     // check for updates otherwise...
                     else
                     {
+                        if(LOGGER.isInfoEnabled()){LOGGER.info("DB is NOT EMPTY: load the config... ");}
                         dbConfig = getIeConfigDAO().loadConfg(host,
                                 getIeServiceUsername(), getIeServicePassword());
                     }
 
-                    // after checking for a valid update version ...
+                    if(LOGGER.isInfoEnabled()){LOGGER.info("Compare the config update...");}
+                    if(LOGGER.isDebugEnabled()){LOGGER.debug("xmlConfig: " + xmlConfig.getUpdateVersion() + " - dbConfig: " + dbConfig.getUpdateVersion());}
+
+                    // after checking for a valid update version ...                    
                     if (xmlConfig.getUpdateVersion() > dbConfig.getUpdateVersion())
                     {
+                        if(LOGGER.isInfoEnabled()){LOGGER.info("Found a more recent intersectin version");}
+                        if(LOGGER.isDebugEnabled()){LOGGER.debug("xmlConfig: " + xmlConfig.getUpdateVersion() + " - dbConfig: " + dbConfig.getUpdateVersion());}
+
                         List<Intersection> intersectionsToAdd = new ArrayList<Intersection>();
 
-                        // lets compare the intersections between xml config and
-                        // db
+                        if(LOGGER.isInfoEnabled()){LOGGER.info("lets compare the intersections between xml config and db");}
                         compareXMLConfigAndDBConfig(xmlConfig, dbConfig,
                             intersectionsToAdd);
 
                         if (dbConfig.intersections != null)
                         {
+                            if(LOGGER.isInfoEnabled()){LOGGER.info("Delete intersections by Id");}
                             for (Intersection dbIntersection : dbConfig.intersections)
                             {
+                                if(LOGGER.isDebugEnabled()){LOGGER.debug("Delete Intersection " + dbIntersection.getId());}
                                 getIeConfigDAO().deleteIntersectionById(host,
                                     dbIntersection.getId(),
                                     ieServiceUsername, ieServicePassword);
                             }
                         }
-
+                        
                         dbConfig.intersections = intersectionsToAdd;
 
-                        // finally update the db-config
+                        if(LOGGER.isInfoEnabled()){LOGGER.info("finally update the db-config");}
                         getIeConfigDAO().saveOrUpdateConfig(host, dbConfig,
                             getIeServiceUsername(), getIeServicePassword());
+                    }
+                    else{
+                        if(LOGGER.isInfoEnabled()){LOGGER.info("Found an old or equals intersection version.");}
                     }
 
                     // add the event to the return
@@ -278,7 +301,8 @@ public class SettingAction extends BaseAction<EventObject>
                 throw new ActionException(this,ioe.getLocalizedMessage(),ioe );
             }
         }
-
+        
+        if(LOGGER.isInfoEnabled()){LOGGER.info("The action is finished");}
         return ret;
     }
 
