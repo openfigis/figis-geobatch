@@ -92,13 +92,10 @@ public class SettingAction extends BaseAction<EventObject>
                     // not present in DB, lets add the new one
                     if ((dbIntersection == null))
                     {
-                        // Although the intersection isn't present on db it must not be added if flag Clean equals to TRUE
-                        if (!xmlConfig.getGlobal().isClean())
-                        {
-                            if(LOGGER.isDebugEnabled()){LOGGER.debug("intersection id: " + xmlIntersection.getId() + " - Set status to TOCOMPUTE");}
-                            xmlIntersection.setStatus(Status.TOCOMPUTE);
-                            intersectionsToAdd.add(xmlIntersection);
-                        }
+                        // store the intersection in DB although the flagClean == TRUE
+                        if(LOGGER.isDebugEnabled()){LOGGER.debug("intersection id: " + xmlIntersection.getId() + " - Set status to TOCOMPUTE");}
+                        xmlIntersection.setStatus(Status.TOCOMPUTE);
+                        intersectionsToAdd.add(xmlIntersection);
                     }
                     else
                     {
