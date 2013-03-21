@@ -443,7 +443,7 @@ margin-right: -20px;
 	  margin : 0  auto;
 	  text-align : left;
 	  /*width : 1024px;*/
-	  width : 800px;
+	  width : 1000px;
 }
 
 /*
@@ -465,5 +465,5 @@ margin-right: -20px;
 }
 
 .x-grid3-header-inner{
-	padding-left: 13px;
+	/* padding-left: 13px; */
 }

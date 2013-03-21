@@ -368,7 +368,8 @@
 				'mask',
 				'srcLayer',
 				'srcCodeField',
-				'totalCount'
+				'totalCount',
+				'preserveTrgGeom'
 			],
 			success: function ( result ) {
 
@@ -516,7 +517,8 @@
 			store: store,
 			trackMouseOver:false,
 			disableSelection:false,
-
+			height: 20,
+			
 			loadMask: true,
 			colModel: new xg.ColumnModel({
 				columns: [
@@ -563,14 +565,14 @@
 					},{
 						header: "Area CRS",
 						dataIndex: 'areaCRS',
-						width: 12,
+						width: 10,
 						hidden: false,
 						sortable: false,
 						menuDisabled: true
 					},{
 						header: "Mask Layer",
 						dataIndex: 'maskLayer',
-						width: 15,
+						width: 10,
 						hidden: false,
 						align: 'left',
 						sortable: false,
@@ -578,7 +580,7 @@
 					},{
 						header: "Status",
 						dataIndex: 'status',
-						width: 13,
+						width: 10,
 						hidden: false,
 						align: 'left',
 						sortable: false,
@@ -596,6 +598,14 @@
 						header: "Mask",
 						dataIndex: 'mask',
 						width: 7,
+						hidden: false,
+						align: 'center',
+						sortable: false,
+						menuDisabled: true
+					},{
+						header: "Preserve Target Geom",
+						dataIndex: 'preserveTrgGeom',
+						width: 15,
 						hidden: false,
 						align: 'center',
 						sortable: false,

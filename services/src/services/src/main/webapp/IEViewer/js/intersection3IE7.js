@@ -371,7 +371,8 @@
 				'mask',
 				'srcLayer',
 				'srcCodeField',
-				'totalCount'
+				'totalCount',
+				'preserveTrgGeom'
 			],
 			success: function ( result ) {
 
@@ -568,6 +569,14 @@
 						width: 7,
 						hidden: false,
 						align: 'left',
+						sortable: false,
+						menuDisabled: true
+					},{
+						header: "Preserve Target Geom",
+						dataIndex: 'preserveTrgGeom',
+						width: 15,
+						hidden: false,
+						align: 'center',
 						sortable: false,
 						menuDisabled: true
 					}
