@@ -220,6 +220,10 @@ public class OracleDataStoreManager
         sftbTmpStats.add("TRGOVLPCT", String.class);
         sftbTmpStats.add("SRCCODENAME", String.class);
         sftbTmpStats.add("TRGCODENAME", String.class);
+        
+        sftbTmpStats.add("MASKLAYER", String.class);
+        sftbTmpStats.add("PRESERVETRGGEOM", String.class);
+        
         sfTmpStats = sftbTmpStats.buildFeatureType();
 
 
@@ -237,6 +241,10 @@ public class OracleDataStoreManager
         sftbStats.add("TRGOVLPCT", String.class);
         sftbStats.add("SRCCODENAME", String.class);
         sftbStats.add("TRGCODENAME", String.class);
+
+        sftbStats.add("MASKLAYER", String.class);
+        sftbStats.add("PRESERVETRGGEOM", String.class);
+        
         sfStats = sftbStats.buildFeatureType();
 
 
@@ -321,12 +329,12 @@ public class OracleDataStoreManager
      * @throws Exception
      */
     private void actionTemp(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
-        String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
+        String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTargetGeom, int itemsPerPage) throws Exception
     {
         // FIX ME: with synchronized don't fail any intersection
         cleanTempTables(tx, collection, srcLayer,
             trgLayer, srcCode, trgCode, itemsPerPage);
-        saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
+        saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, itemsPerPage);
     }
 
     /*********
@@ -474,7 +482,7 @@ public class OracleDataStoreManager
      * @throws Exception
      */
     private void saveToTemp(Transaction tx, SimpleFeatureCollection source, String srcLayer,
-        String trgLayer, String srcCode, String trgCode, int itemsPerPage) throws Exception
+        String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTargetGeom, int itemsPerPage) throws Exception
     {
         itemsPerPage = (itemsPerPage <= 1) ? DEFAULT_PAGE_SIZE : itemsPerPage;
 
@@ -526,7 +534,7 @@ public class OracleDataStoreManager
             while (iterator.hasNext())
             {
 
-                String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + i;
+                String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + "_" + maskLayer + "_" + prsrvTargetGeom + i;
 
                 SimpleFeature sf = iterator.next();
 
@@ -545,6 +553,8 @@ public class OracleDataStoreManager
                 featureBuilderData.set("INTERSECTION_ID", intersectionID);
                 featureBuilderData.set("SRCCODENAME", srcCode);
                 featureBuilderData.set("TRGCODENAME", trgCode);
+                featureBuilderData.set("MASKLAYER", maskLayer);
+                featureBuilderData.set("PRESERVETRGGEOM", prsrvTargetGeom);
 
                 if (LOGGER.isDebugEnabled())
                 {
@@ -630,7 +640,7 @@ public class OracleDataStoreManager
      */
     public boolean saveAll(SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode,
-        String trgCode, int itemsPerPage) throws Exception
+        String trgCode, String maskLayer, String prsrvTargetGeom, int itemsPerPage) throws Exception
     {
 
         boolean res = false;
@@ -639,7 +649,7 @@ public class OracleDataStoreManager
         {
             tx = new DefaultTransaction();
             LOGGER.trace("Performing data saving: SRCLAYER " + srcLayer + ", SRCCODE " + srcCode + ", TRGLAYER " + trgLayer + ", TRGLAYER " + trgCode);
-            actionTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, itemsPerPage);
+            actionTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, itemsPerPage);
             tx.commit();
             res = true;
 

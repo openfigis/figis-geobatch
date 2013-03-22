@@ -49,17 +49,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.process.feature.gs.ClipProcess;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
+import org.geotools.resources.coverage.FeatureUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.xstream.InitializationException;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 
@@ -74,6 +78,7 @@ public class IntersectionAction extends BaseAction<EventObject>
     private static final Logger LOGGER = LoggerFactory.getLogger(IntersectionAction.class);
     private static final String TMP_DIR_NAME = "figis";
     private static final String URI_URL = "http://geo-solutions.it";
+    private static final String DEFAULT_LAYER = "fifao:UN_CONTINENT";
 
     private final List<ShapefileDataStore> shapeFileStores = new ArrayList<ShapefileDataStore>();
 
@@ -272,7 +277,7 @@ public class IntersectionAction extends BaseAction<EventObject>
             // try to load mask collection
             if (isMasked)
             {   
-            	if (maskLayer==null) maskLayer = "fifao:UN_CONTINENT";
+            	if (maskLayer==null) maskLayer = DEFAULT_LAYER;
                 
             	if (LOGGER.isTraceEnabled())
                 {
@@ -322,6 +327,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                         Geometry geometry = (Geometry) sfi.next().getDefaultGeometry();
                         // maskGeometry = maskGeometry.union(geometry);
                         maskGeometry = Utilities.union(maskGeometry, geometry);
+                        
                     }
                 }
                 catch (Exception e)
@@ -565,8 +571,13 @@ public class IntersectionAction extends BaseAction<EventObject>
 
                     if (resultFeatureCollection != null)
                     {
-                        geometryType =
-                            resultFeatureCollection.getSchema().getGeometryDescriptor().getType().getName().getLocalPart();
+//                        geometryType =
+//                            resultFeatureCollection.getSchema().getGeometryDescriptor().getType().getName().getLocalPart();
+                        String geometryTypeFQN =
+                              resultFeatureCollection.getSchema().getGeometryDescriptor().getType().getBinding().getName();
+                        //WORKAROUND 21/03/2013 get the geometryType name splitting the fullqualified class name
+                        String geometryTypeArr[] = geometryTypeFQN.split("\\.");
+                        geometryType = geometryTypeArr[geometryTypeArr.length-1];
 
                         // the intersection can be updated on the db only if the
                         // intersection generate a reuslt and it is Multipolygon
@@ -594,9 +605,20 @@ public class IntersectionAction extends BaseAction<EventObject>
                                 "(" +
                                 user +
                                 ",*****) ");
+                            
+                            String maskLayer = intersection.getMaskLayer();
+                            if(intersection.isMask()){
+                                if(maskLayer == null || maskLayer.isEmpty()){
+                                    maskLayer = DEFAULT_LAYER; 
+                                }
+                            }
+                            else{
+                                maskLayer = "NOTMASKED";
+                            }
+                            
                             dataStoreOracle.saveAll(resultFeatureCollection,
                                 Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode,
-                                trgCode, itemsPerPage);
+                                trgCode, maskLayer, String.valueOf(intersection.isPreserveTrgGeom()), itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
                             ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername,
                                 ieServicePassword);
