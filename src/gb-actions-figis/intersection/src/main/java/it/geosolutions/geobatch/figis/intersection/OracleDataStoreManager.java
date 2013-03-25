@@ -347,7 +347,7 @@ public class OracleDataStoreManager
      * @throws Exception
      */
     private void action(Transaction tx, String srcLayer, String trgLayer, String srcCode,
-        String trgCode) throws Exception
+        String trgCode, String maskLayer, String prsrvTargetGeom) throws Exception
     {
         FeatureStore featureStoreTmpData = (FeatureStore) orclDataStore.getFeatureSource(STATS_TMP_TABLE);
         FeatureStore featureStoreTmpGeom = (FeatureStore) orclDataStore.getFeatureSource(SPATIAL_TMP_TABLE);
@@ -361,7 +361,7 @@ public class OracleDataStoreManager
         featureStoreData.setTransaction(tx);
         featureStoreGeom.setTransaction(tx);
 
-        deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData, featureStoreGeom);
+        deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, featureStoreData, featureStoreGeom);
 
         if (LOGGER.isTraceEnabled())
         {
@@ -384,7 +384,7 @@ public class OracleDataStoreManager
      * @throws IOException
      */
     private void deleteOldInstancesFromPermanent(String srcLayer, String trgLayer,
-        String srcLayerCode, String trgLayerCode, FeatureStore featureStoreData, FeatureStore featureStoreGeom)
+        String srcLayerCode, String trgLayerCode, String maskLayer, String prsrvTrgGeom, FeatureStore featureStoreData, FeatureStore featureStoreGeom)
         throws Exception
     {
         LOGGER.info("Deleting old instances of the intersection between " + srcLayer + " and " + trgLayer);
@@ -398,7 +398,9 @@ public class OracleDataStoreManager
             Filter filter2 = ff.equals(ff.property("TRGLAYER"), ff.literal(trgLayer));
             Filter filter3 = ff.equals(ff.property("SRCCODENAME"), ff.literal(srcLayerCode));
             Filter filter4 = ff.equals(ff.property("TRGCODENAME"), ff.literal(trgLayerCode));
-            Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4));
+            Filter filter5 = ff.equals(ff.property("MASKLAYER"), ff.literal(maskLayer));
+            Filter filter6 = ff.equals(ff.property("PRESERVETRGGEOM"), ff.literal(prsrvTrgGeom));
+            Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4, filter5, filter6));
             iterator = (SimpleFeatureIterator) featureStoreData.getFeatures(filterAnd).features();
 
             while (iterator.hasNext())
@@ -671,7 +673,7 @@ public class OracleDataStoreManager
             if (res)
             {
                 tx = new DefaultTransaction();
-                action(tx, srcLayer, trgLayer, srcCode, trgCode);
+                action(tx, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom);
                 tx.commit();
                 res = true;
             }
@@ -700,7 +702,7 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @throws IOException
      */
-    public void deleteAll(String srcLayer, String trgLayer, String srcCode, String trgCode) throws IOException
+    public void deleteAll(String srcLayer, String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTrgGeom) throws IOException
     {
 
         Transaction orclTransaction = null;
@@ -720,7 +722,7 @@ public class OracleDataStoreManager
             featureStoreData.setTransaction(orclTransaction);
             featureStoreGeom.setTransaction(orclTransaction);
 
-            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, featureStoreData, featureStoreGeom);
+            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTrgGeom, featureStoreData, featureStoreGeom);
 
             // commit!
             orclTransaction.commit();

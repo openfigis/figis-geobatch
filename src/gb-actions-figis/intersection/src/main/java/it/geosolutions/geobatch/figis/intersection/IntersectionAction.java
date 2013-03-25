@@ -49,21 +49,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.process.feature.gs.ClipProcess;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.xstream.InitializationException;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 
@@ -537,6 +533,16 @@ public class IntersectionAction extends BaseAction<EventObject>
             String srcCode = intersection.getSrcCodeField();
             String trgCode = intersection.getTrgCodeField();
             long id = intersection.getId();
+            String maskLayer = intersection.getMaskLayer();
+            if(intersection.isMask()){
+                if(maskLayer == null || maskLayer.isEmpty()){
+                    maskLayer = DEFAULT_LAYER; 
+                }
+            }
+            else{
+                maskLayer = "NOTMASKED";
+            }
+            String prsrvTrgGeom = String.valueOf(intersection.isPreserveTrgGeom());
 
             // in case the intersection has been scheduled to be deleted,
             // delete the intersection from the list
@@ -547,7 +553,7 @@ public class IntersectionAction extends BaseAction<EventObject>
             {
                 try
                 {
-                    dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode);
+                    dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode, maskLayer, prsrvTrgGeom);
                     ieConfigDAO.deleteIntersectionById(host, id, ieServiceUsername, ieServicePassword);
                 }
                 catch (Exception e)
@@ -606,19 +612,9 @@ public class IntersectionAction extends BaseAction<EventObject>
                                 user +
                                 ",*****) ");
                             
-                            String maskLayer = intersection.getMaskLayer();
-                            if(intersection.isMask()){
-                                if(maskLayer == null || maskLayer.isEmpty()){
-                                    maskLayer = DEFAULT_LAYER; 
-                                }
-                            }
-                            else{
-                                maskLayer = "NOTMASKED";
-                            }
-                            
                             dataStoreOracle.saveAll(resultFeatureCollection,
                                 Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode,
-                                trgCode, maskLayer, String.valueOf(intersection.isPreserveTrgGeom()), itemsPerPage);
+                                trgCode, maskLayer, prsrvTrgGeom, itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
                             ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername,
                                 ieServicePassword);
