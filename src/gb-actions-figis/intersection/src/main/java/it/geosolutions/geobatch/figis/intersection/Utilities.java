@@ -45,6 +45,12 @@ import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.Transaction;
+import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.simple.SimpleFeatureStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +64,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 
-final class Utilities {
+public class Utilities {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Utilities.class);
 	public static final String DEFAULT_GEOSERVER_ADDRESS = "http://localhost:9999";
@@ -66,10 +72,15 @@ final class Utilities {
 	private Utilities(){
 	}
 	
-	static Geometry union(Geometry a, Geometry b)
+	public static Geometry union(Geometry a, Geometry b)
 	{
 	    return reduce(EnhancedPrecisionOp.union(a, b));
 	}
+	
+	public static Geometry difference(Geometry a, Geometry b)
+        {
+            return reduce(EnhancedPrecisionOp.difference(a, b));
+        }
 
 	/**
 	 * Reduce a GeometryCollection to a MultiPolygon.  This method basically explores
@@ -342,6 +353,24 @@ final class Utilities {
 				org.apache.commons.io.IOUtils.closeQuietly(destinationStream);
 			}
 		}
+	}
+	
+	public static void writeOnShapeFile(String url, SimpleFeatureCollection collection) throws IOException
+	{
+	    File newFile = new File(url);
+	    ShapefileDataStore newDataStore = new ShapefileDataStore(newFile.toURI().toURL());
+            newDataStore.createSchema(collection.getSchema());
+
+            Transaction transaction = new DefaultTransaction("create");
+
+            String typeName = newDataStore.getTypeNames()[0];
+            SimpleFeatureSource featureSource = newDataStore.getFeatureSource(typeName);
+            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
+            featureStore.setTransaction(transaction);
+            featureStore.addFeatures(collection);
+            transaction.commit();
+            transaction.close();
+            newDataStore.dispose();
 	}
 
 

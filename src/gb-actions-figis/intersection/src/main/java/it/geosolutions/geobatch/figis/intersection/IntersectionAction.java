@@ -53,6 +53,8 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.feature.gs.ClipProcess;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
@@ -348,7 +350,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                         }
                     }
                 }
-
+                
                 //
                 // clip the src Collection using the mask collection
                 //
@@ -359,7 +361,17 @@ public class IntersectionAction extends BaseAction<EventObject>
                 }
                 try
                 {
-                    srcCollection = clipProcess.execute(srcCollection, maskGeometry);
+                    // Calculate the difference between the bbox of srcCollection and the mask layer
+                    ReferencedEnvelope boundsSrcCollection = srcCollection.getBounds();
+                    Geometry bboxSrcCollection = JTS.toGeometry(boundsSrcCollection);
+                    Geometry bboxDiff = Utilities.difference(bboxSrcCollection, maskGeometry);
+                    if(!bboxDiff.equalsExact(bboxSrcCollection))
+                    {
+                        // If the maskLayer and srcLayerBBox aren't disjoint we must invoke the clip process to find the features
+                        // that are contained in the bboxDiff  
+                        srcCollection = clipProcess.execute(srcCollection, bboxDiff);
+                    }
+                    //else ->  there's no need for any clipping or erase process: we are sure that all the src input features are within world sea area
                 }
                 catch (Exception e)
                 {
@@ -374,8 +386,14 @@ public class IntersectionAction extends BaseAction<EventObject>
 
                 try
                 {
-                    // clip the trg Collection using the mask collection
-                    trgCollection = clipProcess.execute(trgCollection, maskGeometry);
+                    // Same stuff here did for the srcCollection applied to trgCollection
+                    ReferencedEnvelope boundsSrcCollection = trgCollection.getBounds();
+                    Geometry bboxTrgCollection = JTS.toGeometry(boundsSrcCollection);
+                    Geometry bboxDiff = Utilities.difference(bboxTrgCollection, maskGeometry);
+                    if(!bboxDiff.equalsExact(bboxTrgCollection))
+                    {
+                        trgCollection = clipProcess.execute(trgCollection, bboxDiff);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -419,36 +437,6 @@ public class IntersectionAction extends BaseAction<EventObject>
             LOGGER.error("Failed to load some layers", e);
 
             return null;
-        }
-        finally
-        {
-//                      if (srcCollection != null) {
-//                              try {
-//                                      srcCollection.clear();
-//                              } catch (Exception e) {
-//                                      if(LOGGER.isErrorEnabled()){
-//                                              LOGGER.error("Failed to clear srcCollection", e);
-//                                      }
-//                              }
-//                      }
-//                      if (trgCollection != null) {
-//                              try {
-//                                      trgCollection.clear();
-//                              } catch (Exception e) {
-//                                      if(LOGGER.isErrorEnabled()){
-//                                              LOGGER.error("Failed to clear srcCollection", e);
-//                                      }
-//                              }
-//                      }
-//                      if (maskCollection != null) {
-//                              try {
-//                                      maskCollection.clear();
-//                              } catch (Exception e) {
-//                                      if(LOGGER.isErrorEnabled()){
-//                                              LOGGER.error("Failed to clear srcCollection", e);
-//                                      }
-//                              }
-//                      }
         }
     }
 
