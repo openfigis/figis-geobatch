@@ -13,14 +13,14 @@
 	<parent>
 		<groupId>it.geosolutions.geobatch.figis</groupId>
 		<artifactId>gb-figis</artifactId>
-		<version>1.3.0-SNAPSHOT</version>
+		<version>1.3-RC2</version>
 	</parent>
 	<!-- =========================================================== -->
 	<!-- Module Description -->
 	<!-- =========================================================== -->
 	<groupId>it.geosolutions.geobatch.figis</groupId>
 	<artifactId>gb-application-figis</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3-RC2</version>
 	<packaging>war</packaging>
 
 	<name>GeoBatch Application</name>
