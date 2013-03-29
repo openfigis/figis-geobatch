@@ -379,7 +379,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                         // that are contained in the bboxDiff  
                         srcCollection = clipProcess.execute(srcCollection, bboxDiff);
                         String fileName = srcLayer.replaceAll(":", "");
-                        File f = new File(getTempDir().getAbsolutePath(), fileName+System.currentTimeMillis()+".shp");
+                        File f = new File(tmpDir, fileName+System.currentTimeMillis()+".shp");
                         f.createNewFile();
                         if(LOGGER.isDebugEnabled())
                         {
@@ -415,7 +415,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                     {
                         trgCollection = clipProcess.execute(trgCollection, bboxDiff);
                         String fileName = trgLayer.replaceAll(":", "");
-                        File f = new File(getTempDir().getAbsolutePath(), fileName+System.currentTimeMillis()+".shp");
+                        File f = new File(tmpDir, fileName+System.currentTimeMillis()+".shp");
                         f.createNewFile();
                         if(LOGGER.isDebugEnabled())
                         {
