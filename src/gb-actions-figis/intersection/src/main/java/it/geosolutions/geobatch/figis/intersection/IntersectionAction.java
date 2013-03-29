@@ -43,12 +43,17 @@ import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -216,7 +221,7 @@ public class IntersectionAction extends BaseAction<EventObject>
      * @return true in case no intersection is performed because any reason
      */
 
-    private SimpleFeatureCollection intersect(Intersection intersection, String tmpDir)
+    private SimpleFeatureCollection intersect(Intersection intersection, String tmpDir, DataStore maskedSrcCollectionDatastore, DataStore maskedTrgCollectionDatastore)
     {
 
         // initialize variables
@@ -241,6 +246,9 @@ public class IntersectionAction extends BaseAction<EventObject>
         String srcfilename = null;
         String trgfilename = null;
         String maskfilename = null;
+        SimpleFeatureCollection maskedSrcCollection = null;
+        SimpleFeatureCollection maskedTrgCollection = null;
+        
         try
         {
             // try to load src collection
@@ -370,6 +378,19 @@ public class IntersectionAction extends BaseAction<EventObject>
                         // If the maskLayer and srcLayerBBox aren't disjoint we must invoke the clip process to find the features
                         // that are contained in the bboxDiff  
                         srcCollection = clipProcess.execute(srcCollection, bboxDiff);
+                        String fileName = srcLayer.replaceAll(":", "");
+                        File f = new File(getTempDir().getAbsolutePath(), fileName+System.currentTimeMillis()+".shp");
+                        f.createNewFile();
+                        if(LOGGER.isDebugEnabled())
+                        {
+                            LOGGER.debug("Writing on the tmp Shapefile the masked SRC Layer, the file is: " + f.getName());
+                        }
+                        Utilities.writeOnShapeFile(f, srcCollection);
+                        maskedSrcCollection = simpleFeatureCollectionByShp(f.getAbsolutePath());
+                        if(LOGGER.isDebugEnabled())
+                        {
+                            LOGGER.debug("Masked SRC Layer Loaded");
+                        }
                     }
                     //else ->  there's no need for any clipping or erase process: we are sure that all the src input features are within world sea area
                 }
@@ -393,6 +414,22 @@ public class IntersectionAction extends BaseAction<EventObject>
                     if(!bboxDiff.equalsExact(bboxTrgCollection))
                     {
                         trgCollection = clipProcess.execute(trgCollection, bboxDiff);
+                        String fileName = trgLayer.replaceAll(":", "");
+                        File f = new File(getTempDir().getAbsolutePath(), fileName+System.currentTimeMillis()+".shp");
+                        f.createNewFile();
+                        if(LOGGER.isDebugEnabled())
+                        {
+                            LOGGER.debug("Writing on the tmp Shapefile the masked TRG Layer, the file is: " + f.getName());
+                        }
+                        Utilities.writeOnShapeFile(f, trgCollection);
+                        Map<String, URL> map = new HashMap<String, URL>();
+                        map.put("url", f.toURI().toURL());
+                        maskedTrgCollectionDatastore = DataStoreFinder.getDataStore(map);
+                        maskedTrgCollection = simpleFeatureCollectionByShp(f.getAbsolutePath());
+                        if(LOGGER.isDebugEnabled())
+                        {
+                            LOGGER.debug("Masked TRG Layer Loaded");
+                        }
                     }
                 }
                 catch (Exception e)
@@ -416,8 +453,10 @@ public class IntersectionAction extends BaseAction<EventObject>
             SimpleFeatureCollection result2 = null;
             try
             {
-                result2 = intersectionProcess.execute(srcCollection, trgCollection, srcAttributes, trgAttributes, mode,
-                        true, true);
+                SimpleFeatureCollection srcSfcToIntersect = (isMasked)?maskedSrcCollection:srcCollection; 
+                SimpleFeatureCollection trgSfcToIntersect = (isMasked)?maskedTrgCollection:trgCollection;
+                result2 = intersectionProcess.execute(srcSfcToIntersect, trgSfcToIntersect,
+                        srcAttributes, trgAttributes, mode, true, true);
             }
             catch (Exception e)
             {
@@ -500,7 +539,8 @@ public class IntersectionAction extends BaseAction<EventObject>
         String user = config.getGlobal().getDb().getUser();
         String pwd = PwEncoder.decode(config.getGlobal().getDb().getPassword());
         int port = Integer.parseInt(config.getGlobal().getDb().getPort());
-
+        DataStore maskedSrcCollectionDatastore = null;
+        DataStore maskedTrgCollectionDatastore = null;
 
         try
         {
@@ -559,8 +599,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                 SimpleFeatureCollection resultFeatureCollection = null;
                 try
                 {
-                    resultFeatureCollection = intersect(intersection, tmpdir);
-
+                    resultFeatureCollection = intersect(intersection, tmpdir, maskedSrcCollectionDatastore, maskedTrgCollectionDatastore);
                     String geometryType = "unknown";
 
                     if (resultFeatureCollection != null)
@@ -639,15 +678,6 @@ public class IntersectionAction extends BaseAction<EventObject>
                     ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername, ieServicePassword);
                     throw new RuntimeException("Exception caught while computing intersections.", e);
                 }
-//                              finally {
-//                                      if (resultFeatureCollection != null) {
-//                                              try{
-//                                                      resultFeatureCollection.clear();
-//                                              } catch (Exception e){
-//                                                      LOGGER.error("ERROR on cleaning resultFeatureCollection: ", e);
-//                                              }
-//                                      }
-//                              }
             }
         }
 

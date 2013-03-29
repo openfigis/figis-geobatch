@@ -45,12 +45,14 @@ import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -355,10 +357,13 @@ public class Utilities {
 		}
 	}
 	
-	public static void writeOnShapeFile(String url, SimpleFeatureCollection collection) throws IOException
+	public static void writeOnShapeFile(File shapeFile, SimpleFeatureCollection collection) throws IOException
 	{
-	    File newFile = new File(url);
-	    ShapefileDataStore newDataStore = new ShapefileDataStore(newFile.toURI().toURL());
+	    if(shapeFile == null || collection == null || !shapeFile.canWrite()){
+	        
+	        throw new IOException("One or more input parameters are null or the file provided couldn't be read");
+	    }
+	    ShapefileDataStore newDataStore = new ShapefileDataStore(shapeFile.toURI().toURL());
             newDataStore.createSchema(collection.getSchema());
 
             Transaction transaction = new DefaultTransaction("create");
@@ -372,6 +377,4 @@ public class Utilities {
             transaction.close();
             newDataStore.dispose();
 	}
-
-
 }
