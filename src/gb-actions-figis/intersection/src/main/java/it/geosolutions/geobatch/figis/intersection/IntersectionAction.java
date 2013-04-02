@@ -234,7 +234,7 @@ public class IntersectionAction extends BaseAction<EventObject>
         boolean isMasked = intersection.isMask();
 
         IntersectionMode mode = IntersectionMode.INTERSECTION;
-        if (!intersection.isPreserveTrgGeom())
+        if (intersection.isPreserveTrgGeom())
         {
             mode = IntersectionMode.SECOND;
         }
