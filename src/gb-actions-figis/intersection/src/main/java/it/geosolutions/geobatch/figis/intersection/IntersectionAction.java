@@ -51,6 +51,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.UUID;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -60,11 +61,15 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.process.feature.gs.BufferFeatureCollection;
 import org.geotools.process.feature.gs.ClipProcess;
+import org.geotools.process.feature.gs.EraseProcess;
+import org.geotools.process.feature.gs.FeatureProcess;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.TargetClassAware;
 
 import com.thoughtworks.xstream.InitializationException;
 import com.vividsolutions.jts.geom.Geometry;
@@ -170,9 +175,11 @@ public class IntersectionAction extends BaseAction<EventObject>
      *            the layer to download
      * @param tmpDir
      *            the folder where saving and uncompress the downloaded zip file
+     * @param filter
+     *            a CQL filter            
      * @return the name of the shape file downloaded
      */
-    private String downloadFromGeoserver(String layername, String tmpDir)
+    private String downloadFromGeoserver(String layername, String tmpDir, String filter)
     {
         String urlCollection = "";
         try
@@ -192,7 +199,11 @@ public class IntersectionAction extends BaseAction<EventObject>
                 // build the url to download the zip file by wfs
                 urlCollection = geoserver.getGeoserverUrl() +
                     "/wfs?outputFormat=SHAPE-ZIP&request=GetFeature&version=1.1.1&typeName=" +
-                    name + "&srs=EPSG:4326";
+                    name + filter;                
+                if(LOGGER.isDebugEnabled())
+                {    
+                    LOGGER.debug("Wfs Request for layer " + "layername :" + urlCollection);
+                }
             }
             else
             {
@@ -253,7 +264,7 @@ public class IntersectionAction extends BaseAction<EventObject>
         {
             // try to load src collection
             LOGGER.info("download first geometry " + srcLayer + " " + srcCodeField);
-            srcfilename = downloadFromGeoserver(srcLayer, tmpDir);
+            srcfilename = downloadFromGeoserver(srcLayer, tmpDir, "");
             LOGGER.info("finish download first geometry");
             srcCollection = simpleFeatureCollectionByShp(srcfilename);
 
@@ -268,7 +279,7 @@ public class IntersectionAction extends BaseAction<EventObject>
 
             // try to load trg collection
             LOGGER.info("download second geometry " + trgLayer + " " + trgCodeField);
-            trgfilename = downloadFromGeoserver(trgLayer, tmpDir);
+            trgfilename = downloadFromGeoserver(trgLayer, tmpDir, "");
             LOGGER.info("finish download second geometry");
             trgCollection = simpleFeatureCollectionByShp(trgfilename);
 
@@ -289,7 +300,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                 {
                     LOGGER.trace("download mask layer " + Utilities.getName(maskLayer));
                 }
-                maskfilename = downloadFromGeoserver(Utilities.getName(maskLayer), tmpDir);
+                maskfilename = downloadFromGeoserver(Utilities.getName(maskLayer), tmpDir, "");
                 if (LOGGER.isTraceEnabled())
                 {
                     LOGGER.trace("mask layer " + maskLayer + " downloaded");
@@ -363,12 +374,13 @@ public class IntersectionAction extends BaseAction<EventObject>
                 // clip the src Collection using the mask collection
                 //
                 final ClipProcess clipProcess = new ClipProcess();
+                final BufferFeatureCollection bufferProcess = new BufferFeatureCollection(); 
                 if (LOGGER.isTraceEnabled())
                 {
                     LOGGER.trace("clipping the first layer");
                 }
                 try
-                {
+                {   
                     // Calculate the difference between the bbox of srcCollection and the mask layer
                     ReferencedEnvelope boundsSrcCollection = srcCollection.getBounds();
                     Geometry bboxSrcCollection = JTS.toGeometry(boundsSrcCollection);
@@ -377,9 +389,10 @@ public class IntersectionAction extends BaseAction<EventObject>
                     {
                         // If the maskLayer and srcLayerBBox aren't disjoint we must invoke the clip process to find the features
                         // that are contained in the bboxDiff  
+                        //srcCollection = bufferProcess.execute(srcCollection, 0d, null);
                         srcCollection = clipProcess.execute(srcCollection, bboxDiff);
                         String fileName = srcLayer.replaceAll(":", "");
-                        File f = new File(tmpDir, fileName+System.currentTimeMillis()+".shp");
+                        File f = new File(tmpDir, fileName+UUID.randomUUID()+".shp");
                         f.createNewFile();
                         if(LOGGER.isDebugEnabled())
                         {
@@ -411,20 +424,19 @@ public class IntersectionAction extends BaseAction<EventObject>
                     ReferencedEnvelope boundsSrcCollection = trgCollection.getBounds();
                     Geometry bboxTrgCollection = JTS.toGeometry(boundsSrcCollection);
                     Geometry bboxDiff = Utilities.difference(bboxTrgCollection, maskGeometry);
+                    
                     if(!bboxDiff.equalsExact(bboxTrgCollection))
                     {
+                        //trgCollection = bufferProcess.execute(trgCollection, 0d, null);
                         trgCollection = clipProcess.execute(trgCollection, bboxDiff);
                         String fileName = trgLayer.replaceAll(":", "");
-                        File f = new File(tmpDir, fileName+System.currentTimeMillis()+".shp");
+                        File f = new File(tmpDir, fileName+UUID.randomUUID()+".shp");
                         f.createNewFile();
                         if(LOGGER.isDebugEnabled())
                         {
                             LOGGER.debug("Writing on the tmp Shapefile the masked TRG Layer, the file is: " + f.getName());
                         }
                         Utilities.writeOnShapeFile(f, trgCollection);
-                        Map<String, URL> map = new HashMap<String, URL>();
-                        map.put("url", f.toURI().toURL());
-                        maskedTrgCollectionDatastore = DataStoreFinder.getDataStore(map);
                         maskedTrgCollection = simpleFeatureCollectionByShp(f.getAbsolutePath());
                         if(LOGGER.isDebugEnabled())
                         {
@@ -760,7 +772,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                         // create the figis temporary dir
                         LOGGER.info("Creating the temporary dir: " + TMP_DIR_NAME);
 
-                        tmpDir = Utilities.createTmpDir(TMP_DIR_NAME + "/" + System.nanoTime());
+                        tmpDir = getTempDir();//Utilities.createTmpDir(TMP_DIR_NAME + "/" + System.nanoTime());
                         LOGGER.info(TMP_DIR_NAME + " successfully created");
 
                         // update the status of the intersections on the basis

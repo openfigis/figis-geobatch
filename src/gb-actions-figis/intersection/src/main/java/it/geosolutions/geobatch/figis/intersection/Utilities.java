@@ -203,7 +203,7 @@ public class Utilities {
 	    LOGGER.trace("Deleting dir " + dir);
 	    try{
 		    if (dir.exists() && dir.isDirectory()){
-		        FileUtils.deleteDirectory(dir);
+		        FileUtils.cleanDirectory(dir);
 		    }
 	    }catch(IOException e){
 	    	LOGGER.error("ERRORE ON DELETING DIR: "+dir.getAbsolutePath());
@@ -357,24 +357,56 @@ public class Utilities {
 		}
 	}
 	
-	public static void writeOnShapeFile(File shapeFile, SimpleFeatureCollection collection) throws IOException
-	{
-	    if(shapeFile == null || collection == null || !shapeFile.canWrite()){
-	        
-	        throw new IOException("One or more input parameters are null or the file provided couldn't be read");
-	    }
-	    ShapefileDataStore newDataStore = new ShapefileDataStore(shapeFile.toURI().toURL());
-            newDataStore.createSchema(collection.getSchema());
+        public static void writeOnShapeFile(File shapeFile, SimpleFeatureCollection collection) 
+        {
+            if (shapeFile == null || collection == null || !shapeFile.canWrite()) 
+            {
+    
+                throw new IllegalArgumentException(
+                        "One or more input parameters are null or the file provided couldn't be read");
+            }
+            
+            ShapefileDataStore newDataStore = null;
+            Transaction transaction = null;
+            SimpleFeatureStore featureStore = null;
+            try 
+            {
+                newDataStore = new ShapefileDataStore(shapeFile.toURI().toURL());
+                newDataStore.createSchema(collection.getSchema()); 
+                transaction = new DefaultTransaction("create");
+                String typeName = newDataStore.getTypeNames()[0];
+                SimpleFeatureSource featureSource = newDataStore.getFeatureSource(typeName);
+                featureStore = (SimpleFeatureStore) featureSource;
+                featureStore.setTransaction(transaction);
+                featureStore.addFeatures(collection);
+                transaction.commit();
+            }
+            catch (IOException e) {
+                
+                LOGGER.error(e.getMessage(), e);
+            }
+            finally
+            {
+                if(newDataStore != null){
+                    
+                    newDataStore.dispose();
+                }
+                if(transaction != null){
+                   
+                    try{
+                        
+                        transaction.close();
+                    }
+                    catch (IOException e) {
+                        
+                        LOGGER.error(e.getMessage(), e);
+                    }
 
-            Transaction transaction = new DefaultTransaction("create");
-
-            String typeName = newDataStore.getTypeNames()[0];
-            SimpleFeatureSource featureSource = newDataStore.getFeatureSource(typeName);
-            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-            featureStore.setTransaction(transaction);
-            featureStore.addFeatures(collection);
-            transaction.commit();
-            transaction.close();
-            newDataStore.dispose();
-	}
+                }
+                if(featureStore !=null){
+                    
+                    newDataStore.dispose();
+                }
+            }    
+        }
 }

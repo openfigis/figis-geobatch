@@ -617,6 +617,13 @@ public class OracleDataStoreManager
 
 
             }
+            if (sfcData.size() > 0) {
+             // save statistics to the statistics temporary table
+                featureStoreData.addFeatures(sfcData);
+                // save geometries to the statistics temporary table
+                featureStoreGeom.addFeatures(sfcGeom);
+            }
+            
         }
         finally
         {
