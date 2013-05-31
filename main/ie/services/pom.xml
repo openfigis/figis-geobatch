@@ -1,271 +1,272 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>it.geosolutions</groupId>
-		<artifactId>figis</artifactId>
-		<version>2.0-SNAPSHOT</version>
-	</parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!-- =========================================================== -->
-	<!--     Module Description                                      -->
-	<!-- =========================================================== -->
-	<groupId>it.geosolutions.figis</groupId>
-	<artifactId>ie-services</artifactId>
-	<packaging>war</packaging>
-	<version>2.0-SNAPSHOT</version>
-	<name>services Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+    <parent>
+        <groupId>it.geosolutions.figis</groupId>
+        <artifactId>figis-ie</artifactId>
+        <version>1.3-SNAPSHOT</version>
+    </parent>
 
-	<properties>
-		<cxf.version>2.2.3</cxf.version>
-	</properties>
+    <!-- =========================================================== -->
+    <!--     Module Description                                      -->
+    <!-- =========================================================== -->
+    <groupId>it.geosolutions.figis</groupId>
+    <artifactId>ie-services</artifactId>
+    <packaging>war</packaging>
+    <version>2.0-SNAPSHOT</version>
 
-	<dependencies>
-		<dependency>
-			<groupId>it.geosolutions.figis</groupId>
-			<artifactId>ie-requester</artifactId>
-			<version>2.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>it.geosolutions.figis</groupId>
-			<artifactId>ie-persistence</artifactId>
-			<version>2.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>it.geosolutions.figis</groupId>
-			<artifactId>ie-model</artifactId>
-			<version>2.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.5</version>
-			<scope>test</scope>
-		</dependency>
+    <name>IE services webapp</name>
+    <!--<url>http://maven.apache.org</url>-->
 
-		<!-- CXF -->
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
-			<version>2.3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.ws</groupId>
-			<artifactId>webservices-rt</artifactId>
-			<version>1.4</version>
-			<scope>provided</scope>
-		</dependency>
+    <properties>
+        <cxf.version>2.2.3</cxf.version>
+    </properties>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>it.geosolutions.figis</groupId>
+            <artifactId>ie-requester</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>it.geosolutions.figis</groupId>
+            <artifactId>ie-persistence</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>it.geosolutions.figis</groupId>
+            <artifactId>ie-model</artifactId>
+            <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<!-- GeoBatch CORE -->
-		<!--
-			<dependency> <groupId>org.hibernate</groupId>
-			<artifactId>ejb3-persistence</artifactId> <version>1.0.2.GA</version>
-			</dependency>
-		-->
-		<!-- HIBERNATE -->
-		<!--
-			<dependency> <groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.3.1.GA</version> </dependency> <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.1.0.GA</version> </dependency> <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.3.1.ga</version> </dependency> <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId> <version>3.3.1.GA</version>
-			</dependency> <dependency> <groupId>com.trg</groupId>
-			<artifactId>trg-dao</artifactId> <version> 0.5.1</version>
-			</dependency> <dependency> <groupId>com.trg</groupId>
-			<artifactId>trg-search</artifactId> <version> 0.5.1</version>
-			</dependency> <dependency> <groupId>com.trg</groupId>
-			<artifactId>trg-search-hibernate</artifactId> <version>
-			0.5.1</version> </dependency> <dependency> <groupId>com.trg</groupId>
-			<artifactId>trg-search-jpa-hibernate</artifactId> <version>
-			0.5.1</version> <exclusions> <exclusion>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId> </exclusion>
-			</exclusions> </dependency>
-		-->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>3.0.3.RELEASE</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<!-- needed for @RolesAllowed -->
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>jsr250-api</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<!-- needed for @SecurityContext -->
-		<!--
-			dependency> <artifactId>jsr311-api</artifactId>
-			<groupId>javax.ws.rs</groupId> <type>jar</type>
-			<version>1.1.1</version> </dependency
-		-->
-		<!--  HSQLDB -->
-		<dependency>
-			<groupId>hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.10</version>
+        <!-- CXF -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>webservices-rt</artifactId>
+            <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
 
-		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
 
-		<!--  log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-		</dependency>
+        <!-- GeoBatch CORE -->
+        <!--
+            <dependency> <groupId>org.hibernate</groupId>
+            <artifactId>ejb3-persistence</artifactId> <version>1.0.2.GA</version>
+            </dependency>
+        -->
+        <!-- HIBERNATE -->
+        <!--
+            <dependency> <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.3.1.GA</version> </dependency> <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+            <version>3.1.0.GA</version> </dependency> <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>3.3.1.ga</version> </dependency> <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId> <version>3.3.1.GA</version>
+            </dependency> <dependency> <groupId>com.trg</groupId>
+            <artifactId>trg-dao</artifactId> <version> 0.5.1</version>
+            </dependency> <dependency> <groupId>com.trg</groupId>
+            <artifactId>trg-search</artifactId> <version> 0.5.1</version>
+            </dependency> <dependency> <groupId>com.trg</groupId>
+            <artifactId>trg-search-hibernate</artifactId> <version>
+            0.5.1</version> </dependency> <dependency> <groupId>com.trg</groupId>
+            <artifactId>trg-search-jpa-hibernate</artifactId> <version>
+            0.5.1</version> <exclusions> <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId> </exclusion>
+            </exclusions> </dependency>
+        -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>3.0.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!-- needed for @RolesAllowed -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!-- needed for @SecurityContext -->
+        <!--
+            dependency> <artifactId>jsr311-api</artifactId>
+            <groupId>javax.ws.rs</groupId> <type>jar</type>
+            <version>1.1.1</version> </dependency
+        -->
+        <!--  HSQLDB -->
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.10</version>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.5.6</version>
-		</dependency>
+        </dependency>
 
-		<!-- ============================== -->
-		<!-- Test: JETTY -->
-		<!-- ============================== -->
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
-			<version>6.1.18</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jsp-2.0</artifactId>
-			<version>6.1.18</version>
-			<type>pom</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.13.0-GA</version>
-			<scope>test</scope>
-		</dependency>
+        <!--  log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
 
-		<!-- Local jars -->
-		<dependency>
-			<groupId>wfs2rdf</groupId>
-			<artifactId>wfs2rdf</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>wfs2rdf</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>wfs2rdf</groupId>
-			<artifactId>geowl</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>wfs2rdf</groupId>
-			<artifactId>icu4j</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>wfs2rdf</groupId>
-			<artifactId>iri</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>wfs2rdf</groupId>
-			<artifactId>jena</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>wfs2rdf</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<version>1.0</version>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.5.6</version>
+        </dependency>
 
-	<build>
-		<finalName>ie-services</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-			</plugin>
+        <!-- ============================== -->
+        <!-- Test: JETTY -->
+        <!-- ============================== -->
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <version>6.1.18</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jsp-2.0</artifactId>
+            <version>6.1.18</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.13.0-GA</version>
+            <scope>test</scope>
+        </dependency>
 
-			<plugin>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-java2ws-plugin</artifactId>
-				<version>2.3.2</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.cxf</groupId>
-						<artifactId>cxf-rt-frontend-jaxws</artifactId>
-						<version>2.3.2</version>
-					</dependency>
-					<dependency>
-						<groupId>org.apache.cxf</groupId>
-						<artifactId>cxf-rt-frontend-simple</artifactId>
-						<version>2.3.2</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>process-classes</id>
-						<phase>process-classes</phase>
-						<configuration>
-							<className>it.geosolutions.figis.ws.impl.FigisServiceImpl</className>
-							<genWsdl>true</genWsdl>
-							<verbose>true</verbose>
-						</configuration>
-						<goals>
-							<goal>java2ws</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+        <!-- Local jars -->
+        <dependency>
+            <groupId>wfs2rdf</groupId>
+            <artifactId>wfs2rdf</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>wfs2rdf</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>wfs2rdf</groupId>
+            <artifactId>geowl</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>wfs2rdf</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>wfs2rdf</groupId>
+            <artifactId>iri</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>wfs2rdf</groupId>
+            <artifactId>jena</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>wfs2rdf</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 
-		</plugins>
-	</build>
-	<repositories>
-		<repository>
-			<url>http://download.java.net/maven/2</url>
-			<id>metro</id>
-			<layout>default</layout>
-			<name>Repository for library[metro]</name>
-		</repository>
-	</repositories>
+    <build>
+        <finalName>ie-services</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-java2ws-plugin</artifactId>
+                <version>2.3.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.cxf</groupId>
+                        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                        <version>2.3.2</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.cxf</groupId>
+                        <artifactId>cxf-rt-frontend-simple</artifactId>
+                        <version>2.3.2</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>process-classes</id>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <className>it.geosolutions.figis.ws.impl.FigisServiceImpl</className>
+                            <genWsdl>true</genWsdl>
+                            <verbose>true</verbose>
+                        </configuration>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+<!--    <repositories>
+        <repository>
+            <url>http://download.java.net/maven/2</url>
+            <id>metro</id>
+            <layout>default</layout>
+            <name>Repository for library[metro]</name>
+        </repository>
+    </repositories>-->
 </project>

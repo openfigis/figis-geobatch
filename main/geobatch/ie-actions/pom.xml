@@ -27,8 +27,8 @@
     <version>1.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>GeoBatch actions</name>
-    <description>GeoSolutions GeoBatch actions.</description>
+    <name>GeoBatch actions: IE</name>
+    <description>GeoSolutions GeoBatch actions for Intersection Engine</description>
 
     <url>http://www.geo-solutions.it/maven_reports/gb/flow-managers/</url>
 
@@ -68,18 +68,15 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -141,34 +138,10 @@
     <!-- =========================================================== -->
     <!--     Modules for the build in approximate dependency order   -->
     <!-- =========================================================== -->
-    <profiles>
-    
-        <profile>
-            <id>intersection</id>
-            <activation>
-                <property>
-                    <name>all</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <modules>
-                <module>intersection</module>
-            </modules>
-        </profile>
 
-        <profile>
-            <id>setting</id>
-            <activation>
-                <property>
-                    <name>all</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <modules>
-				<module>setting</module>
-            </modules>
-        </profile>
-        
-    </profiles>
+    <modules>
+        <module>intersection</module>
+        <module>setting</module>
+    </modules>
     
 </project>

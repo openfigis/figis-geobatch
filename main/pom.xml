@@ -1,42 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- =======================================================================
-        Maven Project Configuration File
 
-        GeoSolutions GeoBatch Project
-            http://geobatch.codehaus.org
-
-        Version: $Id: pom.xml 63 2008-04-04 11:22:11Z alessio $
-======================================================================= -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    
     <!-- =========================================================== -->
     <!--     Project Description                                     -->
     <!-- =========================================================== -->
-    <parent>
-        <groupId>it.geosolutions.figis</groupId>
-        <artifactId>figis-root</artifactId>
-        <version>1.3-SNAPSHOT</version>
-    </parent>
-
-    <groupId>it.geosolutions.geobatch.figis</groupId>
-    <artifactId>gb-figis</artifactId>
+    <groupId>it.geosolutions.figis</groupId>
+    <artifactId>figis-root</artifactId>
     <version>1.3-SNAPSHOT</version>
+
     <packaging>pom</packaging>
-
-
-    <name>GeoSolutions GeoBatch - figis</name>
+    
+    <name>FIGIS projects root</name>
     <url>https://github.com/openfigis/</url>
 
     <!--    <scm>
-            <connection>
-                scm:svn:https://svn.codehaus.org/geobatch/trunk/
-            </connection>
-            <url>https://svn.codehaus.org/geobatch/trunk/</url>
-        </scm>
-    -->
+      <url>https://svn.codehaus.org/geobatch/trunk/</url>
+      <connection>scm:svn:https://svn.codehaus.org/geobatch/trunk/</connection>
+    </scm> -->
+
     <description>
-        The GeoBatch project for FAO FIGIS
+        FIGIS projects: include GeoBatch IntersectionEngine and VME
     </description>
 
     <organization>
@@ -152,10 +137,8 @@
 		
         <gs.manager>1.4-SNAPSHOT</gs.manager>
         <gb.version>1.3-SNAPSHOT</gb.version>
-        <gt.version>8-SNAPSHOT</gt.version>
         <tools.version>1.1-SNAPSHOT</tools.version>
     </properties>
-
   
     <!-- =========================================================== -->
     <!--     Dependency Management                                   -->
@@ -245,13 +228,7 @@
                 <artifactId>gb-action-ftp</artifactId>
                 <version>${gb.version}</version>
             </dependency>
-			
-            <dependency>
-                <groupId>it.geosolutions.geobatch</groupId>
-                <artifactId>gb-core-impl</artifactId>
-                <version>${gb.version}</version>
-            </dependency>
-			
+						
             <dependency>
                 <groupId>it.geosolutions.geobatch</groupId>
                 <artifactId>gb-alias-registry</artifactId>
@@ -306,27 +283,7 @@
                 <artifactId>gb-action-figis-setting</artifactId>
                 <version>${gb.version}</version>
             </dependency>
-
-            <!-- TODO : these GT deps should be moved into base GB -->
-            <dependency>
-                <groupId>org.geotools</groupId>
-                <artifactId>gt-process-feature</artifactId>
-                <version>${gt.version}</version>
-            </dependency>
-            <!--  we need these for the connection to Oracle -->
-            <dependency>
-                <groupId>org.geotools.jdbc</groupId>
-                <artifactId>gt-jdbc-oracle</artifactId>
-                <version>${gt.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.geotools</groupId>
-                <artifactId>gt-wfs</artifactId>
-                <version>${gt.version}</version>
-            </dependency>
-
-
+ 
         </dependencies>
     </dependencyManagement>
 
@@ -540,11 +497,11 @@
             <url>http://maven.geo-solutions.it</url>
         </repository>
 
-        <repository>
+<!--        <repository>
             <id>java.net</id>
             <name>java.net Repository</name>
             <url>http://download.java.net/maven/2/</url>
-        </repository>
+        </repository>-->
         <!-- camel -->
         <repository>
             <id>camel.internal.maven.repository</id>
@@ -614,8 +571,8 @@
     <!--     Modules for the build in approximate dependency order   -->
     <!-- =========================================================== -->
     <modules>
-        <module>ie-actions</module>
-        <module>webapp</module>
+        <module>ie</module>
+        <module>geobatch</module>
     </modules>
     
     <distributionManagement>
@@ -628,82 +585,5 @@
             <url>ftp://maven.geo-solutions.it</url>
         </repository>
     </distributionManagement>
-    
-    <!-- Profiles set on the command-line overwrite default properties. -->
-    <profiles>
-        <profile>
-            <id>extensive.tests</id>
-            <properties>
-                <extensive.tests>true</extensive.tests>
-            </properties>
-        </profile>
-        <profile>
-            <id>interactive.tests</id>
-            <properties>
-                <interactive.tests>true</interactive.tests>
-            </properties>
-        </profile>
-        <profile>
-            <id>site.build</id>
-            <properties>
-                <allow.test.skip>false</allow.test.skip>
-                <allow.test.failure.ignore>true</allow.test.failure.ignore>
-                <extensive.tests>true</extensive.tests>
-            </properties>
-        </profile>
-        <profile>
-            <id>online</id>
-            <properties>
-                <online.skip.pattern>disabled</online.skip.pattern>
-            </properties>
-        </profile>
-        <profile>
-            <id>stress</id>
-            <properties>
-                <stress.skip.pattern>disabled</stress.skip.pattern>
-            </properties>
-        </profile>
-        <profile>
-            <id>java5</id>
-            <activation>
-                <jdk>1.5</jdk>
-            </activation>
-            <reporting>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <source>1.5</source>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </reporting>
-        </profile>
-        <profile>
-            <id>site.geosolutions</id>
-            <distributionManagement>
-                <site>
-                    <id>site-geosolutions</id>
-                    <name>Web site for Maven reports</name>
-                    <url>scp://www.geo-solutions.it/var/www/geo-solutions.it/maven/reports/gb</url>
-                </site>
-            </distributionManagement>
-        </profile>
-		
-        <!-- deploy libs -->
-        <profile>
-            <id>deployJar</id>
-            <activation>
-                <property>
-                    <name>deployJar</name>
-                </property>
-            </activation>
-            <modules>
-                <module>deploy</module>
-            </modules>
-        </profile>
-        
-    </profiles>
-
+    	        
 </project>

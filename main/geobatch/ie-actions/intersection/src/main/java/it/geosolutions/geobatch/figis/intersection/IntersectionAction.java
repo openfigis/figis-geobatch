@@ -63,7 +63,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.feature.gs.BufferFeatureCollection;
 import org.geotools.process.feature.gs.ClipProcess;
-import org.geotools.process.feature.gs.EraseProcess;
+//import org.geotools.process.feature.gs.EraseProcess;
 import org.geotools.process.feature.gs.FeatureProcess;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
