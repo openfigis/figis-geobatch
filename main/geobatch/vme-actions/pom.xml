@@ -6,16 +6,34 @@
 		<groupId>it.geosolutions.geobatch.figis</groupId>
 		<version>1.3-SNAPSHOT</version>
 	</parent>
-	<groupId>it.geosolutions.geobatch.figis</groupId>
+	<groupId>org.fao.fi.vme.geobatch</groupId>
 	<artifactId>gb-actions-vme</artifactId>
 	<version>1.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 
 	<name>GeoBatch actions: VME</name>
-	<description>GeoSolutions GeoBatch actions for the VME database</description>
+	<description>GeoBatch actions for the VME database</description>
 
-
+	<organization>
+		<name>FAO Fisheries and Aquaculture department - FIGIS</name>
+		<url>http://www.fao.org/fi</url>
+	</organization>
+	
+	<inceptionYear>2013</inceptionYear>
+	
+	<developers>
+		<developer>
+			<name>Emmanuel Blondel</name>
+			<id>eblondel</id>
+			<email>emmanuel.blondel@fao.org</email>
+			<roles>
+				<role>GIS Consultant</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	
 	<dependencies>
 		<!-- tools -->
 		<dependency>
@@ -99,5 +117,10 @@
 
 		</plugins>
 	</build>
+	
+	<modules>
+		<module>gb-action-vme-ingestion</module>
+	</modules>
+
 
 </project>

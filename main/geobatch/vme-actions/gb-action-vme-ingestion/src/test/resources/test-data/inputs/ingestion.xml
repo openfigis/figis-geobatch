@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VMEIngestionConfiguration>
+	<serviceID>VMEIngestionGeneratorService</serviceID>
+	<id>VMEIngestionGeneratorService</id>
+	<description>action to compute and ingest zonal stats</description>
+	<name>VMEIngestionConfiguration</name>
+	<failIgnored>false</failIgnored>
+
+	<purgeData>true</purgeData>
+	
+	<outputFeature>
+		<typeName>VME_AREAS</typeName>
+		<crs>EPSG:4326</crs>
+		<dataStore>
+			<entry>
+				<string>dbtype</string>
+				<string>oracle</string>
+			</entry>
+			<entry>
+				<string>host</string>
+				<string>localhost</string>
+			</entry>
+			<entry>
+				<string>port</string>
+				<string>1521</string>
+			</entry>
+			<entry>
+				<string>database</string>
+				<string>GISDB</string>
+			</entry>
+			<entry>
+				<string>schema</string>
+				<string>GIS_USER</string>
+			</entry>
+			<entry>
+				<string>user</string>
+				<string>GIS_USER</string>
+			</entry>
+			<entry>
+				<string>passwd</string>
+				<string>gis_pwd</string>
+			</entry>
+		</dataStore>
+	</outputFeature>
+	<projectOnMappings>false</projectOnMappings>
+    <attributeMappings/>
+</VMEIngestionConfiguration>
