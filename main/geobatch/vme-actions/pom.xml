@@ -120,6 +120,7 @@
 	
 	<modules>
 		<module>gb-action-vme-ingestion</module>
+		<module>gb-action-vme-zonalstats</module>
 	</modules>
 
 

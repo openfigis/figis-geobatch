@@ -245,6 +245,12 @@
                 <artifactId>gb-action-ftp</artifactId>
                 <version>${gb.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>it.geosolutions.geobatch</groupId>
+                <artifactId>gb-action-ds2ds</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
 			
             <dependency>
                 <groupId>it.geosolutions.geobatch</groupId>
@@ -325,7 +331,25 @@
                 <artifactId>gt-wfs</artifactId>
                 <version>${gt.version}</version>
             </dependency>
-
+            
+            <!-- required for VME ZonalStats -->
+             <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-xml</artifactId>
+                <version>${gt.version}</version>
+            </dependency>
+			
+			<!-- Adding Junit at this level -->
+			<!-- Note: at the moment this dependency is added in ie-sdk,
+			to see if the ie-sdk is still required with the recent repo
+			refactor. For the timebeing it is added in this POM
+			 -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.2</version>
+				<scope>test</scope>
+			</dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -339,7 +363,13 @@
         NOTE: do not specify version here unless it is necessary/required
         NOTE: in this case I suggest to use the dependencyManagement block above
         -->
-        <!--  geoserver manager  -->
+        
+        <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+        
 
     </dependencies>
 

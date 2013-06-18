@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-init-method="init" default-destroy-method="dispose">
+
+	<!-- Environment Initialization -->	
+	<bean id="VMEZonalStatsGeneratorService" class="org.fao.fi.vme.geobatch.VMEZonalStatsGeneratorService">
+		<constructor-arg type="String"><value>ZonalStatsGeneratorService</value></constructor-arg>	
+	</bean>
+	
+	<bean id="VMEZonalStatsAliasRegistrar" class="org.fao.fi.vme.geobatch.VMEZonalStatsAliasRegistrar" lazy-init="false">
+		<constructor-arg ref="aliasRegistry" />
+	</bean>
+</beans>
