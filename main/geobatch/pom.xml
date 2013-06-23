@@ -312,6 +312,18 @@
                 <artifactId>gb-action-figis-setting</artifactId>
                 <version>${gb.version}</version>
             </dependency>
+            
+             <dependency>
+                <groupId>org.fao.fi.vme.geobatch</groupId>
+                <artifactId>gb-action-vme-ingestion</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
+            
+             <dependency>
+                <groupId>org.fao.fi.vme.geobatch</groupId>
+                <artifactId>gb-action-vme-zonalstats</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
 
             <!-- TODO : these GT deps should be moved into base GB -->
             <dependency>

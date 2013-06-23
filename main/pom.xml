@@ -284,6 +284,17 @@
                 <version>${gb.version}</version>
             </dependency>
  
+ 			<dependency>
+                <groupId>org.fao.fi.vme.geobatch</groupId>
+                <artifactId>gb-action-vme-ingestion</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
+            
+             <dependency>
+                <groupId>org.fao.fi.vme.geobatch</groupId>
+                <artifactId>gb-action-vme-zonalstats</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

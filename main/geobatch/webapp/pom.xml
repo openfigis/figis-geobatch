@@ -94,6 +94,14 @@
 			<groupId>it.geosolutions.geobatch.figis</groupId>
 			<artifactId>gb-action-figis-setting</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.fao.fi.vme.geobatch</groupId>
+			<artifactId>gb-action-vme-ingestion</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.fao.fi.vme.geobatch</groupId>
+			<artifactId>gb-action-vme-zonalstats</artifactId>
+		</dependency>
 
 		<!-- ============================== -->
 		<!-- Test: JETTY -->
@@ -253,7 +261,39 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		
+		<!-- VME actions profiles -->
+		<profile>
+			<id>ingestion</id>
+			<activation>
+				<property>
+					<name>all</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.fao.fi.vme.geobatch</groupId>
+					<artifactId>gb-action-vme-ingestion</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
 
+		<profile>
+			<id>zonalstats</id>
+			<activation>
+				<property>
+					<name>all</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.fao.fi.vme.geobatch</groupId>
+					<artifactId>gb-action-vme-zonalstats</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
 	</profiles>
 
 </project>
