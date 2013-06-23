@@ -14,7 +14,7 @@ public class VMEIngestionAliasRegistrar extends AliasRegistrar {
 	public VMEIngestionAliasRegistrar(AliasRegistry registry) {
 		LOGGER.info(getClass().getSimpleName() + ": registering alias.");
 		
-		registry.putAlias("IngestionConfiguration", VMEIngestionConfiguration.class);
+		registry.putAlias("VMEIngestionConfiguration", VMEIngestionConfiguration.class);
 		
 	}
 	

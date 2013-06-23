@@ -14,7 +14,7 @@ public class VMEZonalStatsAliasRegistrar extends AliasRegistrar {
 	public VMEZonalStatsAliasRegistrar(AliasRegistry registry) {
 		LOGGER.info(getClass().getSimpleName() + ": registering alias.");
 		
-		registry.putAlias("ZonalStatsConfiguration", VMEZonalStatsConfiguration.class);
+		registry.putAlias("VMEZonalStatsConfiguration", VMEZonalStatsConfiguration.class);
 		
 	}
 	
