@@ -299,6 +299,13 @@
                 <version>${gb.version}</version>
             </dependency>
 			
+			<!-- FIRMS GB actions -->
+			<dependency>
+                <groupId>org.fao.fi.firms.geobatch</groupId>
+                <artifactId>gb-action-firms-geocoverage</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
+			
 			<!-- Geosolutions tools -->
             <dependency>
                 <groupId>it.geosolutions.tools</groupId>
