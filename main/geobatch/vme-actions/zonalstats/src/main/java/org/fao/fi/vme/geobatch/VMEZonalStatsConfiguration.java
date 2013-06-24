@@ -85,7 +85,9 @@ public class VMEZonalStatsConfiguration extends Ds2dsConfiguration{
     public VMEZonalStatsConfiguration clone() { 
         final VMEZonalStatsConfiguration configuration = (VMEZonalStatsConfiguration) super
                 .clone();
-
+        
+        configuration.setGeoserverURL(geoserverURL);
+        configuration.setWorkspace(workspace);
         configuration.setCoverage(coverage);
         configuration.setGeoIdentifier(geoIdentifier);
         return configuration;
