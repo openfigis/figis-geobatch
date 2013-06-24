@@ -13,7 +13,7 @@ import org.junit.Test;
 public class VMEZonalStatsGeneratorServiceTest {
 
 	private static VMEZonalStatsConfiguration CONFIGURATION = new VMEZonalStatsConfiguration("id", "name", "description");
-	private VMEZonalStatsGeneratorService generatorService = new VMEZonalStatsGeneratorService("Ds2dsGeoServerGeneratorService");
+	private VMEZonalStatsGeneratorService generatorService = new VMEZonalStatsGeneratorService("VMEZonalStatsGeneratorService");
 
 	@Test
 	public void testConfigurationIsGenerated() {		

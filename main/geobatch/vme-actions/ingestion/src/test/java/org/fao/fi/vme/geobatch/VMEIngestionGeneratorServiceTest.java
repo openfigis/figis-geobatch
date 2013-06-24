@@ -18,7 +18,7 @@ import org.junit.Test;
 public class VMEIngestionGeneratorServiceTest {
 
 	private static VMEIngestionConfiguration CONFIGURATION = new VMEIngestionConfiguration("id", "name", "description");
-	private VMEIngestionGeneratorService generatorService = new VMEIngestionGeneratorService("Ds2dsGeoServerGeneratorService");
+	private VMEIngestionGeneratorService generatorService = new VMEIngestionGeneratorService("VMEIngestionGeneratorService");
 
 	@Test
 	public void testConfigurationIsGenerated() {		
