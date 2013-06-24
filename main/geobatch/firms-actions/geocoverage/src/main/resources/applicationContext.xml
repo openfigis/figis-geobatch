@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-init-method="init" default-destroy-method="dispose">
+
+	<!-- Environment Initialization -->	
+	<bean id="GeoCoverageGeneratorService" class="org.fao.fi.firms.geobatch.GeoCoverageGeneratorService">
+		<constructor-arg type="String"><value>GeoCoverageGeneratorService</value></constructor-arg>	
+	</bean>
+	
+	<bean id="GeoCoverageAliasRegistrar" class="org.fao.fi.firms.geobatch.GeoCoverageAliasRegistrar" lazy-init="false">
+		<constructor-arg ref="aliasRegistry" />
+	</bean>
+</beans>
