@@ -658,6 +658,7 @@
     <modules>
         <module>ie-actions</module>
         <module>vme-actions</module>
+        <module>firms-actions</module>
         <module>webapp</module>
     </modules>
     
