@@ -119,8 +119,8 @@
 	</build>
 	
 	<modules>
-		<module>gb-action-vme-ingestion</module>
-		<module>gb-action-vme-zonalstats</module>
+		<module>ingestion</module>
+		<module>zonalstats</module>
 	</modules>
 
 
