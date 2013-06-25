@@ -135,7 +135,7 @@
 		        
         <project.version>2.0-SNAPSHOT</project.version>
 		
-        <gs.manager>1.5.2</gs.manager>
+        <gs.manager>1.5-SNAPSHOT</gs.manager>
         <gb.version>1.3-SNAPSHOT</gb.version>
         <tools.version>1.1-SNAPSHOT</tools.version>
     </properties>
