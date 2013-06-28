@@ -50,7 +50,10 @@
 
 		
 		<!-- geotools -->
-
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-csv</artifactId>
+		</dependency>
 
 		<!-- tools -->
 		<dependency>
@@ -75,6 +78,7 @@
 			<version>1.2.16</version>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>

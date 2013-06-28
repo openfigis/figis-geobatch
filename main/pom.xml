@@ -185,6 +185,12 @@
                 <artifactId>gt-xml</artifactId>
                 <version>${gt.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-csv</artifactId>
+                <version>${gt.version}</version>
+            </dependency>
 
 			<!-- GeoBatch core -->
             <dependency>
@@ -329,6 +335,13 @@
              <dependency>
                 <groupId>org.fao.fi.vme.geobatch</groupId>
                 <artifactId>gb-action-vme-zonalstats</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
+            
+            <!-- GeoBatch FIRMS actions -->
+            <dependency>
+                <groupId>org.fao.fi.firms.geobatch</groupId>
+                <artifactId>gb-action-firms-geocoverage</artifactId>
                 <version>${gb.version}</version>
             </dependency>
             

@@ -33,7 +33,7 @@ public class GeoCoverageConfigurationTest {
 		configuration = new GeoCoverageConfiguration("id", "name", "description");
 		
 		configuration.setGeoserverURL("http://localhost:8080/geoserver");
-		configuration.setNamespace("firms");
+		configuration.setNamespace("geofirms");
 		configuration.setRefAttribute("layer");
 		
 	}
@@ -52,7 +52,7 @@ public class GeoCoverageConfigurationTest {
 		GeoCoverageConfiguration config = (GeoCoverageConfiguration) cfg;
 		
 		assertEquals("http://localhost:8080/geoserver",config.getGeoserverURL());
-		assertEquals("firms",config.getNamespace());
+		assertEquals("geofirms",config.getNamespace());
 		assertEquals("layer",config.getRefAttribute());
 
 

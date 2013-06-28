@@ -10,13 +10,12 @@
 	
 	<!-- specific action parameters -->
 	<geoserverURL>http://localhost:8080/geoserver</geoserverURL>	<!-- Geoserver instance URL where to query the reference layers -->
-	<namespace>firms</namespace>									<!-- Geoserver namespace were reference layers are published -->
+	<namespace>geofirms</namespace>									<!-- Geoserver namespace were reference layers are published -->
 	<refAttribute>layer</refAttribute>								<!-- the reference attribute that handle the reference layers -->
 	
 	<!-- output datastore parameters -->
 	<outputFeature>
-		<typeName>FIRMS_COVERAGE</typeName>
-		<crs>EPSG:4326</crs>
+		<typeName>GB_FIRMS_DATA</typeName>
 		<dataStore>
 			<entry>
 				<string>dbtype</string>
@@ -48,4 +47,6 @@
 			</entry>
 		</dataStore>
 	</outputFeature>
+	<projectOnMappings>false</projectOnMappings>
+    <attributeMappings/>
 </GeoCoverageConfiguration>

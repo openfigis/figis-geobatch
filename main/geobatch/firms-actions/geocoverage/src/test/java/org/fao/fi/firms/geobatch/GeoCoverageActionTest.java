@@ -2,11 +2,7 @@ package org.fao.fi.firms.geobatch;
 
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
-import it.geosolutions.geobatch.actions.ds2ds.dao.FeatureConfiguration;
-
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URISyntaxException;
 import java.util.EventObject;
 import java.util.LinkedList;
@@ -32,7 +28,7 @@ public class GeoCoverageActionTest{
 	GeoCoverageConfiguration configuration;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 	XStream stream = new XStream();
 	stream.alias("GeoCoverageConfiguration",
 			GeoCoverageConfiguration.class);
@@ -42,10 +38,10 @@ public class GeoCoverageActionTest{
 	}
 	
 	@Test
-	public void testExecuteXml() throws Exception {
+	public void testExecuteCsv() throws Exception {
 	
 		Queue<EventObject> events = new LinkedList<EventObject>();
-		events.add(new FileSystemEvent(getResourceFile("test.csv"),
+		events.add(new FileSystemEvent(getResourceFile("test_gb_coverage.csv"),
 										FileSystemEventType.FILE_ADDED));
 
 		GeoCoverageAction action = new GeoCoverageAction(configuration);
