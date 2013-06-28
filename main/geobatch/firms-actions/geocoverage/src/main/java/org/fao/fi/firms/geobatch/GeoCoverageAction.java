@@ -3,6 +3,7 @@ package org.fao.fi.firms.geobatch;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,7 +140,7 @@ public class GeoCoverageAction extends DsBaseAction {
 			
 			updateTask("Data ingestion");
 			destDataStore = createOutputDataStore();	
-			SimpleFeatureType schema = result.getSchema();
+			SimpleFeatureType schema = buildDestinationSchema(result.getSchema());
 			
 			FeatureStore<SimpleFeatureType, SimpleFeature> featureWriter = createOutputWriter(
 					destDataStore, schema, transaction);	
@@ -275,6 +277,115 @@ public class GeoCoverageAction extends DsBaseAction {
 		}
 		
 		return new ListFeatureCollection(ft, features);
+	}
+	
+	
+	/**
+	 * From Ds2ds Action
+	 * =========================
+	 * 
+	 */
+	
+	
+	/**
+	 * Builds the output Feature schema.
+	 * By default it uses the original source schema, if not overriden by configuration.
+	 * 
+	 * @param sourceSchema
+	 * @return
+	 */
+	private SimpleFeatureType buildDestinationSchema(
+			SimpleFeatureType sourceSchema) {		
+		String typeName = configuration.getOutputFeature().getTypeName();
+		if (typeName == null) {
+			typeName = sourceSchema.getTypeName();
+			configuration.getOutputFeature().setTypeName(typeName);
+		}
+		CoordinateReferenceSystem crs = configuration.getOutputFeature()
+				.getCoordinateReferenceSystem();
+		if (crs == null) {
+			crs = sourceSchema.getCoordinateReferenceSystem();
+			configuration.getOutputFeature().setCoordinateReferenceSystem(crs);
+		}
+		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+		builder.setCRS(crs);
+		builder.setName(typeName);
+		
+		for(String attributeName : buildOutputAttributes(sourceSchema)) {
+			builder.add(buildSchemaAttribute(attributeName, sourceSchema, crs));			
+		}				
+		return builder.buildFeatureType();				
+	}
+
+	/**
+	 * Builds the list of output attributes, looking at mappings configuration and
+	 * source schema.
+	 * 
+	 * @param sourceSchema
+	 * @return
+	 */
+	private Collection<String> buildOutputAttributes(SimpleFeatureType sourceSchema) {
+		
+		if(configuration.isProjectOnMappings()) {
+			return configuration.getAttributeMappings().keySet();			
+		} else {
+			List<String> attributes = new ArrayList<String>();
+			for (AttributeDescriptor attr : sourceSchema.getAttributeDescriptors()) {
+				attributes.add(getAttributeMapping(attr.getLocalName()));
+			}
+			return attributes;
+		}				
+	}
+
+	/**
+	 * Gets the eventual output mapping for the given source attribute name.
+	 * 
+	 * @param localName
+	 * @return
+	 */
+	private String getAttributeMapping(String localName) {
+		for(String outputName : configuration.getAttributeMappings().keySet()) {
+			if(configuration.getAttributeMappings().get(outputName).toString().equals(localName)) {
+				return outputName;
+			}
+		}
+		return localName;
+	}
+	
+	/**
+	 * Builds a single attribute for the output Feature schema.
+	 * By default it uses the original source attribute definition, if not overridden by
+	 * configuration. 
+	 * @param attr
+	 * @param crs crs to use for geometric attributes
+	 * @return
+	 */
+	private AttributeDescriptor buildSchemaAttribute(String attributeName,
+			SimpleFeatureType schema, CoordinateReferenceSystem crs) {
+		AttributeDescriptor attr;
+		if (configuration.getAttributeMappings().containsKey(attributeName)) {
+			attr = schema.getDescriptor(configuration.getAttributeMappings()
+					.get(attributeName).toString());
+		} else {
+			attr = schema.getDescriptor(attributeName);
+		}	
+		AttributeTypeBuilder builder = new AttributeTypeBuilder();
+		builder.setName(attr.getLocalName());
+		builder.setBinding(attr.getType().getBinding());
+		if (attr instanceof GeometryDescriptor) {
+			if (crs == null) {
+				crs = ((GeometryDescriptor) attr).getCoordinateReferenceSystem();
+			}
+			builder.setCRS(crs);
+		}
+
+		// set descriptor information
+		builder.setMinOccurs(attr.getMinOccurs());
+		builder.setMaxOccurs(attr.getMaxOccurs());
+		builder.setNillable(attr.isNillable());
+
+		return builder.buildDescriptor(attributeName);
+
 	}
 	
 }

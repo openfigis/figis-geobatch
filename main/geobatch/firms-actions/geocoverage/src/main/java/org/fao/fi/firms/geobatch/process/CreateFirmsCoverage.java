@@ -138,7 +138,7 @@ public class CreateFirmsCoverage implements FigisProcess{
 
     		// SimpleFeatureType & SimpleFeatureBuilder
     		SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-    		tb.setName("FirmsCoverage");
+    		tb.setName(features.getSchema().getName());
     		
     		// add geometry property
     		tb.setCRS(DefaultGeographicCRS.WGS84);     
