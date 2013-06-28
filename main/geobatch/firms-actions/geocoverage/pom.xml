@@ -102,6 +102,44 @@
 			<scope>test</scope>
       	</dependency>
 
+
+		<!-- ======================================================= 
+			   Deps from WPS CreateFirmsCoverage (figis-wps-process)   
+		   	   (temporarily set-up here waiting for remote access
+		   	    to developping tools (Jenkins, Artifactory)			  
+		     ======================================================== -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-process</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-wfs</artifactId>
+		</dependency>
+	
+		<!-- Geoserver -->
+		<dependency>
+			<groupId>org.geoserver.extension</groupId>
+			<artifactId>wps-core</artifactId>
+			<version>2.2</version>
+		</dependency>
+		
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.geoserver</groupId>
+			<artifactId>main</artifactId>
+			<version>2.2</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.mockrunner</groupId>
+			<artifactId>mockrunner</artifactId>
+			<version>0.3.1</version>
+			<scope>test</scope>
+		</dependency>
 	
 	</dependencies>
 

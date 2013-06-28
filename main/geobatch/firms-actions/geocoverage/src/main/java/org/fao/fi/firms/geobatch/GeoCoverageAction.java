@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.io.FilenameUtils;
+import org.fao.fi.firms.geobatch.process.CreateFirmsCoverage;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -21,7 +22,6 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -125,14 +125,16 @@ public class GeoCoverageAction extends DsBaseAction {
 			Query query = buildSourceQuery(sourceDataStore);
 			FeatureStore<SimpleFeatureType, SimpleFeature> featureReader = createSourceReader(
 					sourceDataStore, transaction, query);
-
+			SimpleFeatureCollection data = (SimpleFeatureCollection) featureReader.getFeatures();
+			
 			updateTask("Geographic coverage computation");
-			result = this.cleanInputData((SimpleFeatureCollection) featureReader.getFeatures());
-			/*CreateFirmsCoverage wps = new CreateFirmsCoverage(); //use of custom FIGIS WPS process (figis-wps-process module)
+			CreateFirmsCoverage wps = new CreateFirmsCoverage(); //use of custom FIGIS WPS process (figis-wps-process module)
 			result = wps.execute(
-					this.cleanInputData((SimpleFeatureCollection) featureReader.getFeatures()),
+					this.cleanInputData(data),
 					conf.getGeoserverURL(), conf.getNamespace(),
-					conf.getRefAttribute());*/
+					conf.getRefAttribute());
+			
+			LOGGER.warn(result.getBounds().toString());
 			
 			updateTask("Data ingestion");
 			destDataStore = createOutputDataStore();	
@@ -150,11 +152,12 @@ public class GeoCoverageAction extends DsBaseAction {
 			
 			updateTask("Reading coverage data");
 			int total = result.size();
-			FeatureIterator<SimpleFeature> iterator = result.features();
+			SimpleFeatureIterator iterator = result.features();
 			try {
 				int count = 0;
 				while (iterator.hasNext()) {
 					SimpleFeature feature = buildFeature(builder,iterator.next(), schemaDiffs);
+					
 					featureWriter.addFeatures(DataUtilities.collection(feature));
 					count++;
 					if (count % 100 == 0) {
