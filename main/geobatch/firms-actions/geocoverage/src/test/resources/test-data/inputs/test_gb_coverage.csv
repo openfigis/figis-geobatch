@@ -1,4 +1,4 @@
-"cd_rowid","enabled","layer","rfb","status","resource","scale","quality","quantity","name","un_code","eez_code","farea_code","eco_code","lme_code","lme_name","mr_count","mr_est","f_count","f_est","fish_act","prod_sys","fish_res","man_unit","juris","mu_res_count","mu_res_est","mr_valid","mr_pub","f_valid","f_pub"
+"cd_rowid","enabled","layer","rfb","status","res_type","scale","quality","quantity","name","un_code","eez_code","farea_code","eco_code","lme_code","lme_name","mr_count","mr_est","f_count","f_est","fish_act","prod_sys","fish_res","man_unit","juris","mu_res_count","mu_res_est","mr_valid","mr_pub","f_valid","f_pub"
 151,1,"T_FAO_EEZ_CUTBYLME","","FAO","coastal","National",1,3,"China","156","209","61",NA,NA,NA,0,110,0,0,0,0,0,0,0,0,0,"N","N","N","N"
 152,1,"T_FAO_EEZ_CUTBYLME","","FAO","coastal","National",1,3,"Japan","392","210","61",NA,NA,NA,0,80,0,0,0,0,0,0,0,0,0,"N","N","N","N"
 77,1,"T_FAO_EEZ_CUTBYLME","","FAO","coastal","sub-Regional",0,2,"Brazil; Uruguay; Argentina","","","",NA,NA,NA,6,0,0,0,0,0,0,0,0,0,0,"N","N","N","N"

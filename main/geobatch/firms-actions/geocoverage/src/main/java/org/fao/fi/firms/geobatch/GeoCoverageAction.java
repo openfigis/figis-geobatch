@@ -136,14 +136,12 @@ public class GeoCoverageAction extends DsBaseAction {
 					conf.getGeoserverURL(), conf.getNamespace(),
 					conf.getRefAttribute());
 			
-			LOGGER.warn(result.getBounds().toString());
-			
 			updateTask("Data ingestion");
 			destDataStore = createOutputDataStore();	
 			SimpleFeatureType schema = buildDestinationSchema(result.getSchema());
 			
 			FeatureStore<SimpleFeatureType, SimpleFeature> featureWriter = createOutputWriter(
-					destDataStore, schema, transaction);	
+					destDataStore, schema, transaction);
 			SimpleFeatureType destSchema = featureWriter.getSchema();
 			
 			// check for schema case differences from input to output
@@ -159,7 +157,6 @@ public class GeoCoverageAction extends DsBaseAction {
 				int count = 0;
 				while (iterator.hasNext()) {
 					SimpleFeature feature = buildFeature(builder,iterator.next(), schemaDiffs);
-					
 					featureWriter.addFeatures(DataUtilities.collection(feature));
 					count++;
 					if (count % 100 == 0) {
@@ -217,12 +214,7 @@ public class GeoCoverageAction extends DsBaseAction {
 		if(sourceFeature.getTypeName() == null) {
 			sourceFeature.setTypeName(source.getTypeNames()[0]);
 		}
-		// if no CRS is configured, takes if from the feature
-		if (sourceFeature.getCrs() == null) {
-			sourceFeature.setCoordinateReferenceSystem(source.getSchema(
-					sourceFeature.getTypeName())
-					.getCoordinateReferenceSystem());
-		}
+
 		configuration.setSourceFeature(sourceFeature);
 		return source;
 	}

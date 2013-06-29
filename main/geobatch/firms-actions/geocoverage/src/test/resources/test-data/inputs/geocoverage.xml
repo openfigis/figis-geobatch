@@ -16,6 +16,7 @@
 	<!-- output datastore parameters -->
 	<outputFeature>
 		<typeName>GB_FIRMS_DATA</typeName>
+		<crs>EPSG:4326</crs>
 		<dataStore>
 			<entry>
 				<string>dbtype</string>
