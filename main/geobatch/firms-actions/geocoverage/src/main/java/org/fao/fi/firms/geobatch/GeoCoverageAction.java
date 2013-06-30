@@ -56,6 +56,8 @@ public class GeoCoverageAction extends DsBaseAction {
 	
 	final GeoCoverageConfiguration conf;
 	
+	SimpleFeature feature;
+	
 	public GeoCoverageAction(ActionConfiguration actionConfiguration) {
 		super(actionConfiguration);
 		this.conf = (GeoCoverageConfiguration) actionConfiguration;	
@@ -156,7 +158,7 @@ public class GeoCoverageAction extends DsBaseAction {
 			try {
 				int count = 0;
 				while (iterator.hasNext()) {
-					SimpleFeature feature = buildFeature(builder,iterator.next(), schemaDiffs);
+					feature = buildFeature(builder,iterator.next(), schemaDiffs);
 					featureWriter.addFeatures(DataUtilities.collection(feature));
 					count++;
 					if (count % 100 == 0) {

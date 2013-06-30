@@ -41,7 +41,7 @@ public class GeoCoverageActionTest{
 	public void testExecuteCsv() throws Exception {
 	
 		Queue<EventObject> events = new LinkedList<EventObject>();
-		events.add(new FileSystemEvent(getResourceFile("test_gb_coverage.csv"),
+		events.add(new FileSystemEvent(getResourceFile("gb_firms_coverage.csv"),
 										FileSystemEventType.FILE_ADDED));
 
 		GeoCoverageAction action = new GeoCoverageAction(configuration);

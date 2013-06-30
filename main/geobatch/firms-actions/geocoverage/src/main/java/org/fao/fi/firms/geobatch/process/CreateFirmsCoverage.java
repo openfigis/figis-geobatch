@@ -24,6 +24,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+import org.slf4j.LoggerFactory;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -45,6 +46,8 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 				 description="create the FIRMS coverage from a non-spatial table"
 				 )
 public class CreateFirmsCoverage implements FigisProcess{
+	
+	private static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CreateFirmsCoverage.class);
 	
 	FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
@@ -213,6 +216,7 @@ public class CreateFirmsCoverage implements FigisProcess{
 		String refAttribute;
 		List<String> layerList;
 		
+		Geometry geom;
 		SimpleFeature next;
 		FirmsCoverageProcessor processor;
 		String layerRef;
@@ -242,6 +246,10 @@ public class CreateFirmsCoverage implements FigisProcess{
 			this.layerList = layerList;
 
 			this.layerRef = this.layerList.get(0);
+			for(String layer : layerList){
+				LOGGER.warn("layer = @"+layer+"@");
+			}
+			LOGGER.warn("REF LAYER = "+layerRef);
 			this.processor = new FirmsCoverageProcessor(geoserverURL, layerPrefix, layerRef, sourceSchema);
 
 		}
@@ -257,6 +265,7 @@ public class CreateFirmsCoverage implements FigisProcess{
             	String layer = (String) sf.getAttribute(refAttribute);
             	if(!layer.equals(this.layerRef)){
             		layerRef = layer;
+            		LOGGER.warn("REF LAYER = "+layerRef);
             		this.processor = new FirmsCoverageProcessor(geoserverURL, layerPrefix, layer, sourceSchema);
             	}
                 
@@ -293,7 +302,7 @@ public class CreateFirmsCoverage implements FigisProcess{
 		 */
 		public SimpleFeature createFirmsCoverageFeature(SimpleFeature feature){
 			
-			Geometry geom = processor.computeFirmsCoverageGeometry(feature);
+			geom = processor.computeFirmsCoverageGeometry(feature);
 			SimpleFeature result = null;
 			if(geom !=null){
 				fb.add(geom);
@@ -301,6 +310,7 @@ public class CreateFirmsCoverage implements FigisProcess{
 				computeThematicCoverage(feature);
 				
 				String ID = feature.getAttribute("cd_rowid").toString();
+				LOGGER.warn("id = "+ID);
 				result = fb.buildFeature(ID);
 				fb.reset();
 			}
