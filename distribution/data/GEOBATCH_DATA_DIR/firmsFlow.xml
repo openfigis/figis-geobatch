@@ -43,7 +43,7 @@
 	
 			<!-- specific action parameters -->
 			<geoserverURL>http://localhost:8080/geoserver</geoserverURL>	<!-- Geoserver instance URL where to query the reference layers -->
-			<namespace>geofirms</namespace>									<!-- Geoserver namespace were reference layers are published -->
+			<namespace>firms</namespace>									<!-- Geoserver namespace were reference layers are published -->
 			<refAttribute>layer</refAttribute>								<!-- the reference attribute that handle the reference layers -->
 			
 			<!-- output datastore parameters -->
@@ -104,7 +104,10 @@
 			<createDataStore>true</createDataStore>
 			<operation>PUBLISH</operation>
 			
-			<defaultStyle>firms_mr_qual_oracle</defaultStyle>
+			<styles>
+				<string>firms_geocoverage_mr_coastal_highseas</string>
+				<string>firms_geocoverage_f_coastal_highseas</string>
+			</styles>
         </DSGeoServerConfiguration>
 
     </EventConsumerConfiguration>
