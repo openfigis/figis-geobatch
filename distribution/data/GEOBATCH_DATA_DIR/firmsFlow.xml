@@ -13,7 +13,7 @@
         <watchDirectory>firmsFlow/in</watchDirectory>
         <osType>OS_UNDEFINED</osType>
         <eventType>FILE_ADDED</eventType>
-        <id>vmeFlow</id>
+        <id>firmsFlow</id>
         <keepFiles>false</keepFiles>
         <serviceID>fsEventGeneratorService</serviceID>
         <description>GeoCoverage event generator description</description>
