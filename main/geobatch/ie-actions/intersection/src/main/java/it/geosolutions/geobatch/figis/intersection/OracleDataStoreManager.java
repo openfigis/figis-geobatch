@@ -223,6 +223,7 @@ public class OracleDataStoreManager
         
         sftbTmpStats.add("MASKLAYER", String.class);
         sftbTmpStats.add("PRESERVETRGGEOM", String.class);
+        sftbTmpStats.add("STOREGEOM", String.class);
         
         sfTmpStats = sftbTmpStats.buildFeatureType();
 
@@ -244,6 +245,7 @@ public class OracleDataStoreManager
 
         sftbStats.add("MASKLAYER", String.class);
         sftbStats.add("PRESERVETRGGEOM", String.class);
+        sftbStats.add("STOREGEOM", String.class);
         
         sfStats = sftbStats.buildFeatureType();
 
@@ -325,16 +327,19 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @param srcCode
      * @param trgCode
+     * @param maskLayer
+     * @param prsrvTargetGeom
+     * @param storeGeom
      * @return
      * @throws Exception
      */
     private void actionTemp(Transaction tx, SimpleFeatureCollection collection, String srcLayer,
-        String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTargetGeom, int itemsPerPage) throws Exception
+        String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTargetGeom, String storeGeom, int itemsPerPage) throws Exception
     {
         // FIX ME: with synchronized don't fail any intersection
         cleanTempTables(tx, collection, srcLayer,
             trgLayer, srcCode, trgCode, itemsPerPage);
-        saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, itemsPerPage);
+        saveToTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, storeGeom, itemsPerPage);
     }
 
     /*********
@@ -344,10 +349,15 @@ public class OracleDataStoreManager
      * @param tx
      * @param srcLayer
      * @param trgLayer
+     * @param srcCode
+     * @param trgCode
+     * @param maskLayer
+     * @param prsrvTargetGeom
+     * @param storeGeom
      * @throws Exception
      */
     private void action(Transaction tx, String srcLayer, String trgLayer, String srcCode,
-        String trgCode, String maskLayer, String prsrvTargetGeom) throws Exception
+        String trgCode, String maskLayer, String prsrvTargetGeom, String storeGeom) throws Exception
     {
         FeatureStore featureStoreTmpData = (FeatureStore) orclDataStore.getFeatureSource(STATS_TMP_TABLE);
         FeatureStore featureStoreTmpGeom = (FeatureStore) orclDataStore.getFeatureSource(SPATIAL_TMP_TABLE);
@@ -361,7 +371,7 @@ public class OracleDataStoreManager
         featureStoreData.setTransaction(tx);
         featureStoreGeom.setTransaction(tx);
 
-        deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, featureStoreData, featureStoreGeom);
+        deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, storeGeom, featureStoreData, featureStoreGeom);
 
         if (LOGGER.isTraceEnabled())
         {
@@ -378,13 +388,16 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @param trgLayerCode
      * @param srcLayerCode
+     * @param maskLayer
+     * @param prsrvTrgGeom
+     * @param storeGeom
      * @param featureStoreData
      * @param featureStoreGeom
      * @param ds
      * @throws IOException
      */
     private void deleteOldInstancesFromPermanent(String srcLayer, String trgLayer,
-        String srcLayerCode, String trgLayerCode, String maskLayer, String prsrvTrgGeom, FeatureStore featureStoreData, FeatureStore featureStoreGeom)
+        String srcLayerCode, String trgLayerCode, String maskLayer, String prsrvTrgGeom, String storeGeom, FeatureStore featureStoreData, FeatureStore featureStoreGeom)
         throws Exception
     {
         LOGGER.info("Deleting old instances of the intersection between " + srcLayer + " and " + trgLayer);
@@ -400,7 +413,8 @@ public class OracleDataStoreManager
             Filter filter4 = ff.equals(ff.property("TRGCODENAME"), ff.literal(trgLayerCode));
             Filter filter5 = ff.equals(ff.property("MASKLAYER"), ff.literal(maskLayer));
             Filter filter6 = ff.equals(ff.property("PRESERVETRGGEOM"), ff.literal(prsrvTrgGeom));
-            Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4, filter5, filter6));
+            Filter filter7 = ff.equals(ff.property("STOREGEOM"), ff.literal(storeGeom));
+            Filter filterAnd = ff.and(Arrays.asList(filter1, filter2, filter3, filter4, filter5, filter6, filter7));
             iterator = (SimpleFeatureIterator) featureStoreData.getFeatures(filterAnd).features();
 
             while (iterator.hasNext())
@@ -484,7 +498,7 @@ public class OracleDataStoreManager
      * @throws Exception
      */
     private void saveToTemp(Transaction tx, SimpleFeatureCollection source, String srcLayer,
-        String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTargetGeom, int itemsPerPage) throws Exception
+        String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTargetGeom, String storeGeom, int itemsPerPage) throws Exception
     {
         itemsPerPage = (itemsPerPage <= 1) ? DEFAULT_PAGE_SIZE : itemsPerPage;
 
@@ -536,7 +550,7 @@ public class OracleDataStoreManager
             while (iterator.hasNext())
             {
 
-                String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + "_" + maskLayer + "_" + prsrvTargetGeom + i;
+                String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + "_" + maskLayer + "_" + prsrvTargetGeom + "_" + storeGeom + i;
 
                 SimpleFeature sf = iterator.next();
 
@@ -557,6 +571,7 @@ public class OracleDataStoreManager
                 featureBuilderData.set("TRGCODENAME", trgCode);
                 featureBuilderData.set("MASKLAYER", maskLayer);
                 featureBuilderData.set("PRESERVETRGGEOM", prsrvTargetGeom);
+                featureBuilderData.set("STOREGEOM", storeGeom);
 
                 if (LOGGER.isDebugEnabled())
                 {
@@ -585,8 +600,13 @@ public class OracleDataStoreManager
 
                 MultiPolygon geometry = (MultiPolygon) sf.getAttribute(geomName);
 
-                MultiPolygon targetGeometry = (MultiPolygon) JTS.transform(geometry, transform);
-                targetGeometry.setSRID(4326);
+                //check storeGeom param to persist (or not) the geometry
+                MultiPolygon targetGeometry = null;
+                Boolean isStoreGeom = Boolean.parseBoolean(storeGeom);
+                if(isStoreGeom){
+                    targetGeometry =(MultiPolygon) JTS.transform(geometry, transform);
+                    targetGeometry.setSRID(4326);	
+                }
 
                 featureBuilderGeom.set("THE_GEOM", targetGeometry);
                 featureBuilderGeom.set("INTERSECTION_ID", intersectionID);
@@ -649,7 +669,7 @@ public class OracleDataStoreManager
      */
     public boolean saveAll(SimpleFeatureCollection collection, String srcLayer,
         String trgLayer, String srcCode,
-        String trgCode, String maskLayer, String prsrvTargetGeom, int itemsPerPage) throws Exception
+        String trgCode, String maskLayer, String prsrvTargetGeom, String storeGeom, int itemsPerPage) throws Exception
     {
 
         boolean res = false;
@@ -658,7 +678,7 @@ public class OracleDataStoreManager
         {
             tx = new DefaultTransaction();
             LOGGER.trace("Performing data saving: SRCLAYER " + srcLayer + ", SRCCODE " + srcCode + ", TRGLAYER " + trgLayer + ", TRGLAYER " + trgCode);
-            actionTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, itemsPerPage);
+            actionTemp(tx, collection, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, storeGeom, itemsPerPage);
             tx.commit();
             res = true;
 
@@ -680,7 +700,7 @@ public class OracleDataStoreManager
             if (res)
             {
                 tx = new DefaultTransaction();
-                action(tx, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom);
+                action(tx, srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTargetGeom, storeGeom);
                 tx.commit();
                 res = true;
             }
@@ -709,7 +729,7 @@ public class OracleDataStoreManager
      * @param trgLayer
      * @throws IOException
      */
-    public void deleteAll(String srcLayer, String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTrgGeom) throws IOException
+    public void deleteAll(String srcLayer, String trgLayer, String srcCode, String trgCode, String maskLayer, String prsrvTrgGeom, String storeGeom) throws IOException
     {
 
         Transaction orclTransaction = null;
@@ -729,7 +749,7 @@ public class OracleDataStoreManager
             featureStoreData.setTransaction(orclTransaction);
             featureStoreGeom.setTransaction(orclTransaction);
 
-            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTrgGeom, featureStoreData, featureStoreGeom);
+            deleteOldInstancesFromPermanent(srcLayer, trgLayer, srcCode, trgCode, maskLayer, prsrvTrgGeom, storeGeom, featureStoreData, featureStoreGeom);
 
             // commit!
             orclTransaction.commit();

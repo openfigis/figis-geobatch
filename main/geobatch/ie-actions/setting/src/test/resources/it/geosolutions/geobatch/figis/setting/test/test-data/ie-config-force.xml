@@ -17,7 +17,7 @@
        <clean>false</clean>
    </global>
    <intersections>
-       <intersection mask="true" force="true" preserveTrgGeom="false">
+       <intersection mask="true" force="true" preserveTrgGeom="false" storeGeom="false">
            <srcLayer>fifao:FAO_DIV</srcLayer>
            <trgLayer>fifao:NJA</trgLayer>
 		   <maskLayer>fifao:UN_CONTINENT</maskLayer>
@@ -25,7 +25,7 @@
            <trgCodeField>ISO3_TERRI</trgCodeField>
            <areaCRS>EPSG:54012</areaCRS>
        </intersection>
-       <intersection mask="true" force="false" preserveTrgGeom="false">
+       <intersection mask="true" force="false" preserveTrgGeom="false" storeGeom="true">
            <srcLayer>fifao:FAO_SUB_DIV</srcLayer>
            <trgLayer>fifao:NJA</trgLayer>
 		   <maskLayer>fifao:UN_CONTINENT</maskLayer>
@@ -33,7 +33,7 @@
            <trgCodeField>ISO3_TERRI</trgCodeField>
            <areaCRS>EPSG:54012</areaCRS>
        </intersection>
-       <intersection mask="true" force="false" preserveTrgGeom="false">
+       <intersection mask="true" force="false" preserveTrgGeom="false" storeGeom="false">
            <srcLayer>fifao:FAO_MAJOR</srcLayer>
            <trgLayer>fifao:ICCAT_SMU</trgLayer>
 		   <maskLayer>fifao:UN_CONTINENT</maskLayer>

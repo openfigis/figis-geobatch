@@ -188,15 +188,15 @@ public class TestSettingAction
         xmlConfig = IEConfigUtils.parseXMLConfig(ieConfig.getAbsolutePath());
 
         // new Intersection(mask, force, preserveTrgGeom, "srcLayer", "trgLayer", "srcCodeField", "trgCodeField", "maskLayer", "areaCRS", Status)
-        Intersection intersection1 = new Intersection(true, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
+        Intersection intersection1 = new Intersection(true, false, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
                 "ISO3_TERRI", "fifao:UN_CONTINENT", "EPSG:54012", Status.COMPUTED);
-        Intersection intersection2 = new Intersection(true, false, false, "fifao:FAO_SUB_DIV", "fifao:NJA",
+        Intersection intersection2 = new Intersection(true, false, false, true, "fifao:FAO_SUB_DIV", "fifao:NJA",
                 "F_SUBDIVIS",
                 "ISO3_TERRI", "fifao:UN_CONTINENT", "EPSG:54012", Status.COMPUTED);
-        Intersection intersection3 = new Intersection(true, false, false, "fifao:FAO_MAJOR", "fifao:ICCAT_SMU",
+        Intersection intersection3 = new Intersection(true, false, false, false, "fifao:FAO_MAJOR", "fifao:ICCAT_SMU",
                 "F_AREA",
                 "ICCAT_SMU", "fifao:UN_CONTINENT", "EPSG:54012", Status.COMPUTED);
-        Intersection intersection4 = new Intersection(true, false, false, "fifao:NJA", "fifao:ICCAT_SMU",
+        Intersection intersection4 = new Intersection(true, false, false, true, "fifao:NJA", "fifao:ICCAT_SMU",
                 "ISO3_TERRI",
                 "ICCAT_SMU", "fifao:UN_CONTINENT", "EPSG:54012", Status.TODELETE);
         dbConfig = initDBConfig(-1, null, null, null, null, null, null, null, null, null,
@@ -229,7 +229,7 @@ public class TestSettingAction
         xmlConfig = IEConfigUtils.parseXMLConfig(ieConfig.getAbsolutePath());
 
         // new Intersection(mask, force, preserveTrgGeom, "srcLayer", "trgLayer", "srcCodeField", "trgCodeField", "maskLayer", "areaCRS", Status)
-        Intersection intersection1 = new Intersection(true, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
+        Intersection intersection1 = new Intersection(true, false, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
                 "ISO3_TERRI", "fifao:UN_CONTINENT", "EPSG:54012", Status.COMPUTING);
         dbConfig = initDBConfig(-1, null, null, null, null, null, null, null, null, null,
                 Arrays.asList(intersection1));
@@ -259,9 +259,9 @@ public class TestSettingAction
         xmlConfig = IEConfigUtils.parseXMLConfig(ieConfig.getAbsolutePath());
 
         // new Intersection(mask, force, preserveTrgGeom, "srcLayer", "trgLayer", "srcCodeField", "trgCodeField", "maskLayer", "areaCRS", Status)
-        Intersection intersection1 = new Intersection(true, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
+        Intersection intersection1 = new Intersection(true, false, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
                 "ISO3_TERRI", "fifao:UN_CONTINENT", "EPSG:54012", Status.FAILED);
-        Intersection intersection4 = new Intersection(true, false, false, "fifao:NJA", "fifao:ICCAT_SMU",
+        Intersection intersection4 = new Intersection(true, false, false, true, "fifao:NJA", "fifao:ICCAT_SMU",
                 "ISO3_TERRI",
                 "ICCAT_SMU", "fifao:UN_CONTINENT", "EPSG:54012", Status.FAILED);
         dbConfig = initDBConfig(-1, null, null, null, null, null, null, null, null, null,
@@ -299,9 +299,9 @@ public class TestSettingAction
         xmlConfig = IEConfigUtils.parseXMLConfig(ieConfig.getAbsolutePath());
 
         // new Intersection(mask, force, preserveTrgGeom, "srcLayer", "trgLayer", "srcCodeField", "trgCodeField", "maskLayer", "areaCRS", Status)
-        Intersection intersection1 = new Intersection(true, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
+        Intersection intersection1 = new Intersection(true, false, false, false, "fifao:FAO_DIV", "fifao:NJA", "F_SUBAREA",
                 "ISO3_TERRI", "fifao:UN_CONTINENT", "EPSG:54012", Status.COMPUTED);
-        Intersection intersection4 = new Intersection(true, false, false, "fifao:NJA", "fifao:ICCAT_SMU",
+        Intersection intersection4 = new Intersection(true, false, false, true, "fifao:NJA", "fifao:ICCAT_SMU",
                 "ISO3_TERRI",
                 "ICCAT_SMU", "fifao:UN_CONTINENT", "EPSG:54012", Status.FAILED);
         dbConfig = initDBConfig(-1, null, null, null, null, null, null, null, null, null,

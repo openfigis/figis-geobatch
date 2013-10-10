@@ -583,7 +583,8 @@ public class IntersectionAction extends BaseAction<EventObject>
                 maskLayer = "NOTMASKED";
             }
             String prsrvTrgGeom = String.valueOf(intersection.isPreserveTrgGeom());
-
+            String storeGeom = String.valueOf(intersection.isStoreGeom());
+            
             // in case the intersection has been scheduled to be deleted,
             // delete the intersection from the list
             // and its intersection from the DB
@@ -593,7 +594,7 @@ public class IntersectionAction extends BaseAction<EventObject>
             {
                 try
                 {
-                    dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode, maskLayer, prsrvTrgGeom);
+                    dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode, maskLayer, prsrvTrgGeom, storeGeom);
                     ieConfigDAO.deleteIntersectionById(host, id, ieServiceUsername, ieServicePassword);
                 }
                 catch (Exception e)
@@ -653,7 +654,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                             
                             dataStoreOracle.saveAll(resultFeatureCollection,
                                 Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode,
-                                trgCode, maskLayer, prsrvTrgGeom, itemsPerPage);
+                                trgCode, maskLayer, prsrvTrgGeom, storeGeom, itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
                             ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername,
                                 ieServicePassword);

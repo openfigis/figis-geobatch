@@ -23,7 +23,7 @@
    </global>
    
    <intersections>
-       <intersection mask="false" force="true" preserveTrgGeom="false">
+       <intersection mask="false" force="true" preserveTrgGeom="false" storeGeom="false">
            <srcLayer>fifao:FAO_DIV</srcLayer>
            <trgLayer>fifao:FAO_SUB_AREA</trgLayer>
            <srcCodeField>OCEAN</srcCodeField>
@@ -31,7 +31,7 @@
            <maskLayer>fifao:UN_CONTINENT</maskLayer> 
            <areaCRS>EPSG:54012</areaCRS>
        </intersection>
-      <intersection mask="false" force="false" preserveTrgGeom="false">
+      <intersection mask="false" force="false" preserveTrgGeom="false" storeGeom="false">
            <srcLayer>fifao:FAO_DIV</srcLayer>
            <trgLayer>fifao:FAO_SUB_DIV</trgLayer>
            <srcCodeField>OCEAN</srcCodeField>
@@ -39,7 +39,15 @@
            <maskLayer>fifao:UN_CONTINENT</maskLayer>
            <areaCRS>EPSG:54012</areaCRS>
        </intersection>       
-      <intersection mask="false" force="false" preserveTrgGeom="false">
+      <intersection mask="false" force="false" preserveTrgGeom="false" storeGeom="false">
+           <srcLayer>fifao:ICCAT_SMU</srcLayer>
+           <trgLayer>fifao:SPECIES_DIST</trgLayer>
+           <srcCodeField>ICCAT_SMU</srcCodeField>
+           <trgCodeField>PRESENCE</trgCodeField>
+           <maskLayer>fifao:UN_CONTINENT</maskLayer>
+           <areaCRS>EPSG:54012</areaCRS>
+       </intersection>
+       <intersection mask="false" force="false" preserveTrgGeom="false" storeGeom="true">
            <srcLayer>fifao:ICCAT_SMU</srcLayer>
            <trgLayer>fifao:SPECIES_DIST</trgLayer>
            <srcCodeField>ICCAT_SMU</srcCodeField>

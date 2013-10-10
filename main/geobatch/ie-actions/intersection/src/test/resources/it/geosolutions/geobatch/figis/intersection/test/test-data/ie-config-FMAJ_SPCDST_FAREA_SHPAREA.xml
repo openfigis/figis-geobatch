@@ -17,7 +17,7 @@
        <clean>true</clean>
    </global>
    <intersections>
-        <intersection mask="false" force="true" preserveTrgGeom="false">
+        <intersection mask="false" force="true" preserveTrgGeom="false" storeGeom="false">
         	<id>1</id>
             <srcLayer>fifao:FAO_MAJOR</srcLayer>
 			<trgLayer>fifao:SPECIES_DIST</trgLayer>
