@@ -158,7 +158,7 @@ public class AppTest extends TestCase
         {
             Request.initIntersection();
 
-            Intersection int1 = new Intersection(false, true, true, "srcLayer", "trgLayer", "srcCodeField",
+            Intersection int1 = new Intersection(false, true, true, false, "srcLayer", "trgLayer", "srcCodeField",
                     "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
             Request.insertIntersection(host, int1, ieServiceUsername, ieServicePassword);
             LOGGER.trace("AFTER INTERSECTION");
@@ -180,9 +180,9 @@ public class AppTest extends TestCase
 
     public void testInsertAndGetAllIntersections() throws MalformedURLException
     {
-        Intersection int1 = new Intersection(true, true, true, "srcLayer", "trgLayer", "srcCodeField",
+        Intersection int1 = new Intersection(true, true, true, false, "srcLayer", "trgLayer", "srcCodeField",
                 "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
-        Intersection int2 = new Intersection(true, true, false, "srcLayer2", "trgLayer2", "srcCodeField2",
+        Intersection int2 = new Intersection(true, true, false, true, "srcLayer2", "trgLayer2", "srcCodeField2",
                 "trgCodeField", "maskLayer2", "areaCRS2", Status.COMPUTING);
         assertTrue(Request.insertIntersection(host, int1, ieServiceUsername, ieServicePassword) != 0);
         assertTrue(Request.insertIntersection(host, int2, ieServiceUsername, ieServicePassword) != 0);
@@ -198,10 +198,10 @@ public class AppTest extends TestCase
         {
             assertTrue(Request.deleteAllIntersections(host, ieServiceUsername, ieServicePassword));
 
-            Intersection int1 = new Intersection(false, true, true, "sf:restricted", "sf:restricted", "cat",
+            Intersection int1 = new Intersection(false, true, true, false, "sf:restricted", "sf:restricted", "cat",
                     "cat", "maskLayer", "areaCRS", Status.TOCOMPUTE);
             long id = Request.insertIntersection(host, int1, ieServiceUsername, ieServicePassword);
-            Intersection int2 = new Intersection(false, true, true, "sf:restricted", "sf:restricted", "cat",
+            Intersection int2 = new Intersection(false, true, true, true, "sf:restricted", "sf:restricted", "cat",
                     "cat", "maskLayer", "areaCRS", Status.TOCOMPUTE);
             Request.updateIntersectionById(host, id, int2, ieServiceUsername, ieServicePassword);
         }

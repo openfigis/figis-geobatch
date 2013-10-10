@@ -132,6 +132,12 @@ public class Intersection implements Serializable
     @XStreamAsAttribute
     boolean preserveTrgGeom;
 
+    
+    @XStreamAlias("storeGeom")
+    @XStreamAsAttribute
+    boolean storeGeom;
+    
+    
     @XStreamAlias("srcLayer")
     String srcLayer;
 
@@ -155,10 +161,11 @@ public class Intersection implements Serializable
     @XStreamAlias("areaCRS")
     String areaCRS;
 
+    
     private Status status = Status.NOVALUE;
 
 
-    public Intersection(boolean mask, boolean force, boolean preserveTrgGeom,
+    public Intersection(boolean mask, boolean force, boolean preserveTrgGeom, boolean storeGeom,
         String srcLayer, String trgLayer, String srcCodeField,
         String trgCodeField, String maskLayer, String areaCRS, Status status)
     {
@@ -166,6 +173,7 @@ public class Intersection implements Serializable
         this.mask = mask;
         this.force = force;
         this.preserveTrgGeom = preserveTrgGeom;
+        this.storeGeom = storeGeom;
         this.srcLayer = srcLayer;
         this.trgLayer = trgLayer;
         this.srcCodeField = srcCodeField;
@@ -266,6 +274,16 @@ public class Intersection implements Serializable
     {
         this.preserveTrgGeom = preserveTrgGeom;
     }
+    
+    public boolean isStoreGeom()
+    {
+        return storeGeom;
+    }
+
+    public void setStoreGeom(boolean storeGeom)
+    {
+        this.storeGeom = storeGeom;
+    }
 
     public String getSrcLayer()
     {
@@ -330,7 +348,7 @@ public class Intersection implements Serializable
     @Override
     public String toString()
     {
-        return "Intersection{" + "id=" + id + ", status=" + status + ", mask=" + mask + ", force=" + force + ", preserveTrgGeom=" + preserveTrgGeom + ", srcLayer=" + srcLayer + ", trgLayer=" + trgLayer + ", srcCodeField=" + srcCodeField + ", trgCodeField=" + trgCodeField + ", maskLayer=" + maskLayer + ", areaCRS=" + areaCRS + '}';
+        return "Intersection{" + "id=" + id + ", status=" + status + ", mask=" + mask + ", force=" + force + ", preserveTrgGeom=" + preserveTrgGeom + ", storeGeom=" + storeGeom + ", srcLayer=" + srcLayer + ", trgLayer=" + trgLayer + ", srcCodeField=" + srcCodeField + ", trgCodeField=" + trgCodeField + ", maskLayer=" + maskLayer + ", areaCRS=" + areaCRS + '}';
     }
 
 
@@ -340,7 +358,7 @@ public class Intersection implements Serializable
     @Override
     public Object clone() throws CloneNotSupportedException
     {
-        return new Intersection(mask, force, preserveTrgGeom, srcLayer, trgLayer, srcCodeField, trgCodeField, maskLayer,
+        return new Intersection(mask, force, preserveTrgGeom, storeGeom, srcLayer, trgLayer, srcCodeField, trgCodeField, maskLayer,
                 areaCRS, status);
     }
 

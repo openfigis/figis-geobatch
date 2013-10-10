@@ -99,9 +99,9 @@ public class IntersectionEngineTest
     @Test
     public void testInsertIntersection()
     {
-        Intersection int1 = new Intersection(true, true, true, "srcLayer", "trgLayer", "srcCodeField",
+        Intersection int1 = new Intersection(true, true, true, true, "srcLayer", "trgLayer", "srcCodeField",
                 "trgCodeField", "maskLayer", "areaCRS", Status.TOCOMPUTE);
-        Intersection int2 = new Intersection(true, true, false, "srcLayer2", "trgLayer2", "srcCodeField2",
+        Intersection int2 = new Intersection(true, true, false, false, "srcLayer2", "trgLayer2", "srcCodeField2",
                 "trgCodeField", "maskLayer2", "areaCRS2", Status.COMPUTING);
         intersectionDao.save(int1);
         intersectionDao.save(int2);

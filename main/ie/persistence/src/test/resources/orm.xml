@@ -14,6 +14,7 @@
                 <basic name="mask"/>
                 <basic name="force"/>
                 <basic name="preserveTrgGeom" />
+                <basic name="storeGeom" />
                 <basic name="srcLayer"/>
                 <basic name="trgLayer"/>
                 <basic name="srcCodeField"/>

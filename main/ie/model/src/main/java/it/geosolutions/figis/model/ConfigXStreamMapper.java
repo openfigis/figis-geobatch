@@ -63,6 +63,7 @@ public class ConfigXStreamMapper
         xstream.useAttributeFor(Intersection.class, "mask");
         xstream.useAttributeFor(Intersection.class, "force");
         xstream.useAttributeFor(Intersection.class, "preserveTrgGeom");
+        xstream.useAttributeFor(Intersection.class, "storeGeom");
 
         Config config = (Config) xstream.fromXML(br);
 

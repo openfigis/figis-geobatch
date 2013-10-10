@@ -50,6 +50,7 @@ public class IntersectionXStreamMapper
         xstream.useAttributeFor(Intersection.class, "mask");
         xstream.useAttributeFor(Intersection.class, "force");
         xstream.useAttributeFor(Intersection.class, "preserveTrgGeom");
+        xstream.useAttributeFor(Intersection.class, "storeGeom");
 
 
         xstream.useAttributeFor(Intersection.class, "srcLayer");

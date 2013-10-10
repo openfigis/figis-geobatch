@@ -456,6 +456,8 @@ public class FigisServiceImpl implements FigisService
         inter.setMask(intersection.isMask());
 
         inter.setPreserveTrgGeom(intersection.isPreserveTrgGeom());
+        
+        inter.setStoreGeom(intersection.isStoreGeom());
 
         Status status = intersection.getStatus();
         if (status != Status.NOVALUE)
