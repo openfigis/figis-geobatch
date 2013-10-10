@@ -207,10 +207,6 @@ public class IEConfigUtils
         {
             return true;
         }
-        if (!(srcIntersection.isStoreGeom() == trgIntersection.isStoreGeom()))
-        {
-            return true;
-        }
 
         return false;
     }

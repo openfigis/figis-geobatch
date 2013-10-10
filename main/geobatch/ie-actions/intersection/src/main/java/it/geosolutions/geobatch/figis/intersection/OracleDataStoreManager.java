@@ -550,7 +550,7 @@ public class OracleDataStoreManager
             while (iterator.hasNext())
             {
 
-                String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + "_" + maskLayer + "_" + prsrvTargetGeom + "_" + storeGeom + i;
+                String intersectionID = srcLayer + "_" + srcCode + "_" + trgLayer + "_" + trgCode + "_" + maskLayer + "_" + prsrvTargetGeom + i;
 
                 SimpleFeature sf = iterator.next();
 
