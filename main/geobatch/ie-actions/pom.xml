@@ -48,6 +48,12 @@
     </licenses>
 
     <dependencies>
+    	<!-- Geotools -->
+    	<dependency>
+    		<groupId>org.geotools</groupId>
+    		<artifactId>gt-sample-data</artifactId>
+    	</dependency>
+    
 		<!-- tools -->
 		<dependency>
 		  <groupId>it.geosolutions.tools</groupId>

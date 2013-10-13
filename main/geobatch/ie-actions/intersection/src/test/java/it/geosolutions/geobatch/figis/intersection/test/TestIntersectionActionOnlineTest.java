@@ -41,9 +41,10 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.geotools.TestData;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.test.OnlineTestSupport;
+import org.geotools.test.TestData;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
