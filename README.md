@@ -5,4 +5,5 @@ The figis-geobatch repository contains the FIGIS implementations based on GeoBat
 
 It includes:
 - the Intersection Engine (IE) application
-- the VME GIS data management workflow.
+- the VME GIS data management workflow
+- the FIRMS Geographic coverage processing flow
