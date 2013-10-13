@@ -87,6 +87,10 @@
 			<artifactId>gb-gui</artifactId>
 		</dependency>
 		<dependency>
+        	<groupId>it.geosolutions.geobatch</groupId>
+        	<artifactId>gb-dao-xstream</artifactId>
+        </dependency>
+		<dependency>
 			<groupId>it.geosolutions.geobatch.figis</groupId>
 			<artifactId>gb-action-figis-intersection</artifactId>
 		</dependency>
@@ -247,23 +251,6 @@
 			<properties>
 				<all>true</all>
 			</properties>
-		</profile>
-
-		<profile>
-			<id>dao.xstream</id>
-
-			<activation>
-				<property>
-					<name>all</name>
-				</property>
-			</activation>
-
-			<dependencies>
-				<dependency>
-					<groupId>it.geosolutions.geobatch</groupId>
-					<artifactId>gb-dao-xstream</artifactId>
-				</dependency>
-			</dependencies>
 		</profile>
 		
 		<!-- VME actions profiles -->
