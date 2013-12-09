@@ -36,6 +36,9 @@ import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
 import it.geosolutions.figis.persistence.dao.util.PwEncoder;
 import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
+import it.geosolutions.geobatch.annotations.Action;
+import it.geosolutions.geobatch.annotations.CheckConfiguration;
+import it.geosolutions.geobatch.flow.event.IProgressListener;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
@@ -43,18 +46,15 @@ import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EventObject;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -63,13 +63,10 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.feature.gs.BufferFeatureCollection;
 import org.geotools.process.feature.gs.ClipProcess;
-//import org.geotools.process.feature.gs.EraseProcess;
-import org.geotools.process.feature.gs.FeatureProcess;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection;
 import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.TargetClassAware;
 
 import com.thoughtworks.xstream.InitializationException;
 import com.vividsolutions.jts.geom.Geometry;
@@ -80,6 +77,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  *
  */
+@Action(configurationClass = IntersectionConfiguration.class)
 public class IntersectionAction extends BaseAction<EventObject>
 {
 
@@ -885,6 +883,13 @@ public class IntersectionAction extends BaseAction<EventObject>
     public void setIeServicePassword(String ieServicePassword)
     {
         this.ieServicePassword = ieServicePassword;
+    }
+
+    @CheckConfiguration
+    @Override
+    public boolean checkConfiguration() {
+        //No environment checks here, return TRUE by default
+        return false;
     }
 
 }

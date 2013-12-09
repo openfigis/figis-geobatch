@@ -30,12 +30,6 @@
  */
 package it.geosolutions.geobatch.figis.setting;
 
-import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
@@ -43,8 +37,16 @@ import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.figis.requester.requester.dao.impl.IEConfigDAOImpl;
 import it.geosolutions.figis.requester.requester.util.IEConfigUtils;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
+import it.geosolutions.geobatch.annotations.Action;
+import it.geosolutions.geobatch.annotations.CheckConfiguration;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
+
+import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +57,7 @@ import org.slf4j.LoggerFactory;
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  *
  */
+@Action(configurationClass = SettingConfiguration.class)
 public class SettingAction extends BaseAction<EventObject>
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingAction.class);
@@ -338,6 +341,13 @@ public class SettingAction extends BaseAction<EventObject>
     public void setIeServicePassword(String ieServicePassword)
     {
         this.ieServicePassword = ieServicePassword;
+    }
+
+    @CheckConfiguration
+    @Override
+    public boolean checkConfiguration() {
+        //No environment prerequisites for this action, return TRUE by default
+        return true;
     }
 
     // ------------------------------------------------------------------------------------------------------------------
