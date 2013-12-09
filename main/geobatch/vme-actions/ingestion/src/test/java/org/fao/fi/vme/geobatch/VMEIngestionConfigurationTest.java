@@ -8,8 +8,6 @@ import it.geosolutions.geobatch.actions.ds2ds.dao.FeatureConfiguration;
 import it.geosolutions.geobatch.registry.AliasRegistry;
 import it.geosolutions.geobatch.xstream.Alias;
 
-import org.fao.fi.vme.geobatch.VMEIngestionAliasRegistrar;
-import org.fao.fi.vme.geobatch.VMEIngestionConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +26,6 @@ public class VMEIngestionConfigurationTest {
 	
 	@Before
 	public void setUp() {
-		new VMEIngestionAliasRegistrar(registry);
 		Alias alias=new Alias();
 		alias.setAliasRegistry(registry);
 		alias.setAliases(xstream);

@@ -26,7 +26,6 @@ public class VMEZonalStatsConfigurationTest {
 	
 	@Before
 	public void setUp() {
-		new VMEZonalStatsAliasRegistrar(registry);
 		Alias alias=new Alias();
 		alias.setAliasRegistry(registry);
 		alias.setAliases(xstream);

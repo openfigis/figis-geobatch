@@ -40,7 +40,10 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.geobatch.actions.ds2ds.DsBaseAction;
+import it.geosolutions.geobatch.annotations.Action;
+import it.geosolutions.geobatch.annotations.CheckConfiguration;
 import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
+import it.geosolutions.geobatch.flow.event.IProgressListener;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.tools.compress.file.Extract;
 import it.geosolutions.tools.io.file.Collector;
@@ -53,6 +56,7 @@ import it.geosolutions.tools.io.file.Collector;
  *         emmanuel.blondel@fao.org
  * 
  */
+@Action(configurationClass = VMEIngestionConfiguration.class)
 public class VMEIngestionAction extends DsBaseAction {
 
 	private static final String ECKERT_IV_WKT = "PROJCS[\"World_Eckert_IV\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
@@ -409,6 +413,13 @@ public class VMEIngestionAction extends DsBaseAction {
 		return builder.buildDescriptor(attributeName);
 
 	}
+
+    @CheckConfiguration	
+    @Override
+    public boolean checkConfiguration() {
+        // No environment checks are needed so return TRUE by default...
+        return false;
+    }
 	
 	/*=============================================*/
 	/*=============================================*/

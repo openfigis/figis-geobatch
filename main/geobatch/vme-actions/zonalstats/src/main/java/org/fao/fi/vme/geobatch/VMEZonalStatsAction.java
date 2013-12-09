@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +43,10 @@ import org.xml.sax.SAXException;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.geobatch.actions.ds2ds.DsBaseAction;
 import it.geosolutions.geobatch.actions.ds2ds.dao.FeatureConfiguration;
+import it.geosolutions.geobatch.annotations.Action;
+import it.geosolutions.geobatch.annotations.CheckConfiguration;
 import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
+import it.geosolutions.geobatch.flow.event.IProgressListener;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 
 /**
@@ -54,6 +58,7 @@ import it.geosolutions.geobatch.flow.event.action.ActionException;
  *         emmanuel.blondel@fao.org
  * 
  */
+@Action(configurationClass = VMEZonalStatsConfiguration.class)
 public class VMEZonalStatsAction extends DsBaseAction {
 
 	protected final static Logger LOGGER = LoggerFactory
@@ -159,7 +164,7 @@ public class VMEZonalStatsAction extends DsBaseAction {
 			try {
 				int count = 0;
 				while (iterator.hasNext()) {
-					SimpleFeature feature = buildFeature(builder,iterator.next(), schemaDiffs);
+					SimpleFeature feature = buildFeature(builder,iterator.next(), schemaDiffs, null);
 					featureWriter.addFeatures(DataUtilities.collection(feature));
 					count++;
 					if (count % 100 == 0) {
@@ -436,6 +441,13 @@ public class VMEZonalStatsAction extends DsBaseAction {
 	    }
 	
 	}
+
+    @CheckConfiguration
+    @Override
+    public boolean checkConfiguration() {
+        // No environment checks are needed so return TRUE by default...
+        return true;
+    }
 
 
 }
