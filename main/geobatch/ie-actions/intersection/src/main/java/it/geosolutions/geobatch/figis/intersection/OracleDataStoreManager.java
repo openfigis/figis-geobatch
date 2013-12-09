@@ -45,12 +45,15 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.VALIDATECONN;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
@@ -58,7 +61,6 @@ import org.geotools.data.oracle.OracleNGDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTS;
@@ -530,9 +532,10 @@ public class OracleDataStoreManager
             {
                 LOGGER.debug("PAGE : " + (page));
             }
-
-            SimpleFeatureCollection sfcData = FeatureCollections.newCollection();
-            SimpleFeatureCollection sfcGeom = FeatureCollections.newCollection();
+            
+            List<SimpleFeature> sfcData = new ArrayList<SimpleFeature>();
+            List<SimpleFeature> sfcGeom = new ArrayList<SimpleFeature>();
+            
             while (iterator.hasNext())
             {
 
@@ -598,9 +601,9 @@ public class OracleDataStoreManager
                 if ((i % itemsPerPage) == 0)
                 {
                     // save statistics to the statistics temporary table
-                    featureStoreData.addFeatures(sfcData);
+                    featureStoreData.addFeatures(DataUtilities.collection(sfcData));
                     // save geometries to the statistics temporary table
-                    featureStoreGeom.addFeatures(sfcGeom);
+                    featureStoreGeom.addFeatures(DataUtilities.collection(sfcGeom));
 
                     // clear
                     sfcData.clear();
@@ -619,9 +622,9 @@ public class OracleDataStoreManager
             }
             if (sfcData.size() > 0) {
              // save statistics to the statistics temporary table
-                featureStoreData.addFeatures(sfcData);
+                featureStoreData.addFeatures(DataUtilities.collection(sfcData));
                 // save geometries to the statistics temporary table
-                featureStoreGeom.addFeatures(sfcGeom);
+                featureStoreGeom.addFeatures(DataUtilities.collection(sfcGeom));
             }
             
         }

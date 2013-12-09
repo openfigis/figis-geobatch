@@ -38,16 +38,13 @@ import it.geosolutions.figis.persistence.dao.util.PwEncoder;
 import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.geobatch.annotations.Action;
 import it.geosolutions.geobatch.annotations.CheckConfiguration;
-import it.geosolutions.geobatch.flow.event.IProgressListener;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,10 +58,10 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.process.feature.gs.BufferFeatureCollection;
-import org.geotools.process.feature.gs.ClipProcess;
-import org.geotools.process.feature.gs.IntersectionFeatureCollection;
-import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
+import org.geotools.process.vector.BufferFeatureCollection;
+import org.geotools.process.vector.ClipProcess;
+import org.geotools.process.vector.IntersectionFeatureCollection;
+import org.geotools.process.vector.IntersectionFeatureCollection.IntersectionMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,7 +146,7 @@ public class IntersectionAction extends BaseAction<EventObject>
 
         try
         {
-            ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL(), new URI(URI_URL), true, true, ShapefileDataStore.DEFAULT_STRING_CHARSET);
+            ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL());
             shapeFileStores.add(store);
 
             FeatureSource fs = store.getFeatureSource();
