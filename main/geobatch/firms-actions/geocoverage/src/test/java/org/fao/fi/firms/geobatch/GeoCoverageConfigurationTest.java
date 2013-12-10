@@ -25,7 +25,6 @@ public class GeoCoverageConfigurationTest {
 	
 	@Before
 	public void setUp() {
-		new GeoCoverageAliasRegistrar(registry);
 		Alias alias=new Alias();
 		alias.setAliasRegistry(registry);
 		alias.setAliases(xstream);

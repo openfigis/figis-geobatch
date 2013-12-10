@@ -36,7 +36,10 @@ import org.slf4j.LoggerFactory;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.geobatch.actions.ds2ds.DsBaseAction;
 import it.geosolutions.geobatch.actions.ds2ds.dao.FeatureConfiguration;
+import it.geosolutions.geobatch.annotations.Action;
+import it.geosolutions.geobatch.annotations.CheckConfiguration;
 import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
+import it.geosolutions.geobatch.flow.event.IProgressListener;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 
 /**
@@ -47,6 +50,7 @@ import it.geosolutions.geobatch.flow.event.action.ActionException;
  *         emmanuel.blondel@fao.org
  * 
  */
+@Action(configurationClass = GeoCoverageConfiguration.class)
 public class GeoCoverageAction extends DsBaseAction {
 
 	private static final String acceptedFileType = "csv";	
@@ -158,7 +162,7 @@ public class GeoCoverageAction extends DsBaseAction {
 			try {
 				int count = 0;
 				while (iterator.hasNext()) {
-					feature = buildFeature(builder,iterator.next(), schemaDiffs);
+					feature = buildFeature(builder,iterator.next(), schemaDiffs, null);
 					featureWriter.addFeatures(DataUtilities.collection(feature));
 					count++;
 					if (count % 100 == 0) {
@@ -381,5 +385,12 @@ public class GeoCoverageAction extends DsBaseAction {
 		return builder.buildDescriptor(attributeName);
 
 	}
+
+    @CheckConfiguration
+    @Override
+    public boolean checkConfiguration() {
+        // No environment checks so return TRUE by default
+        return false;
+    }
 	
 }

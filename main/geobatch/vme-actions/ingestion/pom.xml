@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>gb-actions-vme</artifactId>
 		<groupId>org.fao.fi.vme.geobatch</groupId>
-		<version>1.3-SNAPSHOT</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.fao.fi.vme.geobatch</groupId>
 	<artifactId>gb-action-vme-ingestion</artifactId>
-	<version>1.3-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>GeoBatch action: VME data ingestion</name>
 
 	<!-- =========================================================== -->

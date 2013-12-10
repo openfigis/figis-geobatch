@@ -1,11 +1,9 @@
 package org.fao.fi.firms.geobatch.process;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.log4j.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -16,8 +14,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.process.feature.gs.UniqueProcess;
-import org.geotools.process.gs.WrappingIterator;
+import org.geotools.process.vector.UniqueProcess;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -118,7 +115,7 @@ public class CreateFirmsCoverage implements FigisProcess{
 		}
 
 		
-		
+/*		
 		@Override
         public Iterator<SimpleFeature> iterator() {
             return new WrappingIterator(features());
@@ -132,7 +129,7 @@ public class CreateFirmsCoverage implements FigisProcess{
                 ((WrappingIterator) close).close();
             }
         }    
-		
+*/		
         /** create SimpleFeatureBuilder
     	 * 	
     	 * @param features

@@ -8,12 +8,12 @@
     <parent>
         <groupId>it.geosolutions.figis</groupId>
         <artifactId>figis-root</artifactId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>it.geosolutions.geobatch.figis</groupId>
     <artifactId>gb-figis</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>GeoSolutions GeoBatch - FIGIS implementation</name>
