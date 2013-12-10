@@ -50,6 +50,8 @@ import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 /**
@@ -182,6 +184,8 @@ public class SettingAction extends BaseAction<EventObject>
         ieServicePassword = conf.getIeServicePassword();
         defaultMaskLayer = conf.getDefaultMaskLayer();
 
+        setupConfigDAO();
+        
         final Queue<EventObject> ret = new LinkedList<EventObject>();
         if(LOGGER.isInfoEnabled()){
         	LOGGER.info("Setting action started with parameters " + host + ", " + defaultMaskLayer);
@@ -305,6 +309,15 @@ public class SettingAction extends BaseAction<EventObject>
         if(LOGGER.isInfoEnabled()){LOGGER.info("The action is finished");}
         return ret;
     }
+    
+    public void setupConfigDAO(){
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        IEConfigDAO ieConfigDAO =  (IEConfigDAO)ctx.getBean("IEConfigDAO"); 
+        if(ieConfigDAO == null){
+            LOGGER.error("Error while loading ieConfigDAO for SettingAction...");
+        }
+        setIeConfigDAO(ieConfigDAO);
+    }
 
     /**
      * @param ieConfigDAO
@@ -346,9 +359,7 @@ public class SettingAction extends BaseAction<EventObject>
     @CheckConfiguration
     @Override
     public boolean checkConfiguration() {
-        //No environment prerequisites for this action, return TRUE by default
         return true;
     }
 
-    // ------------------------------------------------------------------------------------------------------------------
 }

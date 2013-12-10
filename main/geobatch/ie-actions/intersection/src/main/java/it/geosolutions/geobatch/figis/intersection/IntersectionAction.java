@@ -34,6 +34,7 @@ import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
+import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.util.PwEncoder;
 import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.geobatch.annotations.Action;
@@ -64,6 +65,8 @@ import org.geotools.process.vector.IntersectionFeatureCollection;
 import org.geotools.process.vector.IntersectionFeatureCollection.IntersectionMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.thoughtworks.xstream.InitializationException;
 import com.vividsolutions.jts.geom.Geometry;
@@ -735,6 +738,8 @@ public class IntersectionAction extends BaseAction<EventObject>
         LOGGER.info("ieServicePassword: " + this.ieServicePassword);
         LOGGER.info("**************************");
 
+        setupConfigDAO();
+        
         // return
         final Queue<EventObject> ret = new LinkedList<EventObject>();
 
@@ -853,6 +858,16 @@ public class IntersectionAction extends BaseAction<EventObject>
         return ret;
     }
 
+    public void setupConfigDAO(){
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        IEConfigDAO ieConfigDAO =  (IEConfigDAO)ctx.getBean("IEConfigDAO"); 
+        if(ieConfigDAO == null){
+            LOGGER.error("Error while loading ieConfigDAO for IntersectionAction...");
+        }
+        setIeConfigDAO(ieConfigDAO);
+    }
+    
+    
     /**
      * @param ieConfigDAO
      *            the ieConfigDAO to set
@@ -885,8 +900,7 @@ public class IntersectionAction extends BaseAction<EventObject>
     @CheckConfiguration
     @Override
     public boolean checkConfiguration() {
-        //No environment checks here, return TRUE by default
-        return false;
+        return true;
     }
 
 }
