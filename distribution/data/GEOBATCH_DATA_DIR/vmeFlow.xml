@@ -28,10 +28,10 @@
         <preserveInput>false</preserveInput>         
         <performBackup>false</performBackup>
                 
-		 <listenerId>Logger</listenerId>
-		<listenerId>Cumulator</listenerId>
+	<listenerId>Logger</listenerId>
+	<listenerId>Cumulator</listenerId>
 	
-		<!-- ACTION 1: Import the VME-db data (with surface computation) into the datastore -->
+	<!-- ACTION 1: Import the VME-db data (with surface computation) into the datastore -->
         <VMEIngestionConfiguration>
             <serviceID>VMEIngestionGeneratorService</serviceID>
             <id>VMEIngestionGeneratorService</id>
@@ -42,8 +42,10 @@
             <purgeData>true</purgeData> <!-- Each time a new VME shapefile is imported, the data from the DB is removed-->
                         
             <outputFeature>
-                <typeName>VME_AREAS</typeName> 
+            	 <!-- GIS Polygon layer that will be used finally is named VMEAREAS, to test flow on separate GB_VMEAREAS, not to disturb VME viewer front-end application -->
+                <typeName>GB_VMEAREAS</typeName>
             	<crs>EPSG:4326</crs>
+                <!-- Datastore params to be replaced -->
                 <dataStore>                    
                    <entry>
                      <string>dbtype</string>
@@ -79,21 +81,21 @@
             <attributeMappings/>           
         </VMEIngestionConfiguration>
 		
-		<!-- Action 2 : GeoServer publication -->
-		<DSGeoServerConfiguration>
+	<!-- Action 2 : GeoServer publication -->
+	<DSGeoServerConfiguration>
             <serviceID>DSGeoServerGeneratorService</serviceID>
             <id>DSGeoServerGeneratorService</id>
             <description>publishing action</description>
             <name>DSGeoServerConfiguration</name>
             
             <failIgnored>false</failIgnored>
-			
+			<!-- Geoserver params to be replaced -->
 			<geoserverURL>http://localhost:8080/geoserver</geoserverURL>
 			<geoserverUID>admin</geoserverUID>
 			<geoserverPWD>password</geoserverPWD>
 			
-			<defaultNamespace>vme-db</defaultNamespace>		<!-- target workspace name -->
-			<storeName>vme_oracle</storeName>				<!-- target datastore name -->
+			<defaultNamespace>vme</defaultNamespace>		<!-- target workspace name -->
+			<storeName>Development_DB_VME</storeName>		<!-- target datastore name -->
 			<createNameSpace>true</createNameSpace>			<!-- specifies if the GeoServer workspace has to be created -->
 			<createDataStore>true</createDataStore>			<!-- specifies if the GeoServer datastore has to be created -->
 			<operation>PUBLISH</operation>					<!-- operation to perform -->
@@ -109,13 +111,16 @@
 
 			<purgeData>true</purgeData>
 			
+			<!-- Geoserver params to be replaced - targets a Geoserver WPS instance -->
 			<geoserverURL>http://localhost:8080/geoserver</geoserverURL>	<!-- the Geoserver where to send the WPS ZonalStats Execute request-->
-			<workspace>vme-db</workspace>									<!-- the workspace where the VME data has been published-->
-			<coverage>fao:gebco</coverage>									<!-- Geoserver bathymetry coverage -->
-			<geoIdentifier>objectid</geoIdentifier> 						<!-- attribute identifying the VME deatures -->
+			<workspace>fifao</workspace>					<!-- the workspace where the VME data has been published-->
+			<coverage>fifao:grid30</coverage>				<!-- Geoserver bathymetry coverage -->
+			<geoIdentifier>objectid</geoIdentifier> 			<!-- attribute identifying the VME deatures -->
 			
 			<outputFeature>
-				<typeName>VME_BATHY_STATS</typeName>
+				<!-- Target geometryless Geoserver feature collection -->
+				<typeName>GB_VME_BATHY_STATS</typeName>
+				<!-- Datastore params to be replaced -->
 				<dataStore>
 					<entry>
 						<string>dbtype</string>
@@ -159,16 +164,16 @@
             <name>DSGeoServerConfiguration</name>
             
             <failIgnored>false</failIgnored>
-			
+			<!-- Geoserver params to be replaced -->
 			<geoserverURL>http://localhost:8080/geoserver</geoserverURL>
 			<geoserverUID>admin</geoserverUID>
 			<geoserverPWD>password</geoserverPWD>
 			
-			<defaultNamespace>vme-db</defaultNamespace>		<!-- target workspace name -->
-			<storeName>vme_oracle</storeName>				<!-- target datastore name -->
+			<defaultNamespace>vme</defaultNamespace>		<!-- target workspace name -->
+			<storeName>Development_DB_VME</storeName>		<!-- target datastore name -->
 			<createNameSpace>true</createNameSpace>			<!-- specifies if the GeoServer workspace has to be created -->
 			<createDataStore>true</createDataStore>			<!-- specifies if the GeoServer datastore has to be created -->
-			<operation>PUBLISH</operation>					<!-- operation to perform -->
+			<operation>PUBLISH</operation>				<!-- operation to perform -->
         </DSGeoServerConfiguration>
 
     </EventConsumerConfiguration>
