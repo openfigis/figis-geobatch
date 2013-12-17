@@ -1,5 +1,7 @@
 package org.fao.fi.firms.geobatch;
 
+import it.geosolutions.fi.firms.geobatch.GeoCoverageAction;
+import it.geosolutions.fi.firms.geobatch.GeoCoverageConfiguration;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 import java.io.File;

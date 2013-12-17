@@ -50,7 +50,7 @@ import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
+import org.geotools.process.vector.IntersectionFeatureCollection.IntersectionMode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;

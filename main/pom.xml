@@ -7,7 +7,7 @@
     <!-- =========================================================== -->
     <groupId>it.geosolutions.figis</groupId>
     <artifactId>figis-root</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     
     <name>FIGIS GeoBatch-based projects root</name>
@@ -140,10 +140,12 @@
         <src.output>${basedir}/target</src.output>
 		
         <gs.manager>1.5-SNAPSHOT</gs.manager>
-        <gt.version>8-SNAPSHOT</gt.version>
-        <gb.version>1.3-SNAPSHOT</gb.version>
+        <gt.version>10-SNAPSHOT</gt.version>
+        <gb.version>1.4-SNAPSHOT</gb.version>
         <tools.version>1.1-SNAPSHOT</tools.version>
         <junit.version>4.8.2</junit.version>
+        <commons-codec.version>1.4</commons-codec.version>
+	<figis.batch.platform>1.0-SNAPSHOT</figis.batch.platform>
     </properties>
   
     <!-- =========================================================== -->
@@ -154,6 +156,7 @@
     <!-- =========================================================== -->
     <dependencyManagement>
         <dependencies>
+
             <!-- geoserver-manager -->
             <dependency>
                 <groupId>it.geosolutions</groupId>
@@ -314,6 +317,12 @@
             </dependency>
 
             <dependency>
+		<groupId>it.geosolutions.geobatch</groupId>
+		<artifactId>gb-action-ds2ds</artifactId>
+                <version>${gb.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>it.geosolutions.geobatch</groupId>
                 <artifactId>gb-action-tools</artifactId>
                 <version>${gb.version}</version>
@@ -329,35 +338,43 @@
             <dependency>
                 <groupId>it.geosolutions.geobatch.figis</groupId>
                 <artifactId>gb-action-figis-intersection</artifactId>
-                <version>${gb.version}</version>
+                <version>${figis.batch.platform}</version>
             </dependency>
 		   
             <dependency>
                 <groupId>it.geosolutions.geobatch.figis</groupId>
                 <artifactId>gb-action-figis-setting</artifactId>
-                <version>${gb.version}</version>
+                <version>${figis.batch.platform}</version>
             </dependency>
  
  			<!-- GeoBatch VME actions -->
  			<dependency>
                 <groupId>org.fao.fi.vme.geobatch</groupId>
                 <artifactId>gb-action-vme-ingestion</artifactId>
-                <version>${gb.version}</version>
+                <version>${figis.batch.platform}</version>
             </dependency>
             
              <dependency>
                 <groupId>org.fao.fi.vme.geobatch</groupId>
                 <artifactId>gb-action-vme-zonalstats</artifactId>
-                <version>${gb.version}</version>
+                <version>${figis.batch.platform}</version>
             </dependency>
             
             <!-- GeoBatch FIRMS actions -->
             <dependency>
                 <groupId>org.fao.fi.firms.geobatch</groupId>
                 <artifactId>gb-action-firms-geocoverage</artifactId>
-                <version>${gb.version}</version>
+                <version>${figis.batch.platform}</version>
             </dependency>
             
+
+            <!-- Force the commons-codec version to 1.4 to avoid problems with GB transitive dependencies -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
             <!-- TEST -->
             <dependency>
 				<groupId>junit</groupId>

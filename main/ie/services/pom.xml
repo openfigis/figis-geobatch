@@ -5,7 +5,7 @@
     <parent>
         <groupId>it.geosolutions.figis</groupId>
         <artifactId>figis-ie</artifactId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <!-- =========================================================== -->
@@ -14,30 +14,33 @@
     <groupId>it.geosolutions.figis</groupId>
     <artifactId>ie-services</artifactId>
     <packaging>war</packaging>
-    <version>2.0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <name>IE services webapp</name>
     <!--<url>http://maven.apache.org</url>-->
 
     <properties>
-        <cxf.version>2.2.3</cxf.version>
+    	<!--  <cxf.version>2.4.0</cxf.version> -->
+    	<!-- <cxf.version>2.2.3</cxf.version> -->
+        <!--  <cxf.version>2.5.11</cxf.version> -->
+        <cxf.version>2.3.2</cxf.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>it.geosolutions.figis</groupId>
             <artifactId>ie-requester</artifactId>
-            <version>2.0-SNAPSHOT</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>it.geosolutions.figis</groupId>
             <artifactId>ie-persistence</artifactId>
-            <version>2.0-SNAPSHOT</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>it.geosolutions.figis</groupId>
             <artifactId>ie-model</artifactId>
-            <version>2.0-SNAPSHOT</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -49,8 +52,25 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-            <version>2.3.2</version>
+            <version>${cxf.version}</version>
         </dependency>
+        <!-- CXF the next 3 dependencies are transitive of the previous one but we need to declare anyway in order to avoid conflicts with GB rest interface -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-api</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-core</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -230,17 +250,17 @@
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-java2ws-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>${cxf.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.cxf</groupId>
                         <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                        <version>2.3.2</version>
+                        <version>${cxf.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.apache.cxf</groupId>
                         <artifactId>cxf-rt-frontend-simple</artifactId>
-                        <version>2.3.2</version>
+                        <version>${cxf.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>

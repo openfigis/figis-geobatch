@@ -1,5 +1,7 @@
 package org.fao.fi.vme.geobatch;
 
+import it.geosolutions.fi.vme.geobatch.VMEZonalStatsAction;
+import it.geosolutions.fi.vme.geobatch.VMEZonalStatsConfiguration;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 import it.geosolutions.geobatch.actions.ds2ds.dao.FeatureConfiguration;
