@@ -1,6 +1,8 @@
 package org.fao.fi.vme.geobatch;
 
 
+import it.geosolutions.fi.vme.geobatch.VMEIngestionAction;
+import it.geosolutions.fi.vme.geobatch.VMEIngestionConfiguration;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 import java.io.File;
@@ -10,8 +12,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
-import org.fao.fi.vme.geobatch.VMEIngestionAction;
-import org.fao.fi.vme.geobatch.VMEIngestionConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 

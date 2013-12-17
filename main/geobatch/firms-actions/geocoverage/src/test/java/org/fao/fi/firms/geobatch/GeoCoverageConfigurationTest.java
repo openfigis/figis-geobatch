@@ -3,6 +3,7 @@ package org.fao.fi.firms.geobatch;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import it.geosolutions.fi.firms.geobatch.GeoCoverageConfiguration;
 import it.geosolutions.geobatch.registry.AliasRegistry;
 import it.geosolutions.geobatch.xstream.Alias;
 

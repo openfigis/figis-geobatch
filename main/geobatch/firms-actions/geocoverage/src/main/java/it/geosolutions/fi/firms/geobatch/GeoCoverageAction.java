@@ -1,4 +1,4 @@
-package org.fao.fi.firms.geobatch;
+package it.geosolutions.fi.firms.geobatch;
 
 import java.io.IOException;
 import java.io.Serializable;

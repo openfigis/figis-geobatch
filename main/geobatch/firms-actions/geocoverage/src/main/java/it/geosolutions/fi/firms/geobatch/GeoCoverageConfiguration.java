@@ -1,4 +1,4 @@
-package org.fao.fi.firms.geobatch;
+package it.geosolutions.fi.firms.geobatch;
 
 import it.geosolutions.geobatch.actions.ds2ds.Ds2dsConfiguration;
 

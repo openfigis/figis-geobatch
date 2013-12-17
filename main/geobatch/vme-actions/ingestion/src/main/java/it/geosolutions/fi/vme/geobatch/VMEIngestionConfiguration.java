@@ -1,4 +1,4 @@
-package org.fao.fi.vme.geobatch;
+package it.geosolutions.fi.vme.geobatch;
 
 import it.geosolutions.geobatch.actions.ds2ds.Ds2dsConfiguration;
 
