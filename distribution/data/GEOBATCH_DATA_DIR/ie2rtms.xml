@@ -2,8 +2,8 @@
 <FlowConfiguration>
     
     <id>ie2rtms</id>
-    <description>VME data ingestion configuration flow</description>
-    <name>vme flow</name>
+    <description>configuration flow to map IE results to RTMS intersection table</description>
+    <name>ie2rtms flow</name>
     
     <autorun>true</autorun>
     
@@ -16,15 +16,15 @@
         <id>ie2rtms</id>
         <keepFiles>false</keepFiles>
         <serviceID>fsEventGeneratorService</serviceID>
-        <description>VMEIngestion event generator description</description>
-        <name>VMEIngestion</name>
+        <description>ie2rtms event generator description</description>
+        <name>ie2rtms</name>
     </EventGeneratorConfiguration>
     
 	<!--Configure the EventConsumer with the list of Actions-->
     <EventConsumerConfiguration>
-        <id>vme</id>
-        <description>VME Event Consumer. Provides a list of actions to perform in order to ingest VME data</description>
-        <name>vme</name>
+        <id>ie2rtms</id>
+        <description>IE2RTMS Event Consumer. Provides a ds2ds action to map IE results to RTMS intersection table</description>
+        <name>ie2rtms</name>
         <preserveInput>false</preserveInput>         
         <performBackup>false</performBackup>
                 
@@ -34,12 +34,12 @@
 		<!-- ACTION 1/1: Import a fields subset of the data stored in the STATISTICAL_TABLE of the Intersection Engine DB
 																	into WATER_AREA_INTERSECTION table of the RTMS DB-->
         <Ds2dsConfiguration>
-            <id>VMEIngestionGeneratorService</id>
-            <description>VME Ingestion action</description>
-            <name>VMEIngestionConfiguration</name>
+            <id>Ds2dsGeneratorService</id>
+            <description>IE2RTMS</description>
+            <name>Ds2dsConfiguration</name>
             <listenerId>Logger</listenerId>
             <failIgnored>false</failIgnored>
-            <purgeData>true</purgeData> <!-- Each time a new VME shapefile is imported, the data from the DB is removed-->
+            <purgeData>true</purgeData> <!-- Each time IE computations will be performed, the data from the RTMS DB intersection table is removed-->
 			
 	    <sourceFeature>
                 <typeName>STATISTICAL_TABLE</typeName> 
@@ -141,6 +141,22 @@
 				<entry>
 					  <string>TARGET_AREA_CODE</string>
 					  <string>TRGCODE</string>
+				</entry>
+				<entry>
+					  <string>AREA_SURFACE</string>
+					  <string>SRCAREA</string>
+				</entry>
+				<entry>
+					  <string>TARGET_AREA_SURFACE</string>
+					  <string>TRGAREA</string>
+				</entry>
+				<entry>
+					  <string>AREA_SURF_PERC</string>
+					  <string>SRCOVLPCT</string>
+				</entry>
+				<entry>
+					  <string>TARGET_AREA_SURF_PERC</string>
+					  <string>TRGOVLPCT</string>
 				</entry>
 			</attributeMappings>
 			
