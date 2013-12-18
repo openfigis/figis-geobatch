@@ -46,7 +46,6 @@
 		</FileEventRule -->
 		
 		<SettingConfiguration>
-			<serviceID>SettingGeneratorService</serviceID>
 			<id>SettingGeneratorService</id>
 			<description>Setting action</description>
 			<name>SettingConfiguration</name>

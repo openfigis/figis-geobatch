@@ -38,7 +38,6 @@
 		<performBackup>false</performBackup>
 		
 		<IntersectionConfiguration>
-			<serviceID>IntersectionGeneratorService</serviceID>
 			<id>IntersectionGeneratorService</id>
 			<description>Intersection action</description>
 			<name>IntersectionConfiguration</name>

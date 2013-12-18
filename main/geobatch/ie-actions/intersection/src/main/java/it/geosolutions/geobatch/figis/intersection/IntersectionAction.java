@@ -34,42 +34,39 @@ import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
+import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.util.PwEncoder;
 import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
+import it.geosolutions.geobatch.annotations.Action;
+import it.geosolutions.geobatch.annotations.CheckConfiguration;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
 import it.geosolutions.geoserver.rest.GeoServerRESTReader;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.EventObject;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.process.feature.gs.BufferFeatureCollection;
-import org.geotools.process.feature.gs.ClipProcess;
-//import org.geotools.process.feature.gs.EraseProcess;
-import org.geotools.process.feature.gs.FeatureProcess;
-import org.geotools.process.feature.gs.IntersectionFeatureCollection;
-import org.geotools.process.feature.gs.IntersectionFeatureCollection.IntersectionMode;
+import org.geotools.process.vector.BufferFeatureCollection;
+import org.geotools.process.vector.ClipProcess;
+import org.geotools.process.vector.IntersectionFeatureCollection;
+import org.geotools.process.vector.IntersectionFeatureCollection.IntersectionMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.TargetClassAware;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.thoughtworks.xstream.InitializationException;
 import com.vividsolutions.jts.geom.Geometry;
@@ -80,6 +77,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  *
  */
+@Action(configurationClass = IntersectionConfiguration.class)
 public class IntersectionAction extends BaseAction<EventObject>
 {
 
@@ -151,7 +149,7 @@ public class IntersectionAction extends BaseAction<EventObject>
 
         try
         {
-            ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL(), new URI(URI_URL), true, true, ShapefileDataStore.DEFAULT_STRING_CHARSET);
+            ShapefileDataStore store = new ShapefileDataStore(shpfile.toURI().toURL());
             shapeFileStores.add(store);
 
             FeatureSource fs = store.getFeatureSource();
@@ -740,6 +738,8 @@ public class IntersectionAction extends BaseAction<EventObject>
         LOGGER.info("ieServicePassword: " + this.ieServicePassword);
         LOGGER.info("**************************");
 
+        setupConfigDAO();
+        
         // return
         final Queue<EventObject> ret = new LinkedList<EventObject>();
 
@@ -858,6 +858,16 @@ public class IntersectionAction extends BaseAction<EventObject>
         return ret;
     }
 
+    public void setupConfigDAO(){
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        IEConfigDAO ieConfigDAO =  (IEConfigDAO)ctx.getBean("IEConfigDAO"); 
+        if(ieConfigDAO == null){
+            LOGGER.error("Error while loading ieConfigDAO for IntersectionAction...");
+        }
+        setIeConfigDAO(ieConfigDAO);
+    }
+    
+    
     /**
      * @param ieConfigDAO
      *            the ieConfigDAO to set
@@ -885,6 +895,12 @@ public class IntersectionAction extends BaseAction<EventObject>
     public void setIeServicePassword(String ieServicePassword)
     {
         this.ieServicePassword = ieServicePassword;
+    }
+
+    @CheckConfiguration
+    @Override
+    public boolean checkConfiguration() {
+        return true;
     }
 
 }

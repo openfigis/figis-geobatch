@@ -33,7 +33,6 @@
 	
 	<!-- ACTION 1: Import the VME-db data (with surface computation) into the datastore -->
         <VMEIngestionConfiguration>
-            <serviceID>VMEIngestionGeneratorService</serviceID>
             <id>VMEIngestionGeneratorService</id>
             <description>VME Ingestion action</description>
             <name>VMEIngestionConfiguration</name>
@@ -81,9 +80,9 @@
             <attributeMappings/>           
         </VMEIngestionConfiguration>
 		
+
 	<!-- Action 2 : GeoServer publication -->
 	<DSGeoServerConfiguration>
-            <serviceID>DSGeoServerGeneratorService</serviceID>
             <id>DSGeoServerGeneratorService</id>
             <description>publishing action</description>
             <name>DSGeoServerConfiguration</name>
@@ -103,7 +102,6 @@
 		
 		<!-- Action 3 zonal statistics computation & ingestion -->	
 		<VMEZonalStatsConfiguration>
-			<serviceID>VMEZonalStatsGeneratorService</serviceID>
 			<id>VMEZonalStatsGeneratorService</id>
 			<description>action to compute and ingest zonal stats</description>
 			<name>VMEZonalStatsConfiguration</name>
@@ -158,7 +156,6 @@
 		
 		<!-- Action 4 : Publish zonal stats to GeoServer (to WFS) -->
 		 <DSGeoServerConfiguration>
-            <serviceID>DSGeoServerGeneratorService</serviceID>
             <id>DSGeoServerGeneratorService</id>
             <description>publishing action</description>
             <name>DSGeoServerConfiguration</name>
