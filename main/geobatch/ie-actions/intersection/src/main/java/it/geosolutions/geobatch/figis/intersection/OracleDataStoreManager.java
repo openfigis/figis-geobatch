@@ -544,7 +544,7 @@ public class OracleDataStoreManager
                 SimpleFeature sf = iterator.next();
 
                 Object srcCodeValue = sf.getAttribute(srcLayer + "_" + srcCode);
-                if(srcCodeValue==null) srcCodeValue = sf.getAttribute(srcLayer + "Polygon_" + srcCode);
+                if(srcCodeValue==null) srcCodeValue = sf.getAttribute(srcLayer + "_SRC_" + srcCode);
 				featureBuilderData.set("SRCODE", srcCodeValue);
 
                 featureBuilderData.set("SRCLAYER", srcLayer);
@@ -552,7 +552,7 @@ public class OracleDataStoreManager
                 featureBuilderData.set("TRGLAYER", trgLayer);
 
                 Object trgCodeValue = sf.getAttribute(trgLayer + "_" + trgCode);
-                if(trgCodeValue==null) trgCodeValue = sf.getAttribute(trgLayer + "Polygon_" + trgCode);
+                if(trgCodeValue==null) trgCodeValue = sf.getAttribute(trgLayer + "_TRG_" + trgCode);
                 featureBuilderData.set("TRGCODE", trgCodeValue);
 
                 featureBuilderData.set("INTERSECTION_ID", intersectionID);
