@@ -128,7 +128,9 @@
 				var srcCodeFieldCut = cutStr(srcCodeField);
 				var trgLayerCut = cutStr(trgLayer);
 				var trgCodeFieldCut = cutStr(trgCodeField);
-				var downlSrc = PROXY_FIGIS_DOWNLOAD+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
+				var maskCut = cutStr(mask);
+				var prsrvTrgGeomCut = cutStr(prsrvTrgGeom);
+				var downlSrc = PROXY_FIGIS_DOWNLOAD+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\' AND MASKLAYER=\''+maskCut+'\' AND PRESERVETRGGEOM=\''+prsrvTrgGeomCut+'\')';
 				//downlSrc = 'http://localhost:8081/download/TUNA_SPATIAL_STAT_DATA.zip';
 				if(debug)alert('downlSrc=='+downlSrc);
 

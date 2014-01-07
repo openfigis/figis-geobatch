@@ -34,7 +34,6 @@ import it.geosolutions.figis.model.Config;
 import it.geosolutions.figis.model.Geoserver;
 import it.geosolutions.figis.model.Intersection;
 import it.geosolutions.figis.model.Intersection.Status;
-import it.geosolutions.figis.persistence.dao.ConfigDao;
 import it.geosolutions.figis.persistence.dao.util.PwEncoder;
 import it.geosolutions.figis.requester.requester.dao.IEConfigDAO;
 import it.geosolutions.geobatch.annotations.Action;
@@ -50,7 +49,6 @@ import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.UUID;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
@@ -389,8 +387,9 @@ public class IntersectionAction extends BaseAction<EventObject>
                         // that are contained in the bboxDiff  
                         //srcCollection = bufferProcess.execute(srcCollection, 0d, null);
                         srcCollection = clipProcess.execute(srcCollection, bboxDiff);
-                        String fileName = srcLayer.replaceAll(":", "");
-                        File f = new File(tmpDir, fileName+UUID.randomUUID()+".shp");
+                        //String fileName = srcLayer.replaceAll(":", "");
+                        String[] fileName = srcLayer.split(":");
+                        File f = new File(tmpDir, fileName[1]+"_SRC.shp");
                         f.createNewFile();
                         if(LOGGER.isDebugEnabled())
                         {
@@ -427,8 +426,9 @@ public class IntersectionAction extends BaseAction<EventObject>
                     {
                         //trgCollection = bufferProcess.execute(trgCollection, 0d, null);
                         trgCollection = clipProcess.execute(trgCollection, bboxDiff);
-                        String fileName = trgLayer.replaceAll(":", "");
-                        File f = new File(tmpDir, fileName+UUID.randomUUID()+".shp");
+                        //String fileName = trgLayer.replaceAll(":", "");
+                        String[] fileName = trgLayer.split(":");
+                        File f = new File(tmpDir, fileName[1]+"_TRG.shp");
                         f.createNewFile();
                         if(LOGGER.isDebugEnabled())
                         {
@@ -591,7 +591,7 @@ public class IntersectionAction extends BaseAction<EventObject>
             {
                 try
                 {
-                    dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode, maskLayer, prsrvTrgGeom);
+                    dataStoreOracle.deleteAll(Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode, trgCode, Utilities.getName(maskLayer), prsrvTrgGeom);
                     ieConfigDAO.deleteIntersectionById(host, id, ieServiceUsername, ieServicePassword);
                 }
                 catch (Exception e)
@@ -651,7 +651,7 @@ public class IntersectionAction extends BaseAction<EventObject>
                             
                             dataStoreOracle.saveAll(resultFeatureCollection,
                                 Utilities.getName(srcLayer), Utilities.getName(trgLayer), srcCode,
-                                trgCode, maskLayer, prsrvTrgGeom, itemsPerPage);
+                                trgCode, Utilities.getName(maskLayer), prsrvTrgGeom, itemsPerPage);
                             intersection.setStatus(Status.COMPUTED);
                             ieConfigDAO.updateIntersectionById(host, id, intersection, ieServiceUsername,
                                 ieServicePassword);

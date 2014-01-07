@@ -115,7 +115,7 @@
 
 
 	/* Open windows page as external window */
-	function download(srcLayer,srcCodeField,trgLayer,trgCodeField,type,newW,status,type2show){//openDownloadWindow(typeFunc,userProfile,idMap,newW,desc){
+	function download(srcLayer,srcCodeField,trgLayer,trgCodeField,mask,prsrvTrgGeom,type,newW,status,type2show){//openDownloadWindow(typeFunc,userProfile,idMap,newW,desc){
 		if(status=='TOCOMPUTE' || status=='COMPUTING' || status=='TODELETE' || status=='FAILED'){
 			Ext.Msg.alert('Status: '+status+'', 'You can\'t still export this Intersection now');
 			return false;
@@ -128,7 +128,9 @@
 				var srcCodeFieldCut = cutStr(srcCodeField);
 				var trgLayerCut = cutStr(trgLayer);
 				var trgCodeFieldCut = cutStr(trgCodeField);
-				var downlSrc = PROXY_FIGIS_DOWNLOAD+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\')';
+				var maskCut = cutStr(mask);
+				var prsrvTrgGeomCut = cutStr(prsrvTrgGeom);
+				var downlSrc = PROXY_FIGIS_DOWNLOAD+'&outputFormat='+type+'&CQL_FILTER=(SRCLAYER=\''+srcLayerCut+'\' AND SRCCODENAME=\''+srcCodeFieldCut+'\' AND TRGLAYER=\''+trgLayerCut+'\' AND TRGCODENAME=\''+trgCodeFieldCut+'\' AND MASKLAYER=\''+maskCut+'\' AND PRESERVETRGGEOM=\''+prsrvTrgGeomCut+'\')';
 				//downlSrc = 'http://localhost:8081/download/TUNA_SPATIAL_STAT_DATA.zip';
 				if(debug)alert('downlSrc=='+downlSrc);
 
@@ -431,7 +433,7 @@
 						'<td class=""><i>&nbsp;</i></td>'+
 						'<td  class="x-btn-mc" >'+
 						'<em unselectable="on" class=" x-btn-text csv">'+
-						'<button type="button" id="csvBtn" class=" x-btn-text csv" alt="Export CSV" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'csv\',true,\'{status}\',\'CSV\');">CSV</button></em></td>'+
+						'<button type="button" id="csvBtn" class=" x-btn-text csv" alt="Export CSV" onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'{maskLayer}\',\'{preserveTrgGeom}\',\'csv\',true,\'{status}\',\'CSV\');">CSV</button></em></td>'+
 						'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
 		
 					'<td class=""><i>&nbsp;</i></td>'+
@@ -440,7 +442,7 @@
 							'<td class=""><i>&nbsp;</i></td>'+
 							'<td class="x-btn-mc">'+
 							'<em unselectable="on" class=" x-btn-text gml2">'+
-							'<button type="button" id="gml2Btn" class=" x-btn-text gml2"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'GML2\',true,\'{status}\',\'GML2\');">GML2</button></em></td>'+
+							'<button type="button" id="gml2Btn" class=" x-btn-text gml2"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'{maskLayer}\',\'{preserveTrgGeom}\',\'GML2\',true,\'{status}\',\'GML2\');">GML2</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
 		
 				/*	'<td class=""><i>&nbsp;</i></td>'+
@@ -458,7 +460,7 @@
 							'<td class=""><i>&nbsp;</i></td>'+
 							'<td class="x-btn-mc">'+
 							'<em unselectable="on" class=" x-btn-text gml31">'+
-							'<button type="button" id="gml31Btn" class=" x-btn-text gml31"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.1.1\',true,\'{status}\',\'GML3.1.1\');">GML3.1</button></em></td>'+
+							'<button type="button" id="gml31Btn" class=" x-btn-text gml31"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'{maskLayer}\',\'{preserveTrgGeom}\',\'text/xml;%20subtype=gml/3.1.1\',true,\'{status}\',\'GML3.1.1\');">GML3.1</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
 		
 					'<td class=""><i>&nbsp;</i></td>'+
@@ -467,7 +469,7 @@
 							'<td class=""><i>&nbsp;</i></td>'+
 							'<td class="x-btn-mc">'+
 							'<em unselectable="on" class=" x-btn-text gml32">'+
-							'<button type="button" id="gml32Btn" class=" x-btn-text gml32"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'text/xml;%20subtype=gml/3.2\',true,\'{status}\',\'GML3.2\');">GML3.2</button></em></td>'+
+							'<button type="button" id="gml32Btn" class=" x-btn-text gml32"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'{maskLayer}\',\'{preserveTrgGeom}\',\'text/xml;%20subtype=gml/3.2\',true,\'{status}\',\'GML3.2\');">GML3.2</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
 	
 					'<td class=""><i>&nbsp;</i></td>'+
@@ -476,7 +478,7 @@
 							'<td class=""><i>&nbsp;</i></td>'+
 							'<td class="x-btn-mc">'+
 							'<em unselectable="on" class=" x-btn-text geoJSON">'+
-							'<button type="button" id="geoJSONVBtn" class=" x-btn-text geoJSON"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'json\',true,\'{status}\',\'GML-JSON\');">GML-JSON</button></em></td>'+
+							'<button type="button" id="geoJSONVBtn" class=" x-btn-text geoJSON"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'{maskLayer}\',\'{preserveTrgGeom}\',\'json\',true,\'{status}\',\'GML-JSON\');">GML-JSON</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
 		
 					'<td class=""><i>&nbsp;</i></td>'+
@@ -485,7 +487,7 @@
 							'<td class=""><i>&nbsp;</i></td>'+
 							'<td class="x-btn-mc">'+
 							'<em unselectable="on" class=" x-btn-text shapefile">'+
-							'<button type="button" id="shapefileBtn" class=" x-btn-text shapefile"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'SHAPE-ZIP\',true,\'{status}\',\'SHP\');">SHP</button></em></td>'+
+							'<button type="button" id="shapefileBtn" class=" x-btn-text shapefile"  onClick="javascript:download(\'{srcLayer}\',\'{srcCodeField}\',\'{trgLayer}\',\'{trgCodeField}\',\'{maskLayer}\',\'{preserveTrgGeom}\',\'SHAPE-ZIP\',true,\'{status}\',\'SHP\');">SHP</button></em></td>'+
 							'<td class="x-btn-mr"><i>&nbsp;</i></td>'+
 			'</tpl>',
 			'</tr>'+
